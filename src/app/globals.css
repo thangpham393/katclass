@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 214 100% 99%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 224 76% 48%;            /* KAT royal blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 100% 96%;         /* light blue tint */
+    --secondary-foreground: 224 76% 28%;
+
+    --muted: 214 30% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 0 84% 50%;               /* KAT red accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 28% 91%;
+    --input: 215 28% 91%;
+    --ring: 224 76% 48%;
+
+    --radius: 0.875rem;
+
+    --font-sans: "Inter", "SF Pro Text", system-ui, sans-serif;
+    --font-display: "Plus Jakarta Sans", "Inter", sans-serif;
+    --font-zh: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", serif;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 30 25% 95%;
+    --card: 220 23% 11%;
+    --card-foreground: 30 25% 95%;
+    --popover: 220 23% 11%;
+    --popover-foreground: 30 25% 95%;
+    --primary: 356 96% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 18% 18%;
+    --secondary-foreground: 30 25% 95%;
+    --muted: 222 18% 18%;
+    --muted-foreground: 220 9% 65%;
+    --accent: 38 100% 55%;
+    --accent-foreground: 0 0% 5%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 18% 20%;
+    --input: 222 18% 20%;
+    --ring: 356 96% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-image:
+      radial-gradient(1200px 600px at 0% -10%, rgba(29, 78, 216, 0.06) 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(220, 38, 38, 0.05) 0%, transparent 60%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+    color: hsl(var(--primary));
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  .zh { font-family: var(--font-zh); }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/60 shadow-soft;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-soft;
+  }
+  .scrollbar-thin::-webkit-scrollbar { height: 8px; width: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+  .stroke-paper {
+    background-image:
+      linear-gradient(transparent 95%, hsl(var(--border)) 0),
+      linear-gradient(90deg, transparent 95%, hsl(var(--border)) 0);
+    background-size: 32px 32px;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #1d4ed8 0%, #dc2626 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ring-glow { box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.14); }
+}
