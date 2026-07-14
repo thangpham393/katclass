@@ -27,7 +27,7 @@ export default function LandingPage() {
         </nav>
         <div className="flex items-center gap-2">
           <Link href="/login"><Button variant="ghost" size="sm">Đăng nhập</Button></Link>
-          <Link href="/student"><Button size="sm">Demo ngay <ArrowRight className="h-3.5 w-3.5" /></Button></Link>
+          <Link href="/login"><Button size="sm">Bắt đầu học <ArrowRight className="h-3.5 w-3.5" /></Button></Link>
         </div>
       </header>
 
@@ -48,9 +48,8 @@ export default function LandingPage() {
             gõ pinyin, nghe hiểu, sắp xếp câu.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/student"><Button size="lg">Vào trang Học viên <ArrowRight className="h-4 w-4" /></Button></Link>
-            <Link href="/teacher"><Button size="lg" variant="outline">Trang Giáo viên</Button></Link>
-            <Link href="/admin"><Button size="lg" variant="ghost">Trang Quản lý</Button></Link>
+            <Link href="/login"><Button size="lg">Vào học ngay <ArrowRight className="h-4 w-4" /></Button></Link>
+            <Link href="/login"><Button size="lg" variant="outline">Dành cho Giáo viên</Button></Link>
           </div>
           <div className="mt-8 flex items-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center -space-x-2">

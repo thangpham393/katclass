@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { Bell, Search, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Bell, Search, LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { signOut } from "@/lib/auth";
 import type { User } from "@/lib/types";
 
 const roleLabel = {
@@ -14,6 +15,13 @@ const roleLabel = {
 };
 
 export function TopBar({ user }: { user: User }) {
+  const router = useRouter();
+
+  async function handleSignOut() {
+    await signOut();
+    router.replace("/login");
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/70 bg-white/70 px-4 backdrop-blur-xl md:px-6">
       <div className="relative hidden flex-1 md:block max-w-md">
@@ -33,11 +41,7 @@ export function TopBar({ user }: { user: User }) {
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-500 ring-2 ring-white" />
         </button>
 
-        <Link
-          href="/login"
-          className="flex items-center gap-3 rounded-xl border border-border bg-white px-2 py-1.5 hover:bg-muted transition-colors"
-          title="Đổi vai trò để demo"
-        >
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-white px-2 py-1.5">
           <Avatar name={user.name} src={user.avatar} size={32} />
           <div className="hidden md:block leading-tight text-left">
             <div className="text-sm font-semibold">{user.name}</div>
@@ -47,8 +51,15 @@ export function TopBar({ user }: { user: User }) {
               </Badge>
             </div>
           </div>
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-        </Link>
+        </div>
+
+        <button
+          onClick={handleSignOut}
+          title="Đăng xuất"
+          className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+        >
+          <LogOut className="h-4 w-4" />
+        </button>
       </div>
     </header>
   );

@@ -1,11 +1,58 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GraduationCap, BookOpen, Users, ArrowRight, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { GraduationCap, BookOpen, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Logo, LogoMark } from "@/components/brand/logo";
+import { useAuth } from "@/components/auth/auth-provider";
+import {
+  signInWithEmail,
+  signInWithGoogle,
+  homeForRole,
+  authErrorMessage,
+} from "@/lib/auth";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { user, loading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState<"email" | "google" | null>(null);
+
+  // Đã đăng nhập sẵn → chuyển thẳng vào khu vực của mình.
+  useEffect(() => {
+    if (!loading && user) router.replace(homeForRole(user.role));
+  }, [user, loading, router]);
+
+  async function handleEmailLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSubmitting("email");
+    try {
+      const profile = await signInWithEmail(email.trim(), password);
+      router.replace(homeForRole(profile.role));
+    } catch (err) {
+      setError(authErrorMessage(err));
+      setSubmitting(null);
+    }
+  }
+
+  async function handleGoogleLogin() {
+    setError(null);
+    setSubmitting("google");
+    try {
+      const profile = await signInWithGoogle();
+      router.replace(homeForRole(profile.role));
+    } catch (err) {
+      setError(authErrorMessage(err));
+      setSubmitting(null);
+    }
+  }
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Visual side */}
@@ -33,13 +80,12 @@ export default function LoginPage() {
           </div>
           <h1 className="text-3xl font-bold">Chào mừng trở lại!</h1>
           <p className="mt-3 text-white/85">
-            Tiếp tục hành trình chinh phục tiếng Trung của bạn — học viên KAT đã hoàn thành
-            <span className="font-bold"> 2,341 </span>bài tập trong tuần này.
+            Tiếp tục hành trình chinh phục tiếng Trung của bạn cùng KAT Education.
           </p>
 
           <div className="mt-10 space-y-3">
             {[
-              { icon: Sparkles, text: "Streak trung bình toàn trung tâm: 12 ngày" },
+              { icon: Sparkles, text: "Flashcard, quiz, luyện viết chữ Hán" },
               { icon: BookOpen, text: "120+ bài giảng, 3,000+ từ vựng" },
               { icon: GraduationCap, text: "Theo lộ trình HSK1 → HSK6" },
             ].map((b) => (
@@ -63,25 +109,50 @@ export default function LoginPage() {
 
           <h2 className="text-2xl font-bold tracking-tight">Đăng nhập</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Chọn vai trò bên dưới để xem demo.
+            Dùng tài khoản được KAT Education cấp, hoặc đăng nhập bằng Google.
           </p>
 
-          <form className="mt-6 space-y-3">
+          {error && (
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form className="mt-6 space-y-3" onSubmit={handleEmailLogin}>
             <div>
-              <label className="text-sm font-medium">Email</label>
-              <Input type="email" placeholder="ban@kat-education.vn" className="mt-1.5" defaultValue="an.nguyen@kat-education.vn" />
+              <label className="text-sm font-medium" htmlFor="email">Email</label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="ban@kat-education.vn"
+                className="mt-1.5"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                required
+              />
             </div>
             <div>
-              <label className="text-sm font-medium">Mật khẩu</label>
-              <Input type="password" placeholder="••••••••" className="mt-1.5" defaultValue="demo1234" />
+              <label className="text-sm font-medium" htmlFor="password">Mật khẩu</label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                className="mt-1.5"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
+              />
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-muted-foreground">
-                <input type="checkbox" className="accent-brand-500" defaultChecked /> Ghi nhớ
-              </label>
-              <a href="#" className="text-brand-600 font-medium hover:underline">Quên mật khẩu?</a>
-            </div>
-            <Button className="w-full" size="lg" type="button">
+            <Button
+              className="w-full"
+              size="lg"
+              type="submit"
+              disabled={submitting !== null}
+            >
+              {submitting === "email" && <Loader2 className="h-4 w-4 animate-spin" />}
               Đăng nhập
             </Button>
           </form>
@@ -89,15 +160,25 @@ export default function LoginPage() {
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Demo theo vai trò</span>
+              <span className="bg-background px-2 text-muted-foreground">hoặc</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            <RoleQuick href="/student" label="Học viên" icon={GraduationCap} />
-            <RoleQuick href="/teacher" label="Giáo viên" icon={BookOpen} />
-            <RoleQuick href="/admin" label="Quản lý" icon={Users} />
-          </div>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full"
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={submitting !== null}
+          >
+            {submitting === "google" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <GoogleIcon />
+            )}
+            Đăng nhập bằng Google
+          </Button>
 
           <p className="mt-8 text-center text-sm text-muted-foreground">
             Chưa có tài khoản?{" "}
@@ -109,26 +190,25 @@ export default function LoginPage() {
   );
 }
 
-function RoleQuick({
-  href,
-  label,
-  icon: Icon,
-}: {
-  href: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}) {
+function GoogleIcon() {
   return (
-    <Link href={href}>
-      <Card className="card-hover">
-        <CardContent className="flex flex-col items-center gap-2 p-4 text-center">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-gold-50 text-brand-600">
-            <Icon className="h-4 w-4" />
-          </div>
-          <div className="text-xs font-semibold">{label}</div>
-          <ArrowRight className="h-3 w-3 text-muted-foreground" />
-        </CardContent>
-      </Card>
-    </Link>
+    <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="#4285F4"
+        d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.12 0-5.77-2.1-6.71-4.94H1.29v3.1A12 12 0 0 0 12 24Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.29a12 12 0 0 0 0 10.78l4-3.1Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.77c1.76 0 3.34.6 4.58 1.79l3.44-3.44A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.29 6.61l4 3.1C6.23 6.87 8.88 4.77 12 4.77Z"
+      />
+    </svg>
   );
 }

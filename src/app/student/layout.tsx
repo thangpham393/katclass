@@ -1,7 +1,5 @@
-import { AppShell } from "@/components/shell/app-shell";
-import { users } from "@/lib/mock-data";
+import { AuthGuard } from "@/components/auth/auth-guard";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
-  const student = users.find((u) => u.role === "student")!;
-  return <AppShell user={student}>{children}</AppShell>;
+  return <AuthGuard role="student">{children}</AuthGuard>;
 }
