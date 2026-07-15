@@ -1,51 +1,65 @@
+"use client";
+
 import Link from "next/link";
-import { Calendar, CheckCircle2, ClipboardList, Clock, Trophy } from "lucide-react";
+import { Calendar, CheckCircle2, ClipboardList, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Empty } from "@/components/ui/empty";
-import { classes, homeworks, users } from "@/lib/mock-data";
-import { formatDate } from "@/lib/utils";
-
-const typeLabel = {
-  flashcard: "Flashcard",
-  quiz: "Quiz",
-  writing: "Viết Hán tự",
-  listening: "Nghe hiểu",
-  mixed: "Tổng hợp",
-};
+import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { useAuth } from "@/components/auth/auth-provider";
+import { useLoad } from "@/lib/use-load";
+import { fetchHomeworksForStudent } from "@/lib/db-content";
+import { fetchMyClasses } from "@/lib/db-student";
 
 export default function StudentHomeworkPage() {
-  const me = users.find((u) => u.role === "student")!;
-  const myHomeworks = homeworks.filter((h) => me.classIds?.includes(h.classId));
-  const active = myHomeworks.filter((h) => h.status !== "graded");
-  const done = myHomeworks.filter((h) => h.status === "graded");
+  const { user } = useAuth();
+  const studentId = user?.id ?? "";
+
+  const classes = useLoad(
+    () => (studentId ? fetchMyClasses(studentId) : Promise.resolve([])),
+    [studentId],
+  );
+  const classIds = (classes.data ?? []).map((c) => c.class_id);
+  const classKey = classIds.join(",");
+  const homeworks = useLoad(
+    () =>
+      studentId && classes.data
+        ? fetchHomeworksForStudent(classIds, studentId)
+        : Promise.resolve([]),
+    [studentId, classKey, !!classes.data],
+  );
+
+  const loading = classes.loading || homeworks.loading;
+  const list = homeworks.data ?? [];
+  const active = list.filter((h) => h.submissions.length === 0);
+  const done = list.filter((h) => h.submissions.length > 0);
 
   return (
     <div className="space-y-8">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Bài tập về nhà</h1>
-          <p className="mt-1 text-muted-foreground">
-            Hoàn thành để duy trì streak và nhận huy hiệu!
-          </p>
-        </div>
-        <Badge variant="gold" className="text-sm">
-          <Trophy className="h-3.5 w-3.5" /> Tuần này: {done.length} hoàn thành
-        </Badge>
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight">Bài tập về nhà</h1>
+        <p className="mt-1 text-muted-foreground">
+          Bài trắc nghiệm được hệ thống chấm ngay khi nộp.
+        </p>
       </div>
+
+      {(classes.error || homeworks.error) && (
+        <ErrorNote message={classes.error ?? homeworks.error ?? ""} />
+      )}
 
       <section>
         <h2 className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
           <Clock className="h-3.5 w-3.5" /> Đang chờ ({active.length})
         </h2>
-        {active.length === 0 ? (
-          <Empty icon={CheckCircle2} title="Tuyệt vời!" description="Bạn đã hoàn thành mọi bài tập." />
+        {loading ? (
+          <Card><LoadingRows rows={3} /></Card>
+        ) : active.length === 0 ? (
+          <Empty icon={CheckCircle2} title="Tuyệt vời!" description="Bạn đã hoàn thành mọi bài tập được giao." />
         ) : (
           <div className="grid gap-3">
             {active.map((h) => {
-              const cls = classes.find((c) => c.id === h.classId);
-              const overdue = new Date(h.dueDate) < new Date();
+              const overdue = h.due_at ? new Date(h.due_at) < new Date() : false;
               return (
                 <Card key={h.id} className="card-hover">
                   <CardContent className="flex flex-wrap items-center gap-4 p-5">
@@ -53,37 +67,21 @@ export default function StudentHomeworkPage() {
                       <ClipboardList className="h-5 w-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-semibold">{h.title}</h3>
-                        <Badge variant="outline">{typeLabel[h.type]}</Badge>
-                        {h.status === "in-progress" && (
-                          <Badge variant="gold">Đang làm</Badge>
+                      <h3 className="font-semibold">{h.title}</h3>
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                        <span className="text-muted-foreground">{h.class?.name}</span>
+                        <span className="text-muted-foreground">· {h.homework_questions[0]?.count ?? 0} câu</span>
+                        {h.due_at && (
+                          <span className={overdue ? "font-semibold text-rose-600" : "text-muted-foreground"}>
+                            <Calendar className="mr-1 inline h-3 w-3" />
+                            Hạn {new Date(h.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+                          </span>
                         )}
                       </div>
-                      <p className="mt-0.5 line-clamp-1 text-sm text-muted-foreground">
-                        {h.description}
-                      </p>
-                      <div className="mt-1.5 flex items-center gap-3 text-xs">
-                        <span className="text-muted-foreground">{cls?.name}</span>
-                        <span className="text-muted-foreground">·</span>
-                        <span className={overdue ? "font-semibold text-rose-600" : "text-muted-foreground"}>
-                          <Calendar className="inline h-3 w-3 mr-1" />
-                          Hạn {formatDate(h.dueDate)}
-                        </span>
-                      </div>
                     </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                      {h.quizId && (
-                        <Link href={`/student/quiz/${h.quizId}`}>
-                          <Button>Làm bài</Button>
-                        </Link>
-                      )}
-                      {!h.quizId && h.vocabIds && (
-                        <Link href={`/student/flashcard/d-1`}>
-                          <Button variant="outline">Ôn flashcard</Button>
-                        </Link>
-                      )}
-                    </div>
+                    <Link href={`/student/homework/${h.id}`}>
+                      <Button>Làm bài</Button>
+                    </Link>
                   </CardContent>
                 </Card>
               );
@@ -94,25 +92,49 @@ export default function StudentHomeworkPage() {
 
       <section>
         <h2 className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-          <CheckCircle2 className="h-3.5 w-3.5" /> Đã chấm điểm ({done.length})
+          <CheckCircle2 className="h-3.5 w-3.5" /> Đã nộp ({done.length})
         </h2>
-        <div className="grid gap-3 md:grid-cols-2">
-          {done.map((h) => (
-            <Card key={h.id} className="bg-muted/30">
-              <CardContent className="flex items-center justify-between p-5">
-                <div>
-                  <div className="font-semibold">{h.title}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">{typeLabel[h.type]} · {formatDate(h.dueDate)}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-extrabold text-emerald-600">{h.score}</div>
-                  <div className="text-xs text-muted-foreground">/ 100</div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {loading ? (
+          <Card><LoadingRows rows={2} /></Card>
+        ) : done.length === 0 ? (
+          <Card>
+            <CardContent className="p-6 text-center text-sm text-muted-foreground">
+              Chưa có bài nào được nộp.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {done.map((h) => {
+              const sub = h.submissions[0];
+              return (
+                <Link key={h.id} href={`/student/homework/${h.id}`}>
+                  <Card className="card-hover h-full bg-muted/30">
+                    <CardContent className="flex items-center justify-between gap-3 p-5">
+                      <div className="min-w-0">
+                        <div className="truncate font-semibold">{h.title}</div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {h.class?.name} · Nộp{" "}
+                          {sub ? new Date(sub.submitted_at).toLocaleDateString("vi-VN") : "—"}
+                        </div>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <div className="text-2xl font-extrabold text-emerald-600">
+                          {sub?.score ?? "—"}
+                        </div>
+                        <div className="text-xs text-muted-foreground">/ 10</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </section>
+
+      {!loading && list.length === 0 && (
+        <Badge variant="muted">Giáo viên chưa giao bài tập nào cho lớp của bạn.</Badge>
+      )}
     </div>
   );
 }

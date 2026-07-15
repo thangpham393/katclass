@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   if (!isLoginCode(code)) {
     return NextResponse.json(
-      { error: "Mã không hợp lệ — mã có dạng HVKAT00123 (học viên) hoặc GVKAT/NVKAT (đội ngũ)." },
+      { error: "Mã không hợp lệ — mã có dạng HVKAT00123 (học viên), PHKAT (phụ huynh) hoặc GVKAT/NVKAT (đội ngũ)." },
       { status: 400 },
     );
   }

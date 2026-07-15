@@ -37,6 +37,9 @@ submissions (bài nộp + điểm, chấm tự động qua RPC submit_homework)
 5. **GV thực dạy tách khỏi GV phụ trách:** `classes.teacher_id` là GV phụ trách lớp, `sessions.teacher_id` là người thực dạy buổi đó — sẵn sàng cho nghiệp vụ dạy thay và chấm công theo buổi (Giai đoạn 2).
 6. **`session_no` trên buổi học** để hiển thị "buổi 5/24"; số buổi còn lại của học viên sẽ tính khi có bảng gói học phí (Giai đoạn 2) — cấu trúc điểm danh hiện tại đã đủ dữ liệu để tính ngược.
 
+7. **Cổng phụ huynh (0010):** phụ huynh cũng đăng nhập bằng mã (`PHKAT...`, trigger cấp mã mở rộng cho role `parent`); policy `read team profiles` cho phép mọi người đăng nhập đọc hồ sơ teacher/staff/admin để học viên/phụ huynh thấy tên giáo viên trong lịch học và nhận xét. Liên kết phụ huynh ↔ con qua `parent_students` (admin thao tác ở trang chi tiết thành viên).
+8. **Quy ước jsonb câu hỏi (app):** đề bài trong `questions.content`, đáp án trong `question_answers.answer` — cấu trúc từng dạng câu ghi ở đầu `src/lib/db-content.ts`. Điểm chấm tự động thang 10, RPC `submit_homework` cho phép nộp lại (ghi đè điểm).
+
 ## Những gì chưa nằm trong schema này (chủ đích, theo lộ trình)
 
 - Gói học phí, thanh toán, công nợ → Giai đoạn 2 (bảng `enrollment_packages`, `payments`).

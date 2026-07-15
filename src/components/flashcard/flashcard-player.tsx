@@ -13,11 +13,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import type { Vocab } from "@/lib/types";
+
+/** Thẻ từ vựng tối thiểu để ôn — khớp vocab_items trong Supabase. */
+export interface FlashVocab {
+  id: string;
+  hanzi: string;
+  pinyin: string;
+  meaning: string;
+  example?: { zh: string; pinyin?: string; vi: string } | null;
+  audio_url?: string | null;
+  level?: string | null;
+}
 
 type Difficulty = "again" | "hard" | "good" | "easy";
 
-export function FlashcardPlayer({ vocab }: { vocab: Vocab[] }) {
+export function FlashcardPlayer({ vocab }: { vocab: FlashVocab[] }) {
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [stats, setStats] = useState<Record<Difficulty, number>>({
@@ -40,6 +50,10 @@ export function FlashcardPlayer({ vocab }: { vocab: Vocab[] }) {
 
   function speak() {
     if (typeof window === "undefined" || !card) return;
+    if (card.audio_url) {
+      new Audio(card.audio_url).play().catch(() => {});
+      return;
+    }
     const u = new SpeechSynthesisUtterance(card.hanzi);
     u.lang = "zh-CN";
     u.rate = 0.85;
@@ -94,9 +108,11 @@ export function FlashcardPlayer({ vocab }: { vocab: Vocab[] }) {
         <span className="text-muted-foreground">
           Thẻ <span className="font-bold text-foreground">{idx + 1}</span> / {total}
         </span>
-        <Badge variant="gold">
-          <Sparkles className="h-3 w-3" /> {card.level}
-        </Badge>
+        {card.level && (
+          <Badge variant="gold">
+            <Sparkles className="h-3 w-3" /> {card.level}
+          </Badge>
+        )}
       </div>
       <Progress value={progress} className="mb-6" />
 

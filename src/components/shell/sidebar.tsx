@@ -39,9 +39,10 @@ const studentNav: NavItem[] = [
 const teacherNav: NavItem[] = [
   { href: "/teacher", label: "Trang chủ", icon: LayoutDashboard },
   { href: "/teacher/classes", label: "Lớp dạy", icon: School },
-  { href: "/teacher/lessons", label: "Bài giảng", icon: BookOpen },
-  { href: "/teacher/homework", label: "Giao bài tập", icon: ListChecks },
+  { href: "/teacher/lessons", label: "Bài học", icon: BookOpen },
   { href: "/teacher/vocab", label: "Kho từ vựng", icon: Library },
+  { href: "/teacher/questions", label: "Ngân hàng câu hỏi", icon: ListChecks },
+  { href: "/teacher/homework", label: "Giao bài tập", icon: ClipboardList },
   { href: "/teacher/students", label: "Học viên", icon: Users },
 ];
 

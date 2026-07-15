@@ -145,7 +145,7 @@ export default function LoginPage() {
                 required
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                Học viên: HVKAT... · Giáo viên: GVKAT... · Nhân viên: NVKAT...
+                Học viên: HVKAT... · Phụ huynh: PHKAT... · Giáo viên: GVKAT... · Nhân viên: NVKAT...
               </p>
             </div>
             <div>

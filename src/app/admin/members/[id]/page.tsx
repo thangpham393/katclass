@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-  ArrowLeft, Check, Copy, KeyRound, Mail, MapPin, Phone,
-  RotateCcw, StickyNote, Trash2,
+  ArrowLeft, Check, Copy, HeartHandshake, KeyRound, Mail, MapPin, Phone,
+  Plus, RotateCcw, StickyNote, Trash2, X,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import {
   fetchProfile,
+  fetchProfilesByRole,
   fetchStudentClasses,
   fetchStudentAttendanceSummary,
   fetchTeacherClasses,
@@ -26,6 +27,18 @@ import {
   CLASS_STATUS_LABELS,
   type AttendanceStatus,
 } from "@/lib/db";
+import {
+  createParentProfile,
+  fetchChildrenOfParent,
+  fetchParentsOfStudent,
+  linkParentStudent,
+  unlinkParentStudent,
+  RELATIONSHIP_LABELS,
+} from "@/lib/db-student";
+import { Input } from "@/components/ui/input";
+import { Modal } from "@/components/ui/modal";
+import { Select, Field } from "@/components/ui/select";
+import { dbErrorMessage } from "@/lib/db";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
 import { pct } from "@/lib/utils";
@@ -311,8 +324,12 @@ export default function AdminMemberDetailPage() {
                   )}
                 </CardContent>
               </Card>
+
+              <ParentsCard studentId={profileId} studentName={p.name} />
             </>
           )}
+
+          {p.role === "parent" && <ChildrenCard parentId={profileId} />}
 
           {p.role === "teacher" && (
             <Card>
@@ -360,5 +377,303 @@ export default function AdminMemberDetailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ================= Phụ huynh của học viên ================= */
+
+function ParentsCard({ studentId, studentName }: { studentId: string; studentName: string }) {
+  const parents = useLoad(() => fetchParentsOfStudent(studentId), [studentId]);
+  const [linking, setLinking] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleUnlink(parentId: string, name: string) {
+    if (!confirm(`Gỡ liên kết phụ huynh ${name} khỏi ${studentName}?`)) return;
+    setError(null);
+    try {
+      await unlinkParentStudent(parentId, studentId);
+      parents.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    }
+  }
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="text-base">
+          <HeartHandshake className="mr-1.5 inline h-4 w-4 text-brand-600" />
+          Phụ huynh
+          <Badge variant="muted" className="ml-2">{parents.data?.length ?? 0}</Badge>
+        </CardTitle>
+        <Button size="sm" variant="outline" onClick={() => setLinking(true)}>
+          <Plus className="h-3.5 w-3.5" /> Liên kết phụ huynh
+        </Button>
+      </CardHeader>
+      <CardContent className="p-5 pt-0">
+        {error && <ErrorNote message={error} />}
+        {notice && (
+          <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800">
+            {notice}
+          </div>
+        )}
+        {parents.loading ? (
+          <LoadingRows rows={1} className="p-0" />
+        ) : (parents.data?.length ?? 0) === 0 ? (
+          <div className="rounded-lg border border-dashed p-5 text-center text-sm text-muted-foreground">
+            Chưa liên kết phụ huynh — liên kết để phụ huynh theo dõi lịch học, điểm danh, nhận xét của con.
+          </div>
+        ) : (
+          <div className="divide-y">
+            {parents.data!.map((link) => (
+              <div key={link.parent_id} className="flex items-center gap-3 py-2.5">
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link
+                      href={`/admin/members/${link.parent_id}`}
+                      className="truncate text-sm font-semibold hover:text-brand-700"
+                    >
+                      {link.parent?.name ?? "?"}
+                    </Link>
+                    <Badge variant="muted">
+                      {RELATIONSHIP_LABELS[link.relationship] ?? link.relationship}
+                    </Badge>
+                    {link.parent?.user_id ? (
+                      <Badge variant="jade">Có tài khoản</Badge>
+                    ) : (
+                      <Badge variant="gold">Chưa cấp tài khoản</Badge>
+                    )}
+                  </div>
+                  <div className="truncate text-xs text-muted-foreground">
+                    {link.parent?.student_code && (
+                      <span className="font-mono font-medium text-brand-700">{link.parent.student_code}</span>
+                    )}
+                    {link.parent?.student_code && link.parent?.phone && " · "}
+                    {link.parent?.phone}
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleUnlink(link.parent_id, link.parent?.name ?? "?")}
+                  title="Gỡ liên kết"
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-rose-50 hover:text-rose-600"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      {linking && (
+        <LinkParentModal
+          studentId={studentId}
+          studentName={studentName}
+          onClose={() => setLinking(false)}
+          onLinked={(msg) => {
+            setLinking(false);
+            setNotice(msg);
+            parents.reload();
+          }}
+        />
+      )}
+    </Card>
+  );
+}
+
+function LinkParentModal({
+  studentId,
+  studentName,
+  onClose,
+  onLinked,
+}: {
+  studentId: string;
+  studentName: string;
+  onClose: () => void;
+  onLinked: (notice: string) => void;
+}) {
+  const allParents = useLoad(() => fetchProfilesByRole("parent"), []);
+  const [mode, setMode] = useState<"existing" | "new">("new");
+  const [parentId, setParentId] = useState("");
+  const [relationship, setRelationship] = useState("guardian");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSaving(true);
+    try {
+      let targetId = parentId;
+      let noticeMsg = "";
+      if (mode === "new") {
+        if (!name.trim()) {
+          setError("Nhập họ tên phụ huynh.");
+          setSaving(false);
+          return;
+        }
+        const parent = await createParentProfile({ name, phone });
+        targetId = parent.id;
+        // Cấp luôn tài khoản đăng nhập bằng mã PHKAT
+        try {
+          const { code } = await provisionAccount(parent.id);
+          noticeMsg = `Đã liên kết và cấp tài khoản: mã ${code} · mật khẩu ${DEFAULT_LOGIN_PASSWORD} — gửi cho phụ huynh.`;
+        } catch {
+          noticeMsg = `Đã liên kết ${parent.name} (mã ${parent.student_code ?? "—"}) nhưng chưa cấp được tài khoản — cấp lại ở trang chi tiết phụ huynh.`;
+        }
+      } else {
+        if (!targetId) {
+          setError("Chọn phụ huynh có sẵn.");
+          setSaving(false);
+          return;
+        }
+        noticeMsg = "Đã liên kết phụ huynh. ✓";
+      }
+      await linkParentStudent(targetId, studentId, relationship);
+      onLinked(noticeMsg);
+    } catch (err) {
+      setError(dbErrorMessage(err));
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Modal open onClose={onClose} title={`Liên kết phụ huynh — ${studentName}`}>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <ErrorNote message={error} />}
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setMode("new")}
+            className={`rounded-xl border p-3 text-sm font-semibold transition-all ${
+              mode === "new" ? "border-brand-500 bg-brand-50 ring-2 ring-brand-200" : "hover:border-brand-300"
+            }`}
+          >
+            Tạo phụ huynh mới
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("existing")}
+            className={`rounded-xl border p-3 text-sm font-semibold transition-all ${
+              mode === "existing" ? "border-brand-500 bg-brand-50 ring-2 ring-brand-200" : "hover:border-brand-300"
+            }`}
+          >
+            Chọn phụ huynh có sẵn
+          </button>
+        </div>
+
+        {mode === "new" ? (
+          <>
+            <Field label="Họ tên phụ huynh" required>
+              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nguyễn Văn Bình" autoFocus />
+            </Field>
+            <Field label="Số điện thoại">
+              <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="09xx xxx xxx" />
+            </Field>
+            <p className="rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
+              Hệ thống tự cấp <b>mã PHKAT...</b> + tài khoản đăng nhập với mật khẩu mặc định{" "}
+              <b>{DEFAULT_LOGIN_PASSWORD}</b> — gửi 2 thông tin đó cho phụ huynh.
+            </p>
+          </>
+        ) : (
+          <Field label="Phụ huynh" required>
+            <Select value={parentId} onChange={(e) => setParentId(e.target.value)}>
+              <option value="">— Chọn phụ huynh —</option>
+              {(allParents.data ?? []).map((pp) => (
+                <option key={pp.id} value={pp.id}>
+                  {pp.name} {pp.student_code ? `(${pp.student_code})` : ""}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        )}
+
+        <Field label="Quan hệ với học viên">
+          <Select value={relationship} onChange={(e) => setRelationship(e.target.value)}>
+            <option value="father">Bố</option>
+            <option value="mother">Mẹ</option>
+            <option value="guardian">Người giám hộ</option>
+          </Select>
+        </Field>
+
+        <div className="flex justify-end gap-2 pt-1">
+          <Button type="button" variant="outline" onClick={onClose}>Hủy</Button>
+          <Button type="submit" disabled={saving}>{saving ? "Đang liên kết..." : "Liên kết"}</Button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+/* ================= Con của phụ huynh ================= */
+
+function ChildrenCard({ parentId }: { parentId: string }) {
+  const children = useLoad(() => fetchChildrenOfParent(parentId), [parentId]);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleUnlink(studentId: string, name: string) {
+    if (!confirm(`Gỡ liên kết với học viên ${name}?`)) return;
+    setError(null);
+    try {
+      await unlinkParentStudent(parentId, studentId);
+      children.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    }
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">
+          <HeartHandshake className="mr-1.5 inline h-4 w-4 text-brand-600" />
+          Con em tại trung tâm
+          <Badge variant="muted" className="ml-2">{children.data?.length ?? 0}</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-5 pt-0">
+        {error && <ErrorNote message={error} />}
+        {children.loading ? (
+          <LoadingRows rows={1} className="p-0" />
+        ) : (children.data?.length ?? 0) === 0 ? (
+          <div className="rounded-lg border border-dashed p-5 text-center text-sm text-muted-foreground">
+            Chưa liên kết với học viên nào — vào trang chi tiết học viên để liên kết phụ huynh này.
+          </div>
+        ) : (
+          <div className="divide-y">
+            {children.data!.map((link) => (
+              <div key={link.student_id} className="flex items-center gap-3 py-2.5">
+                <Avatar name={link.student?.name ?? "?"} src={link.student?.avatar ?? undefined} size={34} />
+                <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/admin/members/${link.student_id}`}
+                    className="truncate text-sm font-semibold hover:text-brand-700"
+                  >
+                    {link.student?.name ?? "?"}
+                  </Link>
+                  <div className="text-xs text-muted-foreground">
+                    {link.student?.student_code && (
+                      <span className="font-mono font-medium text-brand-700">{link.student.student_code}</span>
+                    )}
+                    {" · "}
+                    {RELATIONSHIP_LABELS[link.relationship] ?? link.relationship}
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleUnlink(link.student_id, link.student?.name ?? "?")}
+                  title="Gỡ liên kết"
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-rose-50 hover:text-rose-600"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

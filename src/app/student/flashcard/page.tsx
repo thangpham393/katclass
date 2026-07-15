@@ -1,52 +1,68 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Layers, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { decks, classes } from "@/lib/mock-data";
+import { Empty } from "@/components/ui/empty";
+import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { useLoad } from "@/lib/use-load";
+import { fetchLessons } from "@/lib/db-content";
+import { LEVEL_LABELS } from "@/lib/db";
 
 export default function FlashcardList() {
+  const lessons = useLoad(() => fetchLessons(), []);
+  const decks = (lessons.data ?? []).filter((l) => (l.lesson_vocab[0]?.count ?? 0) > 0);
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-extrabold tracking-tight">Flashcard</h1>
         <p className="mt-1 text-muted-foreground">
-          Ôn lại từ vựng theo bộ thẻ — sử dụng Spaced Repetition để nhớ lâu.
+          Ôn từ vựng theo từng bài học — nhấn vào bộ thẻ để bắt đầu.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {decks.map((d) => {
-          const cls = classes.find((c) => c.id === d.classId);
-          return (
-            <Link key={d.id} href={`/student/flashcard/${d.id}`}>
-              <Card className="card-hover overflow-hidden">
-                <div className="relative h-36">
-                  <img src={d.cover} alt={d.name} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <Badge className="absolute left-3 top-3" variant="gold">
-                    <Layers className="h-3 w-3" /> {d.vocabIds.length} thẻ
+      {lessons.error && <ErrorNote message={lessons.error} />}
+
+      {lessons.loading ? (
+        <Card><LoadingRows rows={4} /></Card>
+      ) : decks.length === 0 ? (
+        <Empty
+          icon={Layers}
+          title="Chưa có bộ thẻ nào"
+          description="Khi giáo viên thêm từ vựng vào bài học, bộ thẻ ôn tập sẽ hiện ở đây."
+        />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {decks.map((l) => (
+            <Link key={l.id} href={`/student/flashcard/${l.id}`}>
+              <Card className="card-hover h-full overflow-hidden">
+                <div className="relative bg-gradient-to-br from-brand-500 to-brand-700 p-5 text-white">
+                  <Badge variant="gold">
+                    <Layers className="h-3 w-3" /> {l.lesson_vocab[0]?.count ?? 0} thẻ
                   </Badge>
-                  {cls && (
-                    <Badge className="absolute right-3 top-3" variant="default">
-                      {cls.level}
-                    </Badge>
-                  )}
+                  {l.title_zh && <div className="zh mt-3 text-3xl font-bold">{l.title_zh}</div>}
                 </div>
                 <CardContent className="p-5">
-                  <div className="text-sm font-bold">{d.name}</div>
+                  <div className="text-sm font-bold">
+                    {l.unit != null ? `Bài ${l.unit} — ` : ""}
+                    {l.title}
+                  </div>
                   <div className="mt-1 text-xs text-muted-foreground">
-                    {d.description}
+                    {l.course
+                      ? `${l.course.name}${l.course.level ? ` · ${LEVEL_LABELS[l.course.level] ?? l.course.level}` : ""}`
+                      : "Chưa gắn khóa học"}
                   </div>
                   <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold text-brand-600">
-                    <Sparkles className="h-3 w-3" /> Bắt đầu ôn{" "}
-                    <ArrowRight className="h-3 w-3" />
+                    <Sparkles className="h-3 w-3" /> Bắt đầu ôn <ArrowRight className="h-3 w-3" />
                   </div>
                 </CardContent>
               </Card>
             </Link>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

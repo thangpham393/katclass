@@ -264,6 +264,28 @@ export async function removeStudentFromClass(classId: string, studentId: string)
   if (error) throw error;
 }
 
+/** Học viên trong các lớp một giáo viên phụ trách (kèm tên lớp). */
+export interface TeacherStudentRow {
+  student_id: string;
+  status: string;
+  student: Pick<ProfileRow, "id" | "name" | "email" | "phone" | "avatar" | "student_code">;
+  class: { id: string; name: string } | null;
+}
+
+export async function fetchTeacherStudents(teacherId: string): Promise<TeacherStudentRow[]> {
+  const { data, error } = await getSupabase()
+    .from("class_students")
+    .select(`
+      student_id, status,
+      student:profiles!class_students_student_id_fkey ( id, name, email, phone, avatar, student_code ),
+      class:classes!inner ( id, name, teacher_id )
+    `)
+    .eq("class.teacher_id", teacherId)
+    .eq("status", "active");
+  if (error) throw error;
+  return data as unknown as TeacherStudentRow[];
+}
+
 /** Học viên kèm số lớp đang tham gia (để lọc "chưa xếp lớp"). */
 export interface StudentWithClasses extends ProfileRow {
   class_students: { count: number }[];
