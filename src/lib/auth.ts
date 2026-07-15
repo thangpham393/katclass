@@ -73,9 +73,19 @@ export async function signOut(): Promise<void> {
   await getSupabase().auth.signOut();
 }
 
-/** Trang chủ tương ứng với từng vai trò. */
+/** Trang chủ tương ứng với từng vai trò (staff dùng chung khu quản trị). */
 export function homeForRole(role: User["role"]): string {
-  return role === "admin" ? "/admin" : role === "teacher" ? "/teacher" : "/student";
+  switch (role) {
+    case "admin":
+    case "staff":
+      return "/admin";
+    case "teacher":
+      return "/teacher";
+    case "parent":
+      return "/parent";
+    default:
+      return "/student";
+  }
 }
 
 /** Diễn giải lỗi Supabase Auth sang tiếng Việt dễ hiểu. */

@@ -44,35 +44,51 @@ const config: Config = {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        // KAT brand palette — royal blue + bright red
+        // Ink & Jade — brand = ngọc bích (jade)
         brand: {
-          50: "#eff4ff",
-          100: "#dbe6fe",
-          200: "#bfd2fe",
-          300: "#94b5fd",
-          400: "#608cfa",
-          500: "#3b66f6",
-          600: "#2549ec",
-          700: "#1d4ed8", // primary blue
-          800: "#1e3aa8",
-          900: "#1e3582",
+          50: "#f0faf5",
+          100: "#dbf2e7",
+          200: "#b8e5d1",
+          300: "#89d0b3",
+          400: "#55b491",
+          500: "#309875",
+          600: "#217a5f",
+          700: "#1d624e",
+          800: "#1a4e40",
+          900: "#164036",
+          950: "#0a241e",
         },
-        // accent red (was "gold" — keep alias name to avoid breaking refs)
+        // gold = đỏ chu sa (cinnabar seal red) — giữ tên cũ để không vỡ class cũ
         gold: {
-          50: "#fef2f2",
-          100: "#fee2e2",
-          200: "#fecaca",
-          300: "#fca5a5",
-          400: "#f87171",
-          500: "#ef4444",
-          600: "#dc2626", // accent red
-          700: "#b91c1c",
-          800: "#991b1b",
-          900: "#7f1d1d",
+          50: "#fdf4ef",
+          100: "#fbe6da",
+          200: "#f6c9b4",
+          300: "#f0a483",
+          400: "#e97751",
+          500: "#e2542c",
+          600: "#d03e1d",
+          700: "#ac2f1a",
+          800: "#8a281b",
+          900: "#70241a",
+          950: "#3c0f0a",
+        },
+        // ink = mực đen ánh lục, cho sidebar & bề mặt tối
+        ink: {
+          50: "#f4f6f5",
+          100: "#e3e8e6",
+          200: "#c7d1cd",
+          300: "#a2b2ac",
+          400: "#7c908a",
+          500: "#61756f",
+          600: "#4c5d58",
+          700: "#3f4c48",
+          800: "#353f3c",
+          900: "#232b28",
+          950: "#131917",
         },
         jade: {
-          500: "#0f9d70",
-          600: "#0a7d59",
+          500: "#309875",
+          600: "#217a5f",
         },
       },
       borderRadius: {
@@ -84,21 +100,20 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
-        zh: ["var(--font-zh)", "Noto Sans SC", "serif"],
+        zh: ["var(--font-zh)", "Noto Serif SC", "serif"],
       },
       backgroundImage: {
-        "gradient-brand":
-          "linear-gradient(135deg, #1d4ed8 0%, #dc2626 100%)",
-        "gradient-soft":
-          "radial-gradient(1200px 600px at 0% 0%, #eff4ff 0%, transparent 60%), radial-gradient(1000px 500px at 100% 0%, #fef2f2 0%, transparent 60%)",
+        "gradient-brand": "linear-gradient(160deg, #1d624e 0%, #309875 100%)",
+        "gradient-soft": "none",
       },
       boxShadow: {
-        soft: "0 6px 24px -8px rgba(29, 78, 216, 0.22)",
-        glow: "0 0 0 4px rgba(29, 78, 216, 0.14)",
+        soft: "0 1px 2px rgba(19, 25, 23, 0.05), 0 8px 24px -12px rgba(19, 25, 23, 0.12)",
+        glow: "0 0 0 3px rgba(48, 152, 117, 0.18)",
+        seal: "0 2px 8px -2px rgba(208, 62, 29, 0.45)",
       },
       keyframes: {
         "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "0%": { opacity: "0", transform: "translateY(6px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "pulse-soft": {
@@ -111,7 +126,7 @@ const config: Config = {
         },
       },
       animation: {
-        "fade-in": "fade-in 0.35s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
         "pulse-soft": "pulse-soft 1.8s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
       },

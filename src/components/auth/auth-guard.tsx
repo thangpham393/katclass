@@ -11,21 +11,30 @@ import type { Role } from "@/lib/types";
  * Chặn truy cập khu vực theo vai trò:
  * - Chưa đăng nhập → về /login
  * - Sai vai trò → về trang chủ của vai trò mình
+ * Nhận 1 role hoặc danh sách role được phép (vd admin + staff dùng chung khu quản trị).
  */
-export function AuthGuard({ role, children }: { role: Role; children: React.ReactNode }) {
+export function AuthGuard({
+  role,
+  children,
+}: {
+  role: Role | Role[];
+  children: React.ReactNode;
+}) {
+  const roles = Array.isArray(role) ? role : [role];
   const { user, loading } = useAuth();
   const router = useRouter();
+  const allowed = !!user && roles.includes(user.role);
 
   useEffect(() => {
     if (loading) return;
     if (!user) {
       router.replace("/login");
-    } else if (user.role !== role) {
+    } else if (!allowed) {
       router.replace(homeForRole(user.role));
     }
-  }, [user, loading, role, router]);
+  }, [user, loading, allowed, router]);
 
-  if (loading || !user || user.role !== role) {
+  if (loading || !user || !allowed) {
     return (
       <div className="grid min-h-screen place-items-center">
         <div className="flex flex-col items-center gap-3 text-muted-foreground">

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GraduationCap, BookOpen, Sparkles, AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo, LogoMark } from "@/components/brand/logo";
@@ -55,72 +55,62 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Visual side */}
-      <div className="relative hidden lg:flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-700 via-brand-800 to-gold-700 p-12 text-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-white blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-gold-300 blur-3xl" />
+    <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
+      {/* Panel mực — thư pháp + triện đỏ */}
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-ink-950 p-12 text-white lg:flex">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+          <div className="zh select-none whitespace-nowrap text-[26rem] font-black leading-none text-white">
+            汉语
+          </div>
         </div>
-        <div className="relative max-w-md">
-          <Link href="/" className="inline-flex items-center gap-3 mb-10">
-            <div className="h-11 w-11 overflow-hidden rounded-xl bg-white p-1">
-              <LogoMark />
-            </div>
-            <div className="leading-tight">
-              <div className="text-xl font-extrabold">
-                KAT <span className="text-gold-300">CLASS</span>
-              </div>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/70">
-                KAT Education
-              </div>
-            </div>
-          </Link>
-          <div className="zh mb-4 text-6xl font-bold leading-tight">
-            欢迎回来
-          </div>
-          <h1 className="text-3xl font-bold">Chào mừng trở lại!</h1>
-          <p className="mt-3 text-white/85">
-            Tiếp tục hành trình chinh phục tiếng Trung của bạn cùng KAT Education.
-          </p>
 
-          <div className="mt-10 space-y-3">
-            {[
-              { icon: Sparkles, text: "Flashcard, quiz, luyện viết chữ Hán" },
-              { icon: BookOpen, text: "120+ bài giảng, 3,000+ từ vựng" },
-              { icon: GraduationCap, text: "Theo lộ trình HSK1 → HSK6" },
-            ].map((b) => (
-              <div key={b.text} className="flex items-center gap-3">
-                <div className="grid h-9 w-9 place-items-center rounded-lg bg-white/15 backdrop-blur-sm">
-                  <b.icon className="h-4 w-4" />
-                </div>
-                <span className="text-sm">{b.text}</span>
-              </div>
-            ))}
+        <Link href="/" className="relative">
+          <Logo inverted />
+        </Link>
+
+        <div className="relative max-w-md">
+          <div className="zh text-7xl font-semibold leading-tight text-brand-400">
+            千里之行
+            <br />
+            始于足下
           </div>
+          <p className="mt-6 text-lg font-medium text-white/90">
+            &ldquo;Hành trình vạn dặm bắt đầu từ một bước chân.&rdquo;
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-white/60">
+            Đăng nhập để tiếp tục hành trình chinh phục tiếng Trung cùng KAT Education —
+            lớp học, flashcard, bài tập và lộ trình HSK của riêng bạn.
+          </p>
+        </div>
+
+        <div className="relative flex items-center gap-3 text-xs text-white/50">
+          <div className="h-8 w-8 overflow-hidden rounded-md">
+            <LogoMark />
+          </div>
+          KAT Education · Tiếng Trung · Du học · Kỹ năng
         </div>
       </div>
 
-      {/* Form side */}
+      {/* Form trên nền giấy */}
       <div className="flex items-center justify-center p-6 md:p-12">
-        <div className="w-full max-w-md">
-          <Link href="/" className="lg:hidden inline-block mb-8">
+        <div className="w-full max-w-sm">
+          <Link href="/" className="mb-10 inline-block lg:hidden">
             <Logo />
           </Link>
 
-          <h2 className="text-2xl font-bold tracking-tight">Đăng nhập</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-2xl font-extrabold tracking-tight">Đăng nhập</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
             Dùng tài khoản được KAT Education cấp, hoặc đăng nhập bằng Google.
           </p>
 
           {error && (
-            <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
+            <div className="mt-5 flex items-start gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3 py-2.5 text-sm text-gold-800">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
-          <form className="mt-6 space-y-3" onSubmit={handleEmailLogin}>
+          <form className="mt-6 space-y-4" onSubmit={handleEmailLogin}>
             <div>
               <label className="text-sm font-medium" htmlFor="email">Email</label>
               <Input
@@ -147,12 +137,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <Button
-              className="w-full"
-              size="lg"
-              type="submit"
-              disabled={submitting !== null}
-            >
+            <Button className="w-full" size="lg" type="submit" disabled={submitting !== null}>
               {submitting === "email" && <Loader2 className="h-4 w-4 animate-spin" />}
               Đăng nhập
             </Button>
@@ -160,8 +145,8 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">hoặc</span>
+            <div className="relative flex justify-center text-xs uppercase tracking-wider">
+              <span className="bg-background px-3 text-muted-foreground">hoặc</span>
             </div>
           </div>
 
@@ -181,9 +166,11 @@ export default function LoginPage() {
             Đăng nhập bằng Google
           </Button>
 
-          <p className="mt-8 text-center text-sm text-muted-foreground">
+          <p className="mt-10 text-center text-sm text-muted-foreground">
             Chưa có tài khoản?{" "}
-            <a href="#" className="font-semibold text-brand-700 hover:underline">Liên hệ KAT Education</a>
+            <a href="#" className="font-semibold text-brand-700 hover:underline">
+              Liên hệ KAT Education
+            </a>
           </p>
         </div>
       </div>

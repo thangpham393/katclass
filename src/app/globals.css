@@ -2,63 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design system "Mực & Ngọc" (Ink & Jade)
+   - Nền giấy ấm, bề mặt phẳng, viền 1px rõ ràng — không gradient, không kính mờ
+   - Màu chủ đạo: ngọc bích; điểm nhấn: đỏ chu sa (con dấu triện)
+   - Chữ Hán dùng serif (Noto Serif SC) tạo chất thư pháp */
 @layer base {
   :root {
-    --background: 214 100% 99%;
-    --foreground: 222 47% 11%;
+    --background: 42 33% 97%;          /* giấy ấm */
+    --foreground: 165 15% 12%;         /* mực đen ánh lục */
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 165 15% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 165 15% 12%;
 
-    --primary: 224 76% 48%;            /* KAT royal blue */
+    --primary: 162 58% 30%;            /* ngọc bích */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 100% 96%;         /* light blue tint */
-    --secondary-foreground: 224 76% 28%;
+    --secondary: 160 25% 94%;          /* ngọc nhạt */
+    --secondary-foreground: 162 58% 22%;
 
-    --muted: 214 30% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 45 18% 93%;
+    --muted-foreground: 160 8% 42%;
 
-    --accent: 0 84% 50%;               /* KAT red accent */
+    --accent: 14 75% 47%;              /* đỏ chu sa */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 28% 91%;
-    --input: 215 28% 91%;
-    --ring: 224 76% 48%;
+    --border: 45 15% 87%;
+    --input: 45 15% 84%;
+    --ring: 162 58% 30%;
 
-    --radius: 0.875rem;
+    --radius: 0.625rem;
 
-    --font-sans: "Inter", "SF Pro Text", system-ui, sans-serif;
-    --font-display: "Plus Jakarta Sans", "Inter", sans-serif;
-    --font-zh: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", serif;
+    --font-display: var(--font-sans);
+    --font-zh: "Noto Serif SC", "Songti SC", "SimSun", serif;
   }
 
   .dark {
-    --background: 220 25% 8%;
-    --foreground: 30 25% 95%;
-    --card: 220 23% 11%;
-    --card-foreground: 30 25% 95%;
-    --popover: 220 23% 11%;
-    --popover-foreground: 30 25% 95%;
-    --primary: 356 96% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 18% 18%;
-    --secondary-foreground: 30 25% 95%;
-    --muted: 222 18% 18%;
-    --muted-foreground: 220 9% 65%;
-    --accent: 38 100% 55%;
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 70% 55%;
+    --background: 165 12% 8%;
+    --foreground: 45 20% 92%;
+    --card: 165 11% 11%;
+    --card-foreground: 45 20% 92%;
+    --popover: 165 11% 11%;
+    --popover-foreground: 45 20% 92%;
+    --primary: 160 45% 45%;
+    --primary-foreground: 165 15% 8%;
+    --secondary: 163 10% 17%;
+    --secondary-foreground: 45 20% 92%;
+    --muted: 163 10% 17%;
+    --muted-foreground: 160 8% 60%;
+    --accent: 14 75% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 222 18% 20%;
-    --input: 222 18% 20%;
-    --ring: 356 96% 65%;
+    --border: 163 10% 20%;
+    --input: 163 10% 22%;
+    --ring: 160 45% 45%;
   }
 }
 
@@ -72,46 +75,49 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  body {
-    background-image:
-      radial-gradient(1200px 600px at 0% -10%, rgba(29, 78, 216, 0.06) 0%, transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(220, 38, 38, 0.05) 0%, transparent 60%);
-    background-attachment: fixed;
-  }
   ::selection {
-    background: hsl(var(--primary) / 0.18);
+    background: hsl(var(--primary) / 0.16);
     color: hsl(var(--primary));
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
   .zh { font-family: var(--font-zh); }
 }
 
 @layer components {
+  /* Bề mặt nổi nhẹ — thay cho .glass cũ */
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/60 shadow-soft;
+    @apply bg-card border border-border shadow-soft;
   }
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-soft;
+    @apply transition-all duration-200 hover:border-brand-300 hover:shadow-soft;
   }
   .scrollbar-thin::-webkit-scrollbar { height: 8px; width: 8px; }
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
     border-radius: 999px;
   }
+  /* Lưới ô chữ Hán (giấy tập viết) */
   .stroke-paper {
     background-image:
       linear-gradient(transparent 95%, hsl(var(--border)) 0),
       linear-gradient(90deg, transparent 95%, hsl(var(--border)) 0);
     background-size: 32px 32px;
   }
+  /* Con dấu triện đỏ chu sa */
+  .seal {
+    @apply grid place-items-center rounded-md bg-gold-600 text-white shadow-seal;
+  }
 }
 
 @layer utilities {
   .text-gradient-brand {
-    background: linear-gradient(135deg, #1d4ed8 0%, #dc2626 100%);
+    background: linear-gradient(150deg, #1d624e 0%, #309875 70%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .ring-glow { box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.14); }
+  .ring-glow { box-shadow: 0 0 0 3px rgba(48, 152, 117, 0.18); }
 }

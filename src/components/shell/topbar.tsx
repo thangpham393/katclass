@@ -1,16 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Bell, Search, LogOut } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { signOut } from "@/lib/auth";
-import type { User } from "@/lib/types";
+import type { Role, User } from "@/lib/types";
 
-const roleLabel = {
+const roleLabel: Record<Role, string> = {
   student: "Học viên",
+  parent: "Phụ huynh",
   teacher: "Giáo viên",
+  staff: "Hành chính",
   admin: "Quản lý",
 };
 
@@ -23,40 +23,32 @@ export function TopBar({ user }: { user: User }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/70 bg-white/70 px-4 backdrop-blur-xl md:px-6">
-      <div className="relative hidden flex-1 md:block max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Tìm bài học, từ vựng, lớp..."
-          className="pl-9 bg-muted/50 border-transparent"
-        />
-        <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border bg-background px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground md:inline">
-          ⌘K
-        </kbd>
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur md:px-8">
+      <div className="min-w-0">
+        <div className="truncate text-sm text-muted-foreground">
+          Xin chào, <span className="font-semibold text-foreground">{user.name}</span>
+          <span className="mx-2 text-border">·</span>
+          <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-xs font-semibold text-brand-700">
+            {roleLabel[user.role]}
+          </span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-3 ml-auto">
-        <button className="relative grid h-9 w-9 place-items-center rounded-xl border border-border bg-white hover:bg-muted transition-colors">
+      <div className="flex items-center gap-2">
+        <button
+          className="relative grid h-9 w-9 place-items-center rounded-lg border bg-card text-muted-foreground transition-colors hover:text-foreground"
+          title="Thông báo"
+        >
           <Bell className="h-4 w-4" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-500 ring-2 ring-white" />
+          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-gold-600" />
         </button>
 
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-white px-2 py-1.5">
-          <Avatar name={user.name} src={user.avatar} size={32} />
-          <div className="hidden md:block leading-tight text-left">
-            <div className="text-sm font-semibold">{user.name}</div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Badge variant="gold" className="px-1.5 py-0">
-                {roleLabel[user.role]}
-              </Badge>
-            </div>
-          </div>
-        </div>
+        <Avatar name={user.name} src={user.avatar} size={36} />
 
         <button
           onClick={handleSignOut}
           title="Đăng xuất"
-          className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-white text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          className="grid h-9 w-9 place-items-center rounded-lg border bg-card text-muted-foreground transition-colors hover:bg-gold-50 hover:text-gold-700"
         >
           <LogOut className="h-4 w-4" />
         </button>

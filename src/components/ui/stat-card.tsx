@@ -18,29 +18,28 @@ export function StatCard({
   className?: string;
 }) {
   const accentMap = {
-    brand: "from-brand-500/15 to-brand-500/0 text-brand-600",
-    gold: "from-gold-400/25 to-gold-400/0 text-gold-700",
-    jade: "from-emerald-400/20 to-emerald-400/0 text-emerald-700",
-    sky: "from-sky-400/20 to-sky-400/0 text-sky-700",
+    brand: "bg-brand-50 text-brand-700 border-brand-100",
+    gold: "bg-gold-50 text-gold-700 border-gold-100",
+    jade: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    sky: "bg-sky-50 text-sky-700 border-sky-100",
   } as const;
 
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-border/70 bg-card p-5 shadow-sm card-hover",
+        "rounded-xl border bg-card p-5 shadow-sm card-hover",
         className,
       )}
     >
-      <div className={cn("pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br opacity-60", accentMap[accent])} />
-      <div className="relative flex items-start justify-between">
-        <div>
-          <div className="text-sm text-muted-foreground">{label}</div>
-          <div className="mt-2 text-3xl font-bold tracking-tight">{value}</div>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-[13px] font-medium text-muted-foreground">{label}</div>
+          <div className="mt-2 text-3xl font-extrabold tracking-tight">{value}</div>
           {typeof delta === "number" && (
             <div
               className={cn(
-                "mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold",
-                delta >= 0 ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700",
+                "mt-2 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-semibold",
+                delta >= 0 ? "bg-brand-50 text-brand-700" : "bg-gold-50 text-gold-700",
               )}
             >
               {delta >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
@@ -49,8 +48,8 @@ export function StatCard({
           )}
         </div>
         {Icon && (
-          <div className="rounded-xl bg-white/80 p-2 shadow-sm">
-            <Icon className={cn("h-5 w-5", accentMap[accent].split(" ").pop())} />
+          <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-lg border", accentMap[accent])}>
+            <Icon className="h-5 w-5" />
           </div>
         )}
       </div>

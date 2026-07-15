@@ -1,4 +1,4 @@
-export type Role = "student" | "teacher" | "admin";
+export type Role = "student" | "parent" | "teacher" | "staff" | "admin";
 
 export type Level = "HSK1" | "HSK2" | "HSK3" | "HSK4" | "HSK5" | "HSK6";
 
