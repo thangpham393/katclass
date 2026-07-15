@@ -18,8 +18,9 @@
  *   }]
  * }
  * Import lặp lại được (idempotent): giáo trình khớp theo code, bài theo
- * unit, từ vựng tái dùng kho theo hanzi, câu hỏi trùng nội dung thì bỏ qua
- * (không xóa câu cũ để không vỡ bài tập đã giao).
+ * unit, từ vựng khớp kho chung theo hanzi — từ đã có được cập nhật lại
+ * pinyin / nghĩa / ví dụ theo file (import sau cùng thắng), câu hỏi trùng
+ * nội dung thì bỏ qua (không xóa câu cũ để không vỡ bài tập đã giao).
  *
  * Cập nhật MỀM: với bài đã tồn tại, chỉ ghi đè field có mặt trong payload
  * (summary/grammar/... không khai báo thì giữ nguyên); "vocab" không khai
@@ -297,6 +298,29 @@ export async function importTextbook(
       if (!vocabIdByHanzi.has(v.hanzi)) vocabIdByHanzi.set(v.hanzi, v.id);
     }
     result.vocabReused = vocabIdByHanzi.size;
+
+    // Từ đã có trong kho: cập nhật pinyin / nghĩa (và ví dụ nếu file có khai
+    // báo) theo payload, để import giáo trình chuẩn hơn làm mới được nghĩa cũ.
+    if (vocabIdByHanzi.size) {
+      progress("Đang cập nhật nghĩa từ vựng có sẵn...");
+      const payloadByHanzi = new Map<string, TextbookImportVocab>();
+      for (const v of allVocab) {
+        const hanzi = v.hanzi.trim();
+        if (!payloadByHanzi.has(hanzi)) payloadByHanzi.set(hanzi, v);
+      }
+      for (const [hanzi, id] of vocabIdByHanzi) {
+        const v = payloadByHanzi.get(hanzi);
+        if (!v) continue;
+        const fields: Record<string, unknown> = {
+          pinyin: v.pinyin.trim(),
+          meaning: v.meaning.trim(),
+        };
+        if (v.example !== undefined) fields.example = v.example;
+        if (v.audio_url !== undefined) fields.audio_url = v.audio_url;
+        const { error } = await supabase.from("vocab_items").update(fields).eq("id", id);
+        if (error) throw error;
+      }
+    }
 
     const missing: TextbookImportVocab[] = [];
     const seen = new Set<string>();

@@ -99,7 +99,7 @@ export default function AdminLibraryPage() {
       {result && (
         <div className="rounded-xl border border-jade-200 bg-jade-50 px-4 py-3 text-sm text-jade-800">
           Import xong: {result.lessonsCreated} bài mới, {result.lessonsUpdated} bài cập nhật ·{" "}
-          {result.vocabCreated} từ vựng thêm vào kho, {result.vocabReused} từ dùng lại ·{" "}
+          {result.vocabCreated} từ vựng thêm vào kho, {result.vocabReused} từ có sẵn cập nhật lại ·{" "}
           {result.questionsCreated} câu hỏi thêm mới{result.questionsSkipped ? `, ${result.questionsSkipped} câu trùng bỏ qua` : ""}.
         </div>
       )}
