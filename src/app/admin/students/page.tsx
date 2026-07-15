@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Check, Copy, KeyRound, Plus, Search, Users } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -160,7 +161,11 @@ export default function AdminStudentsPage() {
             {filtered.map((s) => {
               const count = s.class_students?.[0]?.count ?? 0;
               return (
-                <div key={s.id} className="grid grid-cols-1 items-center gap-3 px-5 py-3 md:grid-cols-12">
+                <Link
+                  key={s.id}
+                  href={`/admin/members/${s.id}`}
+                  className="grid grid-cols-1 items-center gap-3 px-5 py-3 transition-colors hover:bg-brand-50/40 md:grid-cols-12"
+                >
                   <div className="col-span-5 flex items-center gap-3">
                     <Avatar name={s.name} src={s.avatar ?? undefined} size={38} />
                     <div className="min-w-0">
@@ -189,7 +194,7 @@ export default function AdminStudentsPage() {
                       <Badge variant="jade">{count} lớp</Badge>
                     )}
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

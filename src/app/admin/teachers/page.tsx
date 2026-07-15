@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Check, Copy, GraduationCap, KeyRound, Mail, Phone, Plus, UserCog } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -126,7 +127,8 @@ export default function AdminTeamPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {list.data!.map((p) => (
-            <Card key={p.id} className="card-hover">
+            <Link key={p.id} href={`/admin/members/${p.id}`}>
+            <Card className="card-hover h-full">
               <CardContent className="p-5">
                 <div className="flex items-start gap-4">
                   <Avatar name={p.name} src={p.avatar ?? undefined} size={52} />
@@ -154,6 +156,7 @@ export default function AdminTeamPage() {
                 </div>
               </CardContent>
             </Card>
+            </Link>
           ))}
         </div>
       )}

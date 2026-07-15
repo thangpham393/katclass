@@ -383,6 +383,75 @@ export async function claimInvite(code: string): Promise<ProfileRow> {
   return data as ProfileRow;
 }
 
+/* ============ Chi tiết & quản lý thành viên ============ */
+
+export async function fetchProfile(id: string): Promise<ProfileRow | null> {
+  const { data, error } = await getSupabase()
+    .from("profiles").select("*").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data as ProfileRow | null;
+}
+
+/** Các lớp học viên đang tham gia. */
+export interface StudentClassRow {
+  class_id: string;
+  status: string;
+  joined_at: string;
+  class: {
+    id: string;
+    name: string;
+    status: string;
+    course: Pick<CourseRow, "name" | "level"> | null;
+  } | null;
+}
+
+export async function fetchStudentClasses(studentId: string): Promise<StudentClassRow[]> {
+  const { data, error } = await getSupabase()
+    .from("class_students")
+    .select("class_id, status, joined_at, class:classes ( id, name, status, course:courses ( name, level ) )")
+    .eq("student_id", studentId)
+    .order("joined_at", { ascending: false });
+  if (error) throw error;
+  return data as unknown as StudentClassRow[];
+}
+
+/** Tổng hợp điểm danh của một học viên. */
+export async function fetchStudentAttendanceSummary(
+  studentId: string,
+): Promise<{ total: number; byStatus: Record<AttendanceStatus, number> }> {
+  const { data, error } = await getSupabase()
+    .from("attendance").select("status").eq("student_id", studentId);
+  if (error) throw error;
+  const byStatus: Record<AttendanceStatus, number> = {
+    present: 0, absent_excused: 0, absent_unexcused: 0, makeup: 0,
+  };
+  for (const r of data as { status: AttendanceStatus }[]) byStatus[r.status]++;
+  return { total: data.length, byStatus };
+}
+
+/** Đặt lại mật khẩu của thành viên về mặc định (API server, chỉ staff/admin). */
+export async function resetMemberPassword(profileId: string): Promise<{ code: string }> {
+  const res = await fetch("/api/member-admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "reset-password", profileId }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error ?? "Không đặt lại được mật khẩu.");
+  return body as { code: string };
+}
+
+/** Xóa thành viên (hồ sơ + tài khoản đăng nhập). */
+export async function deleteMember(profileId: string): Promise<void> {
+  const res = await fetch("/api/member-admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "delete", profileId }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error ?? "Không xóa được thành viên.");
+}
+
 /* ============ Cập nhật lớp: giáo viên & lịch tuần ============ */
 
 /** Ngày hôm nay (giờ địa phương) dạng YYYY-MM-DD, lệch offsetDays ngày. */
