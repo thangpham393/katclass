@@ -8,16 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo, LogoMark } from "@/components/brand/logo";
 import { useAuth } from "@/components/auth/auth-provider";
+import { cn } from "@/lib/utils";
 import {
   signInWithEmail,
   signInWithGoogle,
   homeForRole,
   authErrorMessage,
 } from "@/lib/auth";
+import { DEFAULT_STUDENT_PASSWORD, normalizeStudentCode } from "@/lib/student-login";
 
 export default function LoginPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const [mode, setMode] = useState<"code" | "email">("code");
+  const [studentCode, setStudentCode] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +48,52 @@ export default function LoginPage() {
       router.replace(destination(profile.role));
     } catch (err) {
       setError(authErrorMessage(err));
+      setSubmitting(null);
+    }
+  }
+
+  async function handleCodeLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setSubmitting("email");
+    try {
+      // Bước 1: đổi mã học viên → email tài khoản (tạo mới nếu là lần đầu)
+      const res = await fetch("/api/student-auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: normalizeStudentCode(studentCode) }),
+      });
+      const body = await res.json();
+      if (!res.ok) {
+        setError(body.error ?? "Có lỗi xảy ra, thử lại sau.");
+        setSubmitting(null);
+        return;
+      }
+      if (!body.hasPassword) {
+        setError("Tài khoản của mã này đăng nhập bằng Google — bấm “Đăng nhập bằng Google” bên dưới.");
+        setSubmitting(null);
+        return;
+      }
+      // Bước 2: đăng nhập bằng mật khẩu
+      try {
+        const profile = await signInWithEmail(body.email, password);
+        if (password === DEFAULT_STUDENT_PASSWORD) {
+          // Đang dùng mật khẩu mặc định → bắt buộc ghé trang đổi mật khẩu
+          router.replace("/account/password?first=1");
+        } else {
+          router.replace(destination(profile.role));
+        }
+      } catch (err) {
+        const msg = authErrorMessage(err);
+        setError(
+          msg === "Email hoặc mật khẩu không đúng."
+            ? `Mật khẩu không đúng. Nếu chưa đổi, dùng mật khẩu mặc định ${DEFAULT_STUDENT_PASSWORD}.`
+            : msg,
+        );
+        setSubmitting(null);
+      }
+    } catch {
+      setError("Không kết nối được máy chủ, thử lại sau.");
       setSubmitting(null);
     }
   }
@@ -107,8 +157,24 @@ export default function LoginPage() {
 
           <h1 className="text-2xl font-extrabold tracking-tight">Đăng nhập</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Dùng tài khoản được KAT Education cấp, hoặc đăng nhập bằng Google.
+            Học viên dùng mã được KAT Education cấp, hoặc đăng nhập bằng email / Google.
           </p>
+
+          <div className="mt-5 flex gap-1 rounded-xl border bg-card p-1">
+            {([["code", "Mã học viên"], ["email", "Email"]] as const).map(([m, label]) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => { setMode(m); setError(null); }}
+                className={cn(
+                  "flex-1 rounded-lg px-4 py-2 text-sm font-semibold transition-colors",
+                  mode === m ? "bg-brand-600 text-white shadow-soft" : "text-muted-foreground hover:bg-secondary",
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
           {error && (
             <div className="mt-5 flex items-start gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3 py-2.5 text-sm text-gold-800">
@@ -117,20 +183,41 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form className="mt-6 space-y-4" onSubmit={handleEmailLogin}>
-            <div>
-              <label className="text-sm font-medium" htmlFor="email">Email</label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="ban@kat-education.vn"
-                className="mt-1.5"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-              />
-            </div>
+          <form
+            className="mt-5 space-y-4"
+            onSubmit={mode === "code" ? handleCodeLogin : handleEmailLogin}
+          >
+            {mode === "code" ? (
+              <div>
+                <label className="text-sm font-medium" htmlFor="student-code">Mã học viên</label>
+                <Input
+                  id="student-code"
+                  placeholder="HVKAT00123"
+                  className="mt-1.5 font-mono uppercase tracking-widest"
+                  value={studentCode}
+                  onChange={(e) => setStudentCode(e.target.value.toUpperCase())}
+                  autoComplete="username"
+                  required
+                />
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Mã in trên biên lai / thẻ học viên, dạng HVKAT00123.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <label className="text-sm font-medium" htmlFor="email">Email</label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="ban@kat-education.vn"
+                  className="mt-1.5"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  required
+                />
+              </div>
+            )}
             <div>
               <label className="text-sm font-medium" htmlFor="password">Mật khẩu</label>
               <Input
@@ -143,6 +230,11 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 required
               />
+              {mode === "code" && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Lần đầu đăng nhập dùng mật khẩu mặc định <b>{DEFAULT_STUDENT_PASSWORD}</b> — hệ thống sẽ nhắc đổi ngay sau đó.
+                </p>
+              )}
             </div>
             <Button className="w-full" size="lg" type="submit" disabled={submitting !== null}>
               {submitting === "email" && <Loader2 className="h-4 w-4 animate-spin" />}

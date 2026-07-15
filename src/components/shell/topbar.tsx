@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, LogOut } from "lucide-react";
+import { Bell, KeyRound, LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { signOut } from "@/lib/auth";
 import type { Role, User } from "@/lib/types";
@@ -42,6 +43,14 @@ export function TopBar({ user }: { user: User }) {
           <Bell className="h-4 w-4" />
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-gold-600" />
         </button>
+
+        <Link
+          href="/account/password"
+          title="Đổi mật khẩu"
+          className="grid h-9 w-9 place-items-center rounded-lg border bg-card text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <KeyRound className="h-4 w-4" />
+        </Link>
 
         <Avatar name={user.name} src={user.avatar} size={36} />
 
