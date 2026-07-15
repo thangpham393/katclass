@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  CalendarClock,
   GraduationCap,
   LayoutDashboard,
   ListChecks,
@@ -49,6 +50,7 @@ const adminNav: NavItem[] = [
   { href: "/admin/classes", label: "Lớp & lịch", icon: School },
   { href: "/admin/students", label: "Học viên", icon: Users },
   { href: "/admin/teachers", label: "Giáo viên", icon: GraduationCap },
+  { href: "/admin/makeup", label: "Học bù", icon: CalendarClock },
   { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
   { href: "/admin/settings", label: "Cài đặt", icon: Settings },
 ];

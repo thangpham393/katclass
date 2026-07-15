@@ -30,7 +30,7 @@ submissions (bài nộp + điểm, chấm tự động qua RPC submit_homework)
 
 ## Các quyết định thiết kế chính
 
-1. **Chính sách điểm danh (đã chốt 15/07/2026):** mọi trạng thái điểm danh đều trừ buổi trong gói; vắng **có phép** thì trigger tự sinh `makeup_credits` (quyền học bù); vắng **không phép** không có học bù; buổi đi học bù (`attendance.status = 'makeup'`) không trừ thêm buổi.
+1. **Chính sách điểm danh (đã chốt 15/07/2026):** mọi trạng thái điểm danh đều trừ buổi trong gói; vắng **có phép** thì trigger tự sinh `makeup_credits` (quyền học bù); vắng **không phép** không có học bù; buổi đi học bù (`attendance.status = 'makeup'`) không trừ thêm buổi. Từ `0005_makeup_flow.sql`: điểm danh 'makeup' tự đóng quyền học bù (`status = 'attended'`), và GV xem được các quyền học bù xếp vào buổi mình dạy.
 2. **Chống trùng lịch ở tầng database:** hai exclusion constraint trên `sessions` khiến Postgres **từ chối thẳng** việc xếp 2 buổi chồng giờ cùng phòng hoặc cùng giáo viên — không cần tin vào logic phía app.
 3. **Chống lộ đáp án:** đề bài (`questions.content`) học viên đọc được để làm bài, nhưng đáp án nằm ở bảng riêng `question_answers` mà RLS chỉ cho giáo viên/staff đọc. Học viên nộp bài qua RPC `submit_homework` — server so đáp án và trả về điểm, đáp án không bao giờ xuống trình duyệt.
 4. **Phân quyền bằng RLS:** mọi bảng bật Row Level Security. Các hàm helper (`my_role`, `is_staff`, `is_my_student`, `can_view_class`, `teaches_session`) dùng `security definer` để tránh đệ quy chính sách. Nguyên tắc: học viên chỉ thấy dữ liệu của mình, phụ huynh thấy của con (qua `parent_students`), giáo viên thấy/ghi trong phạm vi lớp mình dạy, staff/admin thấy tất cả.

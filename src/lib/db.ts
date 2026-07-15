@@ -278,6 +278,427 @@ export async function fetchStudentsWithClassCount(): Promise<StudentWithClasses[
   return data as unknown as StudentWithClasses[];
 }
 
+/* ============ Cập nhật lớp: giáo viên & lịch tuần ============ */
+
+/** Ngày hôm nay (giờ địa phương) dạng YYYY-MM-DD, lệch offsetDays ngày. */
+export function todayISO(offsetDays = 0): string {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/** Đổi GV phụ trách; tùy chọn gán luôn cho các buổi sắp tới chưa hoàn thành. */
+export async function updateClassTeacher(
+  classId: string,
+  teacherId: string | null,
+  updateUpcomingSessions: boolean,
+) {
+  const supabase = getSupabase();
+  const { error } = await supabase.from("classes").update({ teacher_id: teacherId }).eq("id", classId);
+  if (error) throw error;
+  if (updateUpcomingSessions) {
+    const { error: sessErr } = await supabase
+      .from("sessions")
+      .update({ teacher_id: teacherId })
+      .eq("class_id", classId)
+      .eq("status", "scheduled")
+      .gte("date", todayISO());
+    if (sessErr) throw sessErr;
+  }
+}
+
+export interface ScheduleInput {
+  weekday: number;
+  start_time: string;
+  end_time: string;
+  room_id: string | null;
+}
+
+/** Thay toàn bộ lịch tuần của lớp (sessions đã sinh không bị ảnh hưởng). */
+export async function replaceClassSchedules(classId: string, schedules: ScheduleInput[]) {
+  const supabase = getSupabase();
+  const { error: delErr } = await supabase.from("class_schedules").delete().eq("class_id", classId);
+  if (delErr) throw delErr;
+  if (schedules.length) {
+    const { error } = await supabase
+      .from("class_schedules")
+      .insert(schedules.map((s) => ({ ...s, class_id: classId })));
+    if (error) throw error;
+  }
+}
+
+/* ============ Buổi học (sessions) ============ */
+
+export interface SessionRow {
+  id: string;
+  class_id: string;
+  session_no: number | null;
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: "scheduled" | "completed" | "cancelled";
+  type: "regular" | "makeup";
+  note: string | null;
+  room: Pick<RoomRow, "id" | "name"> | null;
+  teacher: Pick<ProfileRow, "id" | "name"> | null;
+  class: {
+    id: string;
+    name: string;
+    course: Pick<CourseRow, "id" | "name" | "level" | "total_sessions"> | null;
+  } | null;
+}
+
+export const SESSION_STATUS_LABELS: Record<SessionRow["status"], string> = {
+  scheduled: "Sắp diễn ra",
+  completed: "Đã hoàn thành",
+  cancelled: "Đã hủy",
+};
+
+const SESSION_SELECT = `
+  id, class_id, session_no, date, start_time, end_time, status, type, note,
+  room:rooms ( id, name ),
+  teacher:profiles!sessions_teacher_id_fkey ( id, name ),
+  class:classes ( id, name, course:courses ( id, name, level, total_sessions ) )
+`;
+
+export async function fetchClassSessions(classId: string): Promise<SessionRow[]> {
+  const { data, error } = await getSupabase()
+    .from("sessions").select(SESSION_SELECT)
+    .eq("class_id", classId)
+    .order("date").order("start_time");
+  if (error) throw error;
+  return data as unknown as SessionRow[];
+}
+
+export async function fetchSession(id: string): Promise<SessionRow | null> {
+  const { data, error } = await getSupabase()
+    .from("sessions").select(SESSION_SELECT).eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data as unknown as SessionRow | null;
+}
+
+/** Các buổi GV dạy trong khoảng ngày [from, to] (bỏ buổi đã hủy). */
+export async function fetchTeacherSessions(
+  teacherId: string,
+  from: string,
+  to: string,
+): Promise<SessionRow[]> {
+  const { data, error } = await getSupabase()
+    .from("sessions").select(SESSION_SELECT)
+    .eq("teacher_id", teacherId)
+    .neq("status", "cancelled")
+    .gte("date", from).lte("date", to)
+    .order("date").order("start_time");
+  if (error) throw error;
+  return data as unknown as SessionRow[];
+}
+
+export async function fetchTeacherClasses(teacherId: string): Promise<ClassRow[]> {
+  const { data, error } = await getSupabase()
+    .from("classes").select(CLASS_SELECT)
+    .eq("teacher_id", teacherId)
+    .order("name");
+  if (error) throw error;
+  return data as unknown as ClassRow[];
+}
+
+export async function updateSessionStatus(id: string, status: SessionRow["status"]) {
+  const { error } = await getSupabase().from("sessions").update({ status }).eq("id", id);
+  if (error) throw error;
+}
+
+export interface GenerateSessionsResult {
+  created: number;
+  skipped: number;
+  conflicts: string[]; // mô tả các buổi bị trùng phòng/GV, không tạo được
+}
+
+/**
+ * Sinh buổi học cho N tuần tới từ lịch tuần của lớp.
+ * Buổi đã tồn tại (cùng ngày + giờ) thì bỏ qua; buổi trùng phòng/GV
+ * (exclusion constraint 23P01) được gom lại trả về trong `conflicts`.
+ */
+export async function generateSessions(classId: string, weeks: number): Promise<GenerateSessionsResult> {
+  const supabase = getSupabase();
+  const [clsRes, schedRes, existingRes] = await Promise.all([
+    supabase.from("classes").select("id, teacher_id").eq("id", classId).single(),
+    supabase.from("class_schedules").select("weekday, start_time, end_time, room_id").eq("class_id", classId),
+    supabase.from("sessions").select("date, start_time, session_no").eq("class_id", classId),
+  ]);
+  if (clsRes.error) throw clsRes.error;
+  if (schedRes.error) throw schedRes.error;
+  if (existingRes.error) throw existingRes.error;
+
+  const schedules = schedRes.data ?? [];
+  if (!schedules.length) {
+    throw new Error("Lớp chưa có lịch tuần — nhập lịch trước khi sinh buổi học.");
+  }
+
+  const existing = existingRes.data ?? [];
+  const existingKeys = new Set(existing.map((s) => `${s.date}|${s.start_time.slice(0, 5)}`));
+  let nextNo = Math.max(existing.length, ...existing.map((s) => s.session_no ?? 0), 0) + 1;
+
+  // Duyệt từng ngày trong N tuần tới (tính từ hôm nay)
+  const candidates: { date: string; start_time: string; end_time: string; room_id: string | null }[] = [];
+  const cursor = new Date();
+  for (let i = 0; i < weeks * 7; i++) {
+    for (const s of schedules) {
+      if (s.weekday === cursor.getDay()) {
+        candidates.push({
+          date: todayISO(i),
+          start_time: s.start_time,
+          end_time: s.end_time,
+          room_id: s.room_id,
+        });
+      }
+    }
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  candidates.sort((a, b) => (a.date + a.start_time).localeCompare(b.date + b.start_time));
+
+  let created = 0;
+  let skipped = 0;
+  const conflicts: string[] = [];
+  for (const c of candidates) {
+    if (existingKeys.has(`${c.date}|${c.start_time.slice(0, 5)}`)) {
+      skipped++;
+      continue;
+    }
+    const { error } = await supabase.from("sessions").insert({
+      class_id: classId,
+      session_no: nextNo,
+      teacher_id: clsRes.data.teacher_id,
+      ...c,
+    });
+    if (!error) {
+      created++;
+      nextNo++;
+    } else if (error.code === "23505") {
+      skipped++;
+    } else if (error.code === "23P01") {
+      conflicts.push(
+        `${new Date(c.date + "T00:00:00").toLocaleDateString("vi-VN")} ${c.start_time.slice(0, 5)}–${c.end_time.slice(0, 5)}`,
+      );
+    } else {
+      throw error;
+    }
+  }
+  return { created, skipped, conflicts };
+}
+
+/* ============ Điểm danh ============ */
+
+export type AttendanceStatus = "present" | "absent_excused" | "absent_unexcused" | "makeup";
+
+export const ATTENDANCE_LABELS: Record<AttendanceStatus, string> = {
+  present: "Có mặt",
+  absent_excused: "Vắng có phép",
+  absent_unexcused: "Vắng không phép",
+  makeup: "Học bù",
+};
+
+export interface AttendanceRow {
+  id: string;
+  session_id: string;
+  student_id: string;
+  status: AttendanceStatus;
+  note: string | null;
+}
+
+export async function fetchSessionAttendance(sessionId: string): Promise<AttendanceRow[]> {
+  const { data, error } = await getSupabase()
+    .from("attendance")
+    .select("id, session_id, student_id, status, note")
+    .eq("session_id", sessionId);
+  if (error) throw error;
+  return data as AttendanceRow[];
+}
+
+/** Lưu điểm danh cả buổi (upsert theo cặp buổi + học viên). */
+export async function saveAttendance(
+  sessionId: string,
+  records: { student_id: string; status: AttendanceStatus; note?: string | null }[],
+  markedBy: string,
+) {
+  if (!records.length) return;
+  const { error } = await getSupabase()
+    .from("attendance")
+    .upsert(
+      records.map((r) => ({
+        session_id: sessionId,
+        student_id: r.student_id,
+        status: r.status,
+        note: r.note ?? null,
+        marked_by: markedBy,
+        marked_at: new Date().toISOString(),
+      })),
+      { onConflict: "session_id,student_id" },
+    );
+  if (error) throw error;
+}
+
+/* ============ Nhận xét sau buổi học ============ */
+
+export interface SessionCommentRow {
+  id: string;
+  session_id: string;
+  student_id: string;
+  teacher_id: string;
+  content: string;
+  rating: number | null;
+}
+
+export async function fetchSessionComments(sessionId: string): Promise<SessionCommentRow[]> {
+  const { data, error } = await getSupabase()
+    .from("session_comments")
+    .select("id, session_id, student_id, teacher_id, content, rating")
+    .eq("session_id", sessionId);
+  if (error) throw error;
+  return data as SessionCommentRow[];
+}
+
+export async function upsertSessionComment(input: {
+  session_id: string;
+  student_id: string;
+  teacher_id: string;
+  content: string;
+  rating: number | null;
+}) {
+  const { error } = await getSupabase()
+    .from("session_comments")
+    .upsert(input, { onConflict: "session_id,student_id" });
+  if (error) throw error;
+}
+
+/* ============ Học bù ============ */
+
+export interface MakeupCreditRow {
+  id: string;
+  status: "pending" | "scheduled" | "attended" | "expired" | "cancelled";
+  note: string | null;
+  created_at: string;
+  student: Pick<ProfileRow, "id" | "name" | "phone" | "avatar" | "student_code">;
+  missed_session: {
+    id: string; date: string; start_time: string; end_time: string;
+    class: { id: string; name: string } | null;
+  } | null;
+  makeup_session: {
+    id: string; date: string; start_time: string; end_time: string;
+    class: { id: string; name: string } | null;
+  } | null;
+}
+
+export const MAKEUP_STATUS_LABELS: Record<MakeupCreditRow["status"], string> = {
+  pending: "Chờ xếp bù",
+  scheduled: "Đã xếp bù",
+  attended: "Đã học bù",
+  expired: "Hết hạn",
+  cancelled: "Đã hủy",
+};
+
+const MAKEUP_SELECT = `
+  id, status, note, created_at,
+  student:profiles!makeup_credits_student_id_fkey ( id, name, phone, avatar, student_code ),
+  missed_session:sessions!makeup_credits_missed_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) ),
+  makeup_session:sessions!makeup_credits_makeup_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) )
+`;
+
+export async function fetchMakeupCredits(statuses: MakeupCreditRow["status"][]): Promise<MakeupCreditRow[]> {
+  const { data, error } = await getSupabase()
+    .from("makeup_credits").select(MAKEUP_SELECT)
+    .in("status", statuses)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as unknown as MakeupCreditRow[];
+}
+
+/** Học viên được xếp học bù vào buổi này (để GV điểm danh 'makeup'). */
+export async function fetchMakeupForSession(sessionId: string): Promise<MakeupCreditRow[]> {
+  const { data, error } = await getSupabase()
+    .from("makeup_credits").select(MAKEUP_SELECT)
+    .eq("makeup_session_id", sessionId)
+    .in("status", ["scheduled", "attended"]);
+  if (error) throw error;
+  return data as unknown as MakeupCreditRow[];
+}
+
+export async function scheduleMakeup(creditId: string, sessionId: string) {
+  const { error } = await getSupabase()
+    .from("makeup_credits")
+    .update({ makeup_session_id: sessionId, status: "scheduled" })
+    .eq("id", creditId);
+  if (error) throw error;
+}
+
+/** Bỏ xếp bù, trả về trạng thái chờ. */
+export async function resetMakeup(creditId: string) {
+  const { error } = await getSupabase()
+    .from("makeup_credits")
+    .update({ makeup_session_id: null, status: "pending" })
+    .eq("id", creditId);
+  if (error) throw error;
+}
+
+/** Các buổi sắp tới (mọi lớp) để chọn xếp học bù. */
+export async function fetchUpcomingSessions(): Promise<SessionRow[]> {
+  const { data, error } = await getSupabase()
+    .from("sessions").select(SESSION_SELECT)
+    .eq("status", "scheduled")
+    .gte("date", todayISO())
+    .order("date").order("start_time")
+    .limit(300);
+  if (error) throw error;
+  return data as unknown as SessionRow[];
+}
+
+/* ============ Thống kê chuyên cần ============ */
+
+export interface AttendanceStats {
+  total: number;
+  byStatus: Record<AttendanceStatus, number>;
+  byClass: {
+    classId: string;
+    className: string;
+    total: number;
+    attended: number; // present + makeup
+  }[];
+}
+
+/** Gom điểm danh sinceDays ngày gần nhất, tính tỷ lệ chuyên cần theo lớp. */
+export async function fetchAttendanceStats(sinceDays = 30): Promise<AttendanceStats> {
+  const { data, error } = await getSupabase()
+    .from("attendance")
+    .select("status, session:sessions!inner ( date, class:classes ( id, name ) )")
+    .gte("session.date", todayISO(-sinceDays));
+  if (error) throw error;
+
+  const rows = data as unknown as {
+    status: AttendanceStatus;
+    session: { date: string; class: { id: string; name: string } | null };
+  }[];
+
+  const byStatus: Record<AttendanceStatus, number> = {
+    present: 0, absent_excused: 0, absent_unexcused: 0, makeup: 0,
+  };
+  const classMap = new Map<string, { className: string; total: number; attended: number }>();
+  for (const r of rows) {
+    byStatus[r.status]++;
+    const cls = r.session.class;
+    if (!cls) continue;
+    const entry = classMap.get(cls.id) ?? { className: cls.name, total: 0, attended: 0 };
+    entry.total++;
+    if (r.status === "present" || r.status === "makeup") entry.attended++;
+    classMap.set(cls.id, entry);
+  }
+  return {
+    total: rows.length,
+    byStatus,
+    byClass: [...classMap.entries()]
+      .map(([classId, v]) => ({ classId, ...v }))
+      .sort((a, b) => b.total - a.total),
+  };
+}
+
 /** Lỗi Supabase/Postgres → thông báo tiếng Việt gọn. */
 export function dbErrorMessage(err: unknown): string {
   const e = err as { code?: string; message?: string };

@@ -1,78 +1,77 @@
+"use client";
+
 import Link from "next/link";
-import { Calendar, MoreHorizontal, Users } from "lucide-react";
+import { School, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Avatar } from "@/components/ui/avatar";
-import { classes, users } from "@/lib/mock-data";
+import { Card } from "@/components/ui/card";
+import { Empty } from "@/components/ui/empty";
+import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { useAuth } from "@/components/auth/auth-provider";
+import {
+  fetchTeacherClasses,
+  formatSchedules,
+  CLASS_STATUS_LABELS,
+  LEVEL_LABELS,
+} from "@/lib/db";
+import { useLoad } from "@/lib/use-load";
 
 export default function TeacherClassesPage() {
-  const me = users.find((u) => u.role === "teacher")!;
-  const myClasses = classes.filter((c) => c.teacherId === me.id);
+  const { user } = useAuth();
+  const teacherId = user?.id ?? "";
+  const classes = useLoad(
+    () => (teacherId ? fetchTeacherClasses(teacherId) : Promise.resolve([])),
+    [teacherId],
+  );
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Lớp đang dạy</h1>
-          <p className="mt-1 text-muted-foreground">{myClasses.length} lớp</p>
-        </div>
-        <Button variant="outline">+ Tạo lớp mới</Button>
+      <div>
+        <h1 className="text-3xl font-extrabold tracking-tight">Lớp dạy</h1>
+        <p className="mt-1 text-muted-foreground">
+          {classes.loading ? "Đang tải..." : `Bạn phụ trách ${classes.data?.length ?? 0} lớp.`}
+        </p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
-        {myClasses.map((c) => (
-          <Card key={c.id} className="overflow-hidden">
-            <div className="relative h-32">
-              <img src={c.cover} alt={c.name} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <Badge variant="gold" className="absolute left-3 top-3">{c.level}</Badge>
-              <button className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-lg bg-white/20 text-white backdrop-blur hover:bg-white/30">
-                <MoreHorizontal className="h-4 w-4" />
-              </button>
-              <div className="absolute bottom-3 left-3 right-3 text-white">
-                <div className="font-bold">{c.name}</div>
-                <div className="flex items-center gap-3 text-xs text-white/90">
-                  <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> {c.schedule}</span>
-                </div>
-              </div>
-            </div>
-            <CardContent className="space-y-4 p-5">
-              <div>
-                <div className="mb-1.5 flex justify-between text-xs">
-                  <span className="text-muted-foreground">Tiến độ giáo trình</span>
-                  <span className="font-semibold">{c.progress}%</span>
-                </div>
-                <Progress value={c.progress} />
-              </div>
+      {classes.error && <ErrorNote message={classes.error} />}
 
-              <div className="flex items-center justify-between">
-                <div className="flex -space-x-2">
-                  {c.studentIds.slice(0, 5).map((id, i) => (
-                    <Avatar key={id} name={`Học viên ${i + 1}`} size={28} className="ring-2 ring-white" />
-                  ))}
-                  {c.studentIds.length > 5 && (
-                    <div className="grid h-7 w-7 place-items-center rounded-full bg-muted text-[10px] font-bold ring-2 ring-white">
-                      +{c.studentIds.length - 5}
+      {classes.loading ? (
+        <Card><LoadingRows rows={5} /></Card>
+      ) : (classes.data?.length ?? 0) === 0 ? (
+        <Empty
+          icon={School}
+          title="Chưa được phân công lớp"
+          description="Khi quản lý gán bạn phụ trách lớp, lớp sẽ hiện ở đây."
+        />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {classes.data!.map((c) => (
+            <Link key={c.id} href={`/teacher/classes/${c.id}`}>
+              <Card className="h-full p-5 transition-shadow hover:shadow-soft">
+                <div className="flex items-start gap-3">
+                  <div className="zh grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-xs font-bold text-brand-700">
+                    {c.course?.level ? LEVEL_LABELS[c.course.level] ?? c.course.level : "—"}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-semibold">{c.name}</div>
+                    <div className="truncate text-xs text-muted-foreground">
+                      {c.course?.name ?? "Chưa gắn khóa học"}
                     </div>
-                  )}
+                  </div>
+                  <Badge variant={c.status === "active" ? "jade" : c.status === "planned" ? "gold" : "muted"}>
+                    {CLASS_STATUS_LABELS[c.status]}
+                  </Badge>
                 </div>
-                <Badge variant="outline"><Users className="h-3 w-3" /> {c.studentIds.length} học viên</Badge>
-              </div>
-
-              <div className="flex gap-2">
-                <Link href="/teacher/homework/new" className="flex-1">
-                  <Button variant="outline" className="w-full">Giao bài</Button>
-                </Link>
-                <Link href="/teacher/students" className="flex-1">
-                  <Button className="w-full">Học viên</Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{formatSchedules(c.class_schedules)}</span>
+                  <span className="inline-flex items-center gap-1 font-semibold text-foreground">
+                    <Users className="h-3.5 w-3.5" /> {c.class_students?.[0]?.count ?? 0}
+                  </span>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
