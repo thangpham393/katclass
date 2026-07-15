@@ -61,13 +61,15 @@ export default function LibraryPage() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-1.5">
                         {l.unit != null && <Badge variant="outline">Bài {l.unit}</Badge>}
-                        {l.course?.level && (
-                          <Badge variant="muted">{LEVEL_LABELS[l.course.level] ?? l.course.level}</Badge>
+                        {(l.textbook?.level ?? l.course?.level) && (
+                          <Badge variant="muted">
+                            {LEVEL_LABELS[(l.textbook?.level ?? l.course?.level)!] ?? (l.textbook?.level ?? l.course?.level)}
+                          </Badge>
                         )}
                       </div>
                       <div className="mt-1 truncate font-semibold">{l.title}</div>
                       <div className="text-xs text-muted-foreground">
-                        {l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
+                        {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
                       </div>
                     </div>
                     <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />

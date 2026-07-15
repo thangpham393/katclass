@@ -19,23 +19,29 @@ import {
   fetchLesson,
   fetchLessons,
   fetchVocabItems,
+  lessonSourceLabel,
   setLessonVocab,
   updateLesson,
   type LessonInput,
   type LessonRow,
 } from "@/lib/db-content";
+import { fetchTextbooks } from "@/lib/db-library";
 import { cn } from "@/lib/utils";
 
 export default function TeacherLessonsPage() {
   const lessons = useLoad(() => fetchLessons(), []);
   const courses = useLoad(fetchCourses);
+  const textbooks = useLoad(fetchTextbooks);
   const [courseFilter, setCourseFilter] = useState("");
+  const [textbookFilter, setTextbookFilter] = useState("");
   const [editing, setEditing] = useState<LessonRow | "new" | null>(null);
   const [pickingVocab, setPickingVocab] = useState<LessonRow | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const list = (lessons.data ?? []).filter(
-    (l) => !courseFilter || l.course_id === courseFilter,
+    (l) =>
+      (!courseFilter || l.course_id === courseFilter) &&
+      (!textbookFilter || l.textbook_id === textbookFilter),
   );
 
   async function handleDelete(l: LessonRow) {
@@ -70,6 +76,13 @@ export default function TeacherLessonsPage() {
 
       <Card>
         <CardContent className="flex flex-wrap items-center gap-3 p-4">
+          <span className="text-sm font-medium text-muted-foreground">Giáo trình:</span>
+          <Select className="w-64" value={textbookFilter} onChange={(e) => setTextbookFilter(e.target.value)}>
+            <option value="">Tất cả</option>
+            {(textbooks.data ?? []).map((t) => (
+              <option key={t.id} value={t.id}>{t.name}</option>
+            ))}
+          </Select>
           <span className="text-sm font-medium text-muted-foreground">Khóa học:</span>
           <Select className="w-64" value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)}>
             <option value="">Tất cả</option>
@@ -96,8 +109,11 @@ export default function TeacherLessonsPage() {
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
                     {l.unit != null && <Badge variant="outline">Bài {l.unit}</Badge>}
-                    {l.course?.level && (
-                      <Badge variant="muted">{LEVEL_LABELS[l.course.level] ?? l.course.level}</Badge>
+                    {l.textbook && <Badge variant="gold">Thư viện</Badge>}
+                    {(l.textbook?.level ?? l.course?.level) && (
+                      <Badge variant="muted">
+                        {LEVEL_LABELS[(l.textbook?.level ?? l.course?.level)!] ?? (l.textbook?.level ?? l.course?.level)}
+                      </Badge>
                     )}
                   </div>
                   <span className="text-xs text-muted-foreground">
@@ -107,7 +123,7 @@ export default function TeacherLessonsPage() {
                 {l.title_zh && <div className="zh mt-3 text-3xl font-bold text-brand-700">{l.title_zh}</div>}
                 <div className="mt-1 font-semibold">{l.title}</div>
                 <div className="mt-0.5 text-xs text-muted-foreground">
-                  {l.course?.name ?? "Chưa gắn khóa học"}
+                  {lessonSourceLabel(l) ?? "Chưa gắn khóa học"}
                 </div>
                 {l.summary && (
                   <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">{l.summary}</p>

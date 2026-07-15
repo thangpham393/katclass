@@ -1,0 +1,416 @@
+{
+  "textbook": {
+    "code": "hsk1-standard",
+    "name": "HSK 1",
+    "name_zh": "标准教程 HSK 1",
+    "level": "HSK1",
+    "description": "Giáo trình chuẩn HSK 1 — 15 bài. Có khả năng giao tiếp đơn giản và trực tiếp bằng tiếng Trung về một số chủ đề thông dụng trong cuộc sống.",
+    "sort": 1
+  },
+  "lessons": [
+    {
+      "unit": 1,
+      "title": "Xin chào",
+      "title_zh": "你好",
+      "summary": "Chào hỏi cơ bản, xin lỗi và đáp lại, tạm biệt.",
+      "grammar": "• Chào hỏi: 你好！(Nǐ hǎo!) — Chào bạn. Với người lớn tuổi / cần kính trọng dùng 您好！(Nín hǎo!)\n• Xin lỗi và đáp lại: 对不起！(Duìbuqǐ!) — Xin lỗi. → 没关系。(Méi guānxi.) — Không sao.\n• Tạm biệt: 再见！(Zàijiàn!) — nghĩa gốc là “hẹn gặp lại”.",
+      "vocab": [
+        { "hanzi": "你", "pinyin": "nǐ", "meaning": "bạn, cậu (ngôi thứ hai)", "example": { "zh": "你好！", "pinyin": "Nǐ hǎo!", "vi": "Chào bạn!" } },
+        { "hanzi": "好", "pinyin": "hǎo", "meaning": "tốt, khỏe", "example": { "zh": "你好吗？", "pinyin": "Nǐ hǎo ma?", "vi": "Bạn khỏe không?" } },
+        { "hanzi": "您", "pinyin": "nín", "meaning": "ngài, ông/bà (kính trọng)", "example": { "zh": "您好！", "pinyin": "Nín hǎo!", "vi": "Chào ngài!" } },
+        { "hanzi": "再见", "pinyin": "zàijiàn", "meaning": "tạm biệt, hẹn gặp lại", "example": { "zh": "老师，再见！", "pinyin": "Lǎoshī, zàijiàn!", "vi": "Chào tạm biệt cô ạ!" } },
+        { "hanzi": "对不起", "pinyin": "duìbuqǐ", "meaning": "xin lỗi", "example": { "zh": "对不起，对不起！", "pinyin": "Duìbuqǐ, duìbuqǐ!", "vi": "Xin lỗi, xin lỗi!" } },
+        { "hanzi": "没关系", "pinyin": "méi guānxi", "meaning": "không sao, không có gì", "example": { "zh": "没关系。", "pinyin": "Méi guānxi.", "vi": "Không sao đâu." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“你好” nghĩa là gì?", "options": ["Tạm biệt", "Xin chào", "Cảm ơn", "Xin lỗi"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "再见", "options": ["zàijiàn", "zàijiān", "zhàijiàn", "càijiàn"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "对不起！— 没___系。", "hint": "Điền 1 chữ Hán" }, "answer": ["关"] },
+        { "type": "reorder", "content": { "tokens": ["不", "对", "起"], "translation": "Xin lỗi." }, "answer": ["对", "不", "起"] },
+        { "type": "matching", "content": { "left": ["你好", "再见", "对不起", "没关系"], "right": ["Không sao", "Xin chào", "Xin lỗi", "Tạm biệt"] }, "answer": { "0": "b", "1": "d", "2": "c", "3": "a" } },
+        { "type": "listening", "content": { "tts": "再见", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Xin chào", "Cảm ơn", "Tạm biệt", "Xin lỗi"] }, "answer": "C" }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Cảm ơn bạn",
+      "title_zh": "谢谢你",
+      "summary": "Cảm ơn và đáp lại; phó từ phủ định 不.",
+      "grammar": "• Cảm ơn và đáp lại: 谢谢！(Xièxie!) — Cảm ơn. → 不客气！(Bú kèqi!) — Không có gì.\n• Phó từ phủ định 不 (bù) đặt trước động từ / tính từ: 不好 (không tốt), 不是 (không phải).\n• Biến điệu của 不: trước âm tiết thanh 4, 不 đọc thành bú — 不客气 (bú kèqi).",
+      "vocab": [
+        { "hanzi": "谢谢", "pinyin": "xièxie", "meaning": "cảm ơn", "example": { "zh": "谢谢你！", "pinyin": "Xièxie nǐ!", "vi": "Cảm ơn bạn!" } },
+        { "hanzi": "不客气", "pinyin": "bú kèqi", "meaning": "không có gì, đừng khách sáo", "example": { "zh": "不客气！", "pinyin": "Bú kèqi!", "vi": "Không có gì!" } },
+        { "hanzi": "不", "pinyin": "bù", "meaning": "không (phủ định)", "example": { "zh": "不好。", "pinyin": "Bù hǎo.", "vi": "Không tốt." } },
+        { "hanzi": "客气", "pinyin": "kèqi", "meaning": "khách sáo, khách khí", "example": { "zh": "你太客气了！", "pinyin": "Nǐ tài kèqi le!", "vi": "Bạn khách sáo quá!" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "Khi ai đó nói “谢谢”, bạn đáp lại thế nào?", "options": ["再见", "不客气", "对不起", "你好"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "谢谢", "options": ["xièxie", "xiěxiě", "sièsie", "shèshè"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "谢谢你！— 不___气。", "hint": "Điền 1 chữ Hán" }, "answer": ["客"] },
+        { "type": "reorder", "content": { "tokens": ["客", "不", "气"], "translation": "Không có gì." }, "answer": ["不", "客", "气"] },
+        { "type": "matching", "content": { "left": ["谢谢", "不客气", "不"], "right": ["không", "cảm ơn", "không có gì"] }, "answer": { "0": "b", "1": "c", "2": "a" } },
+        { "type": "listening", "content": { "tts": "谢谢你", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Cảm ơn bạn", "Chào bạn", "Tạm biệt", "Không sao"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Bạn tên là gì?",
+      "title_zh": "你叫什么名字",
+      "summary": "Hỏi và giới thiệu tên; câu hỏi với 什么, 谁 và trợ từ 吗.",
+      "grammar": "• Hỏi tên: 你叫什么名字？(Nǐ jiào shénme míngzi?) — Bạn tên là gì? Trả lời: 我叫……(Wǒ jiào...)\n• Câu với động từ 是: 他是老师。(Tā shì lǎoshī.) — Anh ấy là giáo viên. Phủ định: 不是.\n• Câu hỏi với 吗: thêm 吗 vào cuối câu trần thuật — 你是学生吗？— Bạn là học sinh phải không?\n• Câu hỏi với 谁 (shéi — ai): 她是谁？— Cô ấy là ai?",
+      "vocab": [
+        { "hanzi": "我", "pinyin": "wǒ", "meaning": "tôi, mình", "example": { "zh": "我叫大卫。", "pinyin": "Wǒ jiào Dàwèi.", "vi": "Tôi tên là David." } },
+        { "hanzi": "叫", "pinyin": "jiào", "meaning": "gọi, tên là", "example": { "zh": "你叫什么名字？", "pinyin": "Nǐ jiào shénme míngzi?", "vi": "Bạn tên là gì?" } },
+        { "hanzi": "什么", "pinyin": "shénme", "meaning": "cái gì, gì", "example": { "zh": "这是什么？", "pinyin": "Zhè shì shénme?", "vi": "Đây là cái gì?" } },
+        { "hanzi": "名字", "pinyin": "míngzi", "meaning": "tên, họ tên", "example": { "zh": "我的名字是安娜。", "pinyin": "Wǒ de míngzi shì Ānnà.", "vi": "Tên tôi là Anna." } },
+        { "hanzi": "是", "pinyin": "shì", "meaning": "là, phải", "example": { "zh": "我是学生。", "pinyin": "Wǒ shì xuésheng.", "vi": "Tôi là học sinh." } },
+        { "hanzi": "他", "pinyin": "tā", "meaning": "anh ấy, ông ấy (ngôi ba nam)", "example": { "zh": "他是我朋友。", "pinyin": "Tā shì wǒ péngyou.", "vi": "Anh ấy là bạn tôi." } },
+        { "hanzi": "她", "pinyin": "tā", "meaning": "cô ấy, bà ấy (ngôi ba nữ)", "example": { "zh": "她叫小丽。", "pinyin": "Tā jiào Xiǎolì.", "vi": "Cô ấy tên là Tiểu Lệ." } },
+        { "hanzi": "谁", "pinyin": "shéi", "meaning": "ai, người nào", "example": { "zh": "他是谁？", "pinyin": "Tā shì shéi?", "vi": "Anh ấy là ai?" } },
+        { "hanzi": "老师", "pinyin": "lǎoshī", "meaning": "giáo viên, thầy/cô giáo", "example": { "zh": "她是老师。", "pinyin": "Tā shì lǎoshī.", "vi": "Cô ấy là giáo viên." } },
+        { "hanzi": "吗", "pinyin": "ma", "meaning": "trợ từ nghi vấn (đặt cuối câu hỏi)", "example": { "zh": "你是老师吗？", "pinyin": "Nǐ shì lǎoshī ma?", "vi": "Bạn là giáo viên phải không?" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“你叫什么名字？” dùng để hỏi về điều gì?", "options": ["Tuổi", "Tên", "Quốc tịch", "Nghề nghiệp"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "名字", "options": ["míngzi", "mǐngzi", "míngzhi", "mīngzi"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "你___什么名字？", "hint": "Động từ nghĩa là “gọi / tên là”" }, "answer": ["叫"] },
+        { "type": "reorder", "content": { "tokens": ["名字", "你", "叫", "什么"], "translation": "Bạn tên là gì?" }, "answer": ["你", "叫", "什么", "名字"] },
+        { "type": "matching", "content": { "left": ["我", "他", "她", "老师"], "right": ["cô ấy", "tôi", "thầy/cô giáo", "anh ấy"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "他是老师", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Anh ấy là học sinh", "Anh ấy là giáo viên", "Tôi là giáo viên", "Cô ấy là bác sĩ"] }, "answer": "B" }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Cô ấy là giáo viên tiếng Hán của tôi",
+      "title_zh": "她是我的汉语老师",
+      "summary": "Trợ từ 的; hỏi và nói về quốc tịch.",
+      "grammar": "• Trợ từ 的 (de) chỉ sở hữu: 我的名字 (tên của tôi), 她的老师 (giáo viên của cô ấy).\n• Với người thân / quan hệ gần có thể lược 的: 我妈妈 (mẹ tôi), 我朋友 (bạn tôi).\n• Hỏi quốc tịch: 你是哪国人？(Nǐ shì nǎ guó rén?) — Bạn là người nước nào? → 我是中国人。— Tôi là người Trung Quốc.",
+      "vocab": [
+        { "hanzi": "的", "pinyin": "de", "meaning": "trợ từ sở hữu (của)", "example": { "zh": "她是我的老师。", "pinyin": "Tā shì wǒ de lǎoshī.", "vi": "Cô ấy là giáo viên của tôi." } },
+        { "hanzi": "汉语", "pinyin": "Hànyǔ", "meaning": "tiếng Hán, tiếng Trung", "example": { "zh": "我学习汉语。", "pinyin": "Wǒ xuéxí Hànyǔ.", "vi": "Tôi học tiếng Hán." } },
+        { "hanzi": "人", "pinyin": "rén", "meaning": "người", "example": { "zh": "他是中国人。", "pinyin": "Tā shì Zhōngguó rén.", "vi": "Anh ấy là người Trung Quốc." } },
+        { "hanzi": "中国", "pinyin": "Zhōngguó", "meaning": "Trung Quốc", "example": { "zh": "我爱中国菜。", "pinyin": "Wǒ ài Zhōngguó cài.", "vi": "Tôi thích món ăn Trung Quốc." } },
+        { "hanzi": "美国", "pinyin": "Měiguó", "meaning": "nước Mỹ", "example": { "zh": "她是美国人。", "pinyin": "Tā shì Měiguó rén.", "vi": "Cô ấy là người Mỹ." } },
+        { "hanzi": "哪", "pinyin": "nǎ", "meaning": "nào, cái nào", "example": { "zh": "你是哪国人？", "pinyin": "Nǐ shì nǎ guó rén?", "vi": "Bạn là người nước nào?" } },
+        { "hanzi": "国", "pinyin": "guó", "meaning": "nước, quốc gia", "example": { "zh": "中国、美国", "pinyin": "Zhōngguó, Měiguó", "vi": "Trung Quốc, nước Mỹ" } },
+        { "hanzi": "学生", "pinyin": "xuésheng", "meaning": "học sinh, sinh viên", "example": { "zh": "我是学生。", "pinyin": "Wǒ shì xuésheng.", "vi": "Tôi là học sinh." } },
+        { "hanzi": "同学", "pinyin": "tóngxué", "meaning": "bạn học, bạn cùng lớp", "example": { "zh": "他是我同学。", "pinyin": "Tā shì wǒ tóngxué.", "vi": "Cậu ấy là bạn học của tôi." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“她是我的汉语老师。” nghĩa là gì?", "options": ["Cô ấy là bạn của tôi", "Cô ấy là giáo viên tiếng Hán của tôi", "Cô ấy là học sinh của tôi", "Cô ấy là mẹ của tôi"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "汉语", "options": ["Hànyǔ", "Hányǔ", "Hànyù", "Hǎnyǔ"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "你是哪___人？", "hint": "Chữ nghĩa là “nước, quốc gia”" }, "answer": ["国"] },
+        { "type": "reorder", "content": { "tokens": ["我", "老师", "的", "是", "她"], "translation": "Cô ấy là giáo viên của tôi." }, "answer": ["她", "是", "我", "的", "老师"] },
+        { "type": "matching", "content": { "left": ["中国", "美国", "学生", "同学"], "right": ["bạn học", "Trung Quốc", "học sinh", "nước Mỹ"] }, "answer": { "0": "b", "1": "d", "2": "c", "3": "a" } },
+        { "type": "listening", "content": { "tts": "我是中国人", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Tôi là người Trung Quốc", "Tôi là người Mỹ", "Tôi là người Việt Nam", "Tôi là giáo viên"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Con gái cô ấy năm nay 20 tuổi",
+      "title_zh": "她女儿今年二十岁",
+      "summary": "Số đếm 1–10; hỏi tuổi; trợ từ 了 chỉ sự thay đổi.",
+      "grammar": "• Số đếm: 一 yī (1), 二 èr (2), 三 sān (3), 四 sì (4), 五 wǔ (5), 六 liù (6), 七 qī (7), 八 bā (8), 九 jiǔ (9), 十 shí (10); 二十 = 20.\n• Hỏi tuổi: 你今年多大？(Nǐ jīnnián duō dà?) — Bạn năm nay bao nhiêu tuổi? Với trẻ em: 你几岁？(Nǐ jǐ suì?)\n• Trả lời: 我今年二十岁。— Tôi năm nay 20 tuổi.\n• 了 cuối câu diễn tả trạng thái mới / sự thay đổi: 她二十岁了。— Cô ấy đã 20 tuổi rồi.\n• 和 (hé — và) nối danh từ: 爸爸和妈妈 — bố và mẹ.",
+      "vocab": [
+        { "hanzi": "女儿", "pinyin": "nǚ'ér", "meaning": "con gái", "example": { "zh": "她女儿很漂亮。", "pinyin": "Tā nǚ'ér hěn piàoliang.", "vi": "Con gái cô ấy rất xinh." } },
+        { "hanzi": "儿子", "pinyin": "érzi", "meaning": "con trai", "example": { "zh": "我儿子五岁。", "pinyin": "Wǒ érzi wǔ suì.", "vi": "Con trai tôi 5 tuổi." } },
+        { "hanzi": "今年", "pinyin": "jīnnián", "meaning": "năm nay", "example": { "zh": "你今年多大？", "pinyin": "Nǐ jīnnián duō dà?", "vi": "Bạn năm nay bao nhiêu tuổi?" } },
+        { "hanzi": "岁", "pinyin": "suì", "meaning": "tuổi", "example": { "zh": "我二十岁。", "pinyin": "Wǒ èrshí suì.", "vi": "Tôi 20 tuổi." } },
+        { "hanzi": "几", "pinyin": "jǐ", "meaning": "mấy (hỏi số nhỏ)", "example": { "zh": "你几岁？", "pinyin": "Nǐ jǐ suì?", "vi": "Con mấy tuổi?" } },
+        { "hanzi": "多", "pinyin": "duō", "meaning": "nhiều; bao (trong câu hỏi)", "example": { "zh": "你多大？", "pinyin": "Nǐ duō dà?", "vi": "Bạn bao nhiêu tuổi?" } },
+        { "hanzi": "大", "pinyin": "dà", "meaning": "to, lớn", "example": { "zh": "他比我大。", "pinyin": "Tā bǐ wǒ dà.", "vi": "Anh ấy lớn hơn tôi." } },
+        { "hanzi": "了", "pinyin": "le", "meaning": "trợ từ (đã, rồi)", "example": { "zh": "她二十岁了。", "pinyin": "Tā èrshí suì le.", "vi": "Cô ấy 20 tuổi rồi." } },
+        { "hanzi": "和", "pinyin": "hé", "meaning": "và, với", "example": { "zh": "爸爸和妈妈", "pinyin": "bàba hé māma", "vi": "bố và mẹ" } },
+        { "hanzi": "家", "pinyin": "jiā", "meaning": "nhà, gia đình", "example": { "zh": "我家有四口人。", "pinyin": "Wǒ jiā yǒu sì kǒu rén.", "vi": "Nhà tôi có 4 người." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“你今年多大？” dùng để hỏi về điều gì?", "options": ["Tên", "Tuổi", "Nghề nghiệp", "Địa chỉ nhà"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "岁", "options": ["suì", "shuì", "suī", "sùi"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "她女儿今年二十___了。", "hint": "Chữ nghĩa là “tuổi”" }, "answer": ["岁"] },
+        { "type": "reorder", "content": { "tokens": ["今年", "女儿", "她", "二十岁"], "translation": "Con gái cô ấy năm nay 20 tuổi." }, "answer": ["她", "女儿", "今年", "二十岁"] },
+        { "type": "matching", "content": { "left": ["女儿", "儿子", "家", "几"], "right": ["mấy", "con gái", "nhà", "con trai"] }, "answer": { "0": "b", "1": "d", "2": "c", "3": "a" } },
+        { "type": "listening", "content": { "tts": "我今年十岁", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Tôi năm nay 10 tuổi", "Tôi năm nay 20 tuổi", "Tôi năm nay 4 tuổi", "Em gái tôi 10 tuổi"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Tôi biết nói tiếng Hán",
+      "title_zh": "我会说汉语",
+      "summary": "Động từ năng nguyện 会; phó từ 很, 也, 都; làm quen bạn mới.",
+      "grammar": "• 会 (huì) + động từ: biết làm gì đó (nhờ học tập) — 我会说汉语。— Tôi biết nói tiếng Hán. Phủ định: 不会.\n• 很 (hěn — rất) đứng trước tính từ: 很高兴 — rất vui. Câu tính từ thường cần 很: 我很好。\n• 也 (yě — cũng) và 都 (dōu — đều) đứng trước động từ: 我也是学生。他们都会说汉语。\n• 一点儿 (yìdiǎnr — một chút) đứng sau động từ: 我会说一点儿汉语。\n• Làm quen: 认识你很高兴！— Rất vui được quen bạn!",
+      "vocab": [
+        { "hanzi": "会", "pinyin": "huì", "meaning": "biết, có thể (kỹ năng học được)", "example": { "zh": "我会说汉语。", "pinyin": "Wǒ huì shuō Hànyǔ.", "vi": "Tôi biết nói tiếng Hán." } },
+        { "hanzi": "说", "pinyin": "shuō", "meaning": "nói", "example": { "zh": "请说汉语。", "pinyin": "Qǐng shuō Hànyǔ.", "vi": "Xin hãy nói tiếng Hán." } },
+        { "hanzi": "写", "pinyin": "xiě", "meaning": "viết", "example": { "zh": "我会写汉字。", "pinyin": "Wǒ huì xiě Hànzì.", "vi": "Tôi biết viết chữ Hán." } },
+        { "hanzi": "读", "pinyin": "dú", "meaning": "đọc", "example": { "zh": "请读这个字。", "pinyin": "Qǐng dú zhège zì.", "vi": "Hãy đọc chữ này." } },
+        { "hanzi": "字", "pinyin": "zì", "meaning": "chữ, chữ viết", "example": { "zh": "这个字怎么读？", "pinyin": "Zhège zì zěnme dú?", "vi": "Chữ này đọc thế nào?" } },
+        { "hanzi": "很", "pinyin": "hěn", "meaning": "rất", "example": { "zh": "我很好。", "pinyin": "Wǒ hěn hǎo.", "vi": "Tôi rất khỏe." } },
+        { "hanzi": "也", "pinyin": "yě", "meaning": "cũng", "example": { "zh": "我也是学生。", "pinyin": "Wǒ yě shì xuésheng.", "vi": "Tôi cũng là học sinh." } },
+        { "hanzi": "都", "pinyin": "dōu", "meaning": "đều, tất cả", "example": { "zh": "我们都会说汉语。", "pinyin": "Wǒmen dōu huì shuō Hànyǔ.", "vi": "Chúng tôi đều biết nói tiếng Hán." } },
+        { "hanzi": "一点儿", "pinyin": "yìdiǎnr", "meaning": "một chút, một ít", "example": { "zh": "我会说一点儿汉语。", "pinyin": "Wǒ huì shuō yìdiǎnr Hànyǔ.", "vi": "Tôi biết nói một chút tiếng Hán." } },
+        { "hanzi": "认识", "pinyin": "rènshi", "meaning": "quen, quen biết", "example": { "zh": "认识你很高兴！", "pinyin": "Rènshi nǐ hěn gāoxìng!", "vi": "Rất vui được quen bạn!" } },
+        { "hanzi": "高兴", "pinyin": "gāoxìng", "meaning": "vui, vui mừng", "example": { "zh": "我很高兴。", "pinyin": "Wǒ hěn gāoxìng.", "vi": "Tôi rất vui." } },
+        { "hanzi": "朋友", "pinyin": "péngyou", "meaning": "bạn, bạn bè", "example": { "zh": "他是我的好朋友。", "pinyin": "Tā shì wǒ de hǎo péngyou.", "vi": "Anh ấy là bạn tốt của tôi." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“我会说一点儿汉语。” nghĩa là gì?", "options": ["Tôi không biết nói tiếng Hán", "Tôi biết nói một chút tiếng Hán", "Tôi rất thích tiếng Hán", "Tôi đang học viết chữ Hán"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "高兴", "options": ["gāoxìng", "gǎoxìng", "gāoxīng", "kāoxìng"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "我___说汉语。", "hint": "“biết” — kỹ năng học được" }, "answer": ["会"] },
+        { "type": "reorder", "content": { "tokens": ["汉语", "会", "我", "说"], "translation": "Tôi biết nói tiếng Hán." }, "answer": ["我", "会", "说", "汉语"] },
+        { "type": "matching", "content": { "left": ["说", "写", "读", "朋友"], "right": ["đọc", "nói", "bạn bè", "viết"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "认识你很高兴", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Rất vui được quen bạn", "Tạm biệt bạn", "Bạn biết nói tiếng Hán không?", "Tôi cũng là học sinh"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Hôm nay là ngày mấy?",
+      "title_zh": "今天几号",
+      "summary": "Ngày, tháng, thứ; trạng ngữ thời gian đứng trước động từ.",
+      "grammar": "• Hỏi ngày: 今天几号？— Hôm nay mùng mấy? → 今天五月八号。— Hôm nay là ngày 8 tháng 5.\n• Thứ trong tuần: 星期一 (thứ Hai) … 星期六 (thứ Bảy), 星期天 (Chủ nhật). Hỏi: 今天星期几？\n• Thứ tự thời gian: năm → tháng → ngày → thứ.\n• Trạng ngữ thời gian đứng trước động từ: 我明天去学校。— Ngày mai tôi đến trường.",
+      "vocab": [
+        { "hanzi": "今天", "pinyin": "jīntiān", "meaning": "hôm nay", "example": { "zh": "今天几号？", "pinyin": "Jīntiān jǐ hào?", "vi": "Hôm nay ngày mấy?" } },
+        { "hanzi": "明天", "pinyin": "míngtiān", "meaning": "ngày mai", "example": { "zh": "明天见！", "pinyin": "Míngtiān jiàn!", "vi": "Mai gặp nhé!" } },
+        { "hanzi": "昨天", "pinyin": "zuótiān", "meaning": "hôm qua", "example": { "zh": "昨天是我的生日。", "pinyin": "Zuótiān shì wǒ de shēngrì.", "vi": "Hôm qua là sinh nhật tôi." } },
+        { "hanzi": "号", "pinyin": "hào", "meaning": "ngày (mùng), số", "example": { "zh": "今天八号。", "pinyin": "Jīntiān bā hào.", "vi": "Hôm nay mùng 8." } },
+        { "hanzi": "月", "pinyin": "yuè", "meaning": "tháng; mặt trăng", "example": { "zh": "五月八号", "pinyin": "wǔ yuè bā hào", "vi": "ngày 8 tháng 5" } },
+        { "hanzi": "星期", "pinyin": "xīngqī", "meaning": "tuần, thứ", "example": { "zh": "今天星期几？", "pinyin": "Jīntiān xīngqī jǐ?", "vi": "Hôm nay thứ mấy?" } },
+        { "hanzi": "天", "pinyin": "tiān", "meaning": "ngày; trời", "example": { "zh": "一个星期有七天。", "pinyin": "Yí ge xīngqī yǒu qī tiān.", "vi": "Một tuần có 7 ngày." } },
+        { "hanzi": "去", "pinyin": "qù", "meaning": "đi, đến (rời xa người nói)", "example": { "zh": "我去学校。", "pinyin": "Wǒ qù xuéxiào.", "vi": "Tôi đến trường." } },
+        { "hanzi": "学校", "pinyin": "xuéxiào", "meaning": "trường học", "example": { "zh": "我们学校很大。", "pinyin": "Wǒmen xuéxiào hěn dà.", "vi": "Trường chúng tôi rất to." } },
+        { "hanzi": "看", "pinyin": "kàn", "meaning": "xem, nhìn, đọc", "example": { "zh": "我去看电影。", "pinyin": "Wǒ qù kàn diànyǐng.", "vi": "Tôi đi xem phim." } },
+        { "hanzi": "电影", "pinyin": "diànyǐng", "meaning": "phim, điện ảnh", "example": { "zh": "这个电影很好看。", "pinyin": "Zhège diànyǐng hěn hǎokàn.", "vi": "Bộ phim này rất hay." } },
+        { "hanzi": "生日", "pinyin": "shēngrì", "meaning": "sinh nhật", "example": { "zh": "生日快乐！", "pinyin": "Shēngrì kuàilè!", "vi": "Chúc mừng sinh nhật!" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“今天几号？” dùng để hỏi về điều gì?", "options": ["Mấy giờ", "Ngày (mùng mấy)", "Thứ mấy", "Tháng mấy"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "星期", "options": ["xīngqī", "xìngqí", "xīnqī", "xīngjī"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "今天几___？— 今天五月八___。", "hint": "Cùng một chữ cho cả 2 chỗ trống" }, "answer": ["号", "号"] },
+        { "type": "reorder", "content": { "tokens": ["去", "明天", "我", "学校"], "translation": "Ngày mai tôi đến trường." }, "answer": ["我", "明天", "去", "学校"] },
+        { "type": "matching", "content": { "left": ["今天", "明天", "昨天", "生日"], "right": ["hôm qua", "hôm nay", "sinh nhật", "ngày mai"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "今天是我的生日", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Hôm nay là sinh nhật tôi", "Ngày mai là sinh nhật tôi", "Hôm nay thứ mấy?", "Tôi đi xem phim"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Tôi muốn uống trà",
+      "title_zh": "我想喝茶",
+      "summary": "Bày tỏ mong muốn với 想; mời với 请; hỏi lại bằng 呢.",
+      "grammar": "• 想 (xiǎng) + động từ: muốn làm gì — 我想喝茶。— Tôi muốn uống trà. Phủ định: 不想.\n• 请 (qǐng) + động từ: mời ai làm gì — 请坐！(Mời ngồi!) 请喝茶！(Mời uống trà!)\n• 呢 (ne) hỏi ngược lại: 我想喝茶，你呢？— Tôi muốn uống trà, còn bạn?\n• 什么 + danh từ: 你想吃什么菜？— Bạn muốn ăn món gì?",
+      "vocab": [
+        { "hanzi": "想", "pinyin": "xiǎng", "meaning": "muốn; nghĩ, nhớ", "example": { "zh": "我想喝茶。", "pinyin": "Wǒ xiǎng hē chá.", "vi": "Tôi muốn uống trà." } },
+        { "hanzi": "喝", "pinyin": "hē", "meaning": "uống", "example": { "zh": "你想喝什么？", "pinyin": "Nǐ xiǎng hē shénme?", "vi": "Bạn muốn uống gì?" } },
+        { "hanzi": "吃", "pinyin": "chī", "meaning": "ăn", "example": { "zh": "我想吃米饭。", "pinyin": "Wǒ xiǎng chī mǐfàn.", "vi": "Tôi muốn ăn cơm." } },
+        { "hanzi": "茶", "pinyin": "chá", "meaning": "trà", "example": { "zh": "请喝茶！", "pinyin": "Qǐng hē chá!", "vi": "Mời uống trà!" } },
+        { "hanzi": "水", "pinyin": "shuǐ", "meaning": "nước", "example": { "zh": "我要喝水。", "pinyin": "Wǒ yào hē shuǐ.", "vi": "Tôi muốn uống nước." } },
+        { "hanzi": "米饭", "pinyin": "mǐfàn", "meaning": "cơm", "example": { "zh": "我们吃米饭吧。", "pinyin": "Wǒmen chī mǐfàn ba.", "vi": "Chúng ta ăn cơm nhé." } },
+        { "hanzi": "菜", "pinyin": "cài", "meaning": "món ăn; rau", "example": { "zh": "中国菜很好吃。", "pinyin": "Zhōngguó cài hěn hǎochī.", "vi": "Món Trung Quốc rất ngon." } },
+        { "hanzi": "水果", "pinyin": "shuǐguǒ", "meaning": "hoa quả, trái cây", "example": { "zh": "我喜欢吃水果。", "pinyin": "Wǒ xǐhuan chī shuǐguǒ.", "vi": "Tôi thích ăn hoa quả." } },
+        { "hanzi": "苹果", "pinyin": "píngguǒ", "meaning": "quả táo", "example": { "zh": "这个苹果很大。", "pinyin": "Zhège píngguǒ hěn dà.", "vi": "Quả táo này rất to." } },
+        { "hanzi": "请", "pinyin": "qǐng", "meaning": "mời, xin mời", "example": { "zh": "请坐！", "pinyin": "Qǐng zuò!", "vi": "Mời ngồi!" } },
+        { "hanzi": "杯子", "pinyin": "bēizi", "meaning": "cái cốc, cái ly", "example": { "zh": "杯子里有水。", "pinyin": "Bēizi lǐ yǒu shuǐ.", "vi": "Trong cốc có nước." } },
+        { "hanzi": "饭店", "pinyin": "fàndiàn", "meaning": "nhà hàng, quán ăn", "example": { "zh": "我们去饭店吃饭。", "pinyin": "Wǒmen qù fàndiàn chī fàn.", "vi": "Chúng ta đến nhà hàng ăn cơm." } },
+        { "hanzi": "呢", "pinyin": "ne", "meaning": "trợ từ (còn … thì sao?)", "example": { "zh": "我想喝茶，你呢？", "pinyin": "Wǒ xiǎng hē chá, nǐ ne?", "vi": "Tôi muốn uống trà, còn bạn?" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“我想喝茶。” nghĩa là gì?", "options": ["Tôi muốn ăn cơm", "Tôi muốn uống trà", "Tôi muốn uống nước", "Tôi thích ăn táo"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "水果", "options": ["shuǐguǒ", "shuīguǒ", "suǐguǒ", "shuǐguō"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "我想___茶，你呢？", "hint": "Động từ nghĩa là “uống”" }, "answer": ["喝"] },
+        { "type": "reorder", "content": { "tokens": ["想", "我", "米饭", "吃"], "translation": "Tôi muốn ăn cơm." }, "answer": ["我", "想", "吃", "米饭"] },
+        { "type": "matching", "content": { "left": ["茶", "水", "苹果", "米饭"], "right": ["cơm", "trà", "nước", "táo"] }, "answer": { "0": "b", "1": "c", "2": "d", "3": "a" } },
+        { "type": "listening", "content": { "tts": "请喝茶", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Mời uống trà", "Mời ăn cơm", "Mời ngồi", "Mời vào"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Con trai bạn làm việc ở đâu?",
+      "title_zh": "你儿子在哪儿工作",
+      "summary": "Giới từ 在 + nơi chốn; hỏi nơi chốn với 哪儿; nói về nghề nghiệp.",
+      "grammar": "• 在 (zài) + nơi chốn + động từ: 我妈妈在医院工作。— Mẹ tôi làm việc ở bệnh viện.\n• Hỏi nơi chốn: 你在哪儿工作？— Bạn làm việc ở đâu?\n• Hỏi nghề nghiệp: 你做什么工作？— Bạn làm nghề gì? → 我是医生。— Tôi là bác sĩ.\n• 这 (zhè — này) / 那 (nà — kia): 这是我爸爸。— Đây là bố tôi.",
+      "vocab": [
+        { "hanzi": "在", "pinyin": "zài", "meaning": "ở, tại", "example": { "zh": "我在学校。", "pinyin": "Wǒ zài xuéxiào.", "vi": "Tôi đang ở trường." } },
+        { "hanzi": "哪儿", "pinyin": "nǎr", "meaning": "đâu, ở đâu", "example": { "zh": "你在哪儿？", "pinyin": "Nǐ zài nǎr?", "vi": "Bạn đang ở đâu?" } },
+        { "hanzi": "工作", "pinyin": "gōngzuò", "meaning": "làm việc; công việc", "example": { "zh": "你在哪儿工作？", "pinyin": "Nǐ zài nǎr gōngzuò?", "vi": "Bạn làm việc ở đâu?" } },
+        { "hanzi": "做", "pinyin": "zuò", "meaning": "làm", "example": { "zh": "你做什么工作？", "pinyin": "Nǐ zuò shénme gōngzuò?", "vi": "Bạn làm nghề gì?" } },
+        { "hanzi": "医生", "pinyin": "yīshēng", "meaning": "bác sĩ", "example": { "zh": "我妈妈是医生。", "pinyin": "Wǒ māma shì yīshēng.", "vi": "Mẹ tôi là bác sĩ." } },
+        { "hanzi": "医院", "pinyin": "yīyuàn", "meaning": "bệnh viện", "example": { "zh": "她在医院工作。", "pinyin": "Tā zài yīyuàn gōngzuò.", "vi": "Cô ấy làm việc ở bệnh viện." } },
+        { "hanzi": "商店", "pinyin": "shāngdiàn", "meaning": "cửa hàng", "example": { "zh": "商店里人很多。", "pinyin": "Shāngdiàn lǐ rén hěn duō.", "vi": "Trong cửa hàng rất đông người." } },
+        { "hanzi": "爸爸", "pinyin": "bàba", "meaning": "bố, ba", "example": { "zh": "我爸爸是老师。", "pinyin": "Wǒ bàba shì lǎoshī.", "vi": "Bố tôi là giáo viên." } },
+        { "hanzi": "妈妈", "pinyin": "māma", "meaning": "mẹ, má", "example": { "zh": "妈妈在家。", "pinyin": "Māma zài jiā.", "vi": "Mẹ đang ở nhà." } },
+        { "hanzi": "这", "pinyin": "zhè", "meaning": "này, đây", "example": { "zh": "这是我爸爸。", "pinyin": "Zhè shì wǒ bàba.", "vi": "Đây là bố tôi." } },
+        { "hanzi": "那", "pinyin": "nà", "meaning": "kia, đó", "example": { "zh": "那是什么？", "pinyin": "Nà shì shénme?", "vi": "Kia là cái gì?" } },
+        { "hanzi": "学习", "pinyin": "xuéxí", "meaning": "học, học tập", "example": { "zh": "我在中国学习汉语。", "pinyin": "Wǒ zài Zhōngguó xuéxí Hànyǔ.", "vi": "Tôi học tiếng Hán ở Trung Quốc." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“你儿子在哪儿工作？” nghĩa là gì?", "options": ["Con trai bạn học ở đâu?", "Con trai bạn làm việc ở đâu?", "Con gái bạn làm nghề gì?", "Bố bạn làm việc ở đâu?"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "医院", "options": ["yīyuàn", "yìyuàn", "yīyuán", "yīyàn"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "我妈妈___医院工作。", "hint": "Giới từ chỉ nơi chốn" }, "answer": ["在"] },
+        { "type": "reorder", "content": { "tokens": ["在", "爸爸", "我", "工作", "商店"], "translation": "Bố tôi làm việc ở cửa hàng." }, "answer": ["我", "爸爸", "在", "商店", "工作"] },
+        { "type": "matching", "content": { "left": ["医生", "医院", "商店", "工作"], "right": ["cửa hàng", "bác sĩ", "làm việc", "bệnh viện"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "她是医生，在医院工作", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Cô ấy là bác sĩ, làm việc ở bệnh viện", "Cô ấy là giáo viên ở trường", "Anh ấy làm việc ở cửa hàng", "Mẹ tôi là bác sĩ"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Tôi có thể ngồi đây không?",
+      "title_zh": "我能坐这儿吗",
+      "summary": "Xin phép với 能; câu có 有 / 没有; 这儿 và 那儿.",
+      "grammar": "• 能 (néng) + động từ: có thể (điều kiện / xin phép) — 我能坐这儿吗？— Tôi ngồi đây được không?\n• Trả lời: 能 / 不能 hoặc 可以.\n• 有 (yǒu — có) và phủ định 没有 (méiyǒu — không có): 这儿有椅子。/ 那儿没有人。\n• 这儿 (zhèr — chỗ này) / 那儿 (nàr — chỗ kia).\n• 请问 (qǐngwèn) mở đầu câu hỏi lịch sự: 请问，我能坐这儿吗？",
+      "vocab": [
+        { "hanzi": "能", "pinyin": "néng", "meaning": "có thể (điều kiện, xin phép)", "example": { "zh": "我能坐这儿吗？", "pinyin": "Wǒ néng zuò zhèr ma?", "vi": "Tôi ngồi đây được không?" } },
+        { "hanzi": "坐", "pinyin": "zuò", "meaning": "ngồi; đi (xe, máy bay)", "example": { "zh": "请坐！", "pinyin": "Qǐng zuò!", "vi": "Mời ngồi!" } },
+        { "hanzi": "这儿", "pinyin": "zhèr", "meaning": "chỗ này, ở đây", "example": { "zh": "这儿很好。", "pinyin": "Zhèr hěn hǎo.", "vi": "Chỗ này rất tốt." } },
+        { "hanzi": "那儿", "pinyin": "nàr", "meaning": "chỗ kia, ở đó", "example": { "zh": "他在那儿。", "pinyin": "Tā zài nàr.", "vi": "Anh ấy ở đằng kia." } },
+        { "hanzi": "请问", "pinyin": "qǐngwèn", "meaning": "xin hỏi, cho hỏi", "example": { "zh": "请问，你叫什么名字？", "pinyin": "Qǐngwèn, nǐ jiào shénme míngzi?", "vi": "Xin hỏi, bạn tên là gì?" } },
+        { "hanzi": "有", "pinyin": "yǒu", "meaning": "có", "example": { "zh": "我有一个儿子。", "pinyin": "Wǒ yǒu yí ge érzi.", "vi": "Tôi có một con trai." } },
+        { "hanzi": "没有", "pinyin": "méiyǒu", "meaning": "không có", "example": { "zh": "我没有钱。", "pinyin": "Wǒ méiyǒu qián.", "vi": "Tôi không có tiền." } },
+        { "hanzi": "书", "pinyin": "shū", "meaning": "sách", "example": { "zh": "这是我的汉语书。", "pinyin": "Zhè shì wǒ de Hànyǔ shū.", "vi": "Đây là sách tiếng Hán của tôi." } },
+        { "hanzi": "椅子", "pinyin": "yǐzi", "meaning": "cái ghế", "example": { "zh": "这儿有椅子。", "pinyin": "Zhèr yǒu yǐzi.", "vi": "Ở đây có ghế." } },
+        { "hanzi": "里", "pinyin": "lǐ", "meaning": "trong, bên trong", "example": { "zh": "学校里有很多学生。", "pinyin": "Xuéxiào lǐ yǒu hěn duō xuésheng.", "vi": "Trong trường có rất nhiều học sinh." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“我能坐这儿吗？” dùng trong tình huống nào?", "options": ["Xin phép ngồi", "Mời ăn cơm", "Hỏi đường", "Chào hỏi"] }, "answer": "A" },
+        { "type": "pinyin_choice", "content": { "hanzi": "椅子", "options": ["yǐzi", "yìzi", "yǐzhi", "yīzi"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "请问，我___坐这儿吗？", "hint": "“có thể” — xin phép" }, "answer": ["能"] },
+        { "type": "reorder", "content": { "tokens": ["这儿", "能", "我", "吗", "坐"], "translation": "Tôi ngồi đây được không?" }, "answer": ["我", "能", "坐", "这儿", "吗"] },
+        { "type": "matching", "content": { "left": ["这儿", "那儿", "有", "书"], "right": ["sách", "chỗ này", "có", "chỗ kia"] }, "answer": { "0": "b", "1": "d", "2": "c", "3": "a" } },
+        { "type": "listening", "content": { "tts": "这儿有椅子吗", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Ở đây có ghế không?", "Ở kia có sách không?", "Tôi có thể ngồi không?", "Đây là cái gì?"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 11,
+      "title": "Bây giờ mấy giờ rồi?",
+      "title_zh": "现在几点",
+      "summary": "Hỏi và nói giờ; các buổi trong ngày; sinh hoạt hằng ngày.",
+      "grammar": "• Hỏi giờ: 现在几点？— Bây giờ mấy giờ? → 现在八点十分。— Bây giờ 8 giờ 10 phút.\n• 点 (diǎn — giờ), 分 (fēn — phút): 十一点三十分 — 11 giờ 30 phút.\n• Các buổi: 上午 (sáng), 中午 (trưa), 下午 (chiều). Buổi đứng trước giờ: 下午三点 — 3 giờ chiều.\n• Hỏi thời điểm: 你什么时候回家？— Bao giờ bạn về nhà?\n• Trình tự: chủ ngữ + thời gian + động từ — 我十一点睡觉。— Tôi ngủ lúc 11 giờ.",
+      "vocab": [
+        { "hanzi": "现在", "pinyin": "xiànzài", "meaning": "bây giờ, hiện tại", "example": { "zh": "现在几点？", "pinyin": "Xiànzài jǐ diǎn?", "vi": "Bây giờ mấy giờ?" } },
+        { "hanzi": "点", "pinyin": "diǎn", "meaning": "giờ (điểm)", "example": { "zh": "现在三点。", "pinyin": "Xiànzài sān diǎn.", "vi": "Bây giờ 3 giờ." } },
+        { "hanzi": "分", "pinyin": "fēn", "meaning": "phút", "example": { "zh": "八点十分", "pinyin": "bā diǎn shí fēn", "vi": "8 giờ 10 phút" } },
+        { "hanzi": "时候", "pinyin": "shíhou", "meaning": "lúc, khi (什么时候 = bao giờ)", "example": { "zh": "你什么时候去学校？", "pinyin": "Nǐ shénme shíhou qù xuéxiào?", "vi": "Bao giờ bạn đến trường?" } },
+        { "hanzi": "上午", "pinyin": "shàngwǔ", "meaning": "buổi sáng", "example": { "zh": "我上午学习汉语。", "pinyin": "Wǒ shàngwǔ xuéxí Hànyǔ.", "vi": "Buổi sáng tôi học tiếng Hán." } },
+        { "hanzi": "中午", "pinyin": "zhōngwǔ", "meaning": "buổi trưa", "example": { "zh": "中午我吃米饭。", "pinyin": "Zhōngwǔ wǒ chī mǐfàn.", "vi": "Buổi trưa tôi ăn cơm." } },
+        { "hanzi": "下午", "pinyin": "xiàwǔ", "meaning": "buổi chiều", "example": { "zh": "下午三点见！", "pinyin": "Xiàwǔ sān diǎn jiàn!", "vi": "3 giờ chiều gặp nhé!" } },
+        { "hanzi": "回", "pinyin": "huí", "meaning": "về, trở về", "example": { "zh": "我六点回家。", "pinyin": "Wǒ liù diǎn huí jiā.", "vi": "Tôi về nhà lúc 6 giờ." } },
+        { "hanzi": "睡觉", "pinyin": "shuìjiào", "meaning": "ngủ, đi ngủ", "example": { "zh": "我十一点睡觉。", "pinyin": "Wǒ shíyī diǎn shuìjiào.", "vi": "Tôi đi ngủ lúc 11 giờ." } },
+        { "hanzi": "起床", "pinyin": "qǐchuáng", "meaning": "thức dậy, ngủ dậy", "example": { "zh": "我七点起床。", "pinyin": "Wǒ qī diǎn qǐchuáng.", "vi": "Tôi dậy lúc 7 giờ." } },
+        { "hanzi": "电视", "pinyin": "diànshì", "meaning": "ti vi, truyền hình", "example": { "zh": "我晚上看电视。", "pinyin": "Wǒ wǎnshang kàn diànshì.", "vi": "Buổi tối tôi xem ti vi." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“现在几点？” nghĩa là gì?", "options": ["Bây giờ là thứ mấy?", "Bây giờ là mấy giờ?", "Hôm nay ngày mấy?", "Mấy phút nữa?"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "睡觉", "options": ["shuìjiào", "shuǐjiào", "shuìjiāo", "suìjiào"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "现在八___十分。", "hint": "Chữ nghĩa là “giờ”" }, "answer": ["点"] },
+        { "type": "reorder", "content": { "tokens": ["点", "现在", "几"], "translation": "Bây giờ mấy giờ?" }, "answer": ["现在", "几", "点"] },
+        { "type": "matching", "content": { "left": ["上午", "中午", "下午", "现在"], "right": ["buổi chiều", "buổi sáng", "bây giờ", "buổi trưa"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "我十一点睡觉", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Tôi ngủ lúc 11 giờ", "Tôi dậy lúc 11 giờ", "Tôi ăn trưa lúc 12 giờ", "Bây giờ là 11 giờ"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 12,
+      "title": "Ngày mai thời tiết thế nào?",
+      "title_zh": "明天天气怎么样",
+      "summary": "Hỏi ý kiến / tình hình với 怎么样; nói về thời tiết; 太…了.",
+      "grammar": "• 怎么样 (zěnmeyàng) hỏi ý kiến / tình hình: 明天天气怎么样？— Ngày mai thời tiết thế nào?\n• 太 + tính từ + 了: quá … — 太冷了！(Lạnh quá!) 太好了！(Tốt quá!)\n• 会 còn diễn tả khả năng xảy ra: 明天会下雨。— Ngày mai trời sẽ mưa.\n• 喜欢 (xǐhuan) + danh từ / động từ: 我喜欢热天。/ 我喜欢看电影。",
+      "vocab": [
+        { "hanzi": "天气", "pinyin": "tiānqì", "meaning": "thời tiết", "example": { "zh": "今天天气很好。", "pinyin": "Jīntiān tiānqì hěn hǎo.", "vi": "Hôm nay thời tiết rất đẹp." } },
+        { "hanzi": "怎么样", "pinyin": "zěnmeyàng", "meaning": "thế nào, ra sao", "example": { "zh": "明天天气怎么样？", "pinyin": "Míngtiān tiānqì zěnmeyàng?", "vi": "Ngày mai thời tiết thế nào?" } },
+        { "hanzi": "下雨", "pinyin": "xià yǔ", "meaning": "mưa, trời mưa", "example": { "zh": "明天会下雨。", "pinyin": "Míngtiān huì xià yǔ.", "vi": "Ngày mai trời sẽ mưa." } },
+        { "hanzi": "冷", "pinyin": "lěng", "meaning": "lạnh, rét", "example": { "zh": "今天太冷了！", "pinyin": "Jīntiān tài lěng le!", "vi": "Hôm nay lạnh quá!" } },
+        { "hanzi": "热", "pinyin": "rè", "meaning": "nóng", "example": { "zh": "这儿很热。", "pinyin": "Zhèr hěn rè.", "vi": "Ở đây rất nóng." } },
+        { "hanzi": "太", "pinyin": "tài", "meaning": "quá, rất (太…了)", "example": { "zh": "太好了！", "pinyin": "Tài hǎo le!", "vi": "Tốt quá!" } },
+        { "hanzi": "喜欢", "pinyin": "xǐhuan", "meaning": "thích", "example": { "zh": "我喜欢看电影。", "pinyin": "Wǒ xǐhuan kàn diànyǐng.", "vi": "Tôi thích xem phim." } },
+        { "hanzi": "看见", "pinyin": "kànjiàn", "meaning": "nhìn thấy, trông thấy", "example": { "zh": "我看见他了。", "pinyin": "Wǒ kànjiàn tā le.", "vi": "Tôi nhìn thấy anh ấy rồi." } },
+        { "hanzi": "些", "pinyin": "xiē", "meaning": "một vài, một số (一些)", "example": { "zh": "我买了一些水果。", "pinyin": "Wǒ mǎi le yìxiē shuǐguǒ.", "vi": "Tôi đã mua một ít hoa quả." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“明天天气怎么样？” nghĩa là gì?", "options": ["Hôm nay trời thế nào?", "Ngày mai thời tiết thế nào?", "Ngày mai trời sẽ mưa", "Hôm nay trời đẹp quá"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "天气", "options": ["tiānqì", "tiánqì", "tiānqí", "tāinqì"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "今天太___了，我不想出去。", "hint": "Tính từ nghĩa là “lạnh”" }, "answer": ["冷"] },
+        { "type": "reorder", "content": { "tokens": ["怎么样", "天气", "明天"], "translation": "Ngày mai thời tiết thế nào?" }, "answer": ["明天", "天气", "怎么样"] },
+        { "type": "matching", "content": { "left": ["冷", "热", "下雨", "喜欢"], "right": ["nóng", "lạnh", "thích", "mưa"] }, "answer": { "0": "b", "1": "a", "2": "d", "3": "c" } },
+        { "type": "listening", "content": { "tts": "明天会下雨", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Ngày mai trời sẽ mưa", "Hôm nay trời lạnh", "Ngày mai trời nóng", "Hôm qua trời mưa"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 13,
+      "title": "Anh ấy đang học nấu món Trung Quốc",
+      "title_zh": "他在学做中国菜呢",
+      "summary": "Diễn tả hành động đang diễn ra với 在…(呢); nghe gọi điện thoại.",
+      "grammar": "• 在 + động từ (+ 呢): đang làm gì — 他在学做中国菜（呢）。— Anh ấy đang học nấu món Trung Quốc.\n• Hỏi: 你在做什么呢？— Bạn đang làm gì đấy?\n• 喂 (wèi) — alô khi nghe điện thoại: 喂，你好！\n• 打电话 (dǎ diànhuà) — gọi điện thoại: 他在打电话呢。— Anh ấy đang gọi điện.",
+      "vocab": [
+        { "hanzi": "学", "pinyin": "xué", "meaning": "học", "example": { "zh": "他在学做菜。", "pinyin": "Tā zài xué zuò cài.", "vi": "Anh ấy đang học nấu ăn." } },
+        { "hanzi": "打电话", "pinyin": "dǎ diànhuà", "meaning": "gọi điện thoại", "example": { "zh": "她在打电话呢。", "pinyin": "Tā zài dǎ diànhuà ne.", "vi": "Cô ấy đang gọi điện thoại." } },
+        { "hanzi": "电话", "pinyin": "diànhuà", "meaning": "điện thoại", "example": { "zh": "你的电话是多少？", "pinyin": "Nǐ de diànhuà shì duōshao?", "vi": "Số điện thoại của bạn là bao nhiêu?" } },
+        { "hanzi": "电脑", "pinyin": "diànnǎo", "meaning": "máy tính, máy vi tính", "example": { "zh": "我有一个电脑。", "pinyin": "Wǒ yǒu yí ge diànnǎo.", "vi": "Tôi có một chiếc máy tính." } },
+        { "hanzi": "听", "pinyin": "tīng", "meaning": "nghe", "example": { "zh": "请听老师说。", "pinyin": "Qǐng tīng lǎoshī shuō.", "vi": "Hãy nghe cô giáo nói." } },
+        { "hanzi": "东西", "pinyin": "dōngxi", "meaning": "đồ, đồ vật", "example": { "zh": "我去商店买东西。", "pinyin": "Wǒ qù shāngdiàn mǎi dōngxi.", "vi": "Tôi đến cửa hàng mua đồ." } },
+        { "hanzi": "开", "pinyin": "kāi", "meaning": "mở; bật; lái (xe)", "example": { "zh": "请开电脑。", "pinyin": "Qǐng kāi diànnǎo.", "vi": "Hãy bật máy tính lên." } },
+        { "hanzi": "玩儿", "pinyin": "wánr", "meaning": "chơi, đi chơi", "example": { "zh": "我们去玩儿吧！", "pinyin": "Wǒmen qù wánr ba!", "vi": "Chúng ta đi chơi đi!" } },
+        { "hanzi": "喂", "pinyin": "wèi", "meaning": "alô (nghe điện thoại)", "example": { "zh": "喂，你好！", "pinyin": "Wèi, nǐ hǎo!", "vi": "Alô, xin chào!" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“他在学做中国菜呢。” nghĩa là gì?", "options": ["Anh ấy đang học nấu món Trung Quốc", "Anh ấy thích ăn món Trung Quốc", "Anh ấy đang gọi điện thoại", "Anh ấy đang nghe nhạc"] }, "answer": "A" },
+        { "type": "pinyin_choice", "content": { "hanzi": "电脑", "options": ["diànnǎo", "diānnǎo", "diànnáo", "tiànnǎo"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "他在打电___。", "hint": "Chữ nghĩa là “nói/lời” trong từ điện thoại" }, "answer": ["话"] },
+        { "type": "reorder", "content": { "tokens": ["在", "他", "中国菜", "做", "学"], "translation": "Anh ấy đang học nấu món Trung Quốc." }, "answer": ["他", "在", "学", "做", "中国菜"] },
+        { "type": "matching", "content": { "left": ["打电话", "电脑", "听", "东西"], "right": ["máy tính", "gọi điện thoại", "đồ vật", "nghe"] }, "answer": { "0": "b", "1": "a", "2": "d", "3": "c" } },
+        { "type": "listening", "content": { "tts": "喂，你在做什么呢", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Alô, bạn đang làm gì đấy?", "Bạn ăn cơm chưa?", "Bạn đang ở đâu?", "Bạn có máy tính không?"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 14,
+      "title": "Cô ấy đã mua khá nhiều quần áo",
+      "title_zh": "她买了不少衣服",
+      "summary": "Trợ từ 了 chỉ hoàn thành; lượng từ; hỏi giá tiền.",
+      "grammar": "• Động từ + 了: hành động đã hoàn thành — 她买了不少衣服。— Cô ấy đã mua khá nhiều quần áo.\n• 不少 (bù shǎo) = khá nhiều (không ít).\n• Lượng từ: 个 (người, vật chung) — 一个人; 本 (sách, vở) — 一本书; 件 (áo, việc) — 一件衣服.\n• Hỏi giá: 这件衣服多少钱？— Cái áo này bao nhiêu tiền? → 五十块。— 50 tệ.",
+      "vocab": [
+        { "hanzi": "买", "pinyin": "mǎi", "meaning": "mua", "example": { "zh": "我想买衣服。", "pinyin": "Wǒ xiǎng mǎi yīfu.", "vi": "Tôi muốn mua quần áo." } },
+        { "hanzi": "衣服", "pinyin": "yīfu", "meaning": "quần áo", "example": { "zh": "这件衣服很漂亮。", "pinyin": "Zhè jiàn yīfu hěn piàoliang.", "vi": "Bộ quần áo này rất đẹp." } },
+        { "hanzi": "少", "pinyin": "shǎo", "meaning": "ít (不少 = khá nhiều)", "example": { "zh": "她买了不少东西。", "pinyin": "Tā mǎi le bù shǎo dōngxi.", "vi": "Cô ấy đã mua khá nhiều đồ." } },
+        { "hanzi": "块", "pinyin": "kuài", "meaning": "tệ, đồng (đơn vị tiền)", "example": { "zh": "这个十块钱。", "pinyin": "Zhège shí kuài qián.", "vi": "Cái này 10 tệ." } },
+        { "hanzi": "钱", "pinyin": "qián", "meaning": "tiền", "example": { "zh": "多少钱？", "pinyin": "Duōshao qián?", "vi": "Bao nhiêu tiền?" } },
+        { "hanzi": "多少", "pinyin": "duōshao", "meaning": "bao nhiêu", "example": { "zh": "这本书多少钱？", "pinyin": "Zhè běn shū duōshao qián?", "vi": "Quyển sách này bao nhiêu tiền?" } },
+        { "hanzi": "漂亮", "pinyin": "piàoliang", "meaning": "đẹp, xinh đẹp", "example": { "zh": "她很漂亮。", "pinyin": "Tā hěn piàoliang.", "vi": "Cô ấy rất xinh." } },
+        { "hanzi": "小", "pinyin": "xiǎo", "meaning": "nhỏ, bé", "example": { "zh": "这件衣服太小了。", "pinyin": "Zhè jiàn yīfu tài xiǎo le.", "vi": "Bộ quần áo này nhỏ quá." } },
+        { "hanzi": "个", "pinyin": "gè", "meaning": "cái, chiếc (lượng từ chung)", "example": { "zh": "一个苹果", "pinyin": "yí ge píngguǒ", "vi": "một quả táo" } },
+        { "hanzi": "本", "pinyin": "běn", "meaning": "quyển, cuốn (lượng từ sách vở)", "example": { "zh": "一本书", "pinyin": "yì běn shū", "vi": "một quyển sách" } },
+        { "hanzi": "件", "pinyin": "jiàn", "meaning": "chiếc, bộ (lượng từ quần áo)", "example": { "zh": "一件衣服", "pinyin": "yí jiàn yīfu", "vi": "một bộ quần áo" } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“她买了不少衣服。” nghĩa là gì?", "options": ["Cô ấy mua rất ít quần áo", "Cô ấy đã mua khá nhiều quần áo", "Cô ấy muốn mua quần áo", "Cô ấy bán quần áo"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "漂亮", "options": ["piàoliang", "piāoliang", "biàoliang", "piàoniang"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "这件衣服多少___？", "hint": "Chữ nghĩa là “tiền”" }, "answer": ["钱"] },
+        { "type": "reorder", "content": { "tokens": ["买", "她", "衣服", "了", "不少"], "translation": "Cô ấy đã mua khá nhiều quần áo." }, "answer": ["她", "买", "了", "不少", "衣服"] },
+        { "type": "matching", "content": { "left": ["买", "钱", "衣服", "漂亮"], "right": ["quần áo", "mua", "đẹp", "tiền"] }, "answer": { "0": "b", "1": "d", "2": "a", "3": "c" } },
+        { "type": "listening", "content": { "tts": "这个多少钱", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Cái này bao nhiêu tiền?", "Cái này đẹp quá", "Tôi mua cái này", "Cái kia rẻ hơn"] }, "answer": "A" }
+      ]
+    },
+    {
+      "unit": 15,
+      "title": "Tôi đến bằng máy bay",
+      "title_zh": "我是坐飞机来的",
+      "summary": "Cấu trúc nhấn mạnh 是…的; phương tiện đi lại; xưng hô lịch sự.",
+      "grammar": "• Cấu trúc 是…的 nhấn mạnh cách thức / thời gian / nơi chốn của việc đã xảy ra: 我是坐飞机来的。— Tôi đến bằng máy bay (nhấn mạnh “bằng máy bay”).\n• 坐 + phương tiện: 坐飞机 (đi máy bay), 坐出租车 (đi taxi).\n• Hỏi cách thức: 你是怎么来的？— Bạn đến bằng cách nào?\n• Xưng hô lịch sự: 先生 (ông, ngài) / 小姐 (cô) đặt sau họ: 王先生, 李小姐.",
+      "vocab": [
+        { "hanzi": "飞机", "pinyin": "fēijī", "meaning": "máy bay", "example": { "zh": "我是坐飞机来的。", "pinyin": "Wǒ shì zuò fēijī lái de.", "vi": "Tôi đến bằng máy bay." } },
+        { "hanzi": "出租车", "pinyin": "chūzūchē", "meaning": "taxi, xe taxi", "example": { "zh": "我们坐出租车去吧。", "pinyin": "Wǒmen zuò chūzūchē qù ba.", "vi": "Chúng ta đi taxi nhé." } },
+        { "hanzi": "来", "pinyin": "lái", "meaning": "đến, tới (hướng về người nói)", "example": { "zh": "你什么时候来？", "pinyin": "Nǐ shénme shíhou lái?", "vi": "Bao giờ bạn đến?" } },
+        { "hanzi": "北京", "pinyin": "Běijīng", "meaning": "Bắc Kinh", "example": { "zh": "他去北京工作。", "pinyin": "Tā qù Běijīng gōngzuò.", "vi": "Anh ấy đi Bắc Kinh làm việc." } },
+        { "hanzi": "年", "pinyin": "nián", "meaning": "năm", "example": { "zh": "二〇二六年", "pinyin": "èr líng èr liù nián", "vi": "năm 2026" } },
+        { "hanzi": "怎么", "pinyin": "zěnme", "meaning": "thế nào, làm sao", "example": { "zh": "你是怎么来的？", "pinyin": "Nǐ shì zěnme lái de?", "vi": "Bạn đến bằng cách nào?" } },
+        { "hanzi": "先生", "pinyin": "xiānsheng", "meaning": "ông, ngài (xưng hô lịch sự)", "example": { "zh": "王先生，您好！", "pinyin": "Wáng xiānsheng, nín hǎo!", "vi": "Chào ông Vương!" } },
+        { "hanzi": "小姐", "pinyin": "xiǎojiě", "meaning": "cô (xưng hô lịch sự)", "example": { "zh": "李小姐是老师。", "pinyin": "Lǐ xiǎojiě shì lǎoshī.", "vi": "Cô Lý là giáo viên." } },
+        { "hanzi": "爱", "pinyin": "ài", "meaning": "yêu, rất thích", "example": { "zh": "我爱我的家。", "pinyin": "Wǒ ài wǒ de jiā.", "vi": "Tôi yêu gia đình tôi." } },
+        { "hanzi": "猫", "pinyin": "māo", "meaning": "con mèo", "example": { "zh": "我家有一个小猫。", "pinyin": "Wǒ jiā yǒu yí ge xiǎo māo.", "vi": "Nhà tôi có một chú mèo nhỏ." } },
+        { "hanzi": "狗", "pinyin": "gǒu", "meaning": "con chó", "example": { "zh": "他很爱他的狗。", "pinyin": "Tā hěn ài tā de gǒu.", "vi": "Anh ấy rất yêu chú chó của mình." } }
+      ],
+      "questions": [
+        { "type": "multiple_choice", "content": { "prompt": "“我是坐飞机来的。” nhấn mạnh điều gì?", "options": ["Thời gian đến", "Cách đến (bằng máy bay)", "Nơi đến", "Người cùng đi"] }, "answer": "B" },
+        { "type": "pinyin_choice", "content": { "hanzi": "飞机", "options": ["fēijī", "fěijī", "fēijì", "hēijī"] }, "answer": "A" },
+        { "type": "fill_blank", "content": { "prompt": "我是___飞机来的。", "hint": "“ngồi / đi” (phương tiện)" }, "answer": ["坐"] },
+        { "type": "reorder", "content": { "tokens": ["坐", "我", "来", "是", "的", "飞机"], "translation": "Tôi đến bằng máy bay." }, "answer": ["我", "是", "坐", "飞机", "来", "的"] },
+        { "type": "matching", "content": { "left": ["飞机", "出租车", "北京", "猫"], "right": ["taxi", "máy bay", "mèo", "Bắc Kinh"] }, "answer": { "0": "b", "1": "a", "2": "d", "3": "c" } },
+        { "type": "listening", "content": { "tts": "我是坐出租车来的", "prompt": "Nghe và chọn nghĩa đúng", "options": ["Tôi đến bằng taxi", "Tôi đến bằng máy bay", "Tôi đi Bắc Kinh", "Tôi thích chó và mèo"] }, "answer": "A" }
+      ]
+    }
+  ]
+}

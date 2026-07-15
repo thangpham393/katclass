@@ -408,7 +408,7 @@ function SessionContentCard({
                       {l.title}
                     </div>
                     <div className="truncate text-xs text-muted-foreground">
-                      {l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
+                      {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
                     </div>
                   </div>
                   {inCourse && <Badge variant="gold">Khóa này</Badge>}

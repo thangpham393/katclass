@@ -154,6 +154,7 @@ export default function NewHomeworkPage() {
                   <option value="">Mọi bài học</option>
                   {(lessons.data ?? []).map((l) => (
                     <option key={l.id} value={l.id}>
+                      {l.textbook ? `${l.textbook.name} — ` : ""}
                       {l.unit != null ? `Bài ${l.unit}: ` : ""}{l.title}
                     </option>
                   ))}

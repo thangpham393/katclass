@@ -88,6 +88,7 @@ export async function deleteVocabItem(id: string) {
 export interface LessonRow {
   id: string;
   course_id: string | null;
+  textbook_id: string | null;
   unit: number | null;
   title: string;
   title_zh: string | null;
@@ -97,7 +98,15 @@ export interface LessonRow {
   sort: number;
   created_at: string;
   course: Pick<CourseRow, "id" | "name" | "level"> | null;
+  textbook: { id: string; name: string; level: string | null } | null;
   lesson_vocab: { count: number }[];
+}
+
+/** Nhãn nguồn của bài học: giáo trình thư viện hoặc khóa học. */
+export function lessonSourceLabel(
+  l: Pick<LessonRow, "course" | "textbook">,
+): string | null {
+  return l.textbook?.name ?? l.course?.name ?? null;
 }
 
 export interface LessonDetail extends Omit<LessonRow, "lesson_vocab"> {
@@ -115,8 +124,9 @@ export interface LessonInput {
 }
 
 const LESSON_SELECT = `
-  id, course_id, unit, title, title_zh, summary, grammar, slide_embed_url, sort, created_at,
+  id, course_id, textbook_id, unit, title, title_zh, summary, grammar, slide_embed_url, sort, created_at,
   course:courses ( id, name, level ),
+  textbook:textbooks ( id, name, level ),
   lesson_vocab ( count )
 `;
 
@@ -133,8 +143,9 @@ export async function fetchLesson(id: string): Promise<LessonDetail | null> {
   const { data, error } = await getSupabase()
     .from("lessons")
     .select(`
-      id, course_id, unit, title, title_zh, summary, grammar, slide_embed_url, sort, created_at,
+      id, course_id, textbook_id, unit, title, title_zh, summary, grammar, slide_embed_url, sort, created_at,
       course:courses ( id, name, level ),
+      textbook:textbooks ( id, name, level ),
       lesson_vocab ( sort, vocab:vocab_items ( * ) )
     `)
     .eq("id", id)
@@ -195,6 +206,7 @@ export interface SessionLessonRow {
     title: string;
     title_zh: string | null;
     course: { name: string; level: string | null } | null;
+    textbook: { name: string; level: string | null } | null;
     lesson_vocab: { count: number }[];
   };
 }
@@ -204,6 +216,7 @@ const SESSION_LESSON_SELECT = `
   lesson:lessons (
     id, unit, title, title_zh,
     course:courses ( name, level ),
+    textbook:textbooks ( name, level ),
     lesson_vocab ( count )
   )
 `;

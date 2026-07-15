@@ -53,10 +53,12 @@ export default function StudentLessonPage() {
       <div>
         <div className="flex flex-wrap items-center gap-2">
           {l.unit != null && <Badge variant="gold">Bài {l.unit}</Badge>}
-          {l.course && (
+          {(l.textbook ?? l.course) && (
             <Badge variant="outline">
-              {l.course.name}
-              {l.course.level ? ` · ${LEVEL_LABELS[l.course.level] ?? l.course.level}` : ""}
+              {(l.textbook ?? l.course)!.name}
+              {(l.textbook ?? l.course)!.level
+                ? ` · ${LEVEL_LABELS[(l.textbook ?? l.course)!.level!] ?? (l.textbook ?? l.course)!.level}`
+                : ""}
             </Badge>
           )}
         </div>

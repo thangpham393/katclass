@@ -49,6 +49,7 @@ const teacherNav: NavItem[] = [
 const adminNav: NavItem[] = [
   { href: "/admin", label: "Tổng quan", icon: LayoutDashboard },
   { href: "/admin/courses", label: "Khóa học", icon: BookMarked },
+  { href: "/admin/library", label: "Thư viện giáo trình", icon: Library },
   { href: "/admin/classes", label: "Lớp & lịch", icon: School },
   { href: "/admin/timetable", label: "Thời khóa biểu", icon: CalendarDays },
   { href: "/admin/students", label: "Học viên", icon: Users },
