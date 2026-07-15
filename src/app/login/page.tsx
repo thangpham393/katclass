@@ -45,8 +45,9 @@ export default function LoginPage() {
     setError(null);
     setSubmitting("google");
     try {
-      const profile = await signInWithGoogle();
-      router.replace(homeForRole(profile.role));
+      // Supabase dùng luồng redirect: rời trang sang Google, quay về /login
+      // với session sẵn sàng → useEffect phía trên tự điều hướng theo role.
+      await signInWithGoogle();
     } catch (err) {
       setError(authErrorMessage(err));
       setSubmitting(null);
