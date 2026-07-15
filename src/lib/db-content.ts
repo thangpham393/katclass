@@ -275,6 +275,8 @@ export const CHOICE_LETTERS = ["A", "B", "C", "D", "E", "F"];
 
 export interface QuestionContent {
   prompt?: string;
+  /** Đoạn văn / câu dẫn (đọc hiểu, chọn vị trí từ...) — hiển thị trong khung riêng, giữ xuống dòng. */
+  passage?: string;
   hanzi?: string;
   tts?: string;
   audio_url?: string;
@@ -305,7 +307,7 @@ export function questionPreview(q: Pick<QuestionRow, "type" | "content">): strin
   switch (q.type) {
     case "multiple_choice":
     case "listening":
-      return c.prompt ?? c.hanzi ?? c.tts ?? "";
+      return c.prompt ?? c.passage ?? c.hanzi ?? c.tts ?? "";
     case "pinyin_choice":
       return c.hanzi ?? "";
     case "fill_blank":

@@ -73,6 +73,17 @@ export default function NewHomeworkPage() {
     setSelected((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
   }
 
+  /** Chọn nguyên bộ câu hỏi đang hiện (giữ câu đã chọn, không trùng). */
+  function selectAllVisible() {
+    const ids = visibleQuestions.map((q) => q.id);
+    setSelected((cur) => [...cur, ...ids.filter((id) => !cur.includes(id))]);
+    // Chưa đặt tiêu đề + đang lọc theo 1 bài → tự điền "Luyện tập Bài N"
+    if (!title.trim() && lessonFilter) {
+      const l = (lessons.data ?? []).find((x) => x.id === lessonFilter);
+      if (l) setTitle(`Luyện tập${l.unit != null ? ` Bài ${l.unit}` : ""} — ${l.title}`);
+    }
+  }
+
   async function handleSubmit() {
     if (!user) return;
     if (!title.trim()) return setError("Nhập tiêu đề bài tập.");
@@ -185,6 +196,26 @@ export default function NewHomeworkPage() {
                   </label>
                 )}
               </div>
+
+              {/* Chọn nguyên bộ: lấy toàn bộ câu hỏi đang hiện (vd. cả bộ luyện tập của 1 bài) */}
+              {!questions.loading && visibleQuestions.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button type="button" variant="secondary" size="sm" onClick={selectAllVisible}>
+                    <Plus className="h-3.5 w-3.5" />
+                    Chọn cả bộ ({visibleQuestions.length} câu{lessonFilter ? " của bài này" : ""})
+                  </Button>
+                  {selected.length > 0 && (
+                    <Button type="button" variant="outline" size="sm" onClick={() => setSelected([])}>
+                      Bỏ chọn tất cả
+                    </Button>
+                  )}
+                  {lessonFilter && (
+                    <span className="text-xs text-muted-foreground">
+                      Chọn bài học rồi bấm “Chọn cả bộ” — khỏi tích tay từng câu.
+                    </span>
+                  )}
+                </div>
+              )}
 
               {questions.loading ? (
                 <LoadingRows rows={4} className="p-0" />

@@ -32,6 +32,11 @@ function speak(text: string) {
   window.speechSynthesis.speak(u);
 }
 
+/** Có chứa chữ Hán không — để chọn font hiển thị phù hợp. */
+function hasHanzi(s: string | undefined): boolean {
+  return Boolean(s && /[一-鿿]/.test(s));
+}
+
 export default function StudentHomeworkPlayerPage() {
   const params = useParams<{ id: string }>();
   const homeworkId = params.id;
@@ -292,7 +297,22 @@ function ChoiceInput({
           <span className="text-xs text-muted-foreground">Nhấn để nghe</span>
         </div>
       )}
-      {c.prompt && <h3 className="text-base font-semibold">{c.prompt}</h3>}
+      {c.prompt && (
+        <h3 className={cn("whitespace-pre-line text-base font-semibold", hasHanzi(c.prompt) && "zh text-lg")}>
+          {c.prompt}
+        </h3>
+      )}
+      {c.passage && (
+        <div
+          className={cn(
+            "mt-3 whitespace-pre-line rounded-xl border bg-muted/40 p-4 leading-relaxed",
+            hasHanzi(c.passage) ? "zh text-lg" : "text-sm",
+          )}
+        >
+          {c.passage}
+        </div>
+      )}
+      {c.hint && <div className="mt-2 text-xs text-muted-foreground">Gợi ý: {c.hint}</div>}
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {(c.options ?? []).map((opt, i) => {
           const letter = CHOICE_LETTERS[i];
@@ -317,7 +337,7 @@ function ChoiceInput({
               >
                 {letter}
               </span>
-              <span className={q.type !== "multiple_choice" ? "zh text-lg" : ""}>{opt}</span>
+              <span className={cn(hasHanzi(opt) && "zh text-lg")}>{opt}</span>
             </button>
           );
         })}

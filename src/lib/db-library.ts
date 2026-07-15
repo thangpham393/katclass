@@ -20,6 +20,11 @@
  * Import lặp lại được (idempotent): giáo trình khớp theo code, bài theo
  * unit, từ vựng tái dùng kho theo hanzi, câu hỏi trùng nội dung thì bỏ qua
  * (không xóa câu cũ để không vỡ bài tập đã giao).
+ *
+ * Cập nhật MỀM: với bài đã tồn tại, chỉ ghi đè field có mặt trong payload
+ * (summary/grammar/... không khai báo thì giữ nguyên); "vocab" không khai
+ * báo thì giữ nguyên từ đã gắn. Nhờ đó có thể import file CHỈ CHỨA CÂU HỎI
+ * (unit + title + questions) để bổ sung bài tập cho giáo trình có sẵn.
  */
 
 import { getSupabase } from "./supabase";
@@ -252,15 +257,16 @@ export async function importTextbook(
     (existingLessons ?? []).map((l) => [l.unit as number, l.id as string]),
   );
   for (const lesson of payload.lessons) {
-    const fields = {
+    // Chỉ ghi đè field có khai báo trong payload (cập nhật mềm)
+    const fields: Record<string, unknown> = {
       unit: lesson.unit,
       title: lesson.title.trim(),
-      title_zh: lesson.title_zh?.trim() || null,
-      summary: lesson.summary?.trim() || null,
-      grammar: lesson.grammar?.trim() || null,
-      slide_embed_url: lesson.slide_embed_url?.trim() || null,
       sort: lesson.unit,
     };
+    if (lesson.title_zh !== undefined) fields.title_zh = lesson.title_zh?.trim() || null;
+    if (lesson.summary !== undefined) fields.summary = lesson.summary?.trim() || null;
+    if (lesson.grammar !== undefined) fields.grammar = lesson.grammar?.trim() || null;
+    if (lesson.slide_embed_url !== undefined) fields.slide_embed_url = lesson.slide_embed_url?.trim() || null;
     const existingId = lessonIdByUnit.get(lesson.unit);
     if (existingId) {
       const { error } = await supabase.from("lessons").update(fields).eq("id", existingId);
@@ -320,10 +326,12 @@ export async function importTextbook(
     }
   }
 
-  // 4. Gắn từ vựng vào từng bài (thay toàn bộ, giữ thứ tự trong file)
+  // 4. Gắn từ vựng vào từng bài (thay toàn bộ, giữ thứ tự trong file).
+  //    Bài không khai báo "vocab" thì giữ nguyên từ đang gắn.
   for (const lesson of payload.lessons) {
+    if (lesson.vocab === undefined) continue;
     const lessonId = lessonIdByUnit.get(lesson.unit)!;
-    const ids = (lesson.vocab ?? [])
+    const ids = lesson.vocab
       .map((v) => vocabIdByHanzi.get(v.hanzi.trim()))
       .filter((id): id is string => Boolean(id));
     const { error: delErr } = await supabase.from("lesson_vocab").delete().eq("lesson_id", lessonId);
