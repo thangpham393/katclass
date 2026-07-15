@@ -813,6 +813,17 @@ export async function resetMakeup(creditId: string) {
   if (error) throw error;
 }
 
+/** Mọi buổi học trong khoảng ngày (cho thời khóa biểu tổng). */
+export async function fetchSessionsInRange(from: string, to: string): Promise<SessionRow[]> {
+  const { data, error } = await getSupabase()
+    .from("sessions").select(SESSION_SELECT)
+    .gte("date", from).lte("date", to)
+    .order("date").order("start_time")
+    .limit(500);
+  if (error) throw error;
+  return data as unknown as SessionRow[];
+}
+
 /** Các buổi sắp tới (mọi lớp) để chọn xếp học bù. */
 export async function fetchUpcomingSessions(): Promise<SessionRow[]> {
   const { data, error } = await getSupabase()
