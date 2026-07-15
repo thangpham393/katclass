@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AlertCircle, CheckCircle2, Loader2, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,18 @@ export default function ChangePasswordPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [myCode, setMyCode] = useState<string | null>(null);
+
+  // Mã đăng nhập của chính mình (để biết mã mà đăng nhập lần sau)
+  useEffect(() => {
+    if (!user) return;
+    getSupabase()
+      .from("profiles")
+      .select("student_code")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => setMyCode(data?.student_code ?? null));
+  }, [user]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -105,6 +117,12 @@ export default function ChangePasswordPage() {
                 )}
                 <p className="mt-2 text-sm text-muted-foreground">
                   Tài khoản: <b className="text-foreground">{user.name}</b>
+                  {myCode && (
+                    <>
+                      {" — mã đăng nhập của bạn: "}
+                      <b className="font-mono text-brand-700">{myCode}</b>
+                    </>
+                  )}
                 </p>
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                   {error && (

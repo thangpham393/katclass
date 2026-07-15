@@ -3,29 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertCircle, ChevronDown, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo, LogoMark } from "@/components/brand/logo";
 import { useAuth } from "@/components/auth/auth-provider";
-import { cn } from "@/lib/utils";
-import {
-  signInWithEmail,
-  signInWithGoogle,
-  homeForRole,
-  authErrorMessage,
-} from "@/lib/auth";
+import { signInWithEmail, homeForRole, authErrorMessage } from "@/lib/auth";
 import { DEFAULT_LOGIN_PASSWORD, normalizeLoginCode } from "@/lib/student-login";
 
 export default function LoginPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [code, setCode] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showAdmin, setShowAdmin] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState<"code" | "email" | "google" | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Đích đến sau đăng nhập: ?next=/... hoặc trang chủ theo role
   function destination(role: Parameters<typeof homeForRole>[0]): string {
@@ -39,31 +31,30 @@ export default function LoginPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, router]);
 
-  async function handleCodeLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setSubmitting("code");
+    setSubmitting(true);
     try {
-      // Bước 1: đổi mã thành viên → email tài khoản đã được trung tâm cấp
-      const res = await fetch("/api/student-auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: normalizeLoginCode(code) }),
-      });
-      const body = await res.json();
-      if (!res.ok) {
-        setError(body.error ?? "Có lỗi xảy ra, thử lại sau.");
-        setSubmitting(null);
-        return;
+      // Ô mã cũng chấp nhận email (đường dự phòng cho quản trị)
+      let email = code.trim();
+      if (!email.includes("@")) {
+        const res = await fetch("/api/student-auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: normalizeLoginCode(code) }),
+        });
+        const body = await res.json();
+        if (!res.ok) {
+          setError(body.error ?? "Có lỗi xảy ra, thử lại sau.");
+          setSubmitting(false);
+          return;
+        }
+        email = body.email;
       }
-      if (!body.hasPassword) {
-        setError("Tài khoản của mã này đăng nhập bằng Google — mở mục “Dành cho quản trị” bên dưới.");
-        setSubmitting(null);
-        return;
-      }
-      // Bước 2: đăng nhập bằng mật khẩu
+
       try {
-        const profile = await signInWithEmail(body.email, password);
+        const profile = await signInWithEmail(email, password);
         if (password === DEFAULT_LOGIN_PASSWORD) {
           // Đang dùng mật khẩu mặc định → đưa tới trang đổi mật khẩu
           router.replace("/account/password?first=1");
@@ -77,37 +68,11 @@ export default function LoginPage() {
             ? `Mật khẩu không đúng. Nếu chưa từng đổi, dùng mật khẩu mặc định ${DEFAULT_LOGIN_PASSWORD}.`
             : msg,
         );
-        setSubmitting(null);
+        setSubmitting(false);
       }
     } catch {
       setError("Không kết nối được máy chủ, thử lại sau.");
-      setSubmitting(null);
-    }
-  }
-
-  async function handleEmailLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setSubmitting("email");
-    try {
-      const profile = await signInWithEmail(email.trim(), password);
-      router.replace(destination(profile.role));
-    } catch (err) {
-      setError(authErrorMessage(err));
-      setSubmitting(null);
-    }
-  }
-
-  async function handleGoogleLogin() {
-    setError(null);
-    setSubmitting("google");
-    try {
-      // Supabase dùng luồng redirect: rời trang sang Google, quay về /login
-      // với session sẵn sàng → useEffect phía trên tự điều hướng theo role.
-      await signInWithGoogle();
-    } catch (err) {
-      setError(authErrorMessage(err));
-      setSubmitting(null);
+      setSubmitting(false);
     }
   }
 
@@ -157,7 +122,7 @@ export default function LoginPage() {
 
           <h1 className="text-2xl font-extrabold tracking-tight">Đăng nhập</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Dùng mã thành viên do KAT Education cấp (học viên, giáo viên, nhân viên).
+            Dùng mã thành viên do KAT Education cấp.
           </p>
 
           {error && (
@@ -167,15 +132,15 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form className="mt-6 space-y-4" onSubmit={handleCodeLogin}>
+          <form className="mt-6 space-y-4" onSubmit={handleLogin}>
             <div>
               <label className="text-sm font-medium" htmlFor="login-code">Mã thành viên</label>
               <Input
                 id="login-code"
                 placeholder="HVKAT00123"
-                className="mt-1.5 font-mono uppercase tracking-widest"
+                className="mt-1.5 font-mono tracking-widest"
                 value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                onChange={(e) => setCode(e.target.value)}
                 autoComplete="username"
                 required
               />
@@ -200,86 +165,17 @@ export default function LoginPage() {
                 hệ thống sẽ nhắc đổi ngay sau đó.
               </p>
             </div>
-            <Button className="w-full" size="lg" type="submit" disabled={submitting !== null}>
-              {submitting === "code" && <Loader2 className="h-4 w-4 animate-spin" />}
+            <Button className="w-full" size="lg" type="submit" disabled={submitting}>
+              {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               Đăng nhập
             </Button>
           </form>
 
-          {/* Tạm ẩn Google/email — chỉ dành cho quản trị */}
-          <div className="mt-8">
-            <button
-              type="button"
-              onClick={() => setShowAdmin((v) => !v)}
-              className="mx-auto flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-            >
-              Dành cho quản trị
-              <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", showAdmin && "rotate-180")} />
-            </button>
-
-            {showAdmin && (
-              <div className="mt-4 space-y-4 rounded-xl border border-dashed p-4">
-                <form className="space-y-3" onSubmit={handleEmailLogin}>
-                  <Input
-                    type="email"
-                    placeholder="Email quản trị"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                  />
-                  <Button variant="secondary" className="w-full" type="submit" disabled={submitting !== null}>
-                    {submitting === "email" && <Loader2 className="h-4 w-4 animate-spin" />}
-                    Đăng nhập bằng email + mật khẩu ở trên
-                  </Button>
-                </form>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  disabled={submitting !== null}
-                >
-                  {submitting === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
-                  Đăng nhập bằng Google
-                </Button>
-                <p className="text-center text-xs text-muted-foreground">
-                  Có mã kích hoạt từ trước?{" "}
-                  <Link href="/activate" className="font-semibold text-brand-700 hover:underline">
-                    Kích hoạt tại đây
-                  </Link>
-                </p>
-              </div>
-            )}
-          </div>
-
-          <p className="mt-8 text-center text-sm text-muted-foreground">
+          <p className="mt-10 text-center text-sm text-muted-foreground">
             Quên mã hoặc mật khẩu? Liên hệ trung tâm KAT Education.
           </p>
         </div>
       </div>
     </div>
-  );
-}
-
-function GoogleIcon() {
-  return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden>
-      <path
-        fill="#4285F4"
-        d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.12 0-5.77-2.1-6.71-4.94H1.29v3.1A12 12 0 0 0 12 24Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.29a12 12 0 0 0 0 10.78l4-3.1Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.77c1.76 0 3.34.6 4.58 1.79l3.44-3.44A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.29 6.61l4 3.1C6.23 6.87 8.88 4.77 12 4.77Z"
-      />
-    </svg>
   );
 }

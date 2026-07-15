@@ -57,11 +57,7 @@ export async function POST(req: Request) {
 
     const { data: u, error: uErr } = await admin.auth.admin.getUserById(profile.user_id);
     if (uErr) throw uErr;
-    const providers = (u.user?.app_metadata?.providers as string[] | undefined) ?? [];
-    return NextResponse.json({
-      email: u.user?.email,
-      hasPassword: providers.includes("email"),
-    });
+    return NextResponse.json({ email: u.user?.email });
   } catch (e) {
     console.error("student-auth:", e);
     return NextResponse.json(

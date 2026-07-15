@@ -6,8 +6,9 @@ import type { User } from "./types";
 
 /**
  * Lấy hồ sơ người dùng từ bảng public.profiles (tra theo user_id).
- * Bình thường trigger `on_auth_user_created` đã tạo/nối sẵn hồ sơ khi đăng ký;
- * nếu vì lý do nào đó chưa có thì tạo mới với role mặc định "student".
+ * KHÔNG tự tạo hồ sơ nữa (chính sách từ 0009_lock_signup): hồ sơ chỉ do
+ * admin/staff tạo và cấp mã. Tài khoản đăng nhập mà không có hồ sơ
+ * (tài khoản lạ) sẽ bị đăng xuất ngay.
  * Lưu ý: User.id là id của hồ sơ (profiles.id), không phải auth user id.
  */
 export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
@@ -19,47 +20,21 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
     .maybeSingle();
   if (error) throw error;
 
-  if (data) {
-    return {
-      id: data.id,
-      name: data.name || fallbackName(sbUser),
-      email: data.email || sbUser.email || "",
-      role: data.role ?? "student",
-      avatar: data.avatar ?? undefined,
-      classIds: [],
-    };
+  if (!data) {
+    await supabase.auth.signOut();
+    throw new Error(
+      "Tài khoản này chưa được KAT Education đăng ký — liên hệ trung tâm để được cấp mã đăng nhập.",
+    );
   }
 
-  const profile = {
-    user_id: sbUser.id,
-    name: fallbackName(sbUser),
-    email: sbUser.email ?? "",
-    role: "student" as const,
-    avatar: (sbUser.user_metadata?.avatar_url as string | undefined) ?? null,
-  };
-  const { data: inserted, error: insertError } = await supabase
-    .from("profiles")
-    .insert(profile)
-    .select("id")
-    .single();
-  if (insertError) throw insertError;
   return {
-    id: inserted.id,
-    name: profile.name,
-    email: profile.email,
-    role: profile.role,
-    avatar: profile.avatar ?? undefined,
+    id: data.id,
+    name: data.name || sbUser.email || "Người dùng",
+    email: data.email || sbUser.email || "",
+    role: data.role ?? "student",
+    avatar: data.avatar ?? undefined,
     classIds: [],
   };
-}
-
-function fallbackName(sbUser: SupabaseUser): string {
-  return (
-    (sbUser.user_metadata?.full_name as string | undefined) ??
-    (sbUser.user_metadata?.name as string | undefined) ??
-    sbUser.email?.split("@")[0] ??
-    "Người dùng"
-  );
 }
 
 export async function signInWithEmail(email: string, password: string): Promise<User> {
