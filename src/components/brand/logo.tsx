@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Logo KAT — dấu triện đỏ chu sa với chữ 汉 (Hán) trắng,
- * theo ngôn ngữ thiết kế "Mực & Ngọc".
+ * Logo KAT — lettermark "KAT" xanh-đỏ-xanh với nét sách đỏ bên dưới,
+ * theo nhận diện KAT Education.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -12,28 +12,33 @@ export function LogoMark({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-label="KAT logo"
     >
-      <rect width="64" height="64" rx="12" fill="#d03e1d" />
-      <rect
-        x="5.5"
-        y="5.5"
-        width="53"
-        height="53"
-        rx="8"
-        fill="none"
-        stroke="rgba(255,255,255,0.55)"
-        strokeWidth="2"
-      />
+      <rect width="64" height="64" rx="14" fill="white" />
       <text
         x="32"
-        y="45"
+        y="40"
         textAnchor="middle"
-        fontFamily="'Noto Serif SC', 'Songti SC', serif"
+        fontFamily="var(--font-sans), system-ui, sans-serif"
         fontWeight={900}
-        fontSize={34}
-        fill="#ffffff"
+        fontSize={26}
+        letterSpacing={-1}
       >
-        汉
+        <tspan fill="#1D4ED8">K</tspan>
+        <tspan fill="#DC2626">A</tspan>
+        <tspan fill="#1D4ED8">T</tspan>
       </text>
+      <path
+        d="M14 49 Q 32 57 50 49"
+        stroke="#DC2626"
+        strokeWidth={2.6}
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        d="M32 47 V 54"
+        stroke="#DC2626"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -49,7 +54,7 @@ export function Logo({
 }) {
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <div className="relative h-9 w-9 overflow-hidden rounded-lg shadow-seal">
+      <div className="relative h-9 w-9 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-blue-100">
         <LogoMark />
       </div>
       {showText && (
@@ -57,10 +62,10 @@ export function Logo({
           <div
             className={cn(
               "text-base font-extrabold tracking-tight",
-              inverted ? "text-white" : "text-ink-900",
+              inverted ? "text-white" : "text-brand-800",
             )}
           >
-            KAT <span className={inverted ? "text-brand-300" : "text-brand-600"}>CLASS</span>
+            KAT <span className="text-gold-600">CLASS</span>
           </div>
           <div
             className={cn(

@@ -108,9 +108,9 @@ export function Sidebar({ role }: { role: Role }) {
         })}
       </nav>
 
-      <div className="m-4 rounded-xl border border-ink-800 bg-ink-900 p-4">
-        <div className="zh text-2xl font-semibold text-brand-400">学而时习之</div>
-        <div className="mt-1 text-xs leading-relaxed text-ink-400">
+      <div className="m-4 rounded-xl bg-gradient-brand p-4 text-white shadow-soft">
+        <div className="zh text-2xl font-semibold">学而时习之</div>
+        <div className="mt-1 text-xs leading-relaxed text-white/80">
           &ldquo;Học phải đi đôi với luyện tập&rdquo; — mỗi ngày 5 từ mới, tiến bộ không ngừng.
         </div>
       </div>
