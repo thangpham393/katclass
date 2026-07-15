@@ -10,7 +10,7 @@ import { Logo } from "@/components/brand/logo";
 import { useAuth } from "@/components/auth/auth-provider";
 import { homeForRole } from "@/lib/auth";
 import { getSupabase } from "@/lib/supabase";
-import { DEFAULT_STUDENT_PASSWORD } from "@/lib/student-login";
+import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 
 export default function ChangePasswordPage() {
   const { user, loading } = useAuth();
@@ -31,7 +31,7 @@ export default function ChangePasswordPage() {
       setError("Mật khẩu mới cần ít nhất 8 ký tự.");
       return;
     }
-    if (password === DEFAULT_STUDENT_PASSWORD) {
+    if (password === DEFAULT_LOGIN_PASSWORD) {
       setError("Không dùng lại mật khẩu mặc định — hãy đặt mật khẩu riêng của bạn.");
       return;
     }

@@ -297,31 +297,64 @@ export const TEAM_ROLE_LABELS: Record<TeamRole, string> = {
   staff: "Nhân viên hành chính",
 };
 
-/** Tạo hồ sơ giáo viên/nhân viên kèm mã kích hoạt. */
+/** Tạo hồ sơ giáo viên/nhân viên — mã GVKAT/NVKAT do trigger DB tự cấp. */
 export async function createTeamProfile(input: {
   name: string;
   email?: string;
   phone?: string;
   role: TeamRole;
 }): Promise<ProfileRow> {
-  const supabase = getSupabase();
-  // Thử lại vài lần nếu mã sinh ra trùng (xác suất rất thấp)
-  for (let attempt = 0; ; attempt++) {
-    const { data, error } = await supabase
-      .from("profiles")
-      .insert({
-        name: input.name.trim(),
-        email: input.email?.trim().toLowerCase() ?? "",
-        phone: input.phone?.trim() || null,
-        role: input.role,
-        invite_code: generateInviteCode(),
-      })
-      .select("*")
-      .single();
-    if (!error) return data as ProfileRow;
-    if (error.code === "23505" && attempt < 3) continue;
-    throw error;
-  }
+  const { data, error } = await getSupabase()
+    .from("profiles")
+    .insert({
+      name: input.name.trim(),
+      email: input.email?.trim().toLowerCase() ?? "",
+      phone: input.phone?.trim() || null,
+      role: input.role,
+    })
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data as ProfileRow;
+}
+
+/** Tạo hồ sơ học viên — mã HVKAT do trigger DB tự cấp. */
+export async function createStudentProfile(input: {
+  name: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  note?: string;
+}): Promise<ProfileRow> {
+  const { data, error } = await getSupabase()
+    .from("profiles")
+    .insert({
+      name: input.name.trim(),
+      email: input.email?.trim().toLowerCase() ?? "",
+      phone: input.phone?.trim() || null,
+      address: input.address?.trim() || null,
+      note: input.note?.trim() || null,
+      role: "student",
+    })
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data as ProfileRow;
+}
+
+/**
+ * Cấp tài khoản đăng nhập cho hồ sơ (mã thành viên + mật khẩu mặc định)
+ * qua API server /api/provision-account (chỉ staff/admin gọi được).
+ */
+export async function provisionAccount(profileId: string): Promise<{ code: string; already?: boolean }> {
+  const res = await fetch("/api/provision-account", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ profileId }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error ?? "Không cấp được tài khoản, thử lại sau.");
+  return body as { code: string; already?: boolean };
 }
 
 /** Cấp (hoặc cấp lại) mã kích hoạt cho hồ sơ chưa liên kết tài khoản. */
