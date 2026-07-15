@@ -38,6 +38,7 @@ export interface ProfileRow {
   student_code: string | null;
   address: string | null;
   note: string | null;
+  invite_code: string | null; // mã kích hoạt tài khoản (null = chưa cấp hoặc đã dùng)
   created_at: string;
 }
 
@@ -276,6 +277,77 @@ export async function fetchStudentsWithClassCount(): Promise<StudentWithClasses[
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as unknown as StudentWithClasses[];
+}
+
+/* ============ Đội ngũ & mã kích hoạt ============ */
+
+// Bỏ các ký tự dễ nhầm (0/O, 1/I/L) để đọc mã qua điện thoại không sai
+const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
+export function generateInviteCode(): string {
+  let s = "";
+  for (let i = 0; i < 8; i++) s += CODE_ALPHABET[Math.floor(Math.random() * CODE_ALPHABET.length)];
+  return `${s.slice(0, 4)}-${s.slice(4)}`;
+}
+
+export type TeamRole = "teacher" | "staff";
+
+export const TEAM_ROLE_LABELS: Record<TeamRole, string> = {
+  teacher: "Giáo viên",
+  staff: "Nhân viên hành chính",
+};
+
+/** Tạo hồ sơ giáo viên/nhân viên kèm mã kích hoạt. */
+export async function createTeamProfile(input: {
+  name: string;
+  email?: string;
+  phone?: string;
+  role: TeamRole;
+}): Promise<ProfileRow> {
+  const supabase = getSupabase();
+  // Thử lại vài lần nếu mã sinh ra trùng (xác suất rất thấp)
+  for (let attempt = 0; ; attempt++) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .insert({
+        name: input.name.trim(),
+        email: input.email?.trim().toLowerCase() ?? "",
+        phone: input.phone?.trim() || null,
+        role: input.role,
+        invite_code: generateInviteCode(),
+      })
+      .select("*")
+      .single();
+    if (!error) return data as ProfileRow;
+    if (error.code === "23505" && attempt < 3) continue;
+    throw error;
+  }
+}
+
+/** Cấp (hoặc cấp lại) mã kích hoạt cho hồ sơ chưa liên kết tài khoản. */
+export async function issueInviteCode(profileId: string): Promise<string> {
+  const supabase = getSupabase();
+  for (let attempt = 0; ; attempt++) {
+    const code = generateInviteCode();
+    const { error } = await supabase
+      .from("profiles").update({ invite_code: code }).eq("id", profileId);
+    if (!error) return code;
+    if (error.code === "23505" && attempt < 3) continue;
+    throw error;
+  }
+}
+
+export async function revokeInviteCode(profileId: string) {
+  const { error } = await getSupabase()
+    .from("profiles").update({ invite_code: null }).eq("id", profileId);
+  if (error) throw error;
+}
+
+/** Nhập mã kích hoạt → nối tài khoản đang đăng nhập vào hồ sơ được cấp. */
+export async function claimInvite(code: string): Promise<ProfileRow> {
+  const { data, error } = await getSupabase().rpc("claim_invite", { code });
+  if (error) throw error;
+  return data as ProfileRow;
 }
 
 /* ============ Cập nhật lớp: giáo viên & lịch tuần ============ */

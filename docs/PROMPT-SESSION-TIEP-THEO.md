@@ -18,7 +18,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - Trang chi tiết lớp admin: đổi GV phụ trách (kèm gán cho các buổi sắp tới), sửa lịch tuần, **gợi ý bóc lịch từ tên lớp** (`src/lib/parse-schedule.ts`), nút sinh buổi học N tuần tới (bỏ qua buổi trùng, báo xung đột phòng/GV 23P01).
   - Khu giáo viên thật: trang chủ (buổi dạy hôm nay/7 ngày + lớp phụ trách), `/teacher/classes/[id]`, `/teacher/sessions/[id]` điểm danh 4 trạng thái + ghi chú + đánh dấu buổi completed + nhận xét từng học viên (rating 1-5).
   - Admin: `/admin/makeup` xếp học bù (pending → chọn buổi sắp tới → scheduled; trigger đóng khi GV điểm danh 'makeup'), `/admin/reports` thống kê chuyên cần thật theo lớp + cơ cấu điểm danh.
-  - Migration `0005_makeup_flow.sql`: trigger tự đóng makeup_credit khi điểm danh 'makeup' + policy cho GV xem học bù xếp vào buổi mình dạy. **KIỂM TRA đã dán vào SQL Editor chưa** — nếu chưa thì làm trước.
+  - Migration `0005_makeup_flow.sql`: trigger tự đóng makeup_credit khi điểm danh 'makeup' + policy cho GV xem học bù xếp vào buổi mình dạy. Migration `0006_invite_codes.sql`: mã kích hoạt tài khoản GV/NV (admin tạo hồ sơ ở /admin/teachers → cấp mã → người đó đăng nhập rồi nhập mã ở /activate, RPC `claim_invite`). **KIỂM TRA cả hai đã dán vào SQL Editor chưa** — nếu chưa thì làm trước.
 - **Dữ liệu thật**: 123 học viên (HV00xxx, đa số user_id null), 62 lớp active, 12 khóa học. Lịch tuần các lớp cần được admin xác nhận dần bằng nút gợi ý từ tên lớp rồi sinh buổi học.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa có tài khoản). RLS dùng `my_profile_id()`.

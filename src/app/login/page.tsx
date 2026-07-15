@@ -23,9 +23,16 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState<"email" | "google" | null>(null);
 
+  // Đích đến sau đăng nhập: ?next=/... (vd trang kích hoạt mã) hoặc trang chủ theo role
+  function destination(role: Parameters<typeof homeForRole>[0]): string {
+    const next = new URLSearchParams(window.location.search).get("next");
+    return next && next.startsWith("/") ? next : homeForRole(role);
+  }
+
   // Đã đăng nhập sẵn → chuyển thẳng vào khu vực của mình.
   useEffect(() => {
-    if (!loading && user) router.replace(homeForRole(user.role));
+    if (!loading && user) router.replace(destination(user.role));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, router]);
 
   async function handleEmailLogin(e: React.FormEvent) {
@@ -34,7 +41,7 @@ export default function LoginPage() {
     setSubmitting("email");
     try {
       const profile = await signInWithEmail(email.trim(), password);
-      router.replace(homeForRole(profile.role));
+      router.replace(destination(profile.role));
     } catch (err) {
       setError(authErrorMessage(err));
       setSubmitting(null);
@@ -167,6 +174,12 @@ export default function LoginPage() {
           </Button>
 
           <p className="mt-10 text-center text-sm text-muted-foreground">
+            Giáo viên / nhân viên có mã kích hoạt?{" "}
+            <Link href="/activate" className="font-semibold text-brand-700 hover:underline">
+              Kích hoạt tài khoản
+            </Link>
+          </p>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
             Chưa có tài khoản?{" "}
             <a href="#" className="font-semibold text-brand-700 hover:underline">
               Liên hệ KAT Education

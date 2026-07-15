@@ -49,7 +49,7 @@ const adminNav: NavItem[] = [
   { href: "/admin/courses", label: "Khóa học", icon: BookMarked },
   { href: "/admin/classes", label: "Lớp & lịch", icon: School },
   { href: "/admin/students", label: "Học viên", icon: Users },
-  { href: "/admin/teachers", label: "Giáo viên", icon: GraduationCap },
+  { href: "/admin/teachers", label: "Đội ngũ", icon: GraduationCap },
   { href: "/admin/makeup", label: "Học bù", icon: CalendarClock },
   { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
   { href: "/admin/settings", label: "Cài đặt", icon: Settings },

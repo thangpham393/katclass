@@ -76,7 +76,8 @@ export async function signInWithEmail(email: string, password: string): Promise<
 export async function signInWithGoogle(): Promise<void> {
   const { error } = await getSupabase().auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${window.location.origin}/login` },
+    // Giữ nguyên query (vd ?next=/activate) để sau khi quay về còn biết đích đến
+    options: { redirectTo: `${window.location.origin}/login${window.location.search}` },
   });
   if (error) throw error;
 }
