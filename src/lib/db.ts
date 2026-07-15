@@ -185,7 +185,7 @@ export async function updateProfileRole(userId: string, role: Role) {
 const CLASS_SELECT = `
   id, name, status, start_date, notes,
   course:courses ( id, name, level, total_sessions ),
-  teacher:profiles ( id, name ),
+  teacher:profiles!classes_teacher_id_fkey ( id, name ),
   class_schedules ( id, weekday, start_time, end_time, room_id ),
   class_students ( count )
 `;
@@ -243,7 +243,7 @@ export async function deleteClass(id: string) {
 export async function fetchClassStudents(classId: string): Promise<ClassStudentRow[]> {
   const { data, error } = await getSupabase()
     .from("class_students")
-    .select("student_id, status, joined_at, student:profiles ( id, name, email, phone, avatar )")
+    .select("student_id, status, joined_at, student:profiles!class_students_student_id_fkey ( id, name, email, phone, avatar )")
     .eq("class_id", classId)
     .order("joined_at");
   if (error) throw error;
