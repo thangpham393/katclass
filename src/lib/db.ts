@@ -29,11 +29,15 @@ export interface RoomRow {
 
 export interface ProfileRow {
   id: string;
+  user_id: string | null; // null = chưa có tài khoản đăng nhập
   name: string;
   email: string;
   role: Role;
   avatar: string | null;
   phone: string | null;
+  student_code: string | null;
+  address: string | null;
+  note: string | null;
   created_at: string;
 }
 
@@ -161,9 +165,11 @@ export async function fetchProfilesByRole(role: Role): Promise<ProfileRow[]> {
   return data;
 }
 
-export async function fetchAllProfiles(): Promise<ProfileRow[]> {
+/** Chỉ các hồ sơ ĐÃ có tài khoản đăng nhập (để phân quyền). */
+export async function fetchAccountProfiles(): Promise<ProfileRow[]> {
   const { data, error } = await getSupabase()
-    .from("profiles").select("*").order("created_at", { ascending: false });
+    .from("profiles").select("*").not("user_id", "is", null)
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 }

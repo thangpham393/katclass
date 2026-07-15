@@ -10,7 +10,7 @@ import { Select } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import {
-  fetchAllProfiles,
+  fetchAccountProfiles,
   updateProfileRole,
   fetchRooms,
   createRoom,
@@ -46,7 +46,7 @@ export default function AdminSettingsPage() {
 }
 
 function RoleManager({ isAdmin, currentUserId }: { isAdmin: boolean; currentUserId?: string }) {
-  const { data: profiles, loading, error, reload } = useLoad(fetchAllProfiles);
+  const { data: profiles, loading, error, reload } = useLoad(fetchAccountProfiles);
   const [busy, setBusy] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 

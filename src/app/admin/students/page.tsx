@@ -99,7 +99,13 @@ export default function AdminStudentsPage() {
                     <Avatar name={s.name} src={s.avatar ?? undefined} size={38} />
                     <div className="min-w-0">
                       <div className="truncate text-sm font-semibold">{s.name}</div>
-                      <div className="truncate text-xs text-muted-foreground">{s.email}</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {s.student_code && (
+                          <span className="font-mono font-medium text-brand-700">{s.student_code}</span>
+                        )}
+                        {s.student_code && s.email && " · "}
+                        {s.email}
+                      </div>
                     </div>
                   </div>
                   <div className="col-span-3 text-sm text-muted-foreground">{s.phone ?? "—"}</div>

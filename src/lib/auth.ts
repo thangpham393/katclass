@@ -5,16 +5,17 @@ import { getSupabase } from "./supabase";
 import type { User } from "./types";
 
 /**
- * Lấy hồ sơ người dùng từ bảng public.profiles.
- * Bình thường trigger `on_auth_user_created` đã tạo sẵn hồ sơ khi đăng ký;
+ * Lấy hồ sơ người dùng từ bảng public.profiles (tra theo user_id).
+ * Bình thường trigger `on_auth_user_created` đã tạo/nối sẵn hồ sơ khi đăng ký;
  * nếu vì lý do nào đó chưa có thì tạo mới với role mặc định "student".
+ * Lưu ý: User.id là id của hồ sơ (profiles.id), không phải auth user id.
  */
 export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from("profiles")
     .select("id, name, email, role, avatar")
-    .eq("id", sbUser.id)
+    .eq("user_id", sbUser.id)
     .maybeSingle();
   if (error) throw error;
 
@@ -30,15 +31,26 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
   }
 
   const profile = {
-    id: sbUser.id,
+    user_id: sbUser.id,
     name: fallbackName(sbUser),
     email: sbUser.email ?? "",
     role: "student" as const,
     avatar: (sbUser.user_metadata?.avatar_url as string | undefined) ?? null,
   };
-  const { error: insertError } = await supabase.from("profiles").insert(profile);
+  const { data: inserted, error: insertError } = await supabase
+    .from("profiles")
+    .insert(profile)
+    .select("id")
+    .single();
   if (insertError) throw insertError;
-  return { ...profile, avatar: profile.avatar ?? undefined, classIds: [] };
+  return {
+    id: inserted.id,
+    name: profile.name,
+    email: profile.email,
+    role: profile.role,
+    avatar: profile.avatar ?? undefined,
+    classIds: [],
+  };
 }
 
 function fallbackName(sbUser: SupabaseUser): string {
