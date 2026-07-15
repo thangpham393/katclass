@@ -283,7 +283,11 @@ export default function TeacherSessionPage() {
         </Card>
       )}
 
-      <SessionContentCard sessionId={sessionId} courseId={s.class?.course?.id ?? null} />
+      <SessionContentCard
+        sessionId={sessionId}
+        courseId={s.class?.course?.id ?? null}
+        textbook={s.class?.textbook ?? null}
+      />
 
       {commentFor && user && (
         <CommentModal
@@ -303,19 +307,23 @@ export default function TeacherSessionPage() {
 }
 
 /**
- * Nội dung ôn tập của buổi: chọn bài học (ưu tiên bài trong khóa của lớp)
- * để học viên xem lại từ vựng / ngữ pháp / slide sau buổi học.
+ * Nội dung ôn tập của buổi: chọn bài học để học viên xem lại từ vựng /
+ * ngữ pháp / slide sau buổi học. Lớp đã gán giáo trình thì mặc định chỉ
+ * hiện bài của giáo trình đó (bật "Tất cả bài học" để chọn ngoài).
  */
 function SessionContentCard({
   sessionId,
   courseId,
+  textbook,
 }: {
   sessionId: string;
   courseId: string | null;
+  textbook: { id: string; name: string } | null;
 }) {
   const assigned = useLoad(() => fetchSessionLessons(sessionId), [sessionId]);
   const lessons = useLoad(() => fetchLessons(), []);
   const [selected, setSelected] = useState<string[] | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -327,13 +335,18 @@ function SessionContentCard({
   }, [assigned.data, selected]);
 
   const all = lessons.data ?? [];
-  // Bài trong khóa của lớp lên trước, bài khác khóa xuống dưới
-  const sorted = [...all].sort((a, b) => {
-    const ax = a.course_id === courseId ? 0 : 1;
-    const bx = b.course_id === courseId ? 0 : 1;
-    return ax - bx;
-  });
   const current = selected ?? [];
+  // Lớp có giáo trình: mặc định chỉ bài của giáo trình đó (+ bài đã gán sẵn)
+  const visible =
+    textbook && !showAll
+      ? all.filter((l) => l.textbook_id === textbook.id || current.includes(l.id))
+      : all;
+  // Bài của giáo trình lớp / khóa của lớp lên trước
+  const sorted = [...visible].sort((a, b) => {
+    const rank = (l: (typeof all)[number]) =>
+      textbook && l.textbook_id === textbook.id ? 0 : l.course_id === courseId ? 1 : 2;
+    return rank(a) - rank(b) || (a.unit ?? 0) - (b.unit ?? 0);
+  });
   const dirty =
     selected !== null &&
     assigned.data !== null &&
@@ -381,16 +394,33 @@ function SessionContentCard({
             {notice}
           </div>
         )}
+        {textbook && (
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+            <span>
+              Giáo trình của lớp: <span className="font-semibold text-foreground">{textbook.name}</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              className="font-semibold text-brand-600 hover:underline"
+            >
+              {showAll ? "← Chỉ hiện bài của giáo trình lớp" : "Hiện tất cả bài học →"}
+            </button>
+          </div>
+        )}
         {assigned.loading || lessons.loading ? (
           <LoadingRows rows={2} className="p-0" />
-        ) : all.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            Chưa có bài học nào trong thư viện — soạn bài ở mục “Bài học” trước.
+            {all.length === 0
+              ? "Chưa có bài học nào trong thư viện — soạn bài ở mục “Bài học” hoặc nhờ admin import giáo trình."
+              : "Giáo trình của lớp chưa có bài học nào — bấm “Hiện tất cả bài học” để chọn ngoài giáo trình."}
           </div>
         ) : (
           <div className="grid gap-2 sm:grid-cols-2">
             {sorted.map((l) => {
               const picked = current.includes(l.id);
+              const inTextbook = textbook != null && l.textbook_id === textbook.id;
               const inCourse = l.course_id === courseId;
               return (
                 <button
@@ -411,7 +441,11 @@ function SessionContentCard({
                       {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
                     </div>
                   </div>
-                  {inCourse && <Badge variant="gold">Khóa này</Badge>}
+                  {inTextbook ? (
+                    <Badge variant="gold">GT lớp</Badge>
+                  ) : inCourse ? (
+                    <Badge variant="gold">Khóa này</Badge>
+                  ) : null}
                   {picked && <Badge variant="jade">✓</Badge>}
                 </button>
               );

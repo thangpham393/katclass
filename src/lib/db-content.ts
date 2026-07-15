@@ -296,7 +296,7 @@ export interface QuestionRow {
   tags: string[];
   lesson_id: string | null;
   created_at: string;
-  lesson: { id: string; title: string; unit: number | null } | null;
+  lesson: { id: string; title: string; unit: number | null; textbook_id: string | null } | null;
 }
 
 /** Tóm tắt đề bài để hiển thị trong danh sách (không lộ đáp án). */
@@ -319,7 +319,7 @@ export function questionPreview(q: Pick<QuestionRow, "type" | "content">): strin
 
 const QUESTION_SELECT = `
   id, type, content, level, tags, lesson_id, created_at,
-  lesson:lessons ( id, title, unit )
+  lesson:lessons ( id, title, unit, textbook_id )
 `;
 
 export async function fetchQuestions(filter?: {

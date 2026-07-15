@@ -48,12 +48,26 @@ export default function NewHomeworkPage() {
     () => fetchQuestions({ type: typeFilter, lessonId: lessonFilter || undefined }),
     [typeFilter, lessonFilter],
   );
+  const [onlyClassTextbook, setOnlyClassTextbook] = useState(true);
 
   const questionById = useMemo(() => {
     const map = new Map<string, QuestionRow>();
     for (const q of questions.data ?? []) map.set(q.id, q);
     return map;
   }, [questions.data]);
+
+  // Giáo trình của lớp đang chọn — mặc định chỉ hiện bài học / câu hỏi thuộc giáo trình đó
+  const classTextbook = (classes.data ?? []).find((c) => c.id === classId)?.textbook ?? null;
+  const textbookFilterOn = Boolean(classTextbook) && onlyClassTextbook;
+  const lessonOptions = (lessons.data ?? []).filter(
+    (l) => !textbookFilterOn || l.textbook_id === classTextbook!.id,
+  );
+  const visibleQuestions = (questions.data ?? []).filter(
+    (q) =>
+      !textbookFilterOn ||
+      lessonFilter !== "" || // đã lọc theo 1 bài cụ thể thì giữ nguyên
+      q.lesson?.textbook_id === classTextbook!.id,
+  );
 
   function toggle(id: string) {
     setSelected((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
@@ -139,7 +153,7 @@ export default function NewHomeworkPage() {
               <CardTitle>2. Chọn câu hỏi ({selected.length})</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-6 pt-0">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Select
                   className="w-44"
                   value={typeFilter}
@@ -152,28 +166,45 @@ export default function NewHomeworkPage() {
                 </Select>
                 <Select className="w-56" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
                   <option value="">Mọi bài học</option>
-                  {(lessons.data ?? []).map((l) => (
+                  {lessonOptions.map((l) => (
                     <option key={l.id} value={l.id}>
                       {l.textbook ? `${l.textbook.name} — ` : ""}
                       {l.unit != null ? `Bài ${l.unit}: ` : ""}{l.title}
                     </option>
                   ))}
                 </Select>
+                {classTextbook && (
+                  <label className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <input
+                      type="checkbox"
+                      checked={onlyClassTextbook}
+                      onChange={(e) => setOnlyClassTextbook(e.target.checked)}
+                      className="h-3.5 w-3.5 accent-brand-600"
+                    />
+                    Chỉ giáo trình của lớp ({classTextbook.name})
+                  </label>
+                )}
               </div>
 
               {questions.loading ? (
                 <LoadingRows rows={4} className="p-0" />
-              ) : (questions.data?.length ?? 0) === 0 ? (
+              ) : visibleQuestions.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  Không có câu hỏi phù hợp —{" "}
-                  <Link href="/teacher/questions" className="font-semibold text-brand-600 hover:underline">
-                    tạo ở Ngân hàng câu hỏi
-                  </Link>
-                  .
+                  {textbookFilterOn && (questions.data?.length ?? 0) > 0 ? (
+                    <>Giáo trình của lớp chưa có câu hỏi phù hợp — bỏ chọn “Chỉ giáo trình của lớp” để xem tất cả.</>
+                  ) : (
+                    <>
+                      Không có câu hỏi phù hợp —{" "}
+                      <Link href="/teacher/questions" className="font-semibold text-brand-600 hover:underline">
+                        tạo ở Ngân hàng câu hỏi
+                      </Link>
+                      .
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="max-h-96 space-y-1.5 overflow-y-auto pr-1">
-                  {questions.data!.map((q) => {
+                  {visibleQuestions.map((q) => {
                     const picked = selected.includes(q.id);
                     return (
                       <button

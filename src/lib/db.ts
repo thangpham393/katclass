@@ -57,6 +57,7 @@ export interface ClassRow {
   start_date: string | null;
   notes: string | null;
   course: Pick<CourseRow, "id" | "name" | "level" | "total_sessions"> | null;
+  textbook: { id: string; name: string; level: string | null } | null;
   teacher: Pick<ProfileRow, "id" | "name"> | null;
   class_schedules: ScheduleRow[];
   class_students: { count: number }[];
@@ -186,6 +187,7 @@ export async function updateProfileRole(userId: string, role: Role) {
 const CLASS_SELECT = `
   id, name, status, start_date, notes,
   course:courses ( id, name, level, total_sessions ),
+  textbook:textbooks ( id, name, level ),
   teacher:profiles!classes_teacher_id_fkey ( id, name ),
   class_schedules ( id, weekday, start_time, end_time, room_id ),
   class_students ( count )
@@ -208,10 +210,18 @@ export async function fetchClass(id: string): Promise<ClassRow | null> {
 export interface CreateClassInput {
   name: string;
   course_id: string | null;
+  textbook_id: string | null;
   teacher_id: string | null;
   status: ClassRow["status"];
   start_date: string | null;
   schedules: { weekday: number; start_time: string; end_time: string; room_id: string | null }[];
+}
+
+/** Đổi giáo trình của lớp (null = bỏ gán). */
+export async function updateClassTextbook(id: string, textbookId: string | null) {
+  const { error } = await getSupabase()
+    .from("classes").update({ textbook_id: textbookId }).eq("id", id);
+  if (error) throw error;
 }
 
 export async function createClass(input: CreateClassInput) {
@@ -541,6 +551,7 @@ export interface SessionRow {
     id: string;
     name: string;
     course: Pick<CourseRow, "id" | "name" | "level" | "total_sessions"> | null;
+    textbook: { id: string; name: string } | null;
   } | null;
 }
 
@@ -554,7 +565,7 @@ const SESSION_SELECT = `
   id, class_id, session_no, date, start_time, end_time, status, type, note,
   room:rooms ( id, name ),
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
-  class:classes ( id, name, course:courses ( id, name, level, total_sessions ) )
+  class:classes ( id, name, course:courses ( id, name, level, total_sessions ), textbook:textbooks ( id, name ) )
 `;
 
 export async function fetchClassSessions(classId: string): Promise<SessionRow[]> {

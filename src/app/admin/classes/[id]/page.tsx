@@ -22,6 +22,7 @@ import {
   removeStudentFromClass,
   updateClassStatus,
   updateClassTeacher,
+  updateClassTextbook,
   replaceClassSchedules,
   generateSessions,
   deleteClass,
@@ -36,6 +37,7 @@ import {
   type SessionRow,
   type GenerateSessionsResult,
 } from "@/lib/db";
+import { fetchTextbooks } from "@/lib/db-library";
 import { parseScheduleFromName } from "@/lib/parse-schedule";
 import { useLoad } from "@/lib/use-load";
 
@@ -47,6 +49,7 @@ export default function AdminClassDetailPage() {
   const cls = useLoad(() => fetchClass(classId), [classId]);
   const students = useLoad(() => fetchClassStudents(classId), [classId]);
   const sessions = useLoad(() => fetchClassSessions(classId), [classId]);
+  const textbooks = useLoad(fetchTextbooks);
   const [adding, setAdding] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -54,6 +57,16 @@ export default function AdminClassDetailPage() {
     setActionError(null);
     try {
       await updateClassStatus(classId, status);
+      cls.reload();
+    } catch (e) {
+      setActionError(dbErrorMessage(e));
+    }
+  }
+
+  async function handleTextbookChange(textbookId: string | null) {
+    setActionError(null);
+    try {
+      await updateClassTextbook(classId, textbookId);
       cls.reload();
     } catch (e) {
       setActionError(dbErrorMessage(e));
@@ -121,6 +134,19 @@ export default function AdminClassDetailPage() {
                   <span>GV: <span className="font-medium text-foreground">{c.teacher.name}</span></span>
                 </>
               )}
+            </div>
+            <div className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Giáo trình:</span>
+              <Select
+                className="h-8 w-56 text-xs"
+                value={c.textbook?.id ?? ""}
+                onChange={(e) => handleTextbookChange(e.target.value || null)}
+              >
+                <option value="">— Chưa gán —</option>
+                {(textbooks.data ?? []).map((t) => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </Select>
             </div>
           </div>
         </div>

@@ -23,6 +23,7 @@ import {
   CLASS_STATUS_LABELS,
   LEVEL_LABELS,
 } from "@/lib/db";
+import { fetchTextbooks } from "@/lib/db-library";
 import { useLoad } from "@/lib/use-load";
 
 export default function AdminClassesPage() {
@@ -143,9 +144,11 @@ function CreateClassModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
   const courses = useLoad(fetchCourses);
   const rooms = useLoad(fetchRooms);
   const teachers = useLoad(() => fetchProfilesByRole("teacher"));
+  const textbooks = useLoad(fetchTextbooks);
 
   const [name, setName] = useState("");
   const [courseId, setCourseId] = useState("");
+  const [textbookId, setTextbookId] = useState("");
   const [teacherId, setTeacherId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [schedules, setSchedules] = useState<ScheduleDraft[]>([
@@ -166,6 +169,7 @@ function CreateClassModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
       await createClass({
         name: name.trim(),
         course_id: courseId || null,
+        textbook_id: textbookId || null,
         teacher_id: teacherId || null,
         status: "planned",
         start_date: startDate || null,
@@ -203,6 +207,14 @@ function CreateClassModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
             <Select value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
               <option value="">— Chọn giáo viên —</option>
               {(teachers.data ?? []).map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </Select>
+          </Field>
+          <Field label="Giáo trình" hint="Lớp học theo giáo trình nào — GV gán bài / giao bài tập sẽ chỉ thấy bài của giáo trình này.">
+            <Select value={textbookId} onChange={(e) => setTextbookId(e.target.value)}>
+              <option value="">— Chưa gán —</option>
+              {(textbooks.data ?? []).map((t) => (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </Select>
