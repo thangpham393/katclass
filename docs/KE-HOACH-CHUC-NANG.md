@@ -154,11 +154,11 @@ Nguyên tắc thiết kế nền tảng (quyết định từ đầu, khó sửa
 
 ## 5. Ba luồng nghiệp vụ then chốt (chốt chính sách trước khi code)
 
-### 5.1. Học phí theo gói buổi
+### 5.1. Học phí theo gói buổi (chính sách đã chốt 15/07/2026)
 1. Học viên mua gói N buổi (có thể kèm ưu đãi) → hành chính thu tiền, xuất biên lai.
 2. Mỗi lần điểm danh **có mặt** → trừ 1 buổi khỏi gói.
-3. **Vắng có phép** → bảo lưu buổi, xếp học bù (trừ hay không trừ tùy chính sách trung tâm — cần chốt).
-4. **Vắng không phép** → trừ buổi (tùy chính sách — cần chốt).
+3. **Vắng có phép** → vẫn trừ buổi, nhưng được xếp học bù (buổi học bù không trừ thêm).
+4. **Vắng không phép** → trừ buổi, không được học bù.
 5. Còn ≤ 3 buổi → cảnh báo gia hạn cho hành chính + thông báo phụ huynh.
 
 > Toàn bộ điểm danh, học bù, học phí, doanh thu xoay quanh luồng này.
