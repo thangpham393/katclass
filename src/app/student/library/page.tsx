@@ -34,7 +34,7 @@ export default function LibraryPage() {
       <div>
         <h1 className="text-3xl font-extrabold tracking-tight">Thư viện</h1>
         <p className="mt-1 text-muted-foreground">
-          Toàn bộ bài học và kho từ vựng của trung tâm.
+          Bài học theo giáo trình các lớp bạn tham gia + kho từ vựng để tra cứu.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export default function LibraryPage() {
           <Empty
             icon={BookOpen}
             title="Chưa có bài học"
-            description="Giáo viên sẽ đưa nội dung bài học lên đây."
+            description="Bài học của giáo trình lớp bạn tham gia sẽ hiện ở đây."
           />
         ) : (
           <div className="grid gap-3 md:grid-cols-2">

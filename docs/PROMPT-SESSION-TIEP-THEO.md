@@ -32,9 +32,10 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Thông báo in-app** (`notifications`, cột channel sẵn cho Zalo sau): chuông trên topbar (`src/components/shell/notification-bell.tsx`) — badge số chưa đọc, mở panel tự đánh dấu đã đọc, bấm thông báo nhảy tới link. 4 trigger DB tự sinh (security definer): bài tập mới → HV cả lớp; xếp học bù → HV + PH; con vắng mặt (có/không phép) → PH; gói còn ≤3 buổi hoặc hết → HV + PH (chống dội: 1 cảnh báo package_low / người / 3 ngày).
   - **Chấm công GV** /admin/payroll: chọn tháng, 1 buổi `completed` có GV thực dạy = 1 công (kể cả dạy thay/buổi bù), đếm từ sessions không cần bảng riêng; bảng công theo GV (số công, tổng giờ, mở rộng xem từng buổi) + stat buổi chưa gán GV.
   - **HV/PH thấy số buổi còn lại**: thẻ `PackageSummaryCard` (src/components/package-summary.tsx) trên trang chủ học viên + cổng phụ huynh — tự ẩn nếu chưa mua gói, đổi màu vàng cảnh báo khi còn ≤3 buổi.
+  - **Siết quyền xem bài học (migration 0014)**: học viên KHÔNG còn thấy toàn bộ thư viện — RLS `read lessons` mới dùng `can_view_lesson(id)`: chỉ thấy bài thuộc giáo trình/khóa học của lớp mình, bài GV gán vào buổi của lớp (kể cả ngoài giáo trình), hoặc bài của buổi được xếp học bù; phụ huynh xem theo con; GV/staff thấy tất cả. /student/library và /student/flashcard tự lọc theo (đều dùng fetchLessons + RLS). Kho từ vựng vẫn mở cho mọi người đăng nhập (tính năng tra cứu).
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations đã dán vào Supabase SQL Editor theo thứ tự đến **`0013_tuition_notifications.sql`** (0013 = gói buổi + thanh toán + view package_balances + notifications + 3 trigger thông báo). Nếu 0013 chưa dán: trang /admin/tuition, chuông thông báo và thẻ gói buổi HV/PH sẽ lỗi (bảng không tồn tại).
+  1. Migrations đã dán vào Supabase SQL Editor theo thứ tự đến **`0014_lesson_visibility.sql`** (0013 = gói buổi + thanh toán + view package_balances + notifications + trigger thông báo; 0014 = học viên chỉ xem bài học của giáo trình lớp mình). Nếu 0013 chưa dán: trang /admin/tuition, chuông thông báo và thẻ gói buổi HV/PH sẽ lỗi. Nếu 0014 chưa dán: học viên vẫn thấy toàn bộ thư viện bài học.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -48,7 +49,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 ## Việc nhỏ còn dở (làm nhanh trước khi vào việc chính)
 
 - Nhắc tôi (user) làm 2 việc tay trên trình duyệt (Claude không tự chạy được — chỉ có anon key):
-  1. **Dán migration `0013_tuition_notifications.sql` vào Supabase SQL Editor** (nếu chưa) — không dán thì học phí/thông báo/thẻ gói buổi đều lỗi.
+  1. **Dán migration `0013_tuition_notifications.sql` rồi `0014_lesson_visibility.sql` vào Supabase SQL Editor** (nếu chưa) — không dán 0013 thì học phí/thông báo/thẻ gói buổi lỗi; không dán 0014 thì học viên vẫn thấy toàn bộ thư viện bài học.
   2. Vào /admin/library import `yct1-standard.json` (và `hsk1-standard-baitap.json` nếu chưa).
 - YCT 1 mới có từ vựng + ngữ pháp, **chưa có bộ bài tập theo bài** — nếu tôi yêu cầu thì soạn từ các "Bài thi mẫu" trong sách (PDF ở ~/Downloads/YCT1 Tieng Viet.pdf). Tôi còn dạy YCT 2 (PDF ở ~/YCT CHINESE/YCT2 PPT VIP/YCT2.pdf) — trích cùng format khi được yêu cầu.
 
