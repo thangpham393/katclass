@@ -1,0 +1,4458 @@
+{
+  "textbook": {
+    "code": "hsk1-standard",
+    "name": "HSK 1",
+    "name_zh": "标准教程 HSK 1",
+    "level": "HSK1",
+    "description": "Giáo trình chuẩn HSK 1 (标准教程 HSK 1, bản dịch tiếng Việt) — 15 bài, khoảng 150 từ vựng theo đại cương HSK cấp 1. Từ vựng và ngữ pháp trích từ sách; bài 1–2 thiên về ngữ âm, bài 3–15 mỗi bài 3 tình huống hội thoại kèm chú thích ngữ pháp.",
+    "sort": 1
+  },
+  "lessons": [
+    {
+      "unit": 3,
+      "title": "Cô tên gì?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "很高兴",
+            "options": [
+              "hěn gāoxìng",
+              "hěn gāoxīng",
+              "hén gàoxìng",
+              "hěn kāoxìng"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "美国人",
+            "options": [
+              "Méiguó rén",
+              "Měiguó rén",
+              "Měigúo rèn",
+              "Mèiguó rén"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "学生",
+            "options": [
+              "xuěshēng",
+              "xúesheng",
+              "xuésheng",
+              "xuèshéng"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "老师",
+            "options": [
+              "lǎoshī",
+              "láoshì",
+              "lǎosī",
+              "làoshī"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "中国",
+            "options": [
+              "Zhòngguó",
+              "Zōngguó",
+              "Zhōngguǒ",
+              "Zhōngguó"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你去哪个______买椅子？",
+            "options": [
+              "学校",
+              "汉语",
+              "商店",
+              "二十",
+              "手机"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "那个书包______块钱。",
+            "options": [
+              "学校",
+              "汉语",
+              "商店",
+              "二十",
+              "手机"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "今天我想去______看书。",
+            "options": [
+              "学校",
+              "汉语",
+              "商店",
+              "二十",
+              "手机"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你有多少个______老师？",
+            "options": [
+              "学校",
+              "汉语",
+              "商店",
+              "二十",
+              "手机"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "这是他的______。",
+            "options": [
+              "学校",
+              "汉语",
+              "商店",
+              "二十",
+              "手机"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你想吃什么？",
+              "你今天去哪儿？",
+              "你想喝绿茶吗？",
+              "你要买几本书？",
+              "这个杯子多少钱？"
+            ],
+            "right": [
+              "我今天去学校。",
+              "我要买两本书。",
+              "我想吃越南菜。",
+              "三十块。",
+              "我不想喝，你喝吧。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "e",
+            "3": "b",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "A hỏi về cái cốc màu gì？(A问的杯子是什么颜色的？)",
+            "passage": "A: 你好！那个蓝色的杯子多少钱？\nB: 二十五块钱。",
+            "options": [
+              "红色",
+              "黄色",
+              "绿色",
+              "蓝色"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "李月是美国人吗？",
+            "passage": "A: 你好，我叫李月，我是中国人。\nB: 我叫大卫，我不是中国人。",
+            "options": [
+              "大卫是中国人",
+              "李月是中国人",
+              "大卫是美国人",
+              "李月是美国人"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "大卫是美国人吗？",
+            "passage": "A: 你好，我是中国人，你是中国人吗？\nB: 我不是中国人，我是美国人。\nA: 你叫什么名字？\nB: 我叫大卫。",
+            "options": [
+              "大卫是中国人",
+              "李月是中国人",
+              "大卫是美国人",
+              "李月是美国人"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "老师是美国人吗？",
+            "passage": "A: 你是学生吗？\nB: 我不是学生，我是老师。\nA: 老师是中国人吗？\nB: 我是中国人。",
+            "options": [
+              "老师是中国人",
+              "老师不是中国人",
+              "老师是美国人",
+              "老师不是美国人"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B是老师吗？",
+            "passage": "A: 你不是学生吗？\nB: 我不是学生，我是老师。\nA: 他是老师吗？\nB: 不是，他是学生，他是美国人。",
+            "options": [
+              "B是老师",
+              "B不是老师",
+              "B是美国人",
+              "B不是美国人"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "是",
+              "人",
+              "我",
+              "不",
+              "美国"
+            ],
+            "translation": "Tôi không phải là người Mỹ."
+          },
+          "answer": [
+            "我",
+            "不",
+            "是",
+            "美国",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "什么",
+              "你",
+              "名字",
+              "叫"
+            ],
+            "translation": "Bạn tên là gì?"
+          },
+          "answer": [
+            "你",
+            "叫",
+            "什么",
+            "名字"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "是",
+              "他",
+              "不",
+              "学生",
+              "是",
+              "老师",
+              "他"
+            ],
+            "translation": "Anh ấy không phải là học sinh, anh ấy là giáo viên."
+          },
+          "answer": [
+            "他",
+            "不",
+            "是",
+            "学生",
+            "他",
+            "是",
+            "老师"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "叫",
+              "李月",
+              "中国",
+              "我",
+              "人",
+              "是",
+              "我"
+            ],
+            "translation": "Tôi tên là Lý Nguyệt, tôi là người Trung Quốc."
+          },
+          "answer": [
+            "我",
+            "叫",
+            "李月",
+            "我",
+            "是",
+            "中国",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "吗",
+              "是",
+              "老师",
+              "你"
+            ],
+            "translation": "Bạn là giáo viên phải không?"
+          },
+          "answer": [
+            "你",
+            "是",
+            "老师",
+            "吗"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Cô ấy là cô giáo dạy tôi tiếng Trung Quốc",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "朋友",
+            "options": [
+              "péngyǒu",
+              "péngyou",
+              "pēngyou",
+              "bèngyou"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "汉语",
+            "options": [
+              "Hànyǔ",
+              "Hányǔ",
+              "Hànyú",
+              "Hǎnyǔ"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "他",
+            "options": [
+              "tà",
+              "tá",
+              "tā",
+              "tǎ"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "美国",
+            "options": [
+              "Méiguó",
+              "Měigúo",
+              "Mèiguó",
+              "Měiguó"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "同学",
+            "options": [
+              "tóngxué",
+              "tōngxué",
+              "tóngxuě",
+              "tòngxué"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你好，你是______国人？",
+            "options": [
+              "汉语",
+              "的",
+              "哪",
+              "谁",
+              "呢"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "她是我______中国朋友。",
+            "options": [
+              "汉语",
+              "的",
+              "哪",
+              "谁",
+              "呢"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我叫李月，你______？",
+            "options": [
+              "汉语",
+              "的",
+              "哪",
+              "谁",
+              "呢"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你是我的______老师吗？",
+            "options": [
+              "汉语",
+              "的",
+              "哪",
+              "谁",
+              "呢"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "他是______？他是你同学吗？",
+            "options": [
+              "汉语",
+              "的",
+              "哪",
+              "谁",
+              "呢"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你的中国朋友叫什么名字？",
+              "她是你的同学吗？",
+              "我是美国人，你呢？",
+              "你的老师是哪国人？",
+              "他是谁？"
+            ],
+            "right": [
+              "她不是我的同学。",
+              "我的老师是中国人。",
+              "我的中国朋友叫李月。",
+              "他是我朋友。",
+              "我是中国人。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "e",
+            "3": "b",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "大卫是哪国人？",
+            "passage": "A: 你好，我叫李月，你呢？\nB: 你好，我叫大卫，我是美国人。",
+            "options": [
+              "他是美国人",
+              "他不是美国人",
+              "她是美国人",
+              "她不是美国人"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "李月是谁？",
+            "passage": "A: 她是李月吗？\nB: 她是李月，她是我的朋友。",
+            "options": [
+              "李月是我的朋友",
+              "李月是你的朋友",
+              "李月是A的朋友",
+              "李月是B的朋友"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "谁是学生？",
+            "passage": "A: 我不是老师，我是学生，你呢？\nB: 我是学生。\nA: 你是哪国人？\nB: 我是美国人。",
+            "options": [
+              "A是学生",
+              "B是学生",
+              "A和B是学生",
+              "A和B不是学生"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B的汉语老师是中国人吗？",
+            "passage": "A: 他是你的朋友吗？\nB: 不是，他是我的汉语老师。\nA: 我的汉语老师不是中国人，你的老师呢？\nB: 我的汉语老师是中国人。",
+            "options": [
+              "老师是中国人",
+              "老师不是中国人",
+              "老师是美国人",
+              "老师不是美国人"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "大卫是谁的同学？",
+            "passage": "A: 谁是你的同学？\nB: 他是我的同学，他是美国人。\nA: 你的同学叫什么名字？\nB: 他叫大卫。",
+            "options": [
+              "大卫是A的同学",
+              "大卫不是我的同学",
+              "大卫是你的同学",
+              "大卫是B的同学"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "朋友",
+              "的",
+              "你",
+              "谁",
+              "是",
+              "中国"
+            ],
+            "translation": "Ai là người bạn Trung Quốc của bạn?"
+          },
+          "answer": [
+            "谁",
+            "是",
+            "你",
+            "的",
+            "中国",
+            "朋友"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "老师",
+              "哪",
+              "是",
+              "的",
+              "国",
+              "你",
+              "人",
+              "汉语"
+            ],
+            "translation": "Giáo viên tiếng Trung của bạn là người nước nào?"
+          },
+          "answer": [
+            "你",
+            "的",
+            "汉语",
+            "老师",
+            "是",
+            "哪",
+            "国",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "他",
+              "同学",
+              "中国",
+              "是",
+              "的",
+              "人",
+              "不"
+            ],
+            "translation": "Bạn cùng lớp của anh ấy không phải là người Trung Quốc."
+          },
+          "answer": [
+            "他",
+            "的",
+            "同学",
+            "不",
+            "是",
+            "中国",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "呢",
+              "我",
+              "学生",
+              "你",
+              "是"
+            ],
+            "translation": "Tôi là học sinh, còn bạn?"
+          },
+          "answer": [
+            "我",
+            "是",
+            "学生",
+            "你",
+            "呢"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "朋友",
+              "她",
+              "名字",
+              "的",
+              "什么",
+              "叫"
+            ],
+            "translation": "Bạn của cô ấy tên là gì?"
+          },
+          "answer": [
+            "她",
+            "的",
+            "朋友",
+            "叫",
+            "什么",
+            "名字"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Con gái của cô ấy năm nay 20 tuổi",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "四口人",
+            "options": [
+              "sì kǒu rén",
+              "sī kǒu rén",
+              "sì kōu rén",
+              "shì kǒu rén"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "年",
+            "options": [
+              "niàn",
+              "nián",
+              "niān",
+              "lián"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "十八岁",
+            "options": [
+              "shíbà suì",
+              "síbā suì",
+              "shíbā suì",
+              "shībā sùi"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "女儿",
+            "options": [
+              "nǚ'ér",
+              "nǔ'ér",
+              "nǚ'èr",
+              "nú'ěr"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "家",
+            "options": [
+              "jià",
+              "jiá",
+              "qiā",
+              "jiā"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的女儿今年______了？",
+            "options": [
+              "有",
+              "40岁",
+              "多大",
+              "几",
+              "口"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我家______三口人。",
+            "options": [
+              "有",
+              "40岁",
+              "多大",
+              "几",
+              "口"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的美国同学______岁了？",
+            "options": [
+              "有",
+              "40岁",
+              "多大",
+              "几",
+              "口"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "他的汉语老师今年______了。",
+            "options": [
+              "有",
+              "40岁",
+              "多大",
+              "几",
+              "口"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的中国朋友家有几______人？",
+            "options": [
+              "有",
+              "40岁",
+              "多大",
+              "几",
+              "口"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "李老师的女儿几岁了？",
+              "我今年20岁了，你呢？",
+              "她是张老师的女儿吗？",
+              "你的朋友家有几口人？",
+              "你的中国朋友多大了？"
+            ],
+            "right": [
+              "他18岁了。",
+              "不是，她是李老师的女儿。",
+              "我今年22岁了。",
+              "李老师的女儿8岁了。",
+              "我的朋友家有四口人。"
+            ]
+          },
+          "answer": {
+            "0": "d",
+            "1": "c",
+            "2": "b",
+            "3": "e",
+            "4": "a"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "张老师多大了？",
+            "passage": "A: 张老师的女儿是你的朋友吗？\nB: 她是我的朋友，她七岁了。\nA: 张老师呢？\nB: 张老师今年三十岁了。",
+            "options": [
+              "7岁",
+              "30岁",
+              "8岁",
+              "31岁"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "李月家有几口人？",
+            "passage": "A: 我的同学叫李月。\nB: 她家有几口人？\nA: 她家有五口人。",
+            "options": [
+              "两口人",
+              "三口人",
+              "四口人",
+              "五口人"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "大卫多大了？",
+            "passage": "A: 大卫是你的美国朋友吗？\nB: 不是，大卫是李月的朋友。\nA: 他今年几岁了。\nB: 他今年18岁了。",
+            "options": [
+              "他18岁了",
+              "她18岁了",
+              "他是李月的朋友",
+              "她是李月的朋友"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B的同学是谁？",
+            "passage": "A: 他是你的朋友吗？\nB: 不是，他是我的汉语老师。他的女儿是我的同学。\nA: 他的女儿叫什么名字？\nB: 她叫李月。她今年五岁。",
+            "options": [
+              "我的朋友",
+              "你的朋友",
+              "汉语老师的女儿",
+              "你的女儿"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B是谁？",
+            "passage": "A: 谁是你的学生？\nB: 大卫是我的学生。他是美国人。\nA: 他家有几口人？\nB: 他家有六口人。",
+            "options": [
+              "学生",
+              "老师",
+              "朋友",
+              "同学"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "大卫",
+              "朋友",
+              "是",
+              "的",
+              "李老师",
+              "女儿",
+              "的"
+            ],
+            "translation": "Đại Vệ là bạn của con gái cô Lý."
+          },
+          "answer": [
+            "大卫",
+            "是",
+            "李老师",
+            "的",
+            "女儿",
+            "的",
+            "朋友"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "家",
+              "口",
+              "几",
+              "你",
+              "有",
+              "人"
+            ],
+            "translation": "Nhà bạn có mấy người?"
+          },
+          "answer": [
+            "你",
+            "家",
+            "有",
+            "几",
+            "口",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "今年",
+              "同学",
+              "她",
+              "18岁",
+              "的",
+              "了"
+            ],
+            "translation": "Bạn cùng lớp của cô ấy năm nay 18 tuổi rồi."
+          },
+          "answer": [
+            "她",
+            "的",
+            "同学",
+            "今年",
+            "18岁",
+            "了"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "多",
+              "你",
+              "今年",
+              "的",
+              "大",
+              "老师",
+              "了"
+            ],
+            "translation": "Giáo viên của bạn năm nay bao nhiêu tuổi rồi?"
+          },
+          "answer": [
+            "你",
+            "的",
+            "老师",
+            "今年",
+            "多",
+            "大",
+            "了"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "学生",
+              "谁",
+              "张老师",
+              "的",
+              "是"
+            ],
+            "translation": "Ai là học sinh của thầy Trương?"
+          },
+          "answer": [
+            "谁",
+            "是",
+            "张老师",
+            "的",
+            "学生"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Tôi biết nói tiếng Trung Quốc",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "写",
+            "options": [
+              "xiè",
+              "xiě",
+              "xié",
+              "xiē"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "中国菜",
+            "options": [
+              "Zhōngguó cài",
+              "Zhōngguó cái",
+              "Zhòngguó cài",
+              "Zhōngguǒ chài"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "妈妈",
+            "options": [
+              "màma",
+              "mámā",
+              "māma",
+              "mǎmà"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "汉字",
+            "options": [
+              "Hànzì",
+              "Hánzì",
+              "Hànzhì",
+              "Hǎnzǐ"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "说",
+            "options": [
+              "shuò",
+              "suō",
+              "shuó",
+              "shuō"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "美国菜______吗？",
+            "options": [
+              "会",
+              "做",
+              "好吃",
+              "怎么",
+              "读"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的朋友______说汉语吗？",
+            "options": [
+              "会",
+              "做",
+              "好吃",
+              "怎么",
+              "读"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "这个字______写？",
+            "options": [
+              "会",
+              "做",
+              "好吃",
+              "怎么",
+              "读"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "这个汉字我不会______。",
+            "options": [
+              "会",
+              "做",
+              "好吃",
+              "怎么",
+              "读"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我妈妈会______中国菜。",
+            "options": [
+              "会",
+              "做",
+              "好吃",
+              "怎么",
+              "读"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你会写汉字吗？",
+              "你的老师会说汉语吗？",
+              "中国菜好吃吗？",
+              "你的汉语名字叫什么？",
+              "这个字你会读吗？"
+            ],
+            "right": [
+              "我的老师不会说汉语。",
+              "对不起，这个字我不会读，我会写。",
+              "我不会写汉字。",
+              "中国菜很好吃。",
+              "我的汉语名字叫月月。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "e",
+            "4": "b"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "谁会说汉语？",
+            "passage": "A: 你是中国人吗？\nB: 不是，我是美国人。\nA: 你会说汉语吗。\nB: 我会说汉语。",
+            "options": [
+              "我",
+              "你",
+              "A",
+              "B"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B会写汉字吗？",
+            "passage": "A: 你会写你的汉语名字吗？\nB: 我会写。\nA: 怎么写。",
+            "options": [
+              "不会",
+              "会",
+              "不是",
+              "是"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "谁的汉语不好？",
+            "passage": "A: 你会说汉语吗？\nB: 我会说汉语。\nA: 你妈妈会说汉语吗？\nB: 我妈妈的汉语不好。",
+            "options": [
+              "妈妈",
+              "我",
+              "你",
+              "我们"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B是中国人吗？",
+            "passage": "A: 这个字怎么读？\nB: 对不起，我的汉语不好\nA: 你不是中国人吗？\nB: 我不是中国人。",
+            "options": [
+              "不是",
+              "不会",
+              "是",
+              "会"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B的妈妈不会什么？",
+            "passage": "A: 你妈妈会做中国菜吗？\nB: 我妈妈不会做中国菜。\nA: 你妈妈会说汉语吗？\nB: 我妈妈会说汉语，他的汉语很好。",
+            "options": [
+              "说汉语",
+              "做中国菜",
+              "写汉字",
+              "读汉字"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "朋友",
+              "会",
+              "的",
+              "汉语",
+              "说",
+              "我妈妈"
+            ],
+            "translation": "Bạn của mẹ tôi biết nói tiếng Trung."
+          },
+          "answer": [
+            "我妈妈",
+            "的",
+            "朋友",
+            "会",
+            "说",
+            "汉语"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "这个",
+              "读",
+              "怎么",
+              "汉字"
+            ],
+            "translation": "Chữ Hán này đọc thế nào?"
+          },
+          "answer": [
+            "这个",
+            "汉字",
+            "怎么",
+            "读"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "菜",
+              "好吃",
+              "中国",
+              "很"
+            ],
+            "translation": "Món ăn Trung Quốc rất ngon."
+          },
+          "answer": [
+            "中国",
+            "菜",
+            "很",
+            "好吃"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "不会",
+              "妈妈",
+              "汉字",
+              "写"
+            ],
+            "translation": "Mẹ không biết viết chữ Hán."
+          },
+          "answer": [
+            "妈妈",
+            "不会",
+            "写",
+            "汉字"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "很好",
+              "我朋友",
+              "汉语",
+              "的"
+            ],
+            "translation": "Tiếng Trung của bạn tôi rất giỏi."
+          },
+          "answer": [
+            "我朋友",
+            "的",
+            "汉语",
+            "很好"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Hôm nay là ngày mấy?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "书",
+            "options": [
+              "shū",
+              "shù",
+              "sū",
+              "shú"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "学校",
+            "options": [
+              "xuéxiào",
+              "xuěxiào",
+              "xuéxiāo",
+              "xúexiǎo"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "号",
+            "options": [
+              "háo",
+              "hào",
+              "hāo",
+              "kào"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "月",
+            "options": [
+              "yuē",
+              "yué",
+              "yuè",
+              "yuě"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "星期",
+            "options": [
+              "xìngqī",
+              "xīngqí",
+              "xíngqī",
+              "xīngqī"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "______，这个汉字怎么读？",
+            "options": [
+              "号",
+              "月",
+              "星期",
+              "请问",
+              "去"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "明天我______一个中国朋友家吃饭。",
+            "options": [
+              "号",
+              "月",
+              "星期",
+              "请问",
+              "去"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "昨天是______四。",
+            "options": [
+              "号",
+              "月",
+              "星期",
+              "请问",
+              "去"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "今天是9______31号，星期六。",
+            "options": [
+              "号",
+              "月",
+              "星期",
+              "请问",
+              "去"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你10月几______去中国。",
+            "options": [
+              "号",
+              "月",
+              "星期",
+              "请问",
+              "去"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "今天星期几？",
+              "今天是几月几号？",
+              "你的汉语老师多大了？",
+              "明天你做什么？",
+              "你会说汉语吗？"
+            ],
+            "right": [
+              "他29岁。",
+              "今天星期日。",
+              "我去同学家看书。",
+              "我不会，我爸爸会。",
+              "今天是10月5号。"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "e",
+            "2": "a",
+            "3": "c",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "今天星期几？",
+            "passage": "A: 今天几月几号？\nB: 今天三月五号。\nA: 昨天星期几？\nB: 昨天星期四。",
+            "options": [
+              "星期二",
+              "星期三",
+              "星期四",
+              "星期五"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "A今天去学校做什么？",
+            "passage": "A: 今天你去学校吗？\nB: 今天星期天我不去学校。你呢？\nA: 今天我去学校看书。",
+            "options": [
+              "看书",
+              "学汉语",
+              "写汉字",
+              "吃饭"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B昨天在哪儿学汉语？",
+            "passage": "A: 昨天你去学校吗？\nB: 昨天我去学校学汉语。\nA: 你会写汉字吗？\nB: 我会写汉字。",
+            "options": [
+              "饭馆儿",
+              "家",
+              "学校",
+              "中国"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "中国菜不好吃？",
+            "passage": "A: 我今天去中国饭馆儿吃中国菜。\nB: 中国菜很好吃，你会做中国菜吗？\nA: 我不会做中国菜。你呢？\nB: 我会做中国菜。",
+            "options": [
+              "不好吃",
+              "很好吃",
+              "会做中国菜",
+              "不会做中国菜"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "明天星期几？",
+            "passage": "A: 今天星期几？\nB: 今天星期三。\nA: 今天几月几号？\nB: 今天2月3号。",
+            "options": [
+              "星期一",
+              "星期二",
+              "星期三",
+              "星期四"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "星期",
+              "几",
+              "今天",
+              "请问"
+            ],
+            "translation": "Xin hỏi, hôm nay là thứ mấy?"
+          },
+          "answer": [
+            "请问",
+            "今天",
+            "星期",
+            "几"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "去",
+              "月",
+              "你",
+              "美国",
+              "几"
+            ],
+            "translation": "Tháng mấy bạn đi Mỹ?"
+          },
+          "answer": [
+            "你",
+            "几",
+            "月",
+            "去",
+            "美国"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我同学",
+              "中国",
+              "汉语",
+              "去",
+              "学习"
+            ],
+            "translation": "Bạn cùng lớp của tôi đi Trung Quốc học tiếng Trung."
+          },
+          "answer": [
+            "我同学",
+            "去",
+            "中国",
+            "学习",
+            "汉语"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "12月",
+              "明天",
+              "9号",
+              "是"
+            ],
+            "translation": "Ngày mai là ngày 9 tháng 12."
+          },
+          "answer": [
+            "明天",
+            "是",
+            "12月",
+            "9号"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "昨天",
+              "看书",
+              "去",
+              "我",
+              "学校"
+            ],
+            "translation": "Hôm qua tôi đến trường đọc sách."
+          },
+          "answer": [
+            "昨天",
+            "我",
+            "去",
+            "学校",
+            "看书"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Tôi muốn uống trà",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "杯子",
+            "options": [
+              "bēizi",
+              "běizi",
+              "bèizi",
+              "pēizi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "钱",
+            "options": [
+              "qiàn",
+              "qián",
+              "qiān",
+              "jián"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "米饭",
+            "options": [
+              "mǐfán",
+              "mífàn",
+              "mǐfàn",
+              "mìfǎn"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "茶",
+            "options": [
+              "chà",
+              "chā",
+              "cá",
+              "chá"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "商店",
+            "options": [
+              "shāngdiàn",
+              "shàngdiān",
+              "shāngdiān",
+              "sāngdiàn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我想______米饭。",
+            "options": [
+              "口",
+              "几",
+              "多少",
+              "吃",
+              "买"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你想去商店______什么？",
+            "options": [
+              "口",
+              "几",
+              "多少",
+              "吃",
+              "买"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你们学校有______学生？",
+            "options": [
+              "口",
+              "几",
+              "多少",
+              "吃",
+              "买"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你家有几______人？",
+            "options": [
+              "口",
+              "几",
+              "多少",
+              "吃",
+              "买"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你有______个中国朋友？",
+            "options": [
+              "口",
+              "几",
+              "多少",
+              "吃",
+              "买"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你想吃什么？",
+              "你今天去哪儿？",
+              "你想喝茶吗？",
+              "你想买几本书？",
+              "这个杯子多少钱？"
+            ],
+            "right": [
+              "我今天去学校。",
+              "我想买两本书。",
+              "我想吃越南菜。",
+              "三十块。",
+              "我不想喝，你喝吧。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "e",
+            "3": "b",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "杯子多少钱？",
+            "passage": "A: 你好！那个杯子多少钱？\nB: 二十五块钱。",
+            "options": [
+              "205",
+              "25",
+              "215",
+              "20"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "谁想吃米饭？",
+            "passage": "A: 你想吃什么？\nB: 我想吃米饭。你想吃什么。\nA: 我想吃中国菜。",
+            "options": [
+              "A",
+              "B",
+              "我",
+              "你"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "谁喜欢喝茶？",
+            "passage": "A: 你有几个中国朋友？\nB: 两个\nA: 他们喜欢喝茶吗？\nB: 喜欢",
+            "options": [
+              "A",
+              "B",
+              "两个中国朋友",
+              "我"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B想买什么？",
+            "passage": "A: 下午你想去哪儿？\nB: 下午我想去商店买汉语书。你呢？\nA: 下午我去学校看书。",
+            "options": [
+              "杯子",
+              "米饭",
+              "茶",
+              "汉语书"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "两个杯子多少钱？",
+            "passage": "A: 请问，你想买什么？\nB: 我想买个杯子。多少钱一个？\nA: 5块钱一个。你想买几个？\nB: 两个",
+            "options": [
+              "5块",
+              "10块",
+              "15块",
+              "20块"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "多少",
+              "你",
+              "汉语老师",
+              "有",
+              "个"
+            ],
+            "translation": "Bạn có bao nhiêu giáo viên tiếng Trung?"
+          },
+          "answer": [
+            "你",
+            "有",
+            "多少",
+            "个",
+            "汉语老师"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "家",
+              "三",
+              "人",
+              "有",
+              "李老师",
+              "口"
+            ],
+            "translation": "Nhà cô Lý có ba người."
+          },
+          "answer": [
+            "李老师",
+            "家",
+            "有",
+            "三",
+            "口",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "茶",
+              "你",
+              "喝",
+              "吗",
+              "想"
+            ],
+            "translation": "Bạn muốn uống trà không?"
+          },
+          "answer": [
+            "你",
+            "想",
+            "喝",
+            "茶",
+            "吗"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "杯子",
+              "你",
+              "商店",
+              "买",
+              "哪个",
+              "去"
+            ],
+            "translation": "Bạn đến cửa hàng nào mua cốc?"
+          },
+          "answer": [
+            "你",
+            "去",
+            "哪个",
+            "商店",
+            "买",
+            "杯子"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "钱",
+              "多少",
+              "这本书"
+            ],
+            "translation": "Quyển sách này bao nhiêu tiền?"
+          },
+          "answer": [
+            "这本书",
+            "多少",
+            "钱"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Con trai anh làm việc ở đâu?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "椅子",
+            "options": [
+              "yǐzi",
+              "yízi",
+              "yìzi",
+              "yīzi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "猫",
+            "options": [
+              "máo",
+              "mào",
+              "māo",
+              "mǎo"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "医生",
+            "options": [
+              "yìshēng",
+              "yīshēng",
+              "yíshèng",
+              "yīsēng"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "狗",
+            "options": [
+              "gòu",
+              "gōu",
+              "kǒu",
+              "gǒu"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "医院",
+            "options": [
+              "yīyuàn",
+              "yíyuàn",
+              "yīyuán",
+              "yìyuǎn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你爸爸做______工作？",
+            "options": [
+              "下面",
+              "哪儿",
+              "在",
+              "什么",
+              "呢"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你好，请问王老师在______？",
+            "options": [
+              "下面",
+              "哪儿",
+              "在",
+              "什么",
+              "呢"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我儿子是医生，______医院工作。",
+            "options": [
+              "下面",
+              "哪儿",
+              "在",
+              "什么",
+              "呢"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的猫______？",
+            "options": [
+              "下面",
+              "哪儿",
+              "在",
+              "什么",
+              "呢"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "小狗在椅子______",
+            "options": [
+              "下面",
+              "哪儿",
+              "在",
+              "什么",
+              "呢"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你在哪儿工作？",
+              "我的小狗在哪儿？",
+              "我的杯子呢？",
+              "你女儿在哪儿工作？",
+              "请问李老师在吗？"
+            ],
+            "right": [
+              "我是学生，我不工作。",
+              "不在，李老师在医院。",
+              "在那儿，椅子下面。",
+              "她是老师，在学校工作",
+              "杯子在这儿。"
+            ]
+          },
+          "answer": {
+            "0": "a",
+            "1": "c",
+            "2": "e",
+            "3": "d",
+            "4": "b"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "A的儿子是老师吗？",
+            "passage": "A: 你儿子做什么工作？\nB: 他是老师。\nA: 他在哪儿工作？\nB: 他在学校工作。",
+            "options": [
+              "他是老师",
+              "他不是老师",
+              "他是医生",
+              "他不是医生"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "王先生做什么工作？",
+            "passage": "A: 请问，王先生在家吗？\nB: 他不在家。他去医院工作了。\nA: 好的，谢谢。",
+            "options": [
+              "学生",
+              "老师",
+              "医生",
+              "医院"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B想买什么？",
+            "passage": "A: 下午你想去哪儿？\nB: 下午我想去商店买汉语书。你呢？\nA: 下午我去学校看书。",
+            "options": [
+              "杯子",
+              "米饭",
+              "茶",
+              "汉语书"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "两个杯子多少钱？",
+            "passage": "A: 请问，你想买什么？\nB: 我想买个杯子。多少钱一个？\nA: 5块钱一个。你想买几个？\nB: 两个",
+            "options": [
+              "5块",
+              "10块",
+              "15块",
+              "20块"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "多少",
+              "你",
+              "汉语老师",
+              "有",
+              "个"
+            ],
+            "translation": "Bạn có bao nhiêu giáo viên tiếng Trung?"
+          },
+          "answer": [
+            "你",
+            "有",
+            "多少",
+            "个",
+            "汉语老师"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "家",
+              "三",
+              "人",
+              "有",
+              "李老师",
+              "口"
+            ],
+            "translation": "Nhà cô Lý có ba người."
+          },
+          "answer": [
+            "李老师",
+            "家",
+            "有",
+            "三",
+            "口",
+            "人"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "茶",
+              "你",
+              "喝",
+              "吗",
+              "想"
+            ],
+            "translation": "Bạn muốn uống trà không?"
+          },
+          "answer": [
+            "你",
+            "想",
+            "喝",
+            "茶",
+            "吗"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "杯子",
+              "你",
+              "商店",
+              "买",
+              "哪个",
+              "去"
+            ],
+            "translation": "Bạn đến cửa hàng nào mua cốc?"
+          },
+          "answer": [
+            "你",
+            "去",
+            "哪个",
+            "商店",
+            "买",
+            "杯子"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "钱",
+              "多少",
+              "这本书"
+            ],
+            "translation": "Quyển sách này bao nhiêu tiền?"
+          },
+          "answer": [
+            "这本书",
+            "多少",
+            "钱"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Tôi có thể ngồi ở đây được không?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "桌子",
+            "options": [
+              "zhuōzi",
+              "zhuózi",
+              "zuōzi",
+              "zhuǒzi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "坐",
+            "options": [
+              "zuō",
+              "zuò",
+              "zhuò",
+              "zuǒ"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "电脑",
+            "options": [
+              "diānnǎo",
+              "diànnáo",
+              "diànnǎo",
+              "tiànnǎo"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "本",
+            "options": [
+              "bēn",
+              "bén",
+              "pěn",
+              "běn"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "看书",
+            "options": [
+              "kàn shū",
+              "kān shù",
+              "kǎn shū",
+              "gàn shū"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你的______有电脑吗？",
+            "options": [
+              "能",
+              "上",
+              "前面",
+              "这儿",
+              "后面"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "桌子______有我的书吗？",
+            "options": [
+              "能",
+              "上",
+              "前面",
+              "这儿",
+              "后面"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "______那个人呢？",
+            "options": [
+              "能",
+              "上",
+              "前面",
+              "这儿",
+              "后面"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我能坐______吗？",
+            "options": [
+              "能",
+              "上",
+              "前面",
+              "这儿",
+              "后面"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我______在这儿写你的名字吗？",
+            "options": [
+              "能",
+              "上",
+              "前面",
+              "这儿",
+              "后面"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "杯子在哪儿？",
+              "他叫什么名字？",
+              "那个人是王方吗？",
+              "这儿有人吗？",
+              "桌子上有什么？"
+            ],
+            "right": [
+              "他叫谢朋。",
+              "对不起，这儿有人坐了。",
+              "是的！那个人是王方。",
+              "杯子在桌子上。",
+              "桌子上有杯子。"
+            ]
+          },
+          "answer": {
+            "0": "d",
+            "1": "a",
+            "2": "c",
+            "3": "b",
+            "4": "e"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "在桌子上有几本书？",
+            "passage": "A: 你好，桌子上有什么？\nB: 桌子上有一本书和一个电脑。\nA: 好的！这儿有人坐吗？\nB: 这儿有人坐了！",
+            "options": [
+              "一",
+              "三",
+              "四",
+              "二"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "后面那个人叫什么名字？",
+            "passage": "A: 后面那个人叫什么名字？\nB: 她叫王方，在医院工作.\nA: 好的！谢谢你。",
+            "options": [
+              "谢朋",
+              "医生",
+              "小方",
+              "王方"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "汉语老师是中国人和他多大了？",
+            "passage": "A: 你的汉语老师今年多大了？\nB: 我的汉语老师今年三十四岁了。\nA: 他是美国人吗？\nB: 不是,他是中国人。",
+            "options": [
+              "30岁，中国人",
+              "美国人，34岁",
+              "34岁，中国人",
+              "30岁，美国人"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B明天去哪儿看书？",
+            "passage": "A: 明天你去哪儿做什么？\nB: 明天去学校看书。\nA: 你看什么书？\nB: 我看中国书。",
+            "options": [
+              "学校",
+              "在家里",
+              "医院",
+              "在朋友的家"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B会写他的名字吗？",
+            "passage": "A: 你会写你的名字吗？\nB: 我不会写。\nA: 那你会读这个字吗？\nB: 我也不会读。",
+            "options": [
+              "会",
+              "不会",
+              "会读不会写",
+              "会写他的名字"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "桌子",
+              "面",
+              "上",
+              "狗",
+              "有",
+              "一只"
+            ],
+            "translation": "Trên bàn có một con chó."
+          },
+          "answer": [
+            "桌子",
+            "上",
+            "面",
+            "有",
+            "一只",
+            "狗"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "朋友",
+              "中国",
+              "和",
+              "朋友",
+              "美国"
+            ],
+            "translation": "Bạn Trung Quốc và bạn Mỹ."
+          },
+          "answer": [
+            "中国",
+            "朋友",
+            "和",
+            "美国",
+            "朋友"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "明天",
+              "商店",
+              "能去",
+              "我",
+              "那个"
+            ],
+            "translation": "Ngày mai tôi có thể đến cửa hàng đó."
+          },
+          "answer": [
+            "明天",
+            "我",
+            "能去",
+            "那个",
+            "商店"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "喝",
+              "请",
+              "茶"
+            ],
+            "translation": "Mời uống trà."
+          },
+          "answer": [
+            "请",
+            "喝",
+            "茶"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "谢朋",
+              "那个",
+              "人",
+              "前面",
+              "是"
+            ],
+            "translation": "Người phía trước là Tạ Bằng."
+          },
+          "answer": [
+            "前面",
+            "那个",
+            "人",
+            "是",
+            "谢朋"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "title": "Bây giờ là mấy giờ?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "吃饭",
+            "options": [
+              "chī fàn",
+              "chí fàn",
+              "chī fán",
+              "cī fǎn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "看电影",
+            "options": [
+              "kàn diānyǐng",
+              "kàn diànyǐng",
+              "kǎn diànyìng",
+              "kàn tiànyǐng"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "点",
+            "options": [
+              "diàn",
+              "diān",
+              "diǎn",
+              "tiǎn"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "钱",
+            "options": [
+              "qiān",
+              "jián",
+              "qiàn",
+              "qián"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "朋友",
+            "options": [
+              "péngyou",
+              "pēngyǒu",
+              "béngyou",
+              "pèngyóu"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你朋友什么______回家？",
+            "options": [
+              "现在",
+              "看电影",
+              "时候",
+              "住",
+              "能"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你几点去______？",
+            "options": [
+              "现在",
+              "看电影",
+              "时候",
+              "住",
+              "能"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "星期三爸爸______回家吗？",
+            "options": [
+              "现在",
+              "看电影",
+              "时候",
+              "住",
+              "能"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我想______北京几天。",
+            "options": [
+              "现在",
+              "看电影",
+              "时候",
+              "住",
+              "能"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "______是8点30分？",
+            "options": [
+              "现在",
+              "看电影",
+              "时候",
+              "住",
+              "能"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "现在是几点？",
+              "你现在住在哪儿？",
+              "爸爸想什么时候去看电影？",
+              "星期四前你想和我去医院看朋友？",
+              "现在是7点37分？"
+            ],
+            "right": [
+              "我现在住在我的好朋友家。",
+              "中午12点去看电影",
+              "现在是9点。",
+              "不是，现在是8点36分。",
+              "好的，我会和你去。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "b",
+            "3": "e",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "老师去哪儿？",
+            "passage": "A: 老师是美国人吗？\nB: 不是，我是中国人，你呢？\nA: 我也是中国人，现在我去学校，老师去吗？\nB: 我也去学校。",
+            "options": [
+              "商店",
+              "学校",
+              "看电影",
+              "北京"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "李月是哪儿国人，她会说汉语吗？",
+            "passage": "A: 李月是你的同学吗？\nB: 是的，她是美国人，会说汉语.\nA: 我想请她去看电影。",
+            "options": [
+              "是中国人，会说",
+              "是美国人，不会说",
+              "是美国人，会说",
+              "是中国人，不会说"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "在学校里有什么？",
+            "passage": "A: 在学校里有商店吗？我想买一本书。\nB: 在学校里有商店。你买什么书？\nA: 我想买汉语书。\nB: 好的！",
+            "options": [
+              "有商店",
+              "有一本书和医院",
+              "没有商店",
+              "有医院"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "今天是几月几号？",
+            "passage": "A: 昨天是几月几号？\nB: 昨天是三月十号。\nA: 明天是几月几号？\nB: 明天是三月十二号。",
+            "options": [
+              "三月十二号",
+              "三月十号",
+              "十月十二号",
+              "三月十一号"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "妈妈和爸爸去哪儿，做什么？",
+            "passage": "A: 你妈妈去中国做什么？\nB: 我妈妈去中国学习汉语。\nA: 你爸爸呢？\nB: 我爸爸也去中国学习汉语。",
+            "options": [
+              "去商店，看书",
+              "去中国，看书",
+              "去美国，学习汉语",
+              "去中国，学习汉语"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "是",
+              "现在",
+              "八点",
+              "三分"
+            ],
+            "translation": "Bây giờ là 8 giờ 3 phút."
+          },
+          "answer": [
+            "现在",
+            "是",
+            "八点",
+            "三分"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "前",
+              "星期三",
+              "爸妈",
+              "去",
+              "看电影"
+            ],
+            "translation": "Trước thứ tư bố mẹ đi xem phim."
+          },
+          "answer": [
+            "星期三",
+            "前",
+            "爸妈",
+            "去",
+            "看电影"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "什么时候",
+              "北京",
+              "你",
+              "回"
+            ],
+            "translation": "Khi nào bạn về Bắc Kinh?"
+          },
+          "answer": [
+            "你",
+            "什么时候",
+            "回",
+            "北京"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "上午",
+              "7点",
+              "昨天",
+              "中国菜",
+              "我",
+              "做"
+            ],
+            "translation": "7 giờ sáng hôm qua tôi nấu món Trung Quốc."
+          },
+          "answer": [
+            "昨天",
+            "上午",
+            "7点",
+            "我",
+            "做",
+            "中国菜"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "美国",
+              "现在",
+              "在",
+              "住",
+              "妈妈"
+            ],
+            "translation": "Mẹ hiện đang sống ở Mỹ."
+          },
+          "answer": [
+            "妈妈",
+            "现在",
+            "住",
+            "在",
+            "美国"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "title": "Ngày mai thời tiết thế nào?",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "吃",
+            "options": [
+              "chī",
+              "chí",
+              "cī",
+              "chǐ"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "水果",
+            "options": [
+              "shuīguǒ",
+              "shuǐguǒ",
+              "shuǐgǔo",
+              "suǐguǒ"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "下雨",
+            "options": [
+              "xià yǔ",
+              "xià yú",
+              "xiā yǔ",
+              "xià wǔ"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "冷",
+            "options": [
+              "lēng",
+              "léng",
+              "lěng",
+              "lèng"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "爱",
+            "options": [
+              "āi",
+              "ái",
+              "ǎi",
+              "ài"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "爸爸要多吃______水果。",
+            "options": [
+              "雨",
+              "怎么样",
+              "热",
+              "些",
+              "天气"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "天气太______了，我不会来你的家。",
+            "options": [
+              "雨",
+              "怎么样",
+              "热",
+              "些",
+              "天气"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "明天会下______吗？",
+            "options": [
+              "雨",
+              "怎么样",
+              "热",
+              "些",
+              "天气"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "昨天北京的天气______？",
+            "options": [
+              "雨",
+              "怎么样",
+              "热",
+              "些",
+              "天气"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "______太冷，我不会去看电影。",
+            "options": [
+              "雨",
+              "怎么样",
+              "热",
+              "些",
+              "天气"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "明天天气怎么样？",
+              "爸爸的身体好吗？",
+              "王小姐回来看电影吗？",
+              "你爱喝什么？",
+              "你多吃水果，多喝水。"
+            ],
+            "right": [
+              "他的身体不太好。",
+              "她不会来，天气太冷。",
+              "明天天气很热。",
+              "谢谢您，医生。",
+              "我爱喝茶。"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "b",
+            "3": "e",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "小方爱吃水果？",
+            "passage": "A: 后面那个人怎么样？\nB: 你说小方，她很好。\nA: 她爱吃水果吗？\nB: 她不爱吃。",
+            "options": [
+              "爱吃",
+              "不爱吃",
+              "多吃水果",
+              "水果不爱吃"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "爸爸上午几点回家？",
+            "passage": "A: 爸爸什么时候回家。\nB: 上午8点回家，现在几点了？\nA: 现在是9点。",
+            "options": [
+              "9点",
+              "上午9点",
+              "上午8点",
+              "下午8点"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "他儿子在哪儿工作，是医生吗？",
+            "passage": "A: 他儿子在哪儿工作？\nB: 他儿子在医院工作。\nA: 他是医生吗？\nB: 是的，他是医生。",
+            "options": [
+              "不是医生，他儿子在家工作",
+              "是医生，他儿子在医院工作",
+              "不是医生，在家里工作",
+              "是医生，不在医院工作"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "今天下午A一个人去看电影吗？",
+            "passage": "A: 今天下午你想做什么？\nB: 去看电影。\nA: 你一个人去吗？\nB: 我和我的爸爸妈妈去看电影。",
+            "options": [
+              "他和朋友去看电影",
+              "是的！他一个人去",
+              "他和爸爸去看电影",
+              "他和爸妈去看电影"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B是哪儿国人？",
+            "passage": "A: 你会说汉语吗？\nB: 我会说汉语。\nA: 你是中国人？\nB: 我不是中国人，我是美国人。",
+            "options": [
+              "美国人",
+              "中国人",
+              "他是中国人也会说汉语",
+              "他不是美国人"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "些",
+              "水果",
+              "想吃",
+              "妈妈",
+              "多"
+            ],
+            "translation": "Mẹ muốn ăn thêm một ít trái cây."
+          },
+          "answer": [
+            "妈妈",
+            "想吃",
+            "多",
+            "些",
+            "水果"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "怎么样",
+              "身体",
+              "爸爸",
+              "的"
+            ],
+            "translation": "Sức khỏe của bố tôi thế nào?"
+          },
+          "answer": [
+            "我",
+            "爸爸",
+            "的",
+            "身体",
+            "怎么样"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "今天",
+              "下雨",
+              "你",
+              "会来",
+              "不会",
+              "吗"
+            ],
+            "translation": "Hôm nay không mưa, bạn sẽ đến chứ?"
+          },
+          "answer": [
+            "今天",
+            "不会",
+            "下雨",
+            "你",
+            "会来",
+            "吗"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "医生",
+              "爱",
+              "水果",
+              "太",
+              "吃",
+              "了"
+            ],
+            "translation": "Bác sĩ thích ăn trái cây quá."
+          },
+          "answer": [
+            "医生",
+            "太",
+            "爱",
+            "吃",
+            "水果",
+            "了"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 13,
+      "title": "Anh ấy đang học nấu món ăn Trung Quốc",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "学习",
+            "options": [
+              "xuéxí",
+              "xuěxí",
+              "xuéxì",
+              "xúexī"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "睡觉",
+            "options": [
+              "shuì jiǎo",
+              "shuì jiào",
+              "suì jiào",
+              "shuí jiāo"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "电视",
+            "options": [
+              "diànshí",
+              "diānshì",
+              "diànshì",
+              "tiànshì"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "喜欢",
+            "options": [
+              "xǐhuan",
+              "xíhuān",
+              "xìhuan",
+              "xǐhuǎn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "打电话",
+            "options": [
+              "dá diànhuà",
+              "dǎ diānhuá",
+              "tǎ diànhuà",
+              "dǎ diànhuà"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我______打电话呢。",
+            "options": [
+              "电话",
+              "在",
+              "呢",
+              "没",
+              "吧"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "爸爸______看电视，他在工作呢。",
+            "options": [
+              "电话",
+              "在",
+              "呢",
+              "没",
+              "吧"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我家的小狗在吃饭______。",
+            "options": [
+              "电话",
+              "在",
+              "呢",
+              "没",
+              "吧"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "中国菜很好吃，我们做中国菜______。",
+            "options": [
+              "电话",
+              "在",
+              "呢",
+              "没",
+              "吧"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我没有你的______。",
+            "options": [
+              "电话",
+              "在",
+              "呢",
+              "没",
+              "吧"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "今天我们去哪儿吃饭？",
+              "昨天下午你在家做什么？",
+              "你喜欢喝茶吗？",
+              "今天天气怎么样？",
+              "你在看电视吗？"
+            ],
+            "right": [
+              "在下雨呢。",
+              "我和朋友在看书呢。",
+              "我没看电视，我在学习呢。",
+              "在家吃饭。",
+              "我喜欢喝水。"
+            ]
+          },
+          "answer": {
+            "0": "d",
+            "1": "c",
+            "2": "e",
+            "3": "a",
+            "4": "b"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "大卫在看书吗？",
+            "passage": "A: 大卫在做什么呢？\nB: 他在学习呢。\nA: 你也在学习吗？\nB: 我没在学习，我在看书呢。",
+            "options": [
+              "他在看书",
+              "他在学习",
+              "他在看电视",
+              "他在吃饭"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "他们喜欢什么？",
+            "passage": "A: 昨天上午你在看书吗？\nB: 是啊。你喜欢看书吗？\nA: 我也很喜欢看书。",
+            "options": [
+              "看书",
+              "看电视",
+              "学习",
+              "工作"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "他们都喜欢中国菜吗？",
+            "passage": "A: 你喜欢吃中国菜吗？\nB: 喜欢。中国菜很好吃。\nA: 我也喜欢。你会做中国菜吗？\nB: 我会做中国菜。",
+            "options": [
+              "不喜欢中国菜",
+              "不会做中国菜",
+              "喜欢中国菜",
+              "会做中国菜"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "A给谁打电话？",
+            "passage": "A: 李老师的电话号码是多少？\nB: 48961273。\nA: 谢谢，我现在给他打电话。\nB: 他在睡觉呢，明天打吧。",
+            "options": [
+              "给B打电话",
+              "给我打电话",
+              "给老师打电话",
+              "给你打电话"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "王老师在做什么呢？",
+            "passage": "A: 你给王老师打电话做什么？\nB: 我想问学习的问题。\nA: 他在工作，你下午打吧。\nB: 好吧，我下午给他打电话。",
+            "options": [
+              "在睡觉",
+              "在学习",
+              "在看书",
+              "在工作"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "没",
+              "看电视",
+              "他",
+              "在"
+            ],
+            "translation": "Anh ấy không đang xem tivi."
+          },
+          "answer": [
+            "他",
+            "没",
+            "在",
+            "看电视"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "什么",
+              "爸爸",
+              "呢",
+              "做",
+              "在"
+            ],
+            "translation": "Bố đang làm gì vậy?"
+          },
+          "answer": [
+            "爸爸",
+            "在",
+            "做",
+            "什么",
+            "呢"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "也",
+              "中国菜",
+              "不喜欢",
+              "他"
+            ],
+            "translation": "Anh ấy cũng không thích món ăn Trung Quốc."
+          },
+          "answer": [
+            "他",
+            "也",
+            "不喜欢",
+            "中国菜"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "下午",
+              "打电话",
+              "给",
+              "吧",
+              "你",
+              "我"
+            ],
+            "translation": "Buổi chiều tôi gọi điện cho bạn nhé."
+          },
+          "answer": [
+            "下午",
+            "我",
+            "给",
+            "你",
+            "打电话",
+            "吧"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "睡觉",
+              "大卫",
+              "呢",
+              "在"
+            ],
+            "translation": "Đại Vệ đang ngủ."
+          },
+          "answer": [
+            "大卫",
+            "在",
+            "睡觉",
+            "呢"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "title": "Cô ấy đã mua nhiều quần áo",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "商店",
+            "options": [
+              "shāngdiàn",
+              "shǎngdiàn",
+              "shāngtiàn",
+              "sāngdiān"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "开车",
+            "options": [
+              "kāi chá",
+              "kāi chē",
+              "kài chē",
+              "gāi chē"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "衣服",
+            "options": [
+              "yìfú",
+              "yīfù",
+              "yīfu",
+              "yǐfu"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "书店",
+            "options": [
+              "shūdiàn",
+              "shúdiàn",
+              "shūdiān",
+              "sūdiàn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "苹果",
+            "options": [
+              "pìngguǒ",
+              "bíngguǒ",
+              "píngguō",
+              "píngguǒ"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "他昨天______哪儿了？",
+            "options": [
+              "都",
+              "去",
+              "看见",
+              "不少",
+              "买"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "她买了______书。",
+            "options": [
+              "都",
+              "去",
+              "看见",
+              "不少",
+              "买"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "这些______是我的东西。",
+            "options": [
+              "都",
+              "去",
+              "看见",
+              "不少",
+              "买"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "小明______什么了？",
+            "options": [
+              "都",
+              "去",
+              "看见",
+              "不少",
+              "买"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "我没______你的手机。",
+            "options": [
+              "都",
+              "去",
+              "看见",
+              "不少",
+              "买"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "妈妈去商店买什么了？",
+              "你会开车吗？",
+              "他什么时候能回来？",
+              "他昨天去学校了吗？",
+              "这些东西是谁的？"
+            ],
+            "right": [
+              "可能半个小时后回来。",
+              "妈妈买了一点苹果。",
+              "这些东西都是小明的。",
+              "我不会开车。",
+              "他昨天没去学校。"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "d",
+            "2": "a",
+            "3": "e",
+            "4": "c"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "昨天 B 去哪儿了？",
+            "passage": "A: 你昨天去哪儿了？\nB: 我去商店买东西了。\nA: 你买了什么？\nB: 我买了一点西瓜？",
+            "options": [
+              "去商店买西瓜",
+              "去商店买苹果",
+              "去书店买书",
+              "去商店买衣服"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "什么时候 B 回家？",
+            "passage": "A: 你什么时候回家？\nB: 下午五点后。",
+            "options": [
+              "下午三点后",
+              "上午五点后",
+              "下午五点后",
+              "上午三点后"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "小明去哪儿了？",
+            "passage": "A: 你看见小明了吗？\nB: 看见了，他去图书馆了。\nA: 他什么时候能回来？\nB: 一个小时后。",
+            "options": [
+              "宿舍",
+              "书店",
+              "教室",
+              "图书馆"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "桌子上的书是谁的？",
+            "passage": "A: 桌子上的汉语书是你的吗？\nB: 不是，是小明的。\nA: 桌子上的英文书也是小明的吗？\nB: 是啊，桌子上的书都是小明的。",
+            "options": [
+              "都是B的",
+              "都是小明的",
+              "汉语书是小明的，英文书是B的",
+              "汉语书是B的，英文书是小明的"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "A买了什么？",
+            "passage": "A: 你买了什么？\nB: 我买了一点儿苹果，你呢？\nA: 我没买水果，我买了几件衣服。",
+            "options": [
+              "一点儿苹果",
+              "不少苹果",
+              "几件衣服",
+              "没买什么"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "没",
+              "我",
+              "看见",
+              "小明"
+            ],
+            "translation": "Tôi không nhìn thấy Tiểu Minh."
+          },
+          "answer": [
+            "我",
+            "没",
+            "看见",
+            "小明"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "什么",
+              "爸爸",
+              "能",
+              "时候",
+              "回来"
+            ],
+            "translation": "Khi nào bố có thể quay về?"
+          },
+          "answer": [
+            "爸爸",
+            "什么",
+            "时候",
+            "能",
+            "回来"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "都是",
+              "东西",
+              "这些",
+              "他",
+              "的"
+            ],
+            "translation": "Những thứ này đều là của anh ấy."
+          },
+          "answer": [
+            "这些",
+            "东西",
+            "都是",
+            "他",
+            "的"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "几个",
+              "了",
+              "我",
+              "买",
+              "苹果"
+            ],
+            "translation": "Tôi đã mua mấy quả táo."
+          },
+          "answer": [
+            "我",
+            "买",
+            "了",
+            "几个",
+            "苹果"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "衣服",
+              "她",
+              "好",
+              "啊",
+              "的",
+              "漂亮"
+            ],
+            "translation": "Quần áo của cô ấy đẹp quá!"
+          },
+          "answer": [
+            "她",
+            "的",
+            "衣服",
+            "好",
+            "漂亮",
+            "啊"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 15,
+      "title": "Tôi đáp máy bay đến đây",
+      "questions": [
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "出租车",
+            "options": [
+              "chūzūchē",
+              "chūzhūchē",
+              "cūzūchē",
+              "chúzūchè"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "飞机",
+            "options": [
+              "fěijī",
+              "fēijī",
+              "fēijì",
+              "fèijí"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "高兴",
+            "options": [
+              "gāoxìng",
+              "gāoxīng",
+              "gáoxìng",
+              "kāoxǐng"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "大学",
+            "options": [
+              "dàxuě",
+              "dāxué",
+              "dàxué",
+              "tàxué"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "饭店",
+            "options": [
+              "fàndián",
+              "fándiàn",
+              "fǎntiàn",
+              "fàndiàn"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你们是______来饭店的？",
+            "options": [
+              "认识",
+              "怎么",
+              "一起",
+              "高兴",
+              "听"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "认识你我也很______。",
+            "options": [
+              "认识",
+              "怎么",
+              "一起",
+              "高兴",
+              "听"
+            ]
+          },
+          "answer": "D"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "你是什么时候______他的？",
+            "options": [
+              "认识",
+              "怎么",
+              "一起",
+              "高兴",
+              "听"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "小明和小红______坐出租车来的。",
+            "options": [
+              "认识",
+              "怎么",
+              "一起",
+              "高兴",
+              "听"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn từ thích hợp điền vào chỗ trống.",
+            "passage": "______小红说，你们是2010年认识的。",
+            "options": [
+              "认识",
+              "怎么",
+              "一起",
+              "高兴",
+              "听"
+            ]
+          },
+          "answer": "E"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "很高兴认识你！",
+              "他们是什么时候认识的？",
+              "你是怎么来北京的？",
+              "这些衣服是今天买的吗？",
+              "你们是一起坐出租车来的吗？"
+            ],
+            "right": [
+              "我是坐飞机来的。",
+              "认识你我也很高兴！",
+              "不是，是昨天买的。",
+              "不是，我们是一起开车来的。",
+              "他们是2014年认识的。"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "e",
+            "2": "a",
+            "3": "c",
+            "4": "d"
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B和小红在哪儿认识的？",
+            "passage": "A: 你和小红是什么时候认识的？\nB: 我们是2021年认识的。\nA: 你和小红在哪儿认识的？\nB: 我们是在中国认识的。",
+            "options": [
+              "学校",
+              "中国",
+              "2021年",
+              "2022年"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "B和小张是怎么来饭店的？",
+            "passage": "A: 你和小张是一起开车来饭店的吗？\nB: 不是，我们是一起坐出租车来的。",
+            "options": [
+              "开车",
+              "坐出租车",
+              "坐飞机",
+              "骑车"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "小红是怎么来学校？",
+            "passage": "A: 好高兴认识你，小红！\nB: 认识你我也很高兴！\nA: 听小明说，你是开车来我们学校。\nB: 是的。",
+            "options": [
+              "坐飞机",
+              "坐出租车",
+              "开车",
+              "骑车"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "他们喜欢听什么？",
+            "passage": "A: 你喜欢听中国歌吗？\nB: 我很喜欢听中国歌，你呢？\nA: 我也很喜欢听中国歌。",
+            "options": [
+              "中国歌",
+              "越南歌",
+              "泰国歌",
+              "英文歌"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "今天几号？星期几？",
+            "passage": "A: 今天几月几号？\nB: 今天6月1号。\nA: 那今天是星期几？\nB: 是星期六。",
+            "options": [
+              "今天6号，星期六",
+              "今天6号，星期一",
+              "今天1号，星期六",
+              "今天1号，星期一"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "在",
+              "我们",
+              "认识",
+              "是",
+              "飞机",
+              "的",
+              "上"
+            ],
+            "translation": "Chúng tôi quen nhau trên máy bay."
+          },
+          "answer": [
+            "我们",
+            "是",
+            "在",
+            "飞机",
+            "上",
+            "认识",
+            "的"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "是",
+              "怎么",
+              "饭店",
+              "你",
+              "的",
+              "来"
+            ],
+            "translation": "Bạn đến khách sạn bằng cách nào?"
+          },
+          "answer": [
+            "你",
+            "是",
+            "怎么",
+            "来",
+            "饭店",
+            "的"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "一起",
+              "她",
+              "开车",
+              "是",
+              "朋友",
+              "和",
+              "来",
+              "的"
+            ],
+            "translation": "Cô ấy cùng bạn lái xe đến đây."
+          },
+          "answer": [
+            "她",
+            "是",
+            "和",
+            "朋友",
+            "一起",
+            "开车",
+            "来",
+            "的"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "说",
+              "听",
+              "老师",
+              "明天",
+              "看电影",
+              "我们",
+              "去"
+            ],
+            "translation": "Nghe thầy giáo nói, ngày mai chúng ta đi xem phim."
+          },
+          "answer": [
+            "听",
+            "老师",
+            "说",
+            "明天",
+            "我们",
+            "去",
+            "看电影"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "是",
+              "出租车",
+              "我们",
+              "的",
+              "坐",
+              "来"
+            ],
+            "translation": "Chúng tôi đi taxi đến."
+          },
+          "answer": [
+            "我们",
+            "是",
+            "坐",
+            "出租车",
+            "来",
+            "的"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,656 @@
+{
+  "textbook": {
+    "code": "yct1-standard",
+    "name": "YCT 1",
+    "name_zh": "标准教程 YCT 1",
+    "level": "YCT1",
+    "description": "Giáo trình chuẩn YCT 1 (标准教程 YCT 1, bản dịch tiếng Việt — Nhân Trí Việt / NXB Tổng hợp TP.HCM) dành cho học sinh tiểu học và THCS. 12 bài (bài 12 là ôn tập), 80 từ vựng theo đại cương YCT cấp 1 cùng một số từ mở rộng sách đánh dấu *; mỗi bài gồm câu quan trọng, từ mới, bài đọc, hoạt động, bài hát và bài thi mẫu. Từ vựng trích đúng theo sách.",
+    "sort": 2
+  },
+  "lessons": [
+    {
+      "unit": 1,
+      "title": "Xin chào!",
+      "title_zh": "你好！",
+      "summary": "Học cách chào hỏi (你好 / 老师好), tạm biệt (再见) và đếm số từ 1 đến 10.",
+      "grammar": "1) CHÀO HỎI — dùng 好 sau đối tượng được chào:\n• 你好！(Nǐ hǎo!) — Xin chào!\n• 老师好！(Lǎoshī hǎo!) — Em chào thầy/cô!\n\n2) TẠM BIỆT:\n• 再见！(Zàijiàn!) — Tạm biệt!\n\n3) SỐ ĐẾM 1–10:\n• 一 (yī) 二 (èr) 三 (sān) 四 (sì) 五 (wǔ) 六 (liù) 七 (qī) 八 (bā) 九 (jiǔ) 十 (shí)",
+      "vocab": [
+        { "hanzi": "一", "pinyin": "yī", "meaning": "(số) một" },
+        { "hanzi": "二", "pinyin": "èr", "meaning": "(số) hai" },
+        { "hanzi": "三", "pinyin": "sān", "meaning": "(số) ba" },
+        { "hanzi": "四", "pinyin": "sì", "meaning": "(số) bốn" },
+        { "hanzi": "五", "pinyin": "wǔ", "meaning": "(số) năm" },
+        { "hanzi": "六", "pinyin": "liù", "meaning": "(số) sáu" },
+        { "hanzi": "七", "pinyin": "qī", "meaning": "(số) bảy" },
+        { "hanzi": "八", "pinyin": "bā", "meaning": "(số) tám" },
+        { "hanzi": "九", "pinyin": "jiǔ", "meaning": "(số) chín" },
+        { "hanzi": "十", "pinyin": "shí", "meaning": "(số) mười" },
+        {
+          "hanzi": "你",
+          "pinyin": "nǐ",
+          "meaning": "bạn, em...",
+          "example": { "zh": "你好！", "pinyin": "Nǐ hǎo!", "vi": "Xin chào!" }
+        },
+        {
+          "hanzi": "好",
+          "pinyin": "hǎo",
+          "meaning": "tốt, khỏe",
+          "example": { "zh": "你好！", "pinyin": "Nǐ hǎo!", "vi": "Xin chào!" }
+        },
+        {
+          "hanzi": "老师",
+          "pinyin": "lǎoshī",
+          "meaning": "giáo viên, thầy/cô",
+          "example": { "zh": "老师好！", "pinyin": "Lǎoshī hǎo!", "vi": "Em chào thầy/cô!" }
+        },
+        {
+          "hanzi": "再见",
+          "pinyin": "zàijiàn",
+          "meaning": "tạm biệt",
+          "example": { "zh": "再见！", "pinyin": "Zàijiàn!", "vi": "Tạm biệt!" }
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Bạn tên gì?",
+      "title_zh": "你叫什么？",
+      "summary": "Hỏi và giới thiệu tên (你叫什么？我叫……), nói vui khi làm quen (认识你很高兴) và hỏi có quen biết ai không với trợ từ 吗.",
+      "grammar": "1) HỎI TÊN VỚI 叫:\n• 你叫什么？(Nǐ jiào shénme?) — Bạn tên gì?\n• 我叫月月。(Wǒ jiào Yuèyue.) — Mình tên là Nguyệt Nguyệt.\n\n2) NÓI VUI KHI LÀM QUEN:\n• 认识你很高兴！(Rènshi nǐ hěn gāoxìng!) — Rất vui được gặp bạn!\n\n3) CÂU HỎI VỚI 吗 VÀ PHỦ ĐỊNH VỚI 不 — thêm 吗 cuối câu để hỏi có/không; phủ định đặt 不 trước động từ:\n• 你认识她吗？(Nǐ rènshi tā ma?) — Bạn có biết cô ấy không?\n• 不认识。(Bú rènshi.) — Không biết.",
+      "vocab": [
+        {
+          "hanzi": "我",
+          "pinyin": "wǒ",
+          "meaning": "tôi, tớ, mình...",
+          "example": { "zh": "我叫星星。", "pinyin": "Wǒ jiào Xīngxing.", "vi": "Mình tên là Tinh Tinh." }
+        },
+        {
+          "hanzi": "叫",
+          "pinyin": "jiào",
+          "meaning": "gọi, là, tên là",
+          "example": { "zh": "我叫月月。", "pinyin": "Wǒ jiào Yuèyue.", "vi": "Mình tên là Nguyệt Nguyệt." }
+        },
+        {
+          "hanzi": "什么",
+          "pinyin": "shénme",
+          "meaning": "gì, cái gì",
+          "example": { "zh": "你叫什么？", "pinyin": "Nǐ jiào shénme?", "vi": "Bạn tên gì?" }
+        },
+        {
+          "hanzi": "认识",
+          "pinyin": "rènshi",
+          "meaning": "quen, biết",
+          "example": { "zh": "认识你很高兴！", "pinyin": "Rènshi nǐ hěn gāoxìng!", "vi": "Rất vui được gặp bạn!" }
+        },
+        {
+          "hanzi": "很",
+          "pinyin": "hěn",
+          "meaning": "rất",
+          "example": { "zh": "很好", "pinyin": "hěn hǎo", "vi": "rất tốt" }
+        },
+        {
+          "hanzi": "高兴",
+          "pinyin": "gāoxìng",
+          "meaning": "vui",
+          "example": { "zh": "很高兴", "pinyin": "hěn gāoxìng", "vi": "rất vui" }
+        },
+        {
+          "hanzi": "她",
+          "pinyin": "tā",
+          "meaning": "cô ấy, chị ấy...",
+          "example": { "zh": "认识她", "pinyin": "rènshi tā", "vi": "biết cô ấy" }
+        },
+        {
+          "hanzi": "吗",
+          "pinyin": "ma",
+          "meaning": "không, ư, à (trợ từ nghi vấn)",
+          "example": { "zh": "你认识她吗？", "pinyin": "Nǐ rènshi tā ma?", "vi": "Bạn có biết cô ấy không?" }
+        },
+        {
+          "hanzi": "不",
+          "pinyin": "bù",
+          "meaning": "không",
+          "example": { "zh": "不认识。", "pinyin": "Bú rènshi.", "vi": "Không biết." }
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Ông ấy là ai?",
+      "title_zh": "他是谁？",
+      "summary": "Câu với động từ 是, hỏi người (他是谁？) và hỏi quốc tịch (是哪国人？).",
+      "grammar": "1) CÂU VỚI 是 — giới thiệu ai đó là ai:\n• 他是成龙。(Tā shì Chéng Lóng.) — Chú ấy là Thành Long.\n\n2) HỎI NGƯỜI VỚI 谁:\n• 他是谁？(Tā shì shéi?) — Ông ấy là ai?\n\n3) HỎI QUỐC TỊCH VỚI 哪国人:\n• 成龙是哪国人？(Chéng Lóng shì nǎ guó rén?) — Thành Long là người nước nào?\n• 中国人。(Zhōngguó rén.) — Người Trung Quốc.",
+      "vocab": [
+        {
+          "hanzi": "他",
+          "pinyin": "tā",
+          "meaning": "anh ấy, ông ấy, nó...",
+          "example": { "zh": "他是成龙。", "pinyin": "Tā shì Chéng Lóng.", "vi": "Chú ấy là Thành Long." }
+        },
+        {
+          "hanzi": "是",
+          "pinyin": "shì",
+          "meaning": "là",
+          "example": { "zh": "他是成龙。", "pinyin": "Tā shì Chéng Lóng.", "vi": "Chú ấy là Thành Long." }
+        },
+        {
+          "hanzi": "谁",
+          "pinyin": "shéi",
+          "meaning": "ai",
+          "example": { "zh": "他是谁？", "pinyin": "Tā shì shéi?", "vi": "Ông ấy là ai?" }
+        },
+        {
+          "hanzi": "哪",
+          "pinyin": "nǎ",
+          "meaning": "nào",
+          "example": { "zh": "哪国人", "pinyin": "nǎ guó rén", "vi": "người nước nào" }
+        },
+        {
+          "hanzi": "国",
+          "pinyin": "guó",
+          "meaning": "nước, quốc gia",
+          "example": { "zh": "中国", "pinyin": "Zhōngguó", "vi": "Trung Quốc" }
+        },
+        {
+          "hanzi": "人",
+          "pinyin": "rén",
+          "meaning": "người",
+          "example": { "zh": "中国人", "pinyin": "Zhōngguó rén", "vi": "người Trung Quốc" }
+        },
+        {
+          "hanzi": "中国人",
+          "pinyin": "Zhōngguó rén",
+          "meaning": "người Trung Quốc",
+          "example": { "zh": "他是中国人。", "pinyin": "Tā shì Zhōngguó rén.", "vi": "Anh ấy là người Trung Quốc." }
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Nhà mình có bốn người.",
+      "title_zh": "我家有四口人。",
+      "summary": "Các thành viên trong gia đình; câu với 有 / 没有, hỏi số lượng với 几, lượng từ 口 và 个, liên từ 和.",
+      "grammar": "1) CÂU VỚI 有 — nói gia đình có mấy người:\n• 你家有几口人？(Nǐ jiā yǒu jǐ kǒu rén?) — Nhà bạn có mấy người?\n• 四口人，爸爸、妈妈、哥哥和我。(Sì kǒu rén, bàba, māma, gēge hé wǒ.) — Bốn người: bố, mẹ, anh trai và mình.\n\n2) LƯỢNG TỪ — 口 dùng cho thành viên trong gia đình, 个 dùng chung cho nhiều đối tượng:\n• 四口人 (sì kǒu rén) — bốn người · 一个妹妹 (yí ge mèimei) — một em gái\n\n3) HỎI CÓ... KHÔNG VÀ PHỦ ĐỊNH 没有:\n• 你有姐姐吗？(Nǐ yǒu jiějie ma?) — Bạn có chị không?\n• 没有。我有一个妹妹。(Méiyǒu. Wǒ yǒu yí ge mèimei.) — Không. Mình có một em gái.\n\n4) LIÊN TỪ 和 — và:\n• 爸爸和妈妈 (bàba hé māma) — bố và mẹ",
+      "vocab": [
+        {
+          "hanzi": "爸爸",
+          "pinyin": "bàba",
+          "meaning": "cha, bố, ba",
+          "example": { "zh": "爸爸和妈妈", "pinyin": "bàba hé māma", "vi": "bố và mẹ" }
+        },
+        {
+          "hanzi": "妈妈",
+          "pinyin": "māma",
+          "meaning": "mẹ, má",
+          "example": { "zh": "我爱妈妈。", "pinyin": "Wǒ ài māma.", "vi": "Mình yêu mẹ." }
+        },
+        {
+          "hanzi": "家",
+          "pinyin": "jiā",
+          "meaning": "nhà, gia đình",
+          "example": { "zh": "我家有四口人。", "pinyin": "Wǒ jiā yǒu sì kǒu rén.", "vi": "Nhà mình có bốn người." }
+        },
+        {
+          "hanzi": "哥哥",
+          "pinyin": "gēge",
+          "meaning": "anh, anh trai",
+          "example": { "zh": "有哥哥", "pinyin": "yǒu gēge", "vi": "có anh trai" }
+        },
+        {
+          "hanzi": "姐姐",
+          "pinyin": "jiějie",
+          "meaning": "chị, chị gái",
+          "example": { "zh": "你有姐姐吗？", "pinyin": "Nǐ yǒu jiějie ma?", "vi": "Bạn có chị không?" }
+        },
+        {
+          "hanzi": "妹妹",
+          "pinyin": "mèimei",
+          "meaning": "em gái",
+          "example": { "zh": "我有一个妹妹。", "pinyin": "Wǒ yǒu yí ge mèimei.", "vi": "Mình có một em gái." }
+        },
+        {
+          "hanzi": "有",
+          "pinyin": "yǒu",
+          "meaning": "có",
+          "example": { "zh": "有哥哥", "pinyin": "yǒu gēge", "vi": "có anh trai" }
+        },
+        {
+          "hanzi": "几",
+          "pinyin": "jǐ",
+          "meaning": "mấy (được dùng để hỏi số lượng không nhiều)",
+          "example": { "zh": "几口人", "pinyin": "jǐ kǒu rén", "vi": "mấy người" }
+        },
+        {
+          "hanzi": "口",
+          "pinyin": "kǒu",
+          "meaning": "lượng từ dùng cho các thành viên trong gia đình",
+          "example": { "zh": "四口人", "pinyin": "sì kǒu rén", "vi": "bốn người (trong nhà)" }
+        },
+        {
+          "hanzi": "和",
+          "pinyin": "hé",
+          "meaning": "và",
+          "example": { "zh": "爸爸和妈妈", "pinyin": "bàba hé māma", "vi": "bố và mẹ" }
+        },
+        {
+          "hanzi": "没有",
+          "pinyin": "méiyǒu",
+          "meaning": "không có",
+          "example": { "zh": "没有哥哥", "pinyin": "méiyǒu gēge", "vi": "không có anh trai" }
+        },
+        {
+          "hanzi": "个",
+          "pinyin": "ge",
+          "meaning": "cái, con... (lượng từ dùng chung cho nhiều đối tượng)",
+          "example": { "zh": "一个姐姐", "pinyin": "yí ge jiějie", "vi": "một người chị" }
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Mình sáu tuổi.",
+      "title_zh": "我6岁。",
+      "summary": "Hỏi và nói tuổi: 几岁 với trẻ em, 多大 với người lớn hơn; phó từ 也 (cũng); đếm số từ 1 đến 100.",
+      "grammar": "1) HỎI TUỔI TRẺ EM VỚI 几岁:\n• 你几岁？(Nǐ jǐ suì?) — Bạn mấy tuổi?\n• 我6岁。(Wǒ liù suì.) — Mình sáu tuổi.\n\n2) HỎI TUỔI NGƯỜI LỚN HƠN VỚI 多大:\n• 你哥哥多大？(Nǐ gēge duō dà?) — Anh của bạn bao nhiêu tuổi?\n\n3) PHÓ TỪ 也 — cũng, đặt trước phần vị ngữ:\n• 他也6岁。(Tā yě liù suì.) — Anh ấy cũng sáu tuổi.\n\n4) SỐ ĐẾM 1–100 — ghép chục + đơn vị: 二十一 (èrshíyī) 21 · 三十五 (sānshíwǔ) 35 · 一百 (yìbǎi) 100.",
+      "vocab": [
+        {
+          "hanzi": "岁",
+          "pinyin": "suì",
+          "meaning": "tuổi",
+          "example": { "zh": "我6岁。", "pinyin": "Wǒ liù suì.", "vi": "Mình sáu tuổi." }
+        },
+        {
+          "hanzi": "多大",
+          "pinyin": "duō dà",
+          "meaning": "bao nhiêu tuổi",
+          "example": { "zh": "你哥哥多大？", "pinyin": "Nǐ gēge duō dà?", "vi": "Anh của bạn bao nhiêu tuổi?" }
+        },
+        {
+          "hanzi": "也",
+          "pinyin": "yě",
+          "meaning": "cũng",
+          "example": { "zh": "他也6岁。", "pinyin": "Tā yě liù suì.", "vi": "Anh ấy cũng sáu tuổi." }
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Bạn cao thật đấy!",
+      "title_zh": "你的个子真高！",
+      "summary": "Các bộ phận cơ thể (tóc, mắt, mũi, tai, tay); trợ từ sở hữu 的; miêu tả với 很 + tính từ, phủ định 不 + tính từ và cảm thán 真 + tính từ.",
+      "grammar": "1) TRỢ TỪ SỞ HỮU 的 — nối người sở hữu với vật sở hữu:\n• 妹妹的眼睛 (mèimei de yǎnjing) — mắt của em gái\n• 你的个子 (nǐ de gèzi) — dáng người của bạn\n\n2) MIÊU TẢ VỚI 很 + TÍNH TỪ, PHỦ ĐỊNH VỚI 不 + TÍNH TỪ:\n• 妹妹的眼睛很小，耳朵很小。(Mèimei de yǎnjing hěn xiǎo, ěrduo hěn xiǎo.) — Mắt em gái rất nhỏ, tai rất nhỏ.\n• 手不大，头发不长。(Shǒu bú dà, tóufa bù cháng.) — Tay không lớn, tóc không dài.\n\n3) CẢM THÁN VỚI 真 + TÍNH TỪ — thật là...:\n• 你的个子真高！(Nǐ de gèzi zhēn gāo!) — Bạn cao thật đấy!\n• 你的鼻子真长！(Nǐ de bízi zhēn cháng!) — Mũi bạn thật dài!",
+      "vocab": [
+        {
+          "hanzi": "头发",
+          "pinyin": "tóufa",
+          "meaning": "tóc",
+          "example": { "zh": "头发不长。", "pinyin": "Tóufa bù cháng.", "vi": "Tóc không dài." }
+        },
+        {
+          "hanzi": "鼻子",
+          "pinyin": "bízi",
+          "meaning": "mũi",
+          "example": { "zh": "你的鼻子真长！", "pinyin": "Nǐ de bízi zhēn cháng!", "vi": "Mũi bạn thật dài!" }
+        },
+        {
+          "hanzi": "眼睛",
+          "pinyin": "yǎnjing",
+          "meaning": "mắt",
+          "example": { "zh": "妹妹的眼睛很小。", "pinyin": "Mèimei de yǎnjing hěn xiǎo.", "vi": "Mắt của em gái rất nhỏ." }
+        },
+        {
+          "hanzi": "手",
+          "pinyin": "shǒu",
+          "meaning": "bàn tay",
+          "example": { "zh": "手不大。", "pinyin": "Shǒu bú dà.", "vi": "Tay không lớn." }
+        },
+        {
+          "hanzi": "耳朵",
+          "pinyin": "ěrduo",
+          "meaning": "tai",
+          "example": { "zh": "耳朵很小。", "pinyin": "Ěrduo hěn xiǎo.", "vi": "Tai rất nhỏ." }
+        },
+        {
+          "hanzi": "的",
+          "pinyin": "de",
+          "meaning": "của (từ chỉ quan hệ sở hữu)",
+          "example": { "zh": "妹妹的眼睛", "pinyin": "mèimei de yǎnjing", "vi": "mắt của em gái" }
+        },
+        {
+          "hanzi": "小",
+          "pinyin": "xiǎo",
+          "meaning": "nhỏ, bé",
+          "example": { "zh": "很小", "pinyin": "hěn xiǎo", "vi": "rất nhỏ" }
+        },
+        {
+          "hanzi": "大",
+          "pinyin": "dà",
+          "meaning": "to, lớn",
+          "example": { "zh": "很大", "pinyin": "hěn dà", "vi": "rất to" }
+        },
+        {
+          "hanzi": "长",
+          "pinyin": "cháng",
+          "meaning": "dài",
+          "example": { "zh": "不长", "pinyin": "bù cháng", "vi": "không dài" }
+        },
+        {
+          "hanzi": "个子",
+          "pinyin": "gèzi",
+          "meaning": "vóc dáng, thân hình",
+          "example": { "zh": "个子很高", "pinyin": "gèzi hěn gāo", "vi": "dáng người rất cao" }
+        },
+        {
+          "hanzi": "真",
+          "pinyin": "zhēn",
+          "meaning": "thật",
+          "example": { "zh": "真长", "pinyin": "zhēn cháng", "vi": "thật dài" }
+        },
+        {
+          "hanzi": "高",
+          "pinyin": "gāo",
+          "meaning": "cao",
+          "example": { "zh": "你的个子真高！", "pinyin": "Nǐ de gèzi zhēn gāo!", "vi": "Bạn cao thật đấy!" }
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Đây là con chó của ai?",
+      "title_zh": "这是谁的狗？",
+      "summary": "Các con vật (mèo, chó, cá, chim); đại từ chỉ định 这 / 那, hỏi sở hữu 谁的, chỉ nơi chốn 这儿 / 那儿 và mẫu câu 这儿有很多……",
+      "grammar": "1) ĐẠI TỪ CHỈ ĐỊNH 这 / 那 — này, đây / kia, đó:\n• 这是我的狗。(Zhè shì wǒ de gǒu.) — Đây là con chó của mình.\n• 那是明明的猫。(Nà shì Míngming de māo.) — Đó là con mèo của Minh Minh.\n\n2) HỎI SỞ HỮU VỚI 谁的 — của ai:\n• 这是谁的狗？(Zhè shì shéi de gǒu?) — Đây là con chó của ai?\n• 那是谁的猫？(Nà shì shéi de māo?) — Đó là con mèo của ai?\n\n3) NƠI CHỐN 这儿 / 那儿 VÀ MẪU CÂU CÓ 有:\n• 你看，这儿有很多小鱼。(Nǐ kàn, zhèr yǒu hěn duō xiǎo yú.) — Nhìn này, ở đây có rất nhiều cá.\n• 那儿有很多小鸟。(Nàr yǒu hěn duō xiǎo niǎo.) — Đằng kia có rất nhiều chim.",
+      "vocab": [
+        {
+          "hanzi": "猫",
+          "pinyin": "māo",
+          "meaning": "mèo",
+          "example": { "zh": "那是谁的猫？", "pinyin": "Nà shì shéi de māo?", "vi": "Đó là con mèo của ai?" }
+        },
+        {
+          "hanzi": "狗",
+          "pinyin": "gǒu",
+          "meaning": "chó",
+          "example": { "zh": "这是我的狗。", "pinyin": "Zhè shì wǒ de gǒu.", "vi": "Đây là con chó của mình." }
+        },
+        {
+          "hanzi": "鱼",
+          "pinyin": "yú",
+          "meaning": "cá",
+          "example": { "zh": "这儿有很多小鱼。", "pinyin": "Zhèr yǒu hěn duō xiǎo yú.", "vi": "Ở đây có rất nhiều cá." }
+        },
+        {
+          "hanzi": "鸟",
+          "pinyin": "niǎo",
+          "meaning": "chim",
+          "example": { "zh": "那儿有很多小鸟。", "pinyin": "Nàr yǒu hěn duō xiǎo niǎo.", "vi": "Đằng kia có rất nhiều chim." }
+        },
+        {
+          "hanzi": "这",
+          "pinyin": "zhè",
+          "meaning": "này, đây",
+          "example": { "zh": "这是谁的狗？", "pinyin": "Zhè shì shéi de gǒu?", "vi": "Đây là con chó của ai?" }
+        },
+        {
+          "hanzi": "那",
+          "pinyin": "nà",
+          "meaning": "kia, đó",
+          "example": { "zh": "那是明明的猫。", "pinyin": "Nà shì Míngming de māo.", "vi": "Đó là con mèo của Minh Minh." }
+        },
+        {
+          "hanzi": "看",
+          "pinyin": "kàn",
+          "meaning": "nhìn, xem",
+          "example": { "zh": "看这儿", "pinyin": "kàn zhèr", "vi": "nhìn vào đây" }
+        },
+        {
+          "hanzi": "这儿",
+          "pinyin": "zhèr",
+          "meaning": "ở đây",
+          "example": { "zh": "这儿有很多小鱼。", "pinyin": "Zhèr yǒu hěn duō xiǎo yú.", "vi": "Ở đây có rất nhiều cá." }
+        },
+        {
+          "hanzi": "多",
+          "pinyin": "duō",
+          "meaning": "nhiều",
+          "example": { "zh": "很多", "pinyin": "hěn duō", "vi": "rất nhiều" }
+        },
+        {
+          "hanzi": "那儿",
+          "pinyin": "nàr",
+          "meaning": "ở đó",
+          "example": { "zh": "那儿有很多小鸟。", "pinyin": "Nàr yǒu hěn duō xiǎo niǎo.", "vi": "Đằng kia có rất nhiều chim." }
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Mẹ đi đến cửa hàng.",
+      "title_zh": "我去商店。",
+      "summary": "Nơi chốn (trường học, cửa hàng, nhà); động từ 在 (ở) và 去 (đi đến), hỏi đi đâu với 去哪儿; đại từ số nhiều 你们 / 我们; cảm ơn với 谢谢.",
+      "grammar": "1) ĐỘNG TỪ 在 — ở đâu:\n• 你姐姐在家吗？(Nǐ jiějie zài jiā ma?) — Chị của bạn có ở nhà không?\n• 不在，她在学校。(Bú zài, tā zài xuéxiào.) — Không ạ, chị ấy ở trường.\n\n2) ĐỘNG TỪ 去 + NƠI CHỐN — đi (đến):\n• 我去商店，你们去吗？(Wǒ qù shāngdiàn, nǐmen qù ma?) — Mẹ đi đến cửa hàng, các con có đi không?\n• 不去。我们在家。(Bú qù. Wǒmen zài jiā.) — Không ạ. Chúng con ở nhà.\n\n3) HỎI ĐI ĐÂU VỚI 去哪儿:\n• 你们去哪儿？(Nǐmen qù nǎr?) — Các bạn đi đâu thế?\n\n4) CẢM ƠN:\n• 谢谢你们。(Xièxie nǐmen.) — Cảm ơn các bạn.",
+      "vocab": [
+        {
+          "hanzi": "学校",
+          "pinyin": "xuéxiào",
+          "meaning": "trường học",
+          "example": { "zh": "她在学校。", "pinyin": "Tā zài xuéxiào.", "vi": "Chị ấy ở trường." }
+        },
+        {
+          "hanzi": "商店",
+          "pinyin": "shāngdiàn",
+          "meaning": "cửa hàng",
+          "example": { "zh": "我去商店。", "pinyin": "Wǒ qù shāngdiàn.", "vi": "Mình đi đến cửa hàng." }
+        },
+        {
+          "hanzi": "在",
+          "pinyin": "zài",
+          "meaning": "ở",
+          "example": { "zh": "你姐姐在家吗？", "pinyin": "Nǐ jiějie zài jiā ma?", "vi": "Chị của bạn có ở nhà không?" }
+        },
+        {
+          "hanzi": "谢谢",
+          "pinyin": "xièxie",
+          "meaning": "cảm ơn",
+          "example": { "zh": "谢谢你们。", "pinyin": "Xièxie nǐmen.", "vi": "Cảm ơn các bạn." }
+        },
+        {
+          "hanzi": "去",
+          "pinyin": "qù",
+          "meaning": "đi (đến)",
+          "example": { "zh": "去学校", "pinyin": "qù xuéxiào", "vi": "đi đến trường" }
+        },
+        {
+          "hanzi": "你们",
+          "pinyin": "nǐmen",
+          "meaning": "các bạn, các anh...",
+          "example": { "zh": "你们去吗？", "pinyin": "Nǐmen qù ma?", "vi": "Các con có đi không?" }
+        },
+        {
+          "hanzi": "我们",
+          "pinyin": "wǒmen",
+          "meaning": "chúng tôi, chúng ta...",
+          "example": { "zh": "我们在家。", "pinyin": "Wǒmen zài jiā.", "vi": "Chúng con ở nhà." }
+        },
+        {
+          "hanzi": "哪儿",
+          "pinyin": "nǎr",
+          "meaning": "chỗ nào, đâu",
+          "example": { "zh": "你去哪儿？", "pinyin": "Nǐ qù nǎr?", "vi": "Bạn đi đâu?" }
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Hôm nay là thứ mấy?",
+      "title_zh": "今天星期几？",
+      "summary": "Hỏi ngày tháng (几月几号) và thứ trong tuần (星期几); các thứ từ 星期一 đến 星期天; 今天 / 明天; động từ 喜欢 (thích).",
+      "grammar": "1) HỎI NGÀY THÁNG VỚI 几月几号:\n• 你的生日是几月几号？(Nǐ de shēngrì shì jǐ yuè jǐ hào?) — Sinh nhật bạn là ngày mấy tháng mấy?\n• 1月1号。(Yī yuè yī hào.) — Ngày một tháng một.\n\n2) HỎI THỨ VỚI 星期几:\n• 今天星期几？(Jīntiān xīngqī jǐ?) — Hôm nay là thứ mấy?\n• 今天星期五。(Jīntiān Xīngqīwǔ.) — Hôm nay là thứ sáu.\n\n3) CÁC THỨ TRONG TUẦN — 星期 + số; riêng chủ nhật là 星期天:\n• 星期一 (thứ hai) · 星期二 (thứ ba) · 星期三 (thứ tư) · 星期四 (thứ năm) · 星期五 (thứ sáu) · 星期六 (thứ bảy) · 星期天 (chủ nhật)\n\n4) ĐỘNG TỪ 喜欢 — thích:\n• 明天星期六，我喜欢星期六。(Míngtiān Xīngqīliù, wǒ xǐhuan Xīngqīliù.) — Ngày mai là thứ bảy, con thích thứ bảy.",
+      "vocab": [
+        {
+          "hanzi": "生日",
+          "pinyin": "shēngrì",
+          "meaning": "sinh nhật",
+          "example": { "zh": "你的生日是几月几号？", "pinyin": "Nǐ de shēngrì shì jǐ yuè jǐ hào?", "vi": "Sinh nhật bạn là ngày mấy tháng mấy?" }
+        },
+        {
+          "hanzi": "月",
+          "pinyin": "yuè",
+          "meaning": "tháng",
+          "example": { "zh": "1月1号", "pinyin": "yī yuè yī hào", "vi": "ngày 1 tháng 1" }
+        },
+        {
+          "hanzi": "号",
+          "pinyin": "hào",
+          "meaning": "ngày",
+          "example": { "zh": "3号", "pinyin": "sān hào", "vi": "ngày 3" }
+        },
+        {
+          "hanzi": "今天",
+          "pinyin": "jīntiān",
+          "meaning": "hôm nay",
+          "example": { "zh": "今天星期几？", "pinyin": "Jīntiān xīngqī jǐ?", "vi": "Hôm nay là thứ mấy?" }
+        },
+        {
+          "hanzi": "星期",
+          "pinyin": "xīngqī",
+          "meaning": "thứ, tuần",
+          "example": { "zh": "今天星期五。", "pinyin": "Jīntiān Xīngqīwǔ.", "vi": "Hôm nay là thứ sáu." }
+        },
+        {
+          "hanzi": "明天",
+          "pinyin": "míngtiān",
+          "meaning": "ngày mai",
+          "example": { "zh": "明天星期六。", "pinyin": "Míngtiān Xīngqīliù.", "vi": "Ngày mai là thứ bảy." }
+        },
+        {
+          "hanzi": "喜欢",
+          "pinyin": "xǐhuan",
+          "meaning": "thích",
+          "example": { "zh": "我喜欢星期六。", "pinyin": "Wǒ xǐhuan Xīngqīliù.", "vi": "Mình thích thứ bảy." }
+        },
+        { "hanzi": "星期一", "pinyin": "Xīngqīyī", "meaning": "thứ hai" },
+        { "hanzi": "星期二", "pinyin": "Xīngqī'èr", "meaning": "thứ ba" },
+        { "hanzi": "星期三", "pinyin": "Xīngqīsān", "meaning": "thứ tư" },
+        { "hanzi": "星期四", "pinyin": "Xīngqīsì", "meaning": "thứ năm" },
+        { "hanzi": "星期五", "pinyin": "Xīngqīwǔ", "meaning": "thứ sáu" },
+        { "hanzi": "星期六", "pinyin": "Xīngqīliù", "meaning": "thứ bảy" },
+        { "hanzi": "星期天", "pinyin": "Xīngqītiān", "meaning": "chủ nhật" }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Bây giờ là mấy giờ?",
+      "title_zh": "现在几点？",
+      "summary": "Hỏi và nói giờ (现在几点？ X点Y分); hẹn giờ gặp nhau với 见; buổi sáng 早上; cảm thán 太早了！(Sớm quá!).",
+      "grammar": "1) HỎI GIỜ VỚI 几点:\n• 妈妈，现在几点？(Māma, xiànzài jǐ diǎn?) — Mẹ ơi, bây giờ là mấy giờ?\n• 11点10分。(Shíyī diǎn shí fēn.) — 11 giờ 10 phút.\n\n2) NÓI GIỜ PHÚT — số + 点 + số + 分:\n• 5点 (wǔ diǎn) — năm giờ · 1点10分 (yī diǎn shí fēn) — một giờ mười phút\n\n3) HẸN GIỜ GẶP VỚI 见:\n• 明天几点见？(Míngtiān jǐ diǎn jiàn?) — Ngày mai gặp nhau lúc mấy giờ?\n• 早上5点。(Zǎoshang wǔ diǎn.) — 5 giờ sáng.\n\n4) CẢM THÁN:\n• 太早了！(Tài zǎo le!) — Sớm quá!",
+      "vocab": [
+        {
+          "hanzi": "现在",
+          "pinyin": "xiànzài",
+          "meaning": "bây giờ",
+          "example": { "zh": "现在几点？", "pinyin": "Xiànzài jǐ diǎn?", "vi": "Bây giờ là mấy giờ?" }
+        },
+        {
+          "hanzi": "点",
+          "pinyin": "diǎn",
+          "meaning": "giờ",
+          "example": { "zh": "12点", "pinyin": "shí'èr diǎn", "vi": "12 giờ" }
+        },
+        {
+          "hanzi": "分",
+          "pinyin": "fēn",
+          "meaning": "phút",
+          "example": { "zh": "11点10分", "pinyin": "shíyī diǎn shí fēn", "vi": "11 giờ 10 phút" }
+        },
+        {
+          "hanzi": "见",
+          "pinyin": "jiàn",
+          "meaning": "gặp",
+          "example": { "zh": "明天5点见。", "pinyin": "Míngtiān wǔ diǎn jiàn.", "vi": "Gặp nhau lúc năm giờ ngày mai nhé." }
+        },
+        {
+          "hanzi": "早上",
+          "pinyin": "zǎoshang",
+          "meaning": "buổi sáng",
+          "example": { "zh": "早上5点", "pinyin": "zǎoshang wǔ diǎn", "vi": "5 giờ sáng" }
+        },
+        {
+          "hanzi": "太早了",
+          "pinyin": "tài zǎo le",
+          "meaning": "Sớm quá!",
+          "example": { "zh": "太早了！", "pinyin": "Tài zǎo le!", "vi": "Sớm quá!" }
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "title": "Con ăn gì?",
+      "title_zh": "你吃什么？",
+      "summary": "Đồ ăn thức uống (cơm, mì sợi, táo, sữa, nước); động từ 吃 / 喝, mẫu câu hỏi 你吃什么？ và nói món yêu thích với 爱 + động từ.",
+      "grammar": "1) ĐỘNG TỪ 吃 (ăn) VÀ 喝 (uống):\n• 你吃什么？(Nǐ chī shénme?) — Con ăn gì?\n• 我吃苹果。(Wǒ chī píngguǒ.) — Con ăn táo.\n• 我喝牛奶。(Wǒ hē niúnǎi.) — Con uống sữa.\n\n2) NÓI MÓN YÊU THÍCH VỚI 爱 + ĐỘNG TỪ:\n• 我爱吃蛋糕。(Wǒ ài chī dàngāo.) — Con thích ăn bánh ga-tô.\n\n3) HỎI CHỌN VỚI 哪个:\n• 牛奶和水，你喝哪个？(Niúnǎi hé shuǐ, nǐ hē nǎge?) — Con uống gì nào, sữa hay nước?",
+      "vocab": [
+        {
+          "hanzi": "米饭",
+          "pinyin": "mǐfàn",
+          "meaning": "cơm",
+          "example": { "zh": "我吃米饭。", "pinyin": "Wǒ chī mǐfàn.", "vi": "Mình ăn cơm." }
+        },
+        {
+          "hanzi": "面条",
+          "pinyin": "miàntiáo",
+          "meaning": "mì sợi",
+          "example": { "zh": "吃面条", "pinyin": "chī miàntiáo", "vi": "ăn mì sợi" }
+        },
+        {
+          "hanzi": "苹果",
+          "pinyin": "píngguǒ",
+          "meaning": "táo",
+          "example": { "zh": "我吃苹果。", "pinyin": "Wǒ chī píngguǒ.", "vi": "Con ăn táo." }
+        },
+        {
+          "hanzi": "牛奶",
+          "pinyin": "niúnǎi",
+          "meaning": "sữa",
+          "example": { "zh": "我喝牛奶。", "pinyin": "Wǒ hē niúnǎi.", "vi": "Con uống sữa." }
+        },
+        {
+          "hanzi": "水",
+          "pinyin": "shuǐ",
+          "meaning": "nước",
+          "example": { "zh": "喝水", "pinyin": "hē shuǐ", "vi": "uống nước" }
+        },
+        {
+          "hanzi": "吃",
+          "pinyin": "chī",
+          "meaning": "ăn",
+          "example": { "zh": "你吃什么？", "pinyin": "Nǐ chī shénme?", "vi": "Con ăn gì?" }
+        },
+        {
+          "hanzi": "喝",
+          "pinyin": "hē",
+          "meaning": "uống",
+          "example": { "zh": "喝牛奶", "pinyin": "hē niúnǎi", "vi": "uống sữa" }
+        },
+        {
+          "hanzi": "爱",
+          "pinyin": "ài",
+          "meaning": "thích, yêu",
+          "example": { "zh": "我爱吃蛋糕。", "pinyin": "Wǒ ài chī dàngāo.", "vi": "Con thích ăn bánh ga-tô." }
+        },
+        {
+          "hanzi": "蛋糕",
+          "pinyin": "dàngāo",
+          "meaning": "bánh ga-tô",
+          "example": { "zh": "爱吃蛋糕", "pinyin": "ài chī dàngāo", "vi": "thích ăn bánh ga-tô" }
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "title": "Ôn tập",
+      "title_zh": "复习",
+      "summary": "Bài ôn tập cuối sách, không có từ mới: gọi tên người, con vật, đồ ăn thức uống và địa điểm đã học rồi xếp vào nhóm thích hợp; ôn lại toàn bộ mẫu câu của bài 1–11 (chào hỏi, tên tuổi, gia đình, miêu tả, sở hữu, nơi chốn, thứ ngày, giờ giấc, ăn uống)."
+    }
+  ]
+}
