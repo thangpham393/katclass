@@ -133,7 +133,9 @@ export default function AdminPayrollPage() {
                                 <span className="w-24 shrink-0 text-xs text-muted-foreground">
                                   {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
                                 </span>
-                                <span className="min-w-0 flex-1 truncate font-medium">{s.class?.name ?? "?"}</span>
+                                <span className="min-w-0 flex-1 truncate font-medium">
+                                  {s.class?.name ?? (s.type === "makeup" ? "Học bù riêng" : "?")}
+                                </span>
                                 {s.type === "makeup" && <Badge variant="jade">Buổi bù</Badge>}
                                 <span className="shrink-0 text-xs text-muted-foreground">{sessionHours(s)}h</span>
                               </div>

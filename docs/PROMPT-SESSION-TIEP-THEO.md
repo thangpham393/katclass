@@ -1,4 +1,4 @@
-# Prompt cho session tiếp theo — Giai đoạn 2 (phần còn lại): GV nghỉ/đổi buổi, kiểm tra định kỳ, chấm tay
+# Prompt cho session tiếp theo — Giai đoạn 2 (phần còn lại): kiểm tra định kỳ, chấm tay, Zalo
 
 > Copy toàn bộ phần dưới đây dán vào session Claude Code mới.
 
@@ -13,6 +13,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 - `src/lib/db-student.ts` — data layer khu học viên + cổng phụ huynh (dựa vào RLS, dùng chung cho HV và PH xem con)
 - `src/lib/db-tuition.ts` — data layer học phí gói buổi + chấm công GV (Giai đoạn 2)
 - `src/lib/db-notifications.ts` — data layer thông báo in-app
+- `src/lib/db-requests.ts` — data layer GV nghỉ/đổi buổi + admin duyệt (Giai đoạn 2 phần 2)
 - `src/lib/student-login.ts` — cơ chế đăng nhập bằng mã
 
 ## Trạng thái hiện tại (16/07/2026)
@@ -33,9 +34,14 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Chấm công GV** /admin/payroll: chọn tháng, 1 buổi `completed` có GV thực dạy = 1 công (kể cả dạy thay/buổi bù), đếm từ sessions không cần bảng riêng; bảng công theo GV (số công, tổng giờ, mở rộng xem từng buổi) + stat buổi chưa gán GV.
   - **HV/PH thấy số buổi còn lại**: thẻ `PackageSummaryCard` (src/components/package-summary.tsx) trên trang chủ học viên + cổng phụ huynh — tự ẩn nếu chưa mua gói, đổi màu vàng cảnh báo khi còn ≤3 buổi.
   - **Siết quyền xem bài học (migration 0014)**: học viên KHÔNG còn thấy toàn bộ thư viện — RLS `read lessons` mới dùng `can_view_lesson(id)`: chỉ thấy bài thuộc giáo trình/khóa học của lớp mình, bài GV gán vào buổi của lớp (kể cả ngoài giáo trình), hoặc bài của buổi được xếp học bù; phụ huynh xem theo con; GV/staff thấy tất cả. /student/library và /student/flashcard tự lọc theo (đều dùng fetchLessons + RLS). Kho từ vựng vẫn mở cho mọi người đăng nhập (tính năng tra cứu).
+- **GIAI ĐOẠN 2 PHẦN 2 ĐÃ XONG (16/07/2026, migration 0015)** — GV đăng ký nghỉ / đề xuất đổi buổi:
+  - **Bảng `session_change_requests`**: GV chọn buổi sắp tới của mình ở /teacher/requests, gửi yêu cầu `leave` (xin nghỉ) hoặc `reschedule` (đề xuất ngày/giờ mới, constraint bắt đủ 3 trường đề xuất); rút được khi còn pending; mỗi buổi tối đa 1 yêu cầu pending (partial unique index). RLS: GV tạo cho buổi mình dạy (`teaches_session`), xem yêu cầu của mình (kể cả khi là GV được xếp dạy thay), chỉ đổi pending→cancelled; staff toàn quyền.
+  - **Admin duyệt ở /admin/requests**: với `leave` → "Xếp dạy thay" (modal chọn GV, trùng lịch nổ 23P01 ngay) hoặc "Hủy buổi"; với `reschedule` → "Duyệt & áp lịch mới" (áp đúng đề xuất vào buổi, phòng giữ nguyên); "Từ chối" kèm lý do. Quy ước client: **cập nhật buổi học TRƯỚC, chốt yêu cầu SAU** — lỗi trùng lịch thì yêu cầu vẫn pending.
+  - **Thông báo tự sinh (trigger, 3 type mới** `schedule_change`/`request_new`/`request_resolved`, đã nới `notifications_type_check`): GV gửi yêu cầu → báo mọi profile admin/staff; chốt yêu cầu → báo GV kết quả; duyệt có dạy thay → báo GV thay + HV/PH lớp "đổi giáo viên". Riêng trigger `on_session_schedule_change` trên bảng `sessions` bắn cho MỌI nguồn đổi lịch (đổi date/giờ hoặc hủy buổi chưa diễn ra, kể cả admin sửa tay) → báo HV active của lớp + HV được xếp học bù vào buổi đó + PH; đổi `teacher_id` KHÔNG bắn ở trigger này (tránh spam khi đổi GV phụ trách hàng loạt qua `updateClassTeacher`) — thông báo dạy thay chỉ sinh từ trigger duyệt yêu cầu.
+- **Buổi học bù ĐỘC LẬP (16/07/2026, migration 0016)**: khi xếp học bù ở /admin/makeup, ngoài xếp vào buổi có sẵn giờ có tab **"Tạo buổi bù riêng"** — buổi `type='makeup'` với `class_id NULL` (constraint chỉ cho phép NULL với type makeup), chọn ngày giờ + GV (bắt buộc, để tính công) + phòng (tùy chọn, vẫn chặn trùng lịch 23P01), tạo xong tự xếp học viên vào. Buổi bù riêng hiện trong danh sách "buổi có sẵn" để xếp thêm nhiều HV vào cùng buổi; hiện trên thời khóa biểu/lịch GV/lịch HV/PH với nhãn "Học bù riêng" (helper `sessionClassLabel` trong db.ts); GV điểm danh 'makeup' → quyền học bù tự đóng; buổi completed tính 1 công ở /admin/payroll như thường. Kèm sửa: `teaches_session()` left join classes (buổi không lớp xét teacher_id), policy "view sessions" thêm GV được xếp dạy + PH thấy buổi con học bù, thông báo xếp bù ghi "buổi học bù riêng" khi không có lớp. `SessionRow.class_id` giờ là `string | null`.
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations **ĐÃ dán đủ đến `0014_lesson_visibility.sql`** (user xác nhận 16/07/2026 — 0013 = gói buổi + thanh toán + view package_balances + notifications + trigger; 0014 = HV chỉ xem bài học của giáo trình lớp mình). Migration mới từ 0015 trở đi mới cần nhắc dán.
+  1. Migrations đã dán đủ đến 0014 (user xác nhận 16/07/2026). **`0015_change_requests.sql` và `0016_standalone_makeup.sql` VỪA VIẾT — HỎI USER đã dán vào Supabase SQL Editor chưa (dán 0015 trước, 0016 sau), chưa thì nhắc dán trước khi test nghỉ/đổi buổi + buổi bù riêng.** Migration mới từ 0017 trở đi cần nhắc dán.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -48,15 +54,15 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 
 ## Việc nhỏ còn dở
 
-- (Không còn việc tay nào — migrations đã dán đủ đến 0014, toàn bộ JSON thư viện đã import vào DB 16/07/2026.)
+- **Dán `supabase/migrations/0015_change_requests.sql` rồi `0016_standalone_makeup.sql` vào Supabase SQL Editor** (nếu chưa — hỏi user). Code đã deploy nhưng nghỉ/đổi buổi (0015) và tạo buổi bù riêng (0016) chỉ chạy sau khi dán.
 - YCT 1 mới có từ vựng + ngữ pháp, **chưa có bộ bài tập theo bài** — nếu tôi yêu cầu thì soạn từ các "Bài thi mẫu" trong sách (PDF ở ~/Downloads/YCT1 Tieng Viet.pdf). Tôi còn dạy YCT 2 (PDF ở ~/YCT CHINESE/YCT2 PPT VIP/YCT2.pdf) — trích cùng format khi được yêu cầu.
 
 ## Việc cần làm: Giai đoạn 2 — phần còn lại
 
 Theo lộ trình `docs/KE-HOACH-CHUC-NANG.md` (mục 6, Giai đoạn 2):
 
-1. **GV đăng ký nghỉ / đề xuất đổi buổi** → admin duyệt + xếp GV dạy thay (buổi đã có constraint chống trùng lịch GV; nhớ trigger thông báo cho HV/PH khi đổi lịch — bảng notifications đã sẵn, thêm type mới thì nới check constraint `notifications_type_check`).
-2. **Bài kiểm tra định kỳ có giới hạn thời gian** (dựa trên hạ tầng homeworks/questions sẵn có + đếm giờ).
+1. ~~GV đăng ký nghỉ / đề xuất đổi buổi~~ **ĐÃ XONG 16/07/2026** (migration 0015, xem mục trạng thái).
+2. **Bài kiểm tra định kỳ có giới hạn thời gian** (dựa trên hạ tầng homeworks/questions sẵn có + đếm giờ) ← **LÀM TIẾP TỪ ĐÂY**.
 3. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong.
 4. **Zalo OA/ZNS** khi trung tâm có OA: bảng notifications đã có cột `channel` ('inapp'/'zalo') — cần worker gửi + template ZNS.
 5. (Tùy chọn, nếu tôi yêu cầu) Nâng cấp học phí: sửa gói đã bán, báo cáo doanh thu theo tháng, xuất Excel công nợ.

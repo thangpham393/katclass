@@ -537,7 +537,7 @@ export async function replaceClassSchedules(classId: string, schedules: Schedule
 
 export interface SessionRow {
   id: string;
-  class_id: string;
+  class_id: string | null; // null = buổi học bù độc lập, không gắn lớp
   session_no: number | null;
   date: string;
   start_time: string;
@@ -827,6 +827,43 @@ export async function fetchMakeupForSession(sessionId: string): Promise<MakeupCr
     .in("status", ["scheduled", "attended"]);
   if (error) throw error;
   return data as unknown as MakeupCreditRow[];
+}
+
+/**
+ * Tạo buổi học bù ĐỘC LẬP (không gắn lớp — migration 0015): hành chính
+ * chọn ngày giờ, phòng, GV; điểm danh 'makeup' xong là buổi khép lại.
+ * GV đứng buổi được tính công như buổi thường. Trả về id buổi mới.
+ */
+export async function createStandaloneMakeupSession(input: {
+  date: string;
+  start_time: string;
+  end_time: string;
+  room_id: string | null;
+  teacher_id: string;
+  note?: string | null;
+}): Promise<string> {
+  const { data, error } = await getSupabase()
+    .from("sessions")
+    .insert({
+      class_id: null,
+      type: "makeup",
+      status: "scheduled",
+      date: input.date,
+      start_time: input.start_time,
+      end_time: input.end_time,
+      room_id: input.room_id,
+      teacher_id: input.teacher_id,
+      note: input.note?.trim() || null,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
+/** Tên hiển thị của buổi: lớp, hoặc "Học bù riêng" với buổi độc lập. */
+export function sessionClassLabel(s: { class: { name: string } | null; type?: string }): string {
+  return s.class?.name ?? (s.type === "makeup" ? "Học bù riêng" : "?");
 }
 
 export async function scheduleMakeup(creditId: string, sessionId: string) {

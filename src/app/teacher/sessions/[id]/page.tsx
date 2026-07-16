@@ -180,7 +180,7 @@ export default function TeacherSessionPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">
-            Điểm danh — {s.class?.name ?? "Buổi học"}
+            Điểm danh — {s.class?.name ?? (s.type === "makeup" ? "Buổi học bù riêng" : "Buổi học")}
           </h1>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">

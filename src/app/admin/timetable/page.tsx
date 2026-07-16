@@ -18,7 +18,7 @@ import { Select } from "@/components/ui/select";
 import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
-import { fetchSessionsInRange, LEVEL_LABELS, WEEKDAY_LABELS, type SessionRow } from "@/lib/db";
+import { fetchSessionsInRange, sessionClassLabel, LEVEL_LABELS, WEEKDAY_LABELS, type SessionRow } from "@/lib/db";
 import { useLoad } from "@/lib/use-load";
 
 function isoDate(d: Date): string {
@@ -112,7 +112,8 @@ export default function AdminTimetablePage() {
     const roomIds = new Set<string>();
     for (const s of filtered) {
       if (s.status === "cancelled") continue;
-      classIds.add(s.class?.id ?? s.class_id);
+      const cid = s.class?.id ?? s.class_id;
+      if (cid) classIds.add(cid);
       if (s.teacher) teacherIds.add(s.teacher.id);
       if (s.room) roomIds.add(s.room.id);
     }
@@ -354,7 +355,7 @@ function SessionCard({ s }: { s: SessionRow }) {
   const level = s.class?.course?.level;
   return (
     <Link
-      href={`/admin/classes/${s.class?.id ?? s.class_id}`}
+      href={s.class || s.class_id ? `/admin/classes/${s.class?.id ?? s.class_id}` : "/admin/makeup"}
       className={cn(
         "block rounded-lg border border-l-4 p-2 transition-all hover:-translate-y-px hover:shadow-soft",
         sessionTone(s),
@@ -374,9 +375,9 @@ function SessionCard({ s }: { s: SessionRow }) {
           "mt-0.5 truncate text-[13px] font-bold leading-snug",
           s.status === "cancelled" && "line-through",
         )}
-        title={s.class?.name}
+        title={sessionClassLabel(s)}
       >
-        {s.class?.name ?? "?"}
+        {sessionClassLabel(s)}
       </div>
       <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
         <span className={cn("flex items-center gap-0.5", !s.room && "text-gold-700")}>
@@ -541,7 +542,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                     return (
                       <Link
                         key={s.id}
-                        href={`/admin/classes/${s.class?.id ?? s.class_id}`}
+                        href={s.class || s.class_id ? `/admin/classes/${s.class?.id ?? s.class_id}` : "/admin/makeup"}
                         className={cn(
                           "absolute overflow-hidden rounded-lg border border-l-4 p-1.5 shadow-sm transition-all hover:z-10 hover:shadow-soft",
                           sessionTone(s),
@@ -552,7 +553,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                           left: `calc(${lane * width}% + 3px)`,
                           width: `calc(${width}% - 6px)`,
                         }}
-                        title={`${s.class?.name ?? "?"} · ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}${s.teacher ? ` · ${s.teacher.name}` : ""}`}
+                        title={`${sessionClassLabel(s)} · ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}${s.teacher ? ` · ${s.teacher.name}` : ""}`}
                       >
                         <div className="flex items-center justify-between gap-1 text-[10px] font-bold text-foreground/70">
                           <span>
@@ -568,7 +569,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                             s.status === "cancelled" && "line-through",
                           )}
                         >
-                          {s.class?.name ?? "?"}
+                          {sessionClassLabel(s)}
                         </div>
                         {!compact && s.teacher && (
                           <div className="mt-0.5 flex items-center gap-1 truncate text-[10px] text-muted-foreground">

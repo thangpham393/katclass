@@ -1,21 +1,28 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarClock, Search, Undo2 } from "lucide-react";
+import { CalendarClock, CalendarPlus, Search, Undo2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
+import { Select, Field } from "@/components/ui/select";
 import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { cn } from "@/lib/utils";
 import {
+  createStandaloneMakeupSession,
   fetchMakeupCredits,
+  fetchProfilesByRole,
+  fetchRooms,
   fetchUpcomingSessions,
   scheduleMakeup,
+  sessionClassLabel,
   resetMakeup,
   dbErrorMessage,
+  todayISO,
   WEEKDAY_LABELS,
   type MakeupCreditRow,
   type SessionRow,
@@ -124,7 +131,7 @@ export default function AdminMakeupPage() {
                     <div className="truncate text-xs text-muted-foreground">
                       Vắng {fmtSession(c.missed_session)} ({c.missed_session?.class?.name ?? "?"}) → học bù{" "}
                       <span className="font-medium text-foreground">
-                        {fmtSession(c.makeup_session)} ({c.makeup_session?.class?.name ?? "?"})
+                        {fmtSession(c.makeup_session)} ({c.makeup_session?.class?.name ?? "buổi bù riêng"})
                       </span>
                     </div>
                   </div>
@@ -161,6 +168,55 @@ function AssignMakeupModal({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  const [mode, setMode] = useState<"existing" | "create">("existing");
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      title={`Xếp học bù — ${credit.student.name}`}
+      className="max-w-2xl"
+    >
+      <div className="space-y-3">
+        <p className="text-sm text-muted-foreground">
+          Vắng buổi {fmtSession(credit.missed_session)} · lớp{" "}
+          <span className="font-medium text-foreground">{credit.missed_session?.class?.name ?? "?"}</span>.
+        </p>
+
+        {/* Chọn cách xếp bù */}
+        <div className="grid grid-cols-2 gap-1 rounded-lg border bg-secondary/40 p-1">
+          {(
+            [
+              { key: "existing", label: "Xếp vào buổi có sẵn", icon: CalendarClock },
+              { key: "create", label: "Tạo buổi bù riêng", icon: CalendarPlus },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setMode(t.key)}
+              className={cn(
+                "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold transition-colors",
+                mode === t.key ? "bg-card text-brand-700 shadow-sm" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <t.icon className="h-4 w-4" />
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {mode === "existing" ? (
+          <PickExistingSession credit={credit} onSaved={onSaved} />
+        ) : (
+          <CreateStandaloneSession credit={credit} onSaved={onSaved} />
+        )}
+      </div>
+    </Modal>
+  );
+}
+
+/** Xếp vào buổi sắp tới của lớp khác (hoặc buổi bù riêng đã tạo trước đó). */
+function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onSaved: () => void }) {
   const sessions = useLoad(fetchUpcomingSessions);
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
@@ -171,7 +227,9 @@ function AssignMakeupModal({
     const list = (sessions.data ?? []).filter((s) => s.id !== credit.missed_session?.id);
     if (!q.trim()) return list.slice(0, 50);
     const needle = q.trim().toLowerCase();
-    return list.filter((s) => s.class?.name?.toLowerCase().includes(needle)).slice(0, 50);
+    return list
+      .filter((s) => sessionClassLabel(s).toLowerCase().includes(needle))
+      .slice(0, 50);
   }, [sessions.data, q, credit.missed_session?.id]);
 
   async function handlePick(s: SessionRow) {
@@ -187,55 +245,145 @@ function AssignMakeupModal({
   }
 
   return (
-    <Modal
-      open
-      onClose={onClose}
-      title={`Xếp học bù — ${credit.student.name}`}
-      className="max-w-2xl"
-    >
-      <div className="space-y-3">
-        {error && <ErrorNote message={error} />}
-        <p className="text-sm text-muted-foreground">
-          Vắng buổi {fmtSession(credit.missed_session)} · lớp{" "}
-          <span className="font-medium text-foreground">{credit.missed_session?.class?.name ?? "?"}</span>.
-          Chọn một buổi sắp tới (ưu tiên lớp cùng trình độ) để học bù.
-        </p>
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Tìm theo tên lớp..."
-            className="pl-9"
-            autoFocus
-          />
-        </div>
-        {sessions.loading ? (
-          <LoadingRows rows={4} className="p-0" />
-        ) : candidates.length === 0 ? (
-          <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            Không có buổi sắp tới phù hợp. Sinh buổi học cho các lớp trước (trang chi tiết lớp).
-          </p>
-        ) : (
-          <div className="max-h-80 space-y-1 overflow-y-auto scrollbar-thin">
-            {candidates.map((s) => (
-              <div key={s.id} className="flex items-center gap-3 rounded-lg border p-2.5">
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-semibold">{s.class?.name ?? "?"}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {fmtSession(s)}
-                    {s.room ? ` · P.${s.room.name}` : ""}
-                    {s.teacher ? ` · GV ${s.teacher.name}` : ""}
-                  </div>
-                </div>
-                <Button size="sm" variant="secondary" disabled={busy === s.id} onClick={() => handlePick(s)}>
-                  {busy === s.id ? "..." : "Chọn"}
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+    <div className="space-y-3">
+      {error && <ErrorNote message={error} />}
+      <p className="text-sm text-muted-foreground">
+        Chọn một buổi sắp tới (ưu tiên lớp cùng trình độ) — buổi bù riêng đã tạo cũng hiện trong danh sách,
+        có thể xếp thêm nhiều học viên vào cùng một buổi.
+      </p>
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Tìm theo tên lớp..."
+          className="pl-9"
+          autoFocus
+        />
       </div>
-    </Modal>
+      {sessions.loading ? (
+        <LoadingRows rows={4} className="p-0" />
+      ) : candidates.length === 0 ? (
+        <p className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+          Không có buổi sắp tới phù hợp. Sinh buổi học cho các lớp trước, hoặc chuyển sang “Tạo buổi bù riêng”.
+        </p>
+      ) : (
+        <div className="max-h-80 space-y-1 overflow-y-auto scrollbar-thin">
+          {candidates.map((s) => (
+            <div key={s.id} className="flex items-center gap-3 rounded-lg border p-2.5">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 truncate text-sm font-semibold">
+                  {sessionClassLabel(s)}
+                  {!s.class && <Badge variant="gold">Buổi bù riêng</Badge>}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {fmtSession(s)}
+                  {s.room ? ` · P.${s.room.name}` : ""}
+                  {s.teacher ? ` · GV ${s.teacher.name}` : ""}
+                </div>
+              </div>
+              <Button size="sm" variant="secondary" disabled={busy === s.id} onClick={() => handlePick(s)}>
+                {busy === s.id ? "..." : "Chọn"}
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Tạo buổi học bù độc lập (không gắn lớp) rồi xếp học viên vào luôn. */
+function CreateStandaloneSession({ credit, onSaved }: { credit: MakeupCreditRow; onSaved: () => void }) {
+  const rooms = useLoad(fetchRooms);
+  const teachers = useLoad(() => fetchProfilesByRole("teacher"));
+  const [date, setDate] = useState(todayISO(1));
+  const [startTime, setStartTime] = useState("18:00");
+  const [endTime, setEndTime] = useState("19:30");
+  const [roomId, setRoomId] = useState("");
+  const [teacherId, setTeacherId] = useState("");
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleCreate() {
+    if (!date) return setError("Chọn ngày học bù.");
+    if (!startTime || !endTime || endTime <= startTime)
+      return setError("Giờ kết thúc phải sau giờ bắt đầu.");
+    if (!teacherId) return setError("Chọn giáo viên đứng buổi (để tính công).");
+
+    setBusy(true);
+    setError(null);
+    try {
+      const sessionId = await createStandaloneMakeupSession({
+        date,
+        start_time: startTime,
+        end_time: endTime,
+        room_id: roomId || null,
+        teacher_id: teacherId,
+        note: note || `Buổi học bù riêng — ${credit.student.name}`,
+      });
+      await scheduleMakeup(credit.id, sessionId);
+      onSaved();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      {error && <ErrorNote message={error} />}
+      <p className="text-sm text-muted-foreground">
+        Buổi bù riêng không gắn lớp nào — học xong là khép lại. Giáo viên đứng buổi vẫn được
+        tính công bình thường; buổi hiện trên thời khóa biểu và lịch của giáo viên/học viên.
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Field label="Ngày" required>
+          <Input type="date" value={date} min={todayISO()} onChange={(e) => setDate(e.target.value)} />
+        </Field>
+        <Field label="Bắt đầu" required>
+          <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+        </Field>
+        <Field label="Kết thúc" required>
+          <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+        </Field>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Giáo viên" required hint="Buổi hoàn thành sẽ tính 1 công cho GV này.">
+          <Select value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+            <option value="">— Chọn giáo viên —</option>
+            {(teachers.data ?? []).map((t) => (
+              <option key={t.id} value={t.id}>{t.name}</option>
+            ))}
+          </Select>
+        </Field>
+        <Field label="Phòng học" hint="Hệ thống tự chặn nếu phòng/GV trùng giờ buổi khác.">
+          <Select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+            <option value="">— Không đặt phòng —</option>
+            {(rooms.data ?? []).map((r) => (
+              <option key={r.id} value={r.id}>Phòng {r.name}</option>
+            ))}
+          </Select>
+        </Field>
+      </div>
+
+      <Field label="Ghi chú">
+        <Input
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder={`vd: Học bù riêng cho ${credit.student.name}`}
+        />
+      </Field>
+
+      <div className="flex justify-end">
+        <Button onClick={handleCreate} disabled={busy || rooms.loading || teachers.loading}>
+          <CalendarPlus className="h-4 w-4" />
+          {busy ? "Đang tạo..." : "Tạo buổi & xếp học bù"}
+        </Button>
+      </div>
+    </div>
   );
 }

@@ -157,7 +157,9 @@ export default function StudentHome() {
                         <span className="text-[10px]">Th{d.getMonth() + 1}</span>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-sm font-semibold">{s.class?.name ?? "Lớp học"}</div>
+                        <div className="truncate text-sm font-semibold">
+                          {s.class?.name ?? (s.type === "makeup" ? "Buổi học bù riêng" : "Lớp học")}
+                        </div>
                         <div className="text-xs text-muted-foreground">
                           {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
                           {s.room && ` · Phòng ${s.room.name}`}
