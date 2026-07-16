@@ -17,6 +17,8 @@ import {
   ClipboardList,
   Library,
   BookMarked,
+  Wallet,
+  CalendarCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/lib/types";
@@ -55,6 +57,8 @@ const adminNav: NavItem[] = [
   { href: "/admin/students", label: "Học viên", icon: Users },
   { href: "/admin/teachers", label: "Đội ngũ", icon: GraduationCap },
   { href: "/admin/makeup", label: "Học bù", icon: CalendarClock },
+  { href: "/admin/tuition", label: "Học phí", icon: Wallet },
+  { href: "/admin/payroll", label: "Chấm công GV", icon: CalendarCheck },
   { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
   { href: "/admin/settings", label: "Cài đặt", icon: Settings },
 ];
@@ -76,7 +80,7 @@ export function Sidebar({ role }: { role: Role }) {
   const nav = navByRole[role];
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-ink-950 text-ink-200 lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-ink-950 text-ink-200 print:!hidden lg:flex">
       <div className="px-5 py-5">
         <Link href="/">
           <Logo inverted />

@@ -1,4 +1,4 @@
-# Prompt cho session tiếp theo — Giai đoạn 2: học phí gói buổi + thông báo + chấm công
+# Prompt cho session tiếp theo — Giai đoạn 2 (phần còn lại): GV nghỉ/đổi buổi, kiểm tra định kỳ, chấm tay
 
 > Copy toàn bộ phần dưới đây dán vào session Claude Code mới.
 
@@ -11,9 +11,11 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 - `src/lib/db.ts` — data layer lõi (lớp, buổi học, điểm danh, học bù, thành viên)
 - `src/lib/db-content.ts` — data layer nội dung (từ vựng, bài học, câu hỏi, bài tập; quy ước jsonb đề bài/đáp án ghi ở đầu file)
 - `src/lib/db-student.ts` — data layer khu học viên + cổng phụ huynh (dựa vào RLS, dùng chung cho HV và PH xem con)
+- `src/lib/db-tuition.ts` — data layer học phí gói buổi + chấm công GV (Giai đoạn 2)
+- `src/lib/db-notifications.ts` — data layer thông báo in-app
 - `src/lib/student-login.ts` — cơ chế đăng nhập bằng mã
 
-## Trạng thái hiện tại (15/07/2026)
+## Trạng thái hiện tại (16/07/2026)
 
 - **Stack**: Next.js 15 App Router + Supabase (project `pfwltalxrmddbckidgad`), deploy Vercel qua GitHub (`thangpham393/katclass`, branch main). Env trong `.env.local` (không commit).
 - **GIAI ĐOẠN 1 ĐÃ HOÀN TẤT** — toàn bộ chạy dữ liệu thật, không còn mock (mock-data.ts đã xóa):
@@ -21,13 +23,18 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Khu giáo viên**: buổi dạy + điểm danh 4 trạng thái + nhận xét (rating 1-5) + **nội dung ôn tập theo buổi** (chọn bài học gán vào buổi ở /teacher/sessions/[id]); **kho từ vựng** (CRUD, ví dụ, audio_url, TTS zh-CN); **bài học** (/teacher/lessons: CRUD gắn course, unit, ngữ pháp, link slide + gắn từ vựng có thứ tự); **ngân hàng câu hỏi** (/teacher/questions: 6 dạng — trắc nghiệm, điền từ, nối từ-nghĩa, sắp xếp câu, nghe-chọn TTS, chọn pinyin; đáp án lưu bảng riêng); **giao bài tập** (/teacher/homework/new chọn câu từ ngân hàng, hạn nộp) + trang chi tiết /teacher/homework/[id] (tỷ lệ nộp, điểm TB, danh sách chưa nộp); học viên của tôi.
   - **Khu học viên** (mobile-first): trang chủ (lịch 14 ngày kể cả buổi học bù được xếp, bài tập chờ, chuyên cần, nhận xét GV); lớp của tôi + chi tiết lớp /student/classes/[id] (buổi sắp tới, buổi đã diễn ra kèm điểm danh của mình + link nội dung ôn tập từng buổi, bài tập lớp); xem bài học /student/lessons/[id] (slide, ngữ pháp, từ vựng + flashcard); flashcard theo bài học; thư viện; **làm bài tập** /student/homework/[id] (đủ 6 dạng câu, nộp qua RPC `submit_homework` chấm server thang 10, xem điểm, làm lại được).
   - **Cổng phụ huynh** /parent: chọn con (nhiều con), lịch học sắp tới, điểm danh gần đây + chuyên cần, nhận xét GV sau buổi, bài tập của con (trạng thái/điểm).
-  - **Thư viện giáo trình** (migration 0011): admin import giáo trình từ file JSON ở /admin/library (bảng `textbooks` + `lessons.textbook_id`; import idempotent chạy client-side qua RLS — bài khớp theo unit, từ vựng tái dùng kho theo hanzi, câu hỏi trùng bỏ qua). File dữ liệu ở `supabase/library/`: `msutong-4.json` (Hán ngữ MSutong Q4 — trích từ PDF giáo trình thật: 10 bài, 192 từ, ngữ pháp từng bài, 60 câu luyện tập tự soạn) và `hsk1-standard.json` (HSK 1 chuẩn 15 bài — bản Claude tự biên soạn, chưa đối chiếu sách của trung tâm). GV lọc bài học theo giáo trình, gán vào buổi, lọc câu hỏi theo bài khi giao bài tập; format JSON ghi ở đầu `src/lib/db-library.ts`.
+  - **Thư viện giáo trình** (migration 0011): admin import giáo trình từ file JSON ở /admin/library (bảng `textbooks` + `lessons.textbook_id`; import idempotent chạy client-side qua RLS — bài khớp theo unit, từ vựng tái dùng kho theo hanzi, câu hỏi trùng bỏ qua). File dữ liệu ở `supabase/library/`: `msutong-4.json` (Hán ngữ MSutong Q4 — trích từ PDF giáo trình thật: 10 bài, 192 từ, ngữ pháp từng bài, 60 câu luyện tập tự soạn), `hsk1-standard.json` (标准教程 HSK 1 bản dịch Việt — **trích từ sách thật**, 15 bài, 183 mục từ khớp bảng 词语总表 cuối sách), `hsk1-standard-baitap.json` (bộ câu hỏi theo bài cho HSK 1 — chưa commit) và `yct1-standard.json` (标准教程 YCT 1 bản dịch Việt — trích từ sách thật "YCT1 Tieng Viet.pdf": 12 bài, bài 12 ôn tập, 104 mục từ khớp 100% bảng 词语表 trang 62–64, sort 2 — chưa commit, chưa import vào DB). `importTextbook` (src/lib/db-library.ts) đã sửa: từ trùng hanzi trong kho chung được **cập nhật pinyin/nghĩa/ví dụ theo file import sau cùng** — YCT1 và HSK1 chồng nhiều từ cơ bản (你, 好, 我...), re-import file nào sau thì nghĩa theo file đó. GV lọc bài học theo giáo trình, gán vào buổi, lọc câu hỏi theo bài khi giao bài tập; format JSON ghi ở đầu `src/lib/db-library.ts`.
   - **Gán giáo trình cho lớp** (migration 0012, `classes.textbook_id`): admin chọn giáo trình khi tạo lớp hoặc đổi ngay trên trang chi tiết lớp. GV gán nội dung ôn tập cho buổi: mặc định chỉ hiện bài của giáo trình lớp (nút "Hiện tất cả bài học" để chọn ngoài); giao bài tập: chọn lớp xong tự lọc bài học + câu hỏi theo giáo trình lớp (checkbox bỏ lọc được).
   - **Bộ bài tập theo bài MSutong 4**: `supabase/library/msutong-4-baitap.json` — 191 câu trích từ worksheet của chính trung tâm (file MSUTONG4 BT.pdf), 4 dạng tự chấm: chọn từ điền chỗ trống (trắc nghiệm ngân hàng từ), chọn vị trí từ A/B/C/D, sắp xếp câu (reorder), đọc hiểu (trắc nghiệm + `content.passage`). Import file này SAU msutong-4.json (importer cập nhật mềm: file chỉ có questions sẽ không đụng vocab/grammar). 2 dạng không tự chấm được đã bỏ: hoàn thành hội thoại theo tranh, viết câu theo tranh. GV giao bài: lọc theo bài học → nút "Chọn cả bộ" lấy nguyên bộ câu hỏi + tự điền tiêu đề "Luyện tập Bài N". Player học viên hỗ trợ `passage` (khung đoạn văn giữ xuống dòng, font Hán tự tự nhận diện).
   - **Đăng nhập bằng mã**: HVKAT (học viên), GVKAT (GV), NVKAT (NV), QLKAT (admin), **PHKAT (phụ huynh — mới, migration 0010)**. Mật khẩu mặc định `kat12345`, bị ép đổi ở /account/password. Tự đăng ký bị khóa (0009).
+- **GIAI ĐOẠN 2 PHẦN 1 ĐÃ XONG (16/07/2026, migration 0013)** — học phí gói buổi + thông báo in-app + chấm công GV:
+  - **Học phí gói buổi** (`enrollment_packages` + `payments`, chính sách 5.1): admin bán gói N buổi ở /admin/tuition (chọn HV, giá, ưu đãi, ngày kích hoạt, thu tiền ngay tiền mặt/CK), thu thêm nhiều lần, hủy gói (giữ lịch sử). Biên lai số tự cấp BL-00001 (sequence), trang in /admin/tuition/receipt/[id] (sidebar/topbar có print:hidden). **Số buổi còn lại KHÔNG lưu mà tính ngược từ điểm danh** qua view `package_balances` (security_invoker — dùng chung admin/HV/PH): present + absent_excused + absent_unexcused trừ 1 buổi kể từ ngày kích hoạt gói đầu tiên, makeup không trừ, nhiều gói trừ FIFO theo start_date; view kèm paid_amount/debt/final_price + tên/mã/SĐT học viên. Trang admin có tab Tất cả / Sắp hết buổi (≤3) / Công nợ + 4 stat (gói active, HV sắp hết, tổng nợ, đã thu tháng này). Hàm `student_sessions_remaining(sid)` dùng trong trigger.
+  - **Thông báo in-app** (`notifications`, cột channel sẵn cho Zalo sau): chuông trên topbar (`src/components/shell/notification-bell.tsx`) — badge số chưa đọc, mở panel tự đánh dấu đã đọc, bấm thông báo nhảy tới link. 4 trigger DB tự sinh (security definer): bài tập mới → HV cả lớp; xếp học bù → HV + PH; con vắng mặt (có/không phép) → PH; gói còn ≤3 buổi hoặc hết → HV + PH (chống dội: 1 cảnh báo package_low / người / 3 ngày).
+  - **Chấm công GV** /admin/payroll: chọn tháng, 1 buổi `completed` có GV thực dạy = 1 công (kể cả dạy thay/buổi bù), đếm từ sessions không cần bảng riêng; bảng công theo GV (số công, tổng giờ, mở rộng xem từng buổi) + stat buổi chưa gán GV.
+  - **HV/PH thấy số buổi còn lại**: thẻ `PackageSummaryCard` (src/components/package-summary.tsx) trên trang chủ học viên + cổng phụ huynh — tự ẩn nếu chưa mua gói, đổi màu vàng cảnh báo khi còn ≤3 buổi.
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations đã dán vào Supabase SQL Editor theo thứ tự đến **`0012_class_textbook.sql`** (0011 = bảng textbooks + lessons.textbook_id, 0012 = classes.textbook_id). Nếu chưa dán: mọi trang bài học / lớp học sẽ lỗi vì query embed `textbook:textbooks`.
+  1. Migrations đã dán vào Supabase SQL Editor theo thứ tự đến **`0013_tuition_notifications.sql`** (0013 = gói buổi + thanh toán + view package_balances + notifications + 3 trigger thông báo). Nếu 0013 chưa dán: trang /admin/tuition, chuông thông báo và thẻ gói buổi HV/PH sẽ lỗi (bảng không tồn tại).
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -38,17 +45,21 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - Tôi không chạy được SQL trực tiếp — cần đổi schema thì viết migration mới trong `supabase/migrations/` và hướng dẫn tôi dán vào SQL Editor.
   - Commit message tiếng Việt, push main → Vercel tự deploy. Khu học viên/phụ huynh phải mobile-first.
 
-## Việc cần làm: Giai đoạn 2 — tiền & thông báo & chấm công
+## Việc nhỏ còn dở (làm nhanh trước khi vào việc chính)
 
-Theo chính sách đã chốt ở `docs/KE-HOACH-CHUC-NANG.md` mục 5.1:
+- Nhắc tôi (user) làm 2 việc tay trên trình duyệt (Claude không tự chạy được — chỉ có anon key):
+  1. **Dán migration `0013_tuition_notifications.sql` vào Supabase SQL Editor** (nếu chưa) — không dán thì học phí/thông báo/thẻ gói buổi đều lỗi.
+  2. Vào /admin/library import `yct1-standard.json` (và `hsk1-standard-baitap.json` nếu chưa).
+- YCT 1 mới có từ vựng + ngữ pháp, **chưa có bộ bài tập theo bài** — nếu tôi yêu cầu thì soạn từ các "Bài thi mẫu" trong sách (PDF ở ~/Downloads/YCT1 Tieng Viet.pdf). Tôi còn dạy YCT 2 (PDF ở ~/YCT CHINESE/YCT2 PPT VIP/YCT2.pdf) — trích cùng format khi được yêu cầu.
 
-1. **Học phí theo gói buổi** (migration mới: `enrollment_packages`, `payments`):
-   - Hành chính bán gói N buổi cho học viên (giá, ưu đãi, ngày mua), thu tiền + ghi nhận thanh toán (tiền mặt/chuyển khoản), xuất biên lai (in/PDF đơn giản).
-   - Mỗi điểm danh (present / absent_excused / absent_unexcused) trừ 1 buổi khỏi gói; buổi `makeup` KHÔNG trừ. Tính "số buổi còn lại" từ điểm danh sau ngày kích hoạt gói (schema hiện tại đủ dữ liệu để tính ngược).
-   - Trang admin: danh sách gói của từng học viên, cảnh báo còn ≤ 3 buổi (danh sách nhắc gia hạn), công nợ.
-   - Học viên/phụ huynh thấy số buổi còn lại của gói.
-2. **Thông báo**: bảng `notifications` in-app (chuông trên topbar) cho: bài tập mới, được xếp học bù, con vắng mặt, sắp hết gói buổi. Zalo OA/ZNS để sau khi có OA — thiết kế bảng sẵn cột kênh.
-3. **Chấm công giáo viên**: buổi `completed` có GV thực dạy = 1 công; trang admin tổng hợp công theo GV theo tháng (đếm từ sessions, chưa cần bảng lương).
-4. (Nếu còn thời gian) GV đăng ký nghỉ / đề xuất đổi buổi → admin duyệt + xếp dạy thay.
+## Việc cần làm: Giai đoạn 2 — phần còn lại
+
+Theo lộ trình `docs/KE-HOACH-CHUC-NANG.md` (mục 6, Giai đoạn 2):
+
+1. **GV đăng ký nghỉ / đề xuất đổi buổi** → admin duyệt + xếp GV dạy thay (buổi đã có constraint chống trùng lịch GV; nhớ trigger thông báo cho HV/PH khi đổi lịch — bảng notifications đã sẵn, thêm type mới thì nới check constraint `notifications_type_check`).
+2. **Bài kiểm tra định kỳ có giới hạn thời gian** (dựa trên hạ tầng homeworks/questions sẵn có + đếm giờ).
+3. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong.
+4. **Zalo OA/ZNS** khi trung tâm có OA: bảng notifications đã có cột `channel` ('inapp'/'zalo') — cần worker gửi + template ZNS.
+5. (Tùy chọn, nếu tôi yêu cầu) Nâng cấp học phí: sửa gói đã bán, báo cáo doanh thu theo tháng, xuất Excel công nợ.
 
 Làm xong build + commit + push, cập nhật lại file này cho session sau.

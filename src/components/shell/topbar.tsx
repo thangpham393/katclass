@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, KeyRound, LogOut } from "lucide-react";
+import { KeyRound, LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
+import { NotificationBell } from "@/components/shell/notification-bell";
 import { signOut } from "@/lib/auth";
 import type { Role, User } from "@/lib/types";
 
@@ -24,7 +25,7 @@ export function TopBar({ user }: { user: User }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur md:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur print:hidden md:px-8">
       <div className="min-w-0">
         <div className="truncate text-sm text-muted-foreground">
           Xin chào, <span className="font-semibold text-foreground">{user.name}</span>
@@ -36,13 +37,7 @@ export function TopBar({ user }: { user: User }) {
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          className="relative grid h-9 w-9 place-items-center rounded-lg border bg-card text-muted-foreground transition-colors hover:text-foreground"
-          title="Thông báo"
-        >
-          <Bell className="h-4 w-4" />
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-gold-600" />
-        </button>
+        <NotificationBell profileId={user.id} />
 
         <Link
           href="/account/password"

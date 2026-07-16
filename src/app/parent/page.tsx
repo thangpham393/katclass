@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { PackageSummaryCard } from "@/components/package-summary";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import {
@@ -176,6 +177,9 @@ export default function ParentHome() {
             />
             <StatCard label="Bài tập chưa làm" value={pendingHw.length} icon={ClipboardList} accent="gold" />
           </section>
+
+          {/* Gói buổi còn lại của con (chỉ hiện khi đã mua gói) */}
+          {childId && <PackageSummaryCard studentId={childId} forParent />}
 
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Lịch học */}
