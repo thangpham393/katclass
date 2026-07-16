@@ -2,7 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bell, CalendarClock, ClipboardList, UserX, Wallet, Info } from "lucide-react";
+import {
+  Bell,
+  CalendarClock,
+  CalendarOff,
+  CalendarRange,
+  CheckCircle2,
+  ClipboardList,
+  UserX,
+  Wallet,
+  Info,
+} from "lucide-react";
 import { cn, relativeTime } from "@/lib/utils";
 import {
   fetchNotifications,
@@ -17,6 +27,9 @@ const TYPE_ICONS: Record<NotificationType, React.ComponentType<{ className?: str
   makeup_scheduled: CalendarClock,
   child_absent: UserX,
   package_low: Wallet,
+  schedule_change: CalendarRange,
+  request_new: CalendarOff,
+  request_resolved: CheckCircle2,
   generic: Info,
 };
 

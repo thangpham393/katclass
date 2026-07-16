@@ -14,6 +14,9 @@ export type NotificationType =
   | "makeup_scheduled"
   | "child_absent"
   | "package_low"
+  | "schedule_change" // buổi học đổi lịch / hủy / đổi GV (HV + PH)
+  | "request_new" // GV gửi yêu cầu nghỉ/đổi buổi (admin/staff)
+  | "request_resolved" // kết quả duyệt yêu cầu (GV)
   | "generic";
 
 export interface NotificationRow {

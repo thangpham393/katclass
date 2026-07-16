@@ -19,6 +19,7 @@ import {
   BookMarked,
   Wallet,
   CalendarCheck,
+  CalendarOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/lib/types";
@@ -45,6 +46,7 @@ const teacherNav: NavItem[] = [
   { href: "/teacher/vocab", label: "Kho từ vựng", icon: Library },
   { href: "/teacher/questions", label: "Ngân hàng câu hỏi", icon: ListChecks },
   { href: "/teacher/homework", label: "Giao bài tập", icon: ClipboardList },
+  { href: "/teacher/requests", label: "Nghỉ / đổi buổi", icon: CalendarOff },
   { href: "/teacher/students", label: "Học viên", icon: Users },
 ];
 
@@ -57,6 +59,7 @@ const adminNav: NavItem[] = [
   { href: "/admin/students", label: "Học viên", icon: Users },
   { href: "/admin/teachers", label: "Đội ngũ", icon: GraduationCap },
   { href: "/admin/makeup", label: "Học bù", icon: CalendarClock },
+  { href: "/admin/requests", label: "Nghỉ / đổi buổi GV", icon: CalendarOff },
   { href: "/admin/tuition", label: "Học phí", icon: Wallet },
   { href: "/admin/payroll", label: "Chấm công GV", icon: CalendarCheck },
   { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
