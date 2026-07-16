@@ -41,7 +41,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 - **Buổi học bù ĐỘC LẬP (16/07/2026, migration 0016)**: khi xếp học bù ở /admin/makeup, ngoài xếp vào buổi có sẵn giờ có tab **"Tạo buổi bù riêng"** — buổi `type='makeup'` với `class_id NULL` (constraint chỉ cho phép NULL với type makeup), chọn ngày giờ + GV (bắt buộc, để tính công) + phòng (tùy chọn, vẫn chặn trùng lịch 23P01), tạo xong tự xếp học viên vào. Buổi bù riêng hiện trong danh sách "buổi có sẵn" để xếp thêm nhiều HV vào cùng buổi; hiện trên thời khóa biểu/lịch GV/lịch HV/PH với nhãn "Học bù riêng" (helper `sessionClassLabel` trong db.ts); GV điểm danh 'makeup' → quyền học bù tự đóng; buổi completed tính 1 công ở /admin/payroll như thường. Kèm sửa: `teaches_session()` left join classes (buổi không lớp xét teacher_id), policy "view sessions" thêm GV được xếp dạy + PH thấy buổi con học bù, thông báo xếp bù ghi "buổi học bù riêng" khi không có lớp. `SessionRow.class_id` giờ là `string | null`.
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations đã dán đủ đến 0014 (user xác nhận 16/07/2026). **`0015_change_requests.sql` và `0016_standalone_makeup.sql` VỪA VIẾT — HỎI USER đã dán vào Supabase SQL Editor chưa (dán 0015 trước, 0016 sau), chưa thì nhắc dán trước khi test nghỉ/đổi buổi + buổi bù riêng.** Migration mới từ 0017 trở đi cần nhắc dán.
+  1. Migrations **đã dán đủ đến 0016** (user xác nhận 16/07/2026 — user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0017 trở đi: viết xong nhắc dán 1 lần là đủ.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -54,7 +54,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 
 ## Việc nhỏ còn dở
 
-- **Dán `supabase/migrations/0015_change_requests.sql` rồi `0016_standalone_makeup.sql` vào Supabase SQL Editor** (nếu chưa — hỏi user). Code đã deploy nhưng nghỉ/đổi buổi (0015) và tạo buổi bù riêng (0016) chỉ chạy sau khi dán.
+- (Không còn việc tay nào — migrations đã dán đủ đến 0016, JSON thư viện đã import hết. User xác nhận 16/07/2026.)
 - YCT 1 mới có từ vựng + ngữ pháp, **chưa có bộ bài tập theo bài** — nếu tôi yêu cầu thì soạn từ các "Bài thi mẫu" trong sách (PDF ở ~/Downloads/YCT1 Tieng Viet.pdf). Tôi còn dạy YCT 2 (PDF ở ~/YCT CHINESE/YCT2 PPT VIP/YCT2.pdf) — trích cùng format khi được yêu cầu.
 
 ## Việc cần làm: Giai đoạn 2 — phần còn lại
