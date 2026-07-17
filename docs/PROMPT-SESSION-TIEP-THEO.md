@@ -1,4 +1,4 @@
-# Prompt cho session tiếp theo — Giai đoạn 2 (phần còn lại): kiểm tra định kỳ, chấm tay, Zalo
+# Prompt cho session tiếp theo — Giai đoạn 2 (phần còn lại): chấm tay, Zalo
 
 > Copy toàn bộ phần dưới đây dán vào session Claude Code mới.
 
@@ -39,9 +39,16 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Admin duyệt ở /admin/requests**: với `leave` → "Xếp dạy thay" (modal chọn GV, trùng lịch nổ 23P01 ngay) hoặc "Hủy buổi"; với `reschedule` → "Duyệt & áp lịch mới" (áp đúng đề xuất vào buổi, phòng giữ nguyên); "Từ chối" kèm lý do. Quy ước client: **cập nhật buổi học TRƯỚC, chốt yêu cầu SAU** — lỗi trùng lịch thì yêu cầu vẫn pending.
   - **Thông báo tự sinh (trigger, 3 type mới** `schedule_change`/`request_new`/`request_resolved`, đã nới `notifications_type_check`): GV gửi yêu cầu → báo mọi profile admin/staff; chốt yêu cầu → báo GV kết quả; duyệt có dạy thay → báo GV thay + HV/PH lớp "đổi giáo viên". Riêng trigger `on_session_schedule_change` trên bảng `sessions` bắn cho MỌI nguồn đổi lịch (đổi date/giờ hoặc hủy buổi chưa diễn ra, kể cả admin sửa tay) → báo HV active của lớp + HV được xếp học bù vào buổi đó + PH; đổi `teacher_id` KHÔNG bắn ở trigger này (tránh spam khi đổi GV phụ trách hàng loạt qua `updateClassTeacher`) — thông báo dạy thay chỉ sinh từ trigger duyệt yêu cầu.
 - **Buổi học bù ĐỘC LẬP (16/07/2026, migration 0016)**: khi xếp học bù ở /admin/makeup, ngoài xếp vào buổi có sẵn giờ có tab **"Tạo buổi bù riêng"** — buổi `type='makeup'` với `class_id NULL` (constraint chỉ cho phép NULL với type makeup), chọn ngày giờ + GV (bắt buộc, để tính công) + phòng (tùy chọn, vẫn chặn trùng lịch 23P01), tạo xong tự xếp học viên vào. Buổi bù riêng hiện trong danh sách "buổi có sẵn" để xếp thêm nhiều HV vào cùng buổi; hiện trên thời khóa biểu/lịch GV/lịch HV/PH với nhãn "Học bù riêng" (helper `sessionClassLabel` trong db.ts); GV điểm danh 'makeup' → quyền học bù tự đóng; buổi completed tính 1 công ở /admin/payroll như thường. Kèm sửa: `teaches_session()` left join classes (buổi không lớp xét teacher_id), policy "view sessions" thêm GV được xếp dạy + PH thấy buổi con học bù, thông báo xếp bù ghi "buổi học bù riêng" khi không có lớp. `SessionRow.class_id` giờ là `string | null`.
+- **BÀI KIỂM TRA ĐỊNH KỲ CÓ GIỜ (17/07/2026, migration 0017)** — dựa trên hạ tầng homeworks:
+  - `homeworks.kind` = 'homework' (như cũ) | 'test'; kiểm tra có `time_limit_minutes` (bắt buộc, constraint), `open_at` (giờ mở đề, null = mở ngay), `due_at` = hạn chót VÀO làm.
+  - **Bảng `test_attempts`** (homework_id + student_id + started_at, không có policy insert cho user): HV bấm "Bắt đầu làm bài" → RPC `start_test` ghi giờ server (gọi lại trả lượt cũ, giờ không reset; chặn: chưa mở đề / quá hạn / đã nộp / không thuộc lớp).
+  - **`submit_homework` siết với test**: phải có attempt, CHỈ NỘP 1 LẦN, quá `started_at + limit + 60s ân hạn` thì từ chối. Bài homework giữ nguyên luật cũ (nộp lại được).
+  - **Chống lộ đề**: policy `view homework questions` viết lại — với kind='test', HV chỉ đọc câu hỏi khi ĐÃ có attempt (staff/GV lớp/người tạo thấy luôn). Hệ quả UI: bài kiểm tra chưa bắt đầu thì `fetchHomework().questions` rỗng và `homework_questions(count)` = 0 — KHÔNG phải bug, client tự ẩn số câu.
+  - **HV** /student/homework/[id]: màn bắt đầu (thời gian, giờ mở đề, luật), đồng hồ đếm ngược ở thanh nộp (đỏ nhấp nháy <60s), hết giờ TỰ NỘP đáp án hiện có, nộp thiếu câu phải confirm, không có nút "Làm lại"; mở lại trang sau khi hết giờ >60s → màn "Đã hết giờ". **GV** giao bài chọn loại + phút + giờ mở đề; trang chi tiết badge "Kiểm tra · X′" + mục Chưa nộp phân biệt: chưa bắt đầu / đang làm (vàng) / quá giờ không nộp (đỏ, từ test_attempts).
+  - Trigger `notify_homework_new` cập nhật: bài test báo "Bài kiểm tra mới" kèm phút làm + giờ mở đề.
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations **đã dán đủ đến 0016** (user xác nhận 16/07/2026 — user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0017 trở đi: viết xong nhắc dán 1 lần là đủ.
+  1. Migrations đã dán đến 0017 (user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0018 trở đi: viết xong nhắc dán 1 lần là đủ.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -61,9 +68,9 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 
 Theo lộ trình `docs/KE-HOACH-CHUC-NANG.md` (mục 6, Giai đoạn 2):
 
-1. ~~GV đăng ký nghỉ / đề xuất đổi buổi~~ **ĐÃ XONG 16/07/2026** (migration 0015, xem mục trạng thái).
-2. **Bài kiểm tra định kỳ có giới hạn thời gian** (dựa trên hạ tầng homeworks/questions sẵn có + đếm giờ) ← **LÀM TIẾP TỪ ĐÂY**.
-3. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong.
+1. ~~GV đăng ký nghỉ / đề xuất đổi buổi~~ **ĐÃ XONG 16/07/2026** (migration 0015).
+2. ~~Bài kiểm tra định kỳ có giới hạn thời gian~~ **ĐÃ XONG 17/07/2026** (migration 0017, xem mục trạng thái).
+3. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong ← **LÀM TIẾP TỪ ĐÂY** (hợp với bài kiểm tra: đề thi có câu tự luận thì điểm chờ GV chấm).
 4. **Zalo OA/ZNS** khi trung tâm có OA: bảng notifications đã có cột `channel` ('inapp'/'zalo') — cần worker gửi + template ZNS.
 5. (Tùy chọn, nếu tôi yêu cầu) Nâng cấp học phí: sửa gói đã bán, báo cáo doanh thu theo tháng, xuất Excel công nợ.
 
