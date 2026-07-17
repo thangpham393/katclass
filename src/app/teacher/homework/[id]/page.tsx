@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Calendar, ClipboardList, Trash2, Users } from "lucide-react";
+import { ArrowLeft, Calendar, ClipboardList, Timer, Trash2, Users } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,8 @@ import {
   deleteHomework,
   fetchHomework,
   fetchHomeworkSubmissions,
+  fetchTestAttempts,
+  attemptDeadline,
   questionPreview,
   QUESTION_TYPE_LABELS,
 } from "@/lib/db-content";
@@ -28,6 +30,11 @@ export default function TeacherHomeworkDetailPage() {
 
   const homework = useLoad(() => fetchHomework(homeworkId), [homeworkId]);
   const submissions = useLoad(() => fetchHomeworkSubmissions(homeworkId), [homeworkId]);
+  const isTest = homework.data?.kind === "test";
+  const attempts = useLoad(
+    () => (isTest ? fetchTestAttempts(homeworkId) : Promise.resolve([])),
+    [homeworkId, isTest],
+  );
   const classId = homework.data?.class_id ?? "";
   const students = useLoad(
     () => (classId ? fetchClassStudents(classId) : Promise.resolve([])),
@@ -66,6 +73,9 @@ export default function TeacherHomeworkDetailPage() {
   const subByStudent = new Map(subs.map((s) => [s.student_id, s]));
   const roster = students.data ?? [];
   const notSubmitted = roster.filter((st) => !subByStudent.has(st.student_id));
+  // Bài kiểm tra: HV đã bắt đầu nhưng chưa nộp — đang làm hay đã quá giờ?
+  const attemptByStudent = new Map((attempts.data ?? []).map((a) => [a.student_id, a]));
+  const pendingAttempts = (attempts.data ?? []).filter((a) => !subByStudent.has(a.student_id));
   const scores = subs.map((s) => s.score).filter((s): s is number => s != null);
   const avg = scores.length
     ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
@@ -82,14 +92,27 @@ export default function TeacherHomeworkDetailPage() {
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">{hw.title}</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight">{hw.title}</h1>
+            {hw.kind === "test" && (
+              <Badge variant="destructive">
+                <Timer className="h-3 w-3" /> Kiểm tra · {hw.time_limit_minutes} phút
+              </Badge>
+            )}
+          </div>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span>{hw.class?.name}</span>
             <span>· {hw.questions.length} câu</span>
+            {hw.kind === "test" && hw.open_at && (
+              <span>
+                · Mở đề {new Date(hw.open_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+              </span>
+            )}
             {hw.due_at && (
               <span className="inline-flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5" />
-                Hạn {new Date(hw.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+                {hw.kind === "test" ? "Hạn vào làm" : "Hạn"}{" "}
+                {new Date(hw.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
               </span>
             )}
           </div>
@@ -160,10 +183,29 @@ export default function TeacherHomeworkDetailPage() {
                   Chưa nộp ({notSubmitted.length})
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  {notSubmitted.map((st) => (
-                    <Badge key={st.student_id} variant="muted">{st.student.name}</Badge>
-                  ))}
+                  {notSubmitted.map((st) => {
+                    // Với bài kiểm tra: phân biệt chưa bắt đầu / đang làm / quá giờ không nộp
+                    const att = hw.kind === "test" ? attemptByStudent.get(st.student_id) : undefined;
+                    const expired =
+                      att && hw.time_limit_minutes != null
+                        ? Date.now() > attemptDeadline(att, hw.time_limit_minutes) + 60_000
+                        : false;
+                    return (
+                      <Badge
+                        key={st.student_id}
+                        variant={expired ? "destructive" : att ? "gold" : "muted"}
+                      >
+                        {st.student.name}
+                        {expired ? " · quá giờ, không nộp" : att ? " · đang làm" : ""}
+                      </Badge>
+                    );
+                  })}
                 </div>
+                {hw.kind === "test" && pendingAttempts.length > 0 && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    “Quá giờ, không nộp” = đã bấm bắt đầu nhưng không nộp trong thời gian cho phép.
+                  </p>
+                )}
               </div>
             )}
           </CardContent>

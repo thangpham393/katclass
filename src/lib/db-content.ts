@@ -407,11 +407,27 @@ export interface SubmissionLite {
   submitted_at: string;
 }
 
+/**
+ * Loại bài: 'homework' = bài tập về nhà (làm lại được, xem đề tự do);
+ * 'test' = bài kiểm tra định kỳ có giờ (migration 0017) — HV bấm
+ * "Bắt đầu" (RPC start_test ghi giờ server), đếm ngược time_limit_minutes,
+ * CHỈ NỘP 1 LẦN; đề chỉ đọc được sau khi bắt đầu (RLS homework_questions).
+ */
+export type HomeworkKind = "homework" | "test";
+
+export const HOMEWORK_KIND_LABELS: Record<HomeworkKind, string> = {
+  homework: "Bài tập",
+  test: "Bài kiểm tra",
+};
+
 export interface HomeworkListRow {
   id: string;
   class_id: string;
   session_id: string | null;
   title: string;
+  kind: HomeworkKind;
+  time_limit_minutes: number | null;
+  open_at: string | null;
   due_at: string | null;
   created_at: string;
   class: { id: string; name: string; class_students: { count: number }[] } | null;
@@ -420,7 +436,7 @@ export interface HomeworkListRow {
 }
 
 const HOMEWORK_LIST_SELECT = `
-  id, class_id, session_id, title, due_at, created_at,
+  id, class_id, session_id, title, kind, time_limit_minutes, open_at, due_at, created_at,
   class:classes ( id, name, class_students ( count ) ),
   homework_questions ( count ),
   submissions ( id, student_id, auto_score, score, status, submitted_at )
@@ -458,9 +474,13 @@ export interface HomeworkDetail {
   class_id: string;
   session_id: string | null;
   title: string;
+  kind: HomeworkKind;
+  time_limit_minutes: number | null;
+  open_at: string | null;
   due_at: string | null;
   created_at: string;
   class: { id: string; name: string } | null;
+  /** Với bài kiểm tra chưa bắt đầu, RLS trả về rỗng — không phải lỗi. */
   questions: QuestionRow[];
 }
 
@@ -468,7 +488,7 @@ export async function fetchHomework(id: string): Promise<HomeworkDetail | null> 
   const { data, error } = await getSupabase()
     .from("homeworks")
     .select(`
-      id, class_id, session_id, title, due_at, created_at,
+      id, class_id, session_id, title, kind, time_limit_minutes, open_at, due_at, created_at,
       class:classes ( id, name ),
       homework_questions ( sort, question:questions ( ${QUESTION_SELECT} ) )
     `)
@@ -491,6 +511,9 @@ export async function createHomework(input: {
   class_id: string;
   session_id?: string | null;
   title: string;
+  kind?: HomeworkKind;
+  time_limit_minutes?: number | null;
+  open_at?: string | null;
   due_at: string | null;
   question_ids: string[];
   created_by: string;
@@ -560,4 +583,55 @@ export async function submitHomework(
   });
   if (error) throw error;
   return data as SubmissionLite;
+}
+
+/* ============ Bài kiểm tra có giờ (migration 0017) ============ */
+
+export interface TestAttemptRow {
+  homework_id: string;
+  student_id: string;
+  started_at: string;
+}
+
+/**
+ * Bắt đầu làm bài kiểm tra — server ghi giờ bắt đầu. Gọi lại lần 2
+ * (mở lại trang, rớt mạng) trả về lượt cũ, giờ KHÔNG reset.
+ */
+export async function startTest(homeworkId: string): Promise<TestAttemptRow> {
+  const { data, error } = await getSupabase().rpc("start_test", { hw_id: homeworkId });
+  if (error) throw error;
+  return data as TestAttemptRow;
+}
+
+/** Lượt làm của chính học viên (null = chưa bắt đầu). */
+export async function fetchMyAttempt(
+  homeworkId: string,
+  studentId: string,
+): Promise<TestAttemptRow | null> {
+  const { data, error } = await getSupabase()
+    .from("test_attempts")
+    .select("homework_id, student_id, started_at")
+    .eq("homework_id", homeworkId)
+    .eq("student_id", studentId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as TestAttemptRow | null;
+}
+
+/** Mọi lượt làm của một bài kiểm tra (GV xem ai đã bắt đầu/quá giờ chưa nộp). */
+export async function fetchTestAttempts(homeworkId: string): Promise<TestAttemptRow[]> {
+  const { data, error } = await getSupabase()
+    .from("test_attempts")
+    .select("homework_id, student_id, started_at")
+    .eq("homework_id", homeworkId);
+  if (error) throw error;
+  return data as TestAttemptRow[];
+}
+
+/** Hạn nộp của một lượt làm = started_at + time_limit (ms epoch). */
+export function attemptDeadline(
+  attempt: TestAttemptRow,
+  timeLimitMinutes: number,
+): number {
+  return new Date(attempt.started_at).getTime() + timeLimitMinutes * 60_000;
 }

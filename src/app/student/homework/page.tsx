@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, CheckCircle2, ClipboardList, Clock } from "lucide-react";
+import { Calendar, CheckCircle2, ClipboardList, Clock, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -67,20 +67,36 @@ export default function StudentHomeworkPage() {
                       <ClipboardList className="h-5 w-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold">{h.title}</h3>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-semibold">{h.title}</h3>
+                        {h.kind === "test" && (
+                          <Badge variant="destructive">
+                            <Timer className="h-3 w-3" /> Kiểm tra · {h.time_limit_minutes} phút
+                          </Badge>
+                        )}
+                      </div>
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                         <span className="text-muted-foreground">{h.class?.name}</span>
-                        <span className="text-muted-foreground">· {h.homework_questions[0]?.count ?? 0} câu</span>
+                        {/* Đề bài kiểm tra chưa bắt đầu bị RLS giấu → số câu = 0, không hiển thị */}
+                        {(h.kind !== "test" || (h.homework_questions[0]?.count ?? 0) > 0) && (
+                          <span className="text-muted-foreground">· {h.homework_questions[0]?.count ?? 0} câu</span>
+                        )}
+                        {h.kind === "test" && h.open_at && new Date(h.open_at) > new Date() && (
+                          <span className="font-semibold text-gold-700">
+                            Mở đề {new Date(h.open_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+                          </span>
+                        )}
                         {h.due_at && (
                           <span className={overdue ? "font-semibold text-rose-600" : "text-muted-foreground"}>
                             <Calendar className="mr-1 inline h-3 w-3" />
-                            Hạn {new Date(h.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+                            {h.kind === "test" ? "Hạn vào làm" : "Hạn"}{" "}
+                            {new Date(h.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
                           </span>
                         )}
                       </div>
                     </div>
                     <Link href={`/student/homework/${h.id}`}>
-                      <Button>Làm bài</Button>
+                      <Button>{h.kind === "test" ? "Vào làm" : "Làm bài"}</Button>
                     </Link>
                   </CardContent>
                 </Card>

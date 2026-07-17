@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, Calendar, RotateCcw, Send, Trophy, Volume2 } from "lucide-react";
+import { ArrowLeft, Calendar, Play, RotateCcw, Send, Timer, Trophy, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,8 +14,11 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import { dbErrorMessage } from "@/lib/db";
 import {
+  attemptDeadline,
   fetchHomework,
+  fetchMyAttempt,
   fetchMySubmission,
+  startTest,
   submitHomework,
   CHOICE_LETTERS,
   QUESTION_TYPE_LABELS,
@@ -48,12 +51,20 @@ export default function StudentHomeworkPlayerPage() {
     () => (studentId ? fetchMySubmission(homeworkId, studentId) : Promise.resolve(null)),
     [homeworkId, studentId],
   );
+  const isTest = homework.data?.kind === "test";
+  const attempt = useLoad(
+    () => (studentId && isTest ? fetchMyAttempt(homeworkId, studentId) : Promise.resolve(null)),
+    [homeworkId, studentId, isTest],
+  );
 
   const [answers, setAnswers] = useState<Record<string, QuestionAnswer>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ score: number | null } | null>(null);
   const [redo, setRedo] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+  const autoSubmitted = useRef(false);
 
   function setAnswer(questionId: string, value: QuestionAnswer) {
     setAnswers((a) => ({ ...a, [questionId]: value }));
@@ -65,15 +76,28 @@ export default function StudentHomeworkPlayerPage() {
     [questions, answers],
   );
 
-  async function handleSubmit() {
-    if (answeredCount < questions.length) {
-      setError(`Bạn còn ${questions.length - answeredCount} câu chưa trả lời.`);
-      return;
-    }
+  // Hạn nộp của lượt làm bài kiểm tra (ms epoch); null = không đếm giờ
+  const deadline =
+    isTest && attempt.data && homework.data?.time_limit_minutes != null
+      ? attemptDeadline(attempt.data, homework.data.time_limit_minutes)
+      : null;
+  const remainingMs = deadline != null ? deadline - now : null;
+  const inProgress = Boolean(
+    isTest && attempt.data && !submission.data && !result && remainingMs != null && remainingMs > 0,
+  );
+
+  // Đồng hồ đếm ngược: tick mỗi giây khi đang làm bài kiểm tra
+  useEffect(() => {
+    if (!inProgress) return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [inProgress]);
+
+  async function doSubmit(current: Record<string, QuestionAnswer>) {
     setSubmitting(true);
     setError(null);
     try {
-      const sub = await submitHomework(homeworkId, answers);
+      const sub = await submitHomework(homeworkId, current);
       setResult({ score: sub.score });
       setRedo(false);
       submission.reload();
@@ -84,7 +108,50 @@ export default function StudentHomeworkPlayerPage() {
     }
   }
 
-  if (homework.loading || submission.loading) return <Card><LoadingRows rows={5} /></Card>;
+  // Hết giờ → tự nộp với đáp án hiện có (server có 60s ân hạn)
+  useEffect(() => {
+    if (!isTest || !deadline || submission.data || result || autoSubmitted.current) return;
+    if (now < deadline) return;
+    autoSubmitted.current = true;
+    doSubmit(answers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [now, deadline, isTest, !!submission.data, !!result]);
+
+  async function handleSubmit() {
+    if (answeredCount < questions.length) {
+      if (isTest) {
+        // Kiểm tra chỉ nộp 1 lần — cho nộp thiếu nhưng phải xác nhận
+        if (!confirm(`Bạn còn ${questions.length - answeredCount} câu chưa trả lời. Nộp bài luôn? (Không làm lại được)`)) {
+          return;
+        }
+      } else {
+        setError(`Bạn còn ${questions.length - answeredCount} câu chưa trả lời.`);
+        return;
+      }
+    } else if (isTest) {
+      if (!confirm("Nộp bài kiểm tra? Bài kiểm tra chỉ được nộp một lần.")) return;
+    }
+    await doSubmit(answers);
+  }
+
+  async function handleStart() {
+    setStarting(true);
+    setError(null);
+    try {
+      await startTest(homeworkId);
+      attempt.reload();
+      homework.reload(); // sau khi bắt đầu, RLS mới cho đọc câu hỏi
+      setNow(Date.now());
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setStarting(false);
+    }
+  }
+
+  if (homework.loading || submission.loading || (isTest && attempt.loading)) {
+    return <Card><LoadingRows rows={5} /></Card>;
+  }
   if (homework.error) return <ErrorNote message={homework.error} />;
   if (!homework.data) {
     return (
@@ -115,27 +182,117 @@ export default function StudentHomeworkPlayerPage() {
           </div>
           <h2 className="mt-5 text-2xl font-bold">{hw.title}</h2>
           <p className="mt-1 text-muted-foreground">
-            {result ? "Đã nộp bài — hệ thống chấm tự động." : "Bạn đã nộp bài tập này."}
+            {hw.kind === "test"
+              ? "Đã nộp bài kiểm tra — bài kiểm tra chỉ nộp một lần."
+              : result
+                ? "Đã nộp bài — hệ thống chấm tự động."
+                : "Bạn đã nộp bài tập này."}
           </p>
           <div className="mt-4 text-6xl font-extrabold text-gradient-brand">
             {showScore.score ?? "—"}
           </div>
           <div className="mt-1 text-sm text-muted-foreground">/ 10 điểm</div>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setResult(null);
-                setAnswers({});
-                setRedo(true);
-              }}
-            >
-              <RotateCcw className="h-4 w-4" /> Làm lại (tính điểm mới)
-            </Button>
+            {hw.kind !== "test" && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setResult(null);
+                  setAnswers({});
+                  setRedo(true);
+                }}
+              >
+                <RotateCcw className="h-4 w-4" /> Làm lại (tính điểm mới)
+              </Button>
+            )}
             <Link href="/student/homework">
               <Button>Xong</Button>
             </Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== Bài kiểm tra: màn bắt đầu (chưa có lượt làm) =====
+  if (isTest && !attempt.data) {
+    const notOpenYet = hw.open_at ? new Date(hw.open_at).getTime() > now : false;
+    const closed = hw.due_at ? new Date(hw.due_at).getTime() < now : false;
+    return (
+      <div className="mx-auto max-w-xl space-y-6">
+        <Link
+          href="/student/homework"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" /> Bài tập
+        </Link>
+        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-8 text-center shadow-soft">
+          <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-brand text-white shadow-soft">
+            <Timer className="h-7 w-7" />
+          </div>
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">{hw.title}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{hw.class?.name}</p>
+
+          <div className="mx-auto mt-5 max-w-sm space-y-2 text-left text-sm">
+            <div className="flex items-center justify-between rounded-lg border bg-card px-3 py-2">
+              <span className="text-muted-foreground">Thời gian làm bài</span>
+              <b>{hw.time_limit_minutes} phút</b>
+            </div>
+            {hw.open_at && (
+              <div className="flex items-center justify-between rounded-lg border bg-card px-3 py-2">
+                <span className="text-muted-foreground">Mở đề</span>
+                <b>{new Date(hw.open_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}</b>
+              </div>
+            )}
+            {hw.due_at && (
+              <div className="flex items-center justify-between rounded-lg border bg-card px-3 py-2">
+                <span className="text-muted-foreground">Hạn chót vào làm</span>
+                <b>{new Date(hw.due_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}</b>
+              </div>
+            )}
+          </div>
+
+          <p className="mx-auto mt-4 max-w-sm text-xs leading-relaxed text-muted-foreground">
+            Đồng hồ bắt đầu chạy ngay khi bấm nút và <b>không dừng lại</b> kể cả khi
+            thoát trang. Hết giờ hệ thống tự nộp. Bài kiểm tra <b>chỉ nộp một lần</b>,
+            không làm lại được.
+          </p>
+
+          {error && <div className="mt-4"><ErrorNote message={error} /></div>}
+
+          <div className="mt-6">
+            {closed ? (
+              <Badge variant="destructive">Đã quá hạn vào làm bài kiểm tra này.</Badge>
+            ) : notOpenYet ? (
+              <Badge variant="gold">Chưa đến giờ mở đề — quay lại sau nhé.</Badge>
+            ) : (
+              <Button size="lg" disabled={starting} onClick={handleStart}>
+                <Play className="h-4 w-4" /> {starting ? "Đang vào bài..." : "Bắt đầu làm bài"}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ===== Bài kiểm tra: đã hết giờ mà chưa nộp được =====
+  if (isTest && remainingMs != null && remainingMs <= -60_000 && !submission.data && !result) {
+    return (
+      <div className="mx-auto max-w-xl space-y-6">
+        <Link
+          href="/student/homework"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" /> Bài tập
+        </Link>
+        <div className="rounded-3xl border bg-muted/30 p-10 text-center">
+          <Timer className="mx-auto h-10 w-10 text-rose-500" />
+          <h2 className="mt-4 text-xl font-bold">Đã hết giờ làm bài</h2>
+          <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
+            Thời gian làm “{hw.title}” đã kết thúc và bài chưa được nộp.
+            Liên hệ giáo viên nếu bạn gặp sự cố trong lúc làm bài.
+          </p>
         </div>
       </div>
     );
@@ -196,9 +353,23 @@ export default function StudentHomeworkPlayerPage() {
 
       {questions.length > 0 && (
         <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-2xl border bg-card/95 p-4 shadow-soft backdrop-blur">
-          <span className="text-sm text-muted-foreground">
-            Đã trả lời <b className="text-foreground">{answeredCount}</b>/{questions.length} câu
-          </span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            {isTest && remainingMs != null && (
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-bold tabular-nums",
+                  remainingMs <= 60_000
+                    ? "animate-pulse bg-rose-100 text-rose-700"
+                    : "bg-brand-50 text-brand-700",
+                )}
+              >
+                <Timer className="h-4 w-4" /> {fmtCountdown(remainingMs)}
+              </span>
+            )}
+            <span className="text-sm text-muted-foreground">
+              Đã trả lời <b className="text-foreground">{answeredCount}</b>/{questions.length} câu
+            </span>
+          </div>
           <Button size="lg" disabled={submitting} onClick={handleSubmit}>
             <Send className="h-4 w-4" />
             {submitting ? "Đang nộp..." : "Nộp bài"}
@@ -207,6 +378,14 @@ export default function StudentHomeworkPlayerPage() {
       )}
     </div>
   );
+}
+
+/** Đếm ngược mm:ss (âm coi như 0:00). */
+function fmtCountdown(ms: number): string {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
 }
 
 /* ================= Trạng thái "đã trả lời" theo loại câu ================= */

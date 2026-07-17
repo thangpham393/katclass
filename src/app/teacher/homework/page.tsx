@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, ClipboardList, Plus } from "lucide-react";
+import { Calendar, ClipboardList, Plus, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,6 +57,11 @@ export default function TeacherHomeworkPage() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <h3 className="font-semibold">{h.title}</h3>
+                        {h.kind === "test" && (
+                          <Badge variant="destructive">
+                            <Timer className="h-3 w-3" /> Kiểm tra · {h.time_limit_minutes}′
+                          </Badge>
+                        )}
                         <Badge variant="outline">{h.homework_questions[0]?.count ?? 0} câu</Badge>
                         {overdue && submitted < total && <Badge variant="gold">Quá hạn</Badge>}
                       </div>

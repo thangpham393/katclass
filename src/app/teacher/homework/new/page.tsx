@@ -18,7 +18,9 @@ import {
   fetchLessons,
   fetchQuestions,
   questionPreview,
+  HOMEWORK_KIND_LABELS,
   QUESTION_TYPE_LABELS,
+  type HomeworkKind,
   type QuestionRow,
   type QuestionType,
 } from "@/lib/db-content";
@@ -37,6 +39,9 @@ export default function NewHomeworkPage() {
 
   const [title, setTitle] = useState("");
   const [classId, setClassId] = useState("");
+  const [kind, setKind] = useState<HomeworkKind>("homework");
+  const [timeLimit, setTimeLimit] = useState("15");
+  const [openAt, setOpenAt] = useState("");
   const [dueAt, setDueAt] = useState("");
   const [typeFilter, setTypeFilter] = useState<QuestionType | "">("");
   const [lessonFilter, setLessonFilter] = useState("");
@@ -89,12 +94,19 @@ export default function NewHomeworkPage() {
     if (!title.trim()) return setError("Nhập tiêu đề bài tập.");
     if (!classId) return setError("Chọn lớp được giao.");
     if (!selected.length) return setError("Chọn ít nhất 1 câu hỏi.");
+    const limit = parseInt(timeLimit, 10);
+    if (kind === "test" && (!limit || limit <= 0)) {
+      return setError("Nhập thời gian làm bài (phút) cho bài kiểm tra.");
+    }
     setSaving(true);
     setError(null);
     try {
       const id = await createHomework({
         class_id: classId,
         title: title.trim(),
+        kind,
+        time_limit_minutes: kind === "test" ? limit : null,
+        open_at: kind === "test" && openAt ? new Date(openAt).toISOString() : null,
         due_at: dueAt ? new Date(dueAt).toISOString() : null,
         question_ids: selected,
         created_by: user.id,
@@ -130,11 +142,33 @@ export default function NewHomeworkPage() {
           <Card>
             <CardHeader><CardTitle>1. Thông tin bài tập</CardTitle></CardHeader>
             <CardContent className="space-y-4 p-6 pt-0">
+              <Field label="Loại" required>
+                <div className="grid grid-cols-2 gap-2">
+                  {(Object.keys(HOMEWORK_KIND_LABELS) as HomeworkKind[]).map((k) => (
+                    <button
+                      key={k}
+                      type="button"
+                      onClick={() => setKind(k)}
+                      className={cn(
+                        "rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
+                        kind === k
+                          ? "border-brand-500 bg-brand-50 text-brand-700"
+                          : "text-muted-foreground hover:bg-secondary",
+                      )}
+                    >
+                      {HOMEWORK_KIND_LABELS[k]}
+                      <span className="block text-[11px] font-normal">
+                        {k === "homework" ? "Làm lại được, không giới hạn giờ" : "Có giờ, chỉ nộp 1 lần"}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </Field>
               <Field label="Tiêu đề" required>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ôn tập Bài 6 — Từ vựng & ngữ pháp"
+                  placeholder={kind === "test" ? "Kiểm tra giữa kỳ — Bài 1–5" : "Ôn tập Bài 6 — Từ vựng & ngữ pháp"}
                   autoFocus
                 />
               </Field>
@@ -147,10 +181,28 @@ export default function NewHomeworkPage() {
                     ))}
                   </Select>
                 </Field>
-                <Field label="Hạn nộp (không bắt buộc)">
+                <Field label={kind === "test" ? "Hạn chót vào làm (không bắt buộc)" : "Hạn nộp (không bắt buộc)"}>
                   <Input type="datetime-local" value={dueAt} onChange={(e) => setDueAt(e.target.value)} />
                 </Field>
               </div>
+              {kind === "test" && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Field label="Thời gian làm bài (phút)" required>
+                    <Input
+                      type="number"
+                      min={1}
+                      value={timeLimit}
+                      onChange={(e) => setTimeLimit(e.target.value)}
+                    />
+                  </Field>
+                  <Field
+                    label="Giờ mở đề (không bắt buộc)"
+                    hint="Để trống = làm được ngay. Học viên chỉ thấy đề sau khi bấm Bắt đầu."
+                  >
+                    <Input type="datetime-local" value={openAt} onChange={(e) => setOpenAt(e.target.value)} />
+                  </Field>
+                </div>
+              )}
               {!classes.loading && activeClasses.length === 0 && (
                 <p className="text-xs text-gold-700">
                   Bạn chưa phụ trách lớp active nào — liên hệ quản trị để được gán lớp.
@@ -274,10 +326,20 @@ export default function NewHomeworkPage() {
           <Card>
             <CardHeader><CardTitle className="text-base">Tóm tắt</CardTitle></CardHeader>
             <CardContent className="space-y-2 p-6 pt-0 text-sm">
+              <SummaryRow label="Loại" value={HOMEWORK_KIND_LABELS[kind]} />
               <SummaryRow label="Lớp" value={activeClasses.find((c) => c.id === classId)?.name ?? "—"} />
               <SummaryRow label="Số câu hỏi" value={selected.length || "—"} />
+              {kind === "test" && (
+                <>
+                  <SummaryRow label="Thời gian làm" value={timeLimit ? `${timeLimit} phút` : "—"} />
+                  <SummaryRow
+                    label="Mở đề"
+                    value={openAt ? new Date(openAt).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "Ngay khi giao"}
+                  />
+                </>
+              )}
               <SummaryRow
-                label="Hạn nộp"
+                label={kind === "test" ? "Hạn chót vào làm" : "Hạn nộp"}
                 value={dueAt ? new Date(dueAt).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "Không đặt"}
               />
               <SummaryRow label="Chấm điểm" value="Tự động (thang 10)" />
@@ -285,7 +347,8 @@ export default function NewHomeworkPage() {
           </Card>
 
           <Button className="w-full" size="lg" disabled={saving} onClick={handleSubmit}>
-            <Send className="h-4 w-4" /> {saving ? "Đang giao..." : "Giao bài tập"}
+            <Send className="h-4 w-4" />
+            {saving ? "Đang giao..." : kind === "test" ? "Giao bài kiểm tra" : "Giao bài tập"}
           </Button>
           <Link href="/teacher/questions" className="block">
             <Button variant="outline" className="w-full">
