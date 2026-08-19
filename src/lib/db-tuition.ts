@@ -170,38 +170,123 @@ export function fmtVND(n: number): string {
   return Number(n).toLocaleString("vi-VN") + " ₫";
 }
 
-/* ============ Chấm công giáo viên ============ */
+/* ============ Chấm công ca dạy (migration 0018) ============ */
+
+/**
+ * 1 buổi = tối đa 1 bản ghi công. Giáo viên bấm "Chấm công" ở trang chủ
+ * → ghi giờ dạy THỰC TẾ + nội dung bài học; trigger DB tự chuyển buổi
+ * sang `completed`. Giờ theo lịch nằm ở sessions.start_time/end_time,
+ * giờ thực tế nằm ở đây nên đối soát được khi lệch.
+ */
+export interface TeachingLogRow {
+  id: string;
+  session_id: string;
+  teacher_id: string;
+  checked_in_at: string;
+  actual_start: string;
+  actual_end: string;
+  lesson_content: string | null;
+  note: string | null;
+}
 
 export interface TeachingSessionRow {
   id: string;
   date: string;
   start_time: string;
   end_time: string;
+  session_no: number | null;
+  status: "scheduled" | "completed" | "cancelled";
   type: "regular" | "makeup";
   teacher: { id: string; name: string } | null;
   class: { id: string; name: string } | null;
+  room: { id: string; name: string } | null;
+  // PostgREST trả object (do unique session_id) nhưng phòng khi trả mảng
+  teaching_log: TeachingLogRow | TeachingLogRow[] | null;
+  attendance: { count: number }[];
+}
+
+const TEACHING_SELECT = `
+  id, date, start_time, end_time, session_no, status, type,
+  teacher:profiles!sessions_teacher_id_fkey ( id, name ),
+  class:classes ( id, name ),
+  room:rooms ( id, name ),
+  teaching_log:teaching_logs ( id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note ),
+  attendance ( count )
+`;
+
+/** Bản ghi công của buổi (chuẩn hóa object/mảng do PostgREST trả về). */
+export function pickLog(s: Pick<TeachingSessionRow, "teaching_log">): TeachingLogRow | null {
+  const l = s.teaching_log;
+  if (!l) return null;
+  return Array.isArray(l) ? l[0] ?? null : l;
+}
+
+/** Số học viên đã điểm danh trong buổi. */
+export function attendanceCount(s: Pick<TeachingSessionRow, "attendance">): number {
+  return s.attendance?.[0]?.count ?? 0;
 }
 
 /**
- * Buổi đã hoàn thành trong khoảng ngày (chấm công: 1 buổi completed
- * có GV thực dạy = 1 công). Gom nhóm theo GV làm ở phía client.
+ * Buổi dạy trong khoảng ngày kèm trạng thái chấm công.
+ * `teacherId` → chỉ buổi giáo viên đó thực dạy (trang chủ GV);
+ * `completedOnly` → bảng công tháng của hành chính.
  */
-export async function fetchCompletedSessions(from: string, to: string): Promise<TeachingSessionRow[]> {
-  const { data, error } = await getSupabase()
+export async function fetchTeachingSessions(
+  from: string,
+  to: string,
+  opts: { teacherId?: string; completedOnly?: boolean } = {},
+): Promise<TeachingSessionRow[]> {
+  let q = getSupabase()
     .from("sessions")
-    .select(`
-      id, date, start_time, end_time, type,
-      teacher:profiles!sessions_teacher_id_fkey ( id, name ),
-      class:classes ( id, name )
-    `)
-    .eq("status", "completed")
+    .select(TEACHING_SELECT)
     .gte("date", from)
-    .lte("date", to)
-    .order("date")
-    .order("start_time")
-    .limit(3000);
+    .lte("date", to);
+  if (opts.teacherId) q = q.eq("teacher_id", opts.teacherId);
+  if (opts.completedOnly) q = q.eq("status", "completed");
+  else q = q.neq("status", "cancelled");
+  const { data, error } = await q.order("date").order("start_time").limit(3000);
   if (error) throw error;
   return data as unknown as TeachingSessionRow[];
+}
+
+/** Bản ghi công của một buổi (trang chi tiết buổi dạy). */
+export async function fetchTeachingLog(sessionId: string): Promise<TeachingLogRow | null> {
+  const { data, error } = await getSupabase()
+    .from("teaching_logs")
+    .select("id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note")
+    .eq("session_id", sessionId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as TeachingLogRow | null;
+}
+
+export interface SaveTeachingLogInput {
+  sessionId: string;
+  teacherId: string; // GV được tính công (giáo viên thực dạy buổi)
+  actualStart: string; // HH:MM
+  actualEnd: string; // HH:MM
+  lessonContent: string;
+  note?: string;
+  createdBy: string; // người bấm nút
+}
+
+/** Chấm công buổi dạy (bấm lại = sửa lại giờ / nội dung). */
+export async function saveTeachingLog(input: SaveTeachingLogInput): Promise<void> {
+  const { error } = await getSupabase()
+    .from("teaching_logs")
+    .upsert(
+      {
+        session_id: input.sessionId,
+        teacher_id: input.teacherId,
+        actual_start: input.actualStart,
+        actual_end: input.actualEnd,
+        lesson_content: input.lessonContent.trim() || null,
+        note: input.note?.trim() || null,
+        created_by: input.createdBy,
+      },
+      { onConflict: "session_id" },
+    );
+  if (error) throw error;
 }
 
 /** Số giờ của một buổi (end - start), làm tròn 0.25h. */
@@ -209,6 +294,14 @@ export function sessionHours(s: { start_time: string; end_time: string }): numbe
   const [sh, sm] = s.start_time.split(":").map(Number);
   const [eh, em] = s.end_time.split(":").map(Number);
   return Math.round(((eh * 60 + em - sh * 60 - sm) / 60) * 4) / 4;
+}
+
+/** Số giờ tính công: ưu tiên giờ thực tế đã chấm, chưa chấm thì lấy giờ lịch. */
+export function payHours(s: TeachingSessionRow): number {
+  const log = pickLog(s);
+  return log
+    ? sessionHours({ start_time: log.actual_start, end_time: log.actual_end })
+    : sessionHours(s);
 }
 
 /** Ngày đầu tháng hiện tại (giờ địa phương) dạng YYYY-MM-DD. */

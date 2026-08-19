@@ -1,12 +1,16 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  CalendarDays,
   CalendarClock,
+  CalendarDays,
+  CheckCircle2,
   ClipboardCheck,
+  Clock,
   GraduationCap,
   School,
+  Timer,
   Users,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -16,104 +20,163 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
+import { TeachingLogModal } from "@/components/teaching-log-modal";
+import { cn } from "@/lib/utils";
 import {
   fetchTeacherClasses,
-  fetchTeacherSessions,
   formatSchedules,
+  sessionClassLabel,
   todayISO,
   LEVEL_LABELS,
   WEEKDAY_LABELS,
-  type SessionRow,
 } from "@/lib/db";
+import {
+  attendanceCount,
+  fetchTeachingSessions,
+  payHours,
+  pickLog,
+  sessionHours,
+  type TeachingSessionRow,
+} from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
+
+type DayTab = "yesterday" | "today" | "tomorrow";
+
+const DAY_TABS: { key: DayTab; label: string; offset: number }[] = [
+  { key: "yesterday", label: "Hôm qua", offset: -1 },
+  { key: "today", label: "Hôm nay", offset: 0 },
+  { key: "tomorrow", label: "Ngày mai", offset: 1 },
+];
 
 export default function TeacherHome() {
   const { user } = useAuth();
   const teacherId = user?.id ?? "";
+  const [tab, setTab] = useState<DayTab>("today");
+  const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
 
   const classes = useLoad(
     () => (teacherId ? fetchTeacherClasses(teacherId) : Promise.resolve([])),
     [teacherId],
   );
-  const todaySessions = useLoad(
-    () => (teacherId ? fetchTeacherSessions(teacherId, todayISO(), todayISO()) : Promise.resolve([])),
+  // Nạp 1 lần cả 3 ngày (hôm qua → ngày mai) rồi lọc ở client
+  const sessions = useLoad(
+    () =>
+      teacherId
+        ? fetchTeachingSessions(todayISO(-1), todayISO(1), { teacherId })
+        : Promise.resolve([]),
     [teacherId],
   );
-  const weekSessions = useLoad(
-    () => (teacherId ? fetchTeacherSessions(teacherId, todayISO(1), todayISO(7)) : Promise.resolve([])),
+  const monthSessions = useLoad(
+    () =>
+      teacherId
+        ? fetchTeachingSessions(todayISO().slice(0, 8) + "01", todayISO(), {
+            teacherId,
+            completedOnly: true,
+          })
+        : Promise.resolve([]),
     [teacherId],
   );
 
+  const byDay = useMemo(() => {
+    const map: Record<DayTab, TeachingSessionRow[]> = { yesterday: [], today: [], tomorrow: [] };
+    for (const t of DAY_TABS) {
+      const date = todayISO(t.offset);
+      map[t.key] = (sessions.data ?? []).filter((s) => s.date === date);
+    }
+    return map;
+  }, [sessions.data]);
+
+  const today = byDay.today;
+  const pendingToday = today.filter((s) => !pickLog(s)).length;
+  const monthHours = (monthSessions.data ?? []).reduce((sum, s) => sum + payHours(s), 0);
   const totalStudents = (classes.data ?? []).reduce(
     (sum, c) => sum + (c.class_students?.[0]?.count ?? 0),
     0,
   );
-  const pendingToday = (todaySessions.data ?? []).filter((s) => s.status === "scheduled").length;
 
   return (
     <div className="space-y-8">
-      <section className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
-            Xin chào <span className="text-gradient-brand">{user?.name?.split(" ").pop() ?? "cô/thầy"}</span> 👋
-          </h1>
-          <p className="mt-1 text-muted-foreground">
-            Hôm nay là{" "}
-            <span className="font-semibold">
-              {new Date().toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
-            </span>
-            {pendingToday > 0
-              ? ` — có ${pendingToday} buổi dạy chưa điểm danh.`
-              : " — không còn buổi nào chờ điểm danh."}
-          </p>
-        </div>
+      <section>
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          Xin chào <span className="text-gradient-brand">{user?.name?.split(" ").pop() ?? "cô/thầy"}</span> 👋
+        </h1>
+        <p className="mt-1 text-muted-foreground">
+          Hôm nay là{" "}
+          <span className="font-semibold">
+            {new Date().toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
+          </span>
+          {sessions.loading
+            ? "…"
+            : pendingToday > 0
+              ? ` — còn ${pendingToday} ca dạy chưa chấm công.`
+              : today.length > 0
+                ? " — đã chấm công đủ các ca hôm nay. ✓"
+                : " — hôm nay không có ca dạy nào."}
+        </p>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Lớp phụ trách" value={classes.data?.length ?? "…"} icon={GraduationCap} accent="brand" />
-        <StatCard label="Học viên các lớp" value={classes.loading ? "…" : totalStudents} icon={Users} accent="gold" />
-        <StatCard label="Buổi dạy hôm nay" value={todaySessions.data?.length ?? "…"} icon={CalendarDays} accent="sky" />
-        <StatCard label="Buổi 7 ngày tới" value={weekSessions.data?.length ?? "…"} icon={CalendarClock} accent="jade" />
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <StatCard label="Ca dạy hôm nay" value={sessions.loading ? "…" : today.length} icon={CalendarDays} accent="brand" />
+        <StatCard label="Chưa chấm công" value={sessions.loading ? "…" : pendingToday} icon={Timer} accent="gold" />
+        <StatCard
+          label="Công tháng này"
+          value={monthSessions.loading ? "…" : `${monthSessions.data!.length} công`}
+          icon={ClipboardCheck}
+          accent="jade"
+        />
+        <StatCard label="Giờ dạy tháng này" value={monthSessions.loading ? "…" : `${monthHours}h`} icon={Clock} accent="sky" />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
               <CardTitle className="flex items-center gap-2">
-                <CalendarDays className="h-4 w-4 text-brand-600" /> Buổi dạy hôm nay
+                <CalendarDays className="h-4 w-4 text-brand-600" /> Ca dạy của tôi
               </CardTitle>
+              <div className="flex rounded-lg border bg-secondary/40 p-0.5">
+                {DAY_TABS.map((t) => {
+                  const count = byDay[t.key].length;
+                  return (
+                    <button
+                      key={t.key}
+                      onClick={() => setTab(t.key)}
+                      className={cn(
+                        "rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
+                        tab === t.key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      {t.label}
+                      {!sessions.loading && count > 0 && (
+                        <span className="ml-1.5 text-[10px] text-brand-600">{count}</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </CardHeader>
             <CardContent className="space-y-3 p-6 pt-0">
-              {todaySessions.loading ? (
+              {sessions.loading ? (
                 <LoadingRows rows={2} className="p-0" />
-              ) : todaySessions.error ? (
-                <ErrorNote message={todaySessions.error} />
-              ) : (todaySessions.data?.length ?? 0) === 0 ? (
+              ) : sessions.error ? (
+                <ErrorNote message={sessions.error} />
+              ) : byDay[tab].length === 0 ? (
                 <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-                  Hôm nay không có buổi dạy nào. 休息一下吧 ☕
+                  {tab === "today"
+                    ? "Hôm nay không có ca dạy nào. 休息一下吧 ☕"
+                    : tab === "yesterday"
+                      ? "Hôm qua bạn không có ca dạy nào."
+                      : "Ngày mai bạn chưa có ca dạy nào."}
                 </div>
               ) : (
-                todaySessions.data!.map((s) => <SessionRowItem key={s.id} session={s} highlight />)
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CalendarClock className="h-4 w-4 text-brand-600" /> Buổi dạy 7 ngày tới
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 p-6 pt-0">
-              {weekSessions.loading ? (
-                <LoadingRows rows={2} className="p-0" />
-              ) : (weekSessions.data?.length ?? 0) === 0 ? (
-                <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  Chưa có buổi nào — nhờ quản lý sinh buổi học từ lịch tuần của lớp.
-                </div>
-              ) : (
-                weekSessions.data!.map((s) => <SessionRowItem key={s.id} session={s} />)
+                byDay[tab].map((s) => (
+                  <TeachingCard
+                    key={s.id}
+                    session={s}
+                    future={tab === "tomorrow"}
+                    onLog={() => setLogFor(s)}
+                  />
+                ))
               )}
             </CardContent>
           </Card>
@@ -162,43 +225,105 @@ export default function TeacherHome() {
               )}
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <GraduationCap className="h-4 w-4 text-brand-600" /> Học viên các lớp
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-3 p-6 pt-0 text-sm text-muted-foreground">
+              <Users className="h-4 w-4" />
+              {classes.loading ? "…" : `${totalStudents} học viên đang theo học`}
+            </CardContent>
+          </Card>
         </div>
       </section>
+
+      <TeachingLogModal
+        session={logFor}
+        currentUserId={teacherId}
+        onClose={() => setLogFor(null)}
+        onSaved={() => {
+          sessions.reload();
+          monthSessions.reload();
+        }}
+      />
     </div>
   );
 }
 
-function SessionRowItem({ session: s, highlight }: { session: SessionRow; highlight?: boolean }) {
+function TeachingCard({
+  session: s,
+  future,
+  onLog,
+}: {
+  session: TeachingSessionRow;
+  future?: boolean;
+  onLog: () => void;
+}) {
+  const log = pickLog(s);
   const d = new Date(s.date + "T00:00:00");
+  const marked = attendanceCount(s);
+
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-card p-3.5">
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-3 rounded-xl border bg-card p-3.5",
+        log && "border-emerald-200 bg-emerald-50/40",
+      )}
+    >
       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-50 text-center leading-none">
         <div>
           <div className="text-[10px] font-semibold uppercase text-brand-500">{WEEKDAY_LABELS[d.getDay()]}</div>
           <div className="text-sm font-extrabold text-brand-700">{d.getDate()}</div>
         </div>
       </div>
+
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-semibold">
-          {s.class?.name ?? (s.type === "makeup" ? "Buổi học bù riêng" : "Lớp?")}
-        </div>
+        <div className="truncate text-sm font-semibold">{sessionClassLabel(s)}</div>
         <div className="text-xs text-muted-foreground">
           {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
           {s.room ? ` · Phòng ${s.room.name}` : ""}
           {s.session_no ? ` · Buổi ${s.session_no}` : ""}
           {s.type === "makeup" ? " · Buổi bù" : ""}
+          {marked > 0 ? ` · điểm danh ${marked} HV` : ""}
         </div>
+        {log && (
+          <div className="mt-1 text-xs text-emerald-700">
+            Thực dạy {log.actual_start.slice(0, 5)}–{log.actual_end.slice(0, 5)} ·{" "}
+            {sessionHours({ start_time: log.actual_start, end_time: log.actual_end })}h
+            {log.lesson_content ? ` · ${log.lesson_content}` : ""}
+          </div>
+        )}
       </div>
-      {s.status === "completed" ? (
-        <Badge variant="jade">Đã điểm danh</Badge>
+
+      {log ? (
+        <Badge variant="jade" className="shrink-0">
+          <CheckCircle2 className="h-3 w-3" /> Đã chấm công
+        </Badge>
+      ) : future ? (
+        <Badge variant="muted" className="shrink-0">
+          <CalendarClock className="h-3 w-3" /> Sắp diễn ra
+        </Badge>
       ) : (
-        highlight && <Badge variant="gold">Chưa điểm danh</Badge>
+        <Badge variant="gold" className="shrink-0">
+          Chưa chấm công
+        </Badge>
       )}
-      <Link href={`/teacher/sessions/${s.id}`}>
-        <Button size="sm" variant={highlight && s.status === "scheduled" ? "default" : "outline"}>
-          <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh
-        </Button>
-      </Link>
+
+      <div className="flex shrink-0 gap-2">
+        <Link href={`/teacher/sessions/${s.id}`}>
+          <Button size="sm" variant="outline">
+            <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh HV
+          </Button>
+        </Link>
+        {!future && (
+          <Button size="sm" variant={log ? "outline" : "default"} onClick={onLog}>
+            <Timer className="h-3.5 w-3.5" /> {log ? "Sửa công" : "Chấm công"}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

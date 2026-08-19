@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, BookOpen, CheckCheck, MessageSquarePlus, MessageSquareText, Star } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCheck, MessageSquarePlus, MessageSquareText, Star, Timer } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,8 @@ import {
   fetchSessionLessons,
   setSessionLessons,
 } from "@/lib/db-content";
+import { TeachingLogModal } from "@/components/teaching-log-modal";
+import { fetchTeachingLog, sessionHours } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
 
 const STATUS_ORDER: AttendanceStatus[] = ["present", "absent_excused", "absent_unexcused", "makeup"];
@@ -69,6 +71,8 @@ export default function TeacherSessionPage() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [commentFor, setCommentFor] = useState<{ id: string; name: string } | null>(null);
+  const [logOpen, setLogOpen] = useState(false);
+  const log = useLoad(() => fetchTeachingLog(sessionId), [sessionId]);
 
   // Nạp điểm danh đã có vào state khi dữ liệu về
   useEffect(() => {
@@ -196,9 +200,20 @@ export default function TeacherSessionPage() {
             <Badge variant={s.status === "completed" ? "jade" : "gold"}>
               {s.status === "completed" ? "Đã hoàn thành" : "Chưa hoàn thành"}
             </Badge>
+            {log.data ? (
+              <Badge variant="jade">
+                Đã chấm công {log.data.actual_start.slice(0, 5)}–{log.data.actual_end.slice(0, 5)} ·{" "}
+                {sessionHours({ start_time: log.data.actual_start, end_time: log.data.actual_end })}h
+              </Badge>
+            ) : (
+              !log.loading && <Badge variant="gold">Chưa chấm công</Badge>
+            )}
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant={log.data ? "ghost" : "gold"} onClick={() => setLogOpen(true)}>
+            <Timer className="h-4 w-4" /> {log.data ? "Sửa chấm công" : "Chấm công ca dạy"}
+          </Button>
           <Button variant="outline" onClick={markAllPresent} disabled={students.loading}>
             <CheckCheck className="h-4 w-4" /> Tất cả có mặt
           </Button>
@@ -287,6 +302,17 @@ export default function TeacherSessionPage() {
         sessionId={sessionId}
         courseId={s.class?.course?.id ?? null}
         textbook={s.class?.textbook ?? null}
+      />
+
+      <TeachingLogModal
+        session={logOpen ? s : null}
+        log={log.data}
+        currentUserId={user?.id ?? ""}
+        onClose={() => setLogOpen(false)}
+        onSaved={() => {
+          log.reload();
+          session.reload();
+        }}
       />
 
       {commentFor && user && (

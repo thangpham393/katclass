@@ -11,12 +11,12 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 - `src/lib/db.ts` — data layer lõi (lớp, buổi học, điểm danh, học bù, thành viên)
 - `src/lib/db-content.ts` — data layer nội dung (từ vựng, bài học, câu hỏi, bài tập; quy ước jsonb đề bài/đáp án ghi ở đầu file)
 - `src/lib/db-student.ts` — data layer khu học viên + cổng phụ huynh (dựa vào RLS, dùng chung cho HV và PH xem con)
-- `src/lib/db-tuition.ts` — data layer học phí gói buổi + chấm công GV (Giai đoạn 2)
+- `src/lib/db-tuition.ts` — data layer học phí gói buổi + chấm công ca dạy (`teaching_logs`, Giai đoạn 2)
 - `src/lib/db-notifications.ts` — data layer thông báo in-app
 - `src/lib/db-requests.ts` — data layer GV nghỉ/đổi buổi + admin duyệt (Giai đoạn 2 phần 2)
 - `src/lib/student-login.ts` — cơ chế đăng nhập bằng mã
 
-## Trạng thái hiện tại (16/07/2026)
+## Trạng thái hiện tại (19/08/2026)
 
 - **Stack**: Next.js 15 App Router + Supabase (project `pfwltalxrmddbckidgad`), deploy Vercel qua GitHub (`thangpham393/katclass`, branch main). Env trong `.env.local` (không commit).
 - **GIAI ĐOẠN 1 ĐÃ HOÀN TẤT** — toàn bộ chạy dữ liệu thật, không còn mock (mock-data.ts đã xóa):
@@ -31,7 +31,7 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
 - **GIAI ĐOẠN 2 PHẦN 1 ĐÃ XONG (16/07/2026, migration 0013)** — học phí gói buổi + thông báo in-app + chấm công GV:
   - **Học phí gói buổi** (`enrollment_packages` + `payments`, chính sách 5.1): admin bán gói N buổi ở /admin/tuition (chọn HV, giá, ưu đãi, ngày kích hoạt, thu tiền ngay tiền mặt/CK), thu thêm nhiều lần, hủy gói (giữ lịch sử). Biên lai số tự cấp BL-00001 (sequence), trang in /admin/tuition/receipt/[id] (sidebar/topbar có print:hidden). **Số buổi còn lại KHÔNG lưu mà tính ngược từ điểm danh** qua view `package_balances` (security_invoker — dùng chung admin/HV/PH): present + absent_excused + absent_unexcused trừ 1 buổi kể từ ngày kích hoạt gói đầu tiên, makeup không trừ, nhiều gói trừ FIFO theo start_date; view kèm paid_amount/debt/final_price + tên/mã/SĐT học viên. Trang admin có tab Tất cả / Sắp hết buổi (≤3) / Công nợ + 4 stat (gói active, HV sắp hết, tổng nợ, đã thu tháng này). Hàm `student_sessions_remaining(sid)` dùng trong trigger.
   - **Thông báo in-app** (`notifications`, cột channel sẵn cho Zalo sau): chuông trên topbar (`src/components/shell/notification-bell.tsx`) — badge số chưa đọc, mở panel tự đánh dấu đã đọc, bấm thông báo nhảy tới link. 4 trigger DB tự sinh (security definer): bài tập mới → HV cả lớp; xếp học bù → HV + PH; con vắng mặt (có/không phép) → PH; gói còn ≤3 buổi hoặc hết → HV + PH (chống dội: 1 cảnh báo package_low / người / 3 ngày).
-  - **Chấm công GV** /admin/payroll: chọn tháng, 1 buổi `completed` có GV thực dạy = 1 công (kể cả dạy thay/buổi bù), đếm từ sessions không cần bảng riêng; bảng công theo GV (số công, tổng giờ, mở rộng xem từng buổi) + stat buổi chưa gán GV.
+  - **Chấm công GV** /admin/payroll: chọn tháng, 1 buổi `completed` có GV thực dạy = 1 công (kể cả dạy thay/buổi bù), đếm từ sessions không cần bảng riêng; bảng công theo GV (số công, tổng giờ, mở rộng xem từng buổi) + stat buổi chưa gán GV. **Đã nâng cấp 19/08/2026 — xem mục CHẤM CÔNG CA DẠY (migration 0018) bên dưới.**
   - **HV/PH thấy số buổi còn lại**: thẻ `PackageSummaryCard` (src/components/package-summary.tsx) trên trang chủ học viên + cổng phụ huynh — tự ẩn nếu chưa mua gói, đổi màu vàng cảnh báo khi còn ≤3 buổi.
   - **Siết quyền xem bài học (migration 0014)**: học viên KHÔNG còn thấy toàn bộ thư viện — RLS `read lessons` mới dùng `can_view_lesson(id)`: chỉ thấy bài thuộc giáo trình/khóa học của lớp mình, bài GV gán vào buổi của lớp (kể cả ngoài giáo trình), hoặc bài của buổi được xếp học bù; phụ huynh xem theo con; GV/staff thấy tất cả. /student/library và /student/flashcard tự lọc theo (đều dùng fetchLessons + RLS). Kho từ vựng vẫn mở cho mọi người đăng nhập (tính năng tra cứu).
 - **GIAI ĐOẠN 2 PHẦN 2 ĐÃ XONG (16/07/2026, migration 0015)** — GV đăng ký nghỉ / đề xuất đổi buổi:
@@ -46,9 +46,16 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Chống lộ đề**: policy `view homework questions` viết lại — với kind='test', HV chỉ đọc câu hỏi khi ĐÃ có attempt (staff/GV lớp/người tạo thấy luôn). Hệ quả UI: bài kiểm tra chưa bắt đầu thì `fetchHomework().questions` rỗng và `homework_questions(count)` = 0 — KHÔNG phải bug, client tự ẩn số câu.
   - **HV** /student/homework/[id]: màn bắt đầu (thời gian, giờ mở đề, luật), đồng hồ đếm ngược ở thanh nộp (đỏ nhấp nháy <60s), hết giờ TỰ NỘP đáp án hiện có, nộp thiếu câu phải confirm, không có nút "Làm lại"; mở lại trang sau khi hết giờ >60s → màn "Đã hết giờ". **GV** giao bài chọn loại + phút + giờ mở đề; trang chi tiết badge "Kiểm tra · X′" + mục Chưa nộp phân biệt: chưa bắt đầu / đang làm (vàng) / quá giờ không nộp (đỏ, từ test_attempts).
   - Trigger `notify_homework_new` cập nhật: bài test báo "Bài kiểm tra mới" kèm phút làm + giờ mở đề.
+- **CHẤM CÔNG CA DẠY (19/08/2026, migration 0018)** — GV tự bấm chấm công, hành chính theo dõi theo ngày:
+  - Bảng **`teaching_logs`** (unique `session_id` → 1 buổi tối đa 1 công): `teacher_id` (GV được tính công = `sessions.teacher_id`), `checked_in_at` (lúc bấm), `actual_start`/`actual_end` (giờ dạy THỰC TẾ, có thể lệch giờ lịch), `lesson_content` (nội dung bài học đã dạy), `note`, `created_by` (người bấm — GV hoặc hành chính chấm hộ). Trigger `complete_session_on_log` tự chuyển buổi `scheduled → completed` khi chấm công. RLS: `teaches_session(session_id)` được xem/ghi/sửa, staff toàn quyền + xóa.
+  - **Trang chủ GV** /teacher làm lại: 3 tab **Hôm qua / Hôm nay / Ngày mai** (nạp 1 lần khoảng todayISO(-1)→todayISO(1) rồi lọc client), mỗi ca hiện trạng thái *Đã chấm công / Chưa chấm công / Sắp diễn ra* + số HV đã điểm danh + giờ thực tế & nội dung khi đã chấm; nút **Chấm công** (ẩn ở tab Ngày mai) mở modal; nút "Điểm danh HV" vẫn dẫn sang /teacher/sessions/[id]. 4 stat: ca hôm nay, chưa chấm công, công tháng này, giờ dạy tháng này.
+  - **Modal dùng chung** `src/components/teaching-log-modal.tsx`: giờ bắt đầu/kết thúc thực tế (mặc định = giờ lịch), số giờ tự tính (làm tròn 0.25h), nội dung bài học (bắt buộc, tự gợi ý từ bài học đã gán cho buổi qua `fetchSessionLessons`), ghi chú. Nhận `session` theo interface tối thiểu `LogTargetSession` (SessionRow dùng được) và `log` tùy chọn khi nạp riêng.
+  - **Admin** /admin/payroll 2 tab: **Theo dõi theo ngày** (chọn ngày ◀ ▶ / Hôm nay; toàn bộ ca dạy trong ngày của trung tâm + GV + trạng thái chấm công + giờ thực tế + nội dung; nút **Chấm hộ**/Sửa; cảnh báo buổi chưa gán GV) và **Bảng công tháng** (như cũ, thêm "đã chấm công x/y ca", giờ lấy theo `payHours` = giờ thực tế nếu đã chấm, chưa chấm thì tạm tính giờ lịch).
+  - Data layer trong `src/lib/db-tuition.ts`: `fetchTeachingSessions(from, to, {teacherId?, completedOnly?})` (embed `teaching_log` + `attendance(count)`), `fetchTeachingLog`, `saveTeachingLog` (upsert onConflict session_id), helper `pickLog` / `attendanceCount` / `payHours` / `sessionHours`. Hàm cũ `fetchCompletedSessions` đã thay bằng `fetchTeachingSessions`.
+  - Trang chi tiết buổi /teacher/sessions/[id] cũng có badge trạng thái công + nút "Chấm công ca dạy".
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations đã dán đến 0017 (user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0018 trở đi: viết xong nhắc dán 1 lần là đủ.
+  1. Migrations đã dán đến 0018 (user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0019 trở đi: viết xong nhắc dán 1 lần là đủ.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
