@@ -197,6 +197,7 @@ export interface TeachingSessionRow {
   session_no: number | null;
   status: "scheduled" | "completed" | "cancelled";
   type: "regular" | "makeup";
+  note: string | null;
   teacher: { id: string; name: string } | null;
   class: { id: string; name: string } | null;
   room: { id: string; name: string } | null;
@@ -206,7 +207,7 @@ export interface TeachingSessionRow {
 }
 
 const TEACHING_SELECT = `
-  id, date, start_time, end_time, session_no, status, type,
+  id, date, start_time, end_time, session_no, status, type, note,
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
   class:classes ( id, name ),
   room:rooms ( id, name ),
@@ -229,12 +230,13 @@ export function attendanceCount(s: Pick<TeachingSessionRow, "attendance">): numb
 /**
  * Buổi dạy trong khoảng ngày kèm trạng thái chấm công.
  * `teacherId` → chỉ buổi giáo viên đó thực dạy (trang chủ GV);
- * `completedOnly` → bảng công tháng của hành chính.
+ * `completedOnly` → bảng công tháng của hành chính;
+ * `includeCancelled` → giữ cả buổi đã hủy (trang theo dõi theo ngày).
  */
 export async function fetchTeachingSessions(
   from: string,
   to: string,
-  opts: { teacherId?: string; completedOnly?: boolean } = {},
+  opts: { teacherId?: string; completedOnly?: boolean; includeCancelled?: boolean } = {},
 ): Promise<TeachingSessionRow[]> {
   let q = getSupabase()
     .from("sessions")
@@ -243,7 +245,7 @@ export async function fetchTeachingSessions(
     .lte("date", to);
   if (opts.teacherId) q = q.eq("teacher_id", opts.teacherId);
   if (opts.completedOnly) q = q.eq("status", "completed");
-  else q = q.neq("status", "cancelled");
+  else if (!opts.includeCancelled) q = q.neq("status", "cancelled");
   const { data, error } = await q.order("date").order("start_time").limit(3000);
   if (error) throw error;
   return data as unknown as TeachingSessionRow[];

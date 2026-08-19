@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   CalendarCheck,
   CalendarDays,
@@ -8,6 +9,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleAlert,
+  Pencil,
   Clock,
   GraduationCap,
   Timer,
@@ -23,6 +25,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
+import { SessionEditModal } from "@/components/session-edit-modal";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
 import { WEEKDAY_LABELS, sessionClassLabel, todayISO } from "@/lib/db";
@@ -99,13 +102,18 @@ function DayTracking() {
   const { user } = useAuth();
   const [date, setDate] = useState(todayISO());
   const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
+  const [editFor, setEditFor] = useState<TeachingSessionRow | null>(null);
 
-  const sessions = useLoad(() => fetchTeachingSessions(date, date), [date]);
+  const sessions = useLoad(
+    () => fetchTeachingSessions(date, date, { includeCancelled: true }),
+    [date],
+  );
   const rows = sessions.data ?? [];
-  const logged = rows.filter((s) => pickLog(s));
-  const pending = rows.filter((s) => !pickLog(s));
+  const active = rows.filter((s) => s.status !== "cancelled"); // buổi đã hủy không tính công
+  const logged = active.filter((s) => pickLog(s));
+  const pending = active.filter((s) => !pickLog(s));
   const hours = logged.reduce((sum, s) => sum + payHours(s), 0);
-  const noTeacher = rows.filter((s) => !s.teacher).length;
+  const noTeacher = active.filter((s) => !s.teacher).length;
   const d = new Date(date + "T00:00:00");
 
   return (
@@ -129,7 +137,7 @@ function DayTracking() {
       </div>
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-        <StatCard label="Ca dạy trong ngày" value={sessions.loading ? "—" : rows.length} icon={CalendarDays} accent="brand" />
+        <StatCard label="Ca dạy trong ngày" value={sessions.loading ? "—" : active.length} icon={CalendarDays} accent="brand" />
         <StatCard label="Đã chấm công" value={sessions.loading ? "—" : logged.length} icon={CalendarCheck} accent="jade" />
         <StatCard label="Chưa chấm công" value={sessions.loading ? "—" : pending.length} icon={Timer} accent="gold" />
         <StatCard label="Tổng giờ đã ghi nhận" value={sessions.loading ? "—" : `${hours}h`} icon={Clock} accent="sky" />
@@ -161,18 +169,29 @@ function DayTracking() {
               {rows.map((s) => {
                 const log = pickLog(s);
                 return (
-                  <div key={s.id} className="flex flex-wrap items-center gap-3 py-3">
+                  <div
+                    key={s.id}
+                    className={cn("flex flex-wrap items-center gap-3 py-3", s.status === "cancelled" && "opacity-60")}
+                  >
                     <span className="w-24 shrink-0 text-xs font-semibold text-muted-foreground">
                       {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-semibold">
-                        {sessionClassLabel(s)}
-                        {s.type === "makeup" && <Badge variant="jade" className="ml-2">Buổi bù</Badge>}
+                      <div className="flex items-center gap-2 truncate text-sm font-semibold">
+                        {s.class ? (
+                          <Link href={`/admin/classes/${s.class.id}`} className="truncate hover:text-brand-600">
+                            {s.class.name}
+                          </Link>
+                        ) : (
+                          <span className="truncate">{sessionClassLabel(s)}</span>
+                        )}
+                        {s.type === "makeup" && <Badge variant="jade">Buổi bù</Badge>}
+                        {s.status === "cancelled" && <Badge variant="destructive">Đã hủy</Badge>}
                       </div>
                       <div className="truncate text-xs text-muted-foreground">
                         {s.teacher?.name ?? "Chưa gán GV"}
-                        {s.room ? ` · Phòng ${s.room.name}` : ""}
+                        {s.room ? ` · Phòng ${s.room.name}` : " · chưa xếp phòng"}
+                        {s.session_no ? ` · Buổi ${s.session_no}` : ""}
                         {attendanceCount(s) > 0 ? ` · điểm danh ${attendanceCount(s)} HV` : " · chưa điểm danh HV"}
                       </div>
                       {log && (
@@ -184,19 +203,21 @@ function DayTracking() {
                         </div>
                       )}
                     </div>
-                    {log ? (
+                    {s.status === "cancelled" ? null : log ? (
                       <Badge variant="jade" className="shrink-0">Đã chấm công</Badge>
                     ) : (
                       <Badge variant="gold" className="shrink-0">Chưa chấm công</Badge>
                     )}
-                    <Button
-                      size="sm"
-                      variant={log ? "ghost" : "outline"}
-                      className="shrink-0"
-                      onClick={() => setLogFor(s)}
-                    >
-                      {log ? "Sửa" : "Chấm hộ"}
-                    </Button>
+                    <div className="flex shrink-0 gap-2">
+                      <Button size="sm" variant="ghost" onClick={() => setEditFor(s)}>
+                        <Pencil className="h-3.5 w-3.5" /> Sửa lớp
+                      </Button>
+                      {s.status !== "cancelled" && (
+                        <Button size="sm" variant={log ? "ghost" : "outline"} onClick={() => setLogFor(s)}>
+                          {log ? "Sửa công" : "Chấm hộ"}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -211,6 +232,8 @@ function DayTracking() {
         onClose={() => setLogFor(null)}
         onSaved={sessions.reload}
       />
+
+      <SessionEditModal session={editFor} onClose={() => setEditFor(null)} onSaved={sessions.reload} />
     </div>
   );
 }

@@ -609,6 +609,36 @@ export async function fetchTeacherClasses(teacherId: string): Promise<ClassRow[]
   return data as unknown as ClassRow[];
 }
 
+/** Sửa thông tin lớp (tên, ghi chú) — chỉ hành chính. */
+export async function updateClassInfo(
+  id: string,
+  patch: { name?: string; notes?: string | null },
+) {
+  const { error } = await getSupabase().from("classes").update(patch).eq("id", id);
+  if (error) throw error;
+}
+
+export interface UpdateSessionInput {
+  date?: string;
+  start_time?: string;
+  end_time?: string;
+  room_id?: string | null;
+  teacher_id?: string | null;
+  session_no?: number | null;
+  note?: string | null;
+  status?: SessionRow["status"];
+}
+
+/**
+ * Sửa một buổi học (hành chính). Đổi ngày/giờ/hủy buổi sẽ kích hoạt trigger
+ * `on_session_schedule_change` → tự báo cho HV của lớp + HV được xếp học bù.
+ * Trùng phòng/GV nổ lỗi 23P01.
+ */
+export async function updateSession(id: string, patch: UpdateSessionInput) {
+  const { error } = await getSupabase().from("sessions").update(patch).eq("id", id);
+  if (error) throw error;
+}
+
 export async function updateSessionStatus(id: string, status: SessionRow["status"]) {
   const { error } = await getSupabase().from("sessions").update({ status }).eq("id", id);
   if (error) throw error;
