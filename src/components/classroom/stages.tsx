@@ -2,15 +2,19 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  ChevronLeft,
+  ChevronRight,
   Dices,
   ExternalLink,
   Eye,
   EyeOff,
+  FolderOpen,
   Pause,
   Play,
   Presentation,
   RotateCcw,
   Volume2,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,10 +30,17 @@ import type { LessonDetail, VocabRow } from "@/lib/db-content";
 
 /* ===================== Trình chiếu slide ===================== */
 
+/** File đang chiếu lấy thẳng từ máy giáo viên (không tải lên đâu cả). */
+interface LocalDeck {
+  name: string;
+  kind: "pdf" | "images";
+  urls: string[];
+}
+
 /**
- * Chiếu slide của bài học đã gán cho buổi (Canva/Google Slides nhúng iframe).
- * Có ô dán link tạm cho trường hợp giáo viên muốn chiếu tài liệu khác ngay
- * trong giờ mà chưa kịp gắn vào bài học.
+ * Chiếu slide của bài học đã gán cho buổi (Canva/Google Slides nhúng iframe),
+ * link dán tạm, HOẶC file PDF/ảnh mở thẳng từ máy giáo viên — đường lui khi
+ * slide quá nặng, Google từ chối xem trước hoặc phòng học mất mạng.
  */
 export function SlideStage({
   lessons,
@@ -44,6 +55,60 @@ export function SlideStage({
   const [adhocUrl, setAdhocUrl] = useState("");
   const [mode, setMode] = useState<EmbedMode>("auto");
   const [reloadKey, setReloadKey] = useState(0);
+  const [local, setLocal] = useState<LocalDeck | null>(null);
+  const [page, setPage] = useState(0);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  // Thu hồi blob URL khi đổi/đóng file để không rò bộ nhớ trong buổi dài
+  useEffect(() => {
+    return () => {
+      local?.urls.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, [local]);
+
+  // Ảnh: lật trang bằng phím mũi tên / Space
+  useEffect(() => {
+    if (local?.kind !== "images") return;
+    function onKey(e: KeyboardEvent) {
+      const el = e.target as HTMLElement | null;
+      if (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)) return;
+      if (["ArrowRight", "ArrowDown", " "].includes(e.key)) {
+        e.preventDefault();
+        setPage((p) => Math.min(p + 1, (local?.urls.length ?? 1) - 1));
+      } else if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
+        e.preventDefault();
+        setPage((p) => Math.max(p - 1, 0));
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [local]);
+
+  function openLocal(files: FileList | null) {
+    if (!files?.length) return;
+    local?.urls.forEach((u) => URL.revokeObjectURL(u));
+    const list = Array.from(files);
+    const pdf = list.find((f) => f.type === "application/pdf" || /\.pdf$/i.test(f.name));
+    if (pdf) {
+      setLocal({ name: pdf.name, kind: "pdf", urls: [URL.createObjectURL(pdf)] });
+    } else {
+      const imgs = list
+        .filter((f) => f.type.startsWith("image/"))
+        .sort((a, b) => a.name.localeCompare(b.name, "vi", { numeric: true }));
+      if (!imgs.length) return;
+      setLocal({
+        name: imgs.length > 1 ? `${imgs.length} ảnh slide` : imgs[0].name,
+        kind: "images",
+        urls: imgs.map((f) => URL.createObjectURL(f)),
+      });
+    }
+    setPage(0);
+  }
+
+  function closeLocal() {
+    local?.urls.forEach((u) => URL.revokeObjectURL(u));
+    setLocal(null);
+  }
 
   useEffect(() => {
     if (!current && withSlide[0]) {
@@ -90,6 +155,24 @@ export function SlideStage({
           <Button size="sm" variant="secondary" onClick={() => setAdhocUrl(adhoc.trim())} disabled={!adhoc.trim()}>
             Chiếu
           </Button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept="application/pdf,image/*"
+            multiple
+            className="hidden"
+            onChange={(e) => {
+              openLocal(e.target.files);
+              e.target.value = "";
+            }}
+          />
+          <button
+            onClick={() => fileInput.current?.click()}
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-800 px-3 text-sm font-semibold text-ink-100 hover:bg-ink-700"
+            title="Chiếu file PDF hoặc ảnh slide ngay từ máy — không cần mạng, không giới hạn dung lượng"
+          >
+            <FolderOpen className="h-4 w-4" /> File từ máy
+          </button>
           {url && (
             <button
               onClick={() =>
@@ -108,10 +191,10 @@ export function SlideStage({
         </div>
       </div>
 
-      {isGoogle && (
+      {isGoogle && !local && (
         <div className="-mb-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-400">
           <span className="font-semibold text-ink-300">Không hiện được slide?</span>
-          {(["auto", "slides", "drive"] as EmbedMode[]).map((m) => (
+          {(["auto", "slides", "drive", "office"] as EmbedMode[]).map((m) => (
             <button
               key={m}
               onClick={() => {
@@ -127,7 +210,9 @@ export function SlideStage({
                   ? "Dùng cho file PowerPoint gốc hoặc slide nặng mà Google Slides báo không xem trước được"
                   : m === "slides"
                     ? "Trình xem Google Slides"
-                    : "Tự chọn theo loại file"
+                    : m === "office"
+                      ? "Trình xem Office Online đọc thẳng file .pptx trên Drive — thử khi Google báo tệp quá lớn"
+                      : "Tự chọn theo loại file"
               }
             >
               {EMBED_MODE_LABELS[m]}
@@ -140,14 +225,55 @@ export function SlideStage({
             <RotateCcw className="h-3 w-3" /> Tải lại
           </button>
           <span>
-            · Slide phải chia sẻ “Bất kỳ ai có đường liên kết”; file .pptx nặng nên đặt kiểu
-            “Trình xem Drive” hoặc mở cửa sổ trình chiếu riêng.
+            · Slide phải chia sẻ “Bất kỳ ai có đường liên kết”. Google báo “tệp quá lớn không
+            xem trước được” thì thử kiểu “Office (.pptx)”, hoặc chiếu thẳng bằng nút “File từ
+            máy” (PDF/ảnh — không giới hạn dung lượng, không cần mạng).
           </span>
         </div>
       )}
 
-      <div className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
-        {url ? (
+      <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
+        {local ? (
+          <>
+            {local.kind === "pdf" ? (
+              <iframe src={`${local.urls[0]}#toolbar=1&view=FitH`} className="h-full w-full" title={local.name} />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={local.urls[page]} alt={`Slide ${page + 1}`} className="h-full w-full object-contain" />
+            )}
+            <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-ink-950/80 px-3 py-2 text-xs text-ink-200 backdrop-blur">
+              <span className="truncate font-semibold text-white">{local.name}</span>
+              {local.kind === "images" && (
+                <span className="flex items-center gap-1">
+                  <button
+                    onClick={() => setPage((p) => Math.max(0, p - 1))}
+                    disabled={page === 0}
+                    className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <span className="tabular-nums">
+                    {page + 1}/{local.urls.length}
+                  </span>
+                  <button
+                    onClick={() => setPage((p) => Math.min(local.urls.length - 1, p + 1))}
+                    disabled={page >= local.urls.length - 1}
+                    className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                  <span className="text-ink-400">· phím ← →</span>
+                </span>
+              )}
+              <button
+                onClick={closeLocal}
+                className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+              >
+                <X className="h-3.5 w-3.5" /> Đóng file
+              </button>
+            </div>
+          </>
+        ) : url ? (
           <iframe
             key={`${embed}-${reloadKey}`}
             src={embed}
@@ -162,9 +288,10 @@ export function SlideStage({
               <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
               <div className="font-semibold text-white">Buổi này chưa có slide</div>
               <p className="mx-auto mt-1 max-w-md text-sm">
-                Gán bài học có link slide cho buổi ở trang chi tiết buổi, hoặc dán tạm link
-                Google Slides / Drive / Canva / YouTube vào ô trên là chiếu được ngay — hệ
-                thống tự đổi sang dạng nhúng.
+                Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
+                Slides / Drive / Canva / YouTube vào ô trên (hệ thống tự đổi sang dạng nhúng),
+                hoặc bấm <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh
+                slide từ máy tính — cách này không phụ thuộc mạng và không giới hạn dung lượng.
               </p>
             </div>
           </div>

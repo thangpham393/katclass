@@ -397,12 +397,13 @@ export function googleFileId(raw: string): string | null {
  *  - `drive`  : trình xem Drive (`/file/d/<id>/preview`) — chịu được file
  *               PowerPoint gốc và file nặng mà Slides báo không xem trước được
  */
-export type EmbedMode = "auto" | "slides" | "drive";
+export type EmbedMode = "auto" | "slides" | "drive" | "office";
 
 export const EMBED_MODE_LABELS: Record<EmbedMode, string> = {
   auto: "Tự động",
   slides: "Google Slides",
   drive: "Trình xem Drive",
+  office: "Office (.pptx)",
 };
 
 /**
@@ -430,6 +431,13 @@ export function toEmbedUrl(raw: string, mode: EmbedMode = "auto"): string {
 
   // Người dùng ép kiểu nhúng (slide nặng / file PowerPoint không xem trước được)
   if (isGoogleDoc && id && mode !== "auto" && !/^\/presentation\/d\/e\//.test(u.pathname)) {
+    if (mode === "office") {
+      // Trình xem Office Online đọc trực tiếp file .pptx qua link tải của Drive —
+      // cứu được file mà Google báo "quá lớn không xem trước được" (chỉ chạy khi
+      // file dưới ~100MB, trên mức đó Drive chèn trang cảnh báo quét virus).
+      const direct = `https://drive.google.com/uc?export=download&id=${id}`;
+      return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(direct)}`;
+    }
     if (mode === "drive") return `https://drive.google.com/file/d/${id}/preview`;
     const base = `https://docs.google.com/presentation/d/${id}/preview`;
     return slide ? `${base}?slide=${slide}` : base;
