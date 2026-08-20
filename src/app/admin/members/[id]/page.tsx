@@ -401,7 +401,7 @@ function ParentsCard({ studentId, studentName }: { studentId: string; studentNam
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
         <CardTitle className="text-base">
           <HeartHandshake className="mr-1.5 inline h-4 w-4 text-brand-600" />
           Phụ huynh

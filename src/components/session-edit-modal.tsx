@@ -163,7 +163,7 @@ export function SessionEditModal({
           </Field>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Field label="Ngày học" required>
             <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </Field>

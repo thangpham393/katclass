@@ -186,7 +186,7 @@ export default function TeacherHome() {
 
         <div className="space-y-4">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <School className="h-4 w-4 text-brand-600" /> Lớp phụ trách
               </CardTitle>

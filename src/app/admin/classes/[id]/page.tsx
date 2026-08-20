@@ -240,7 +240,7 @@ export default function AdminClassDetailPage() {
       />
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
           <CardTitle>
             Học viên trong lớp
             <Badge variant="muted" className="ml-2">{students.data?.length ?? 0}</Badge>

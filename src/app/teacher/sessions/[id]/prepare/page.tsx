@@ -206,7 +206,7 @@ export default function PrepareSessionPage() {
 
       {/* Bước 2: slide cho buổi */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
           <CardTitle className="flex items-center gap-2">
             <Presentation className="h-4 w-4 text-brand-600" /> Slide cho buổi này
           </CardTitle>

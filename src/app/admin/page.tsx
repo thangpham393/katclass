@@ -76,7 +76,7 @@ export default function AdminHome() {
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
             <CardTitle>Lớp học gần đây</CardTitle>
             <Link href="/admin/classes" className="text-xs font-semibold text-brand-600 hover:underline">
               Tất cả lớp <ArrowRight className="inline h-3 w-3" />

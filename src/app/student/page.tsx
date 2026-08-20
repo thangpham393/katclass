@@ -135,7 +135,7 @@ export default function StudentHome() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Lịch học sắp tới */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
             <CardTitle className="flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-brand-600" /> Lịch học sắp tới
             </CardTitle>
@@ -185,7 +185,7 @@ export default function StudentHome() {
 
         {/* Bài tập chờ làm */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
             <CardTitle className="flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-brand-600" /> Bài tập chờ làm
             </CardTitle>
