@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { speakZh, toEmbedUrl, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
+import { speakZh, toEmbedUrl, type ClassroomStudent } from "@/lib/db-classroom";
 import type { LessonDetail, VocabRow } from "@/lib/db-content";
 
 /* ===================== Trình chiếu slide ===================== */
@@ -220,13 +220,16 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
 /**
  * Quay chọn học viên phát biểu. Chế độ "công bằng" loại dần những bạn đã
  * được gọi trong buổi, hết lượt thì tự làm mới — tránh gọi trùng một bạn.
+ *
+ * Quay xong thì báo ra ngoài qua `onPicked`: lớp phủ tự ẩn sau 3 giây để trả
+ * màn hình về slide, việc cho điểm diễn ra ở thanh "đang trả lời".
  */
 export function RandomStage({
   students,
-  onAward,
+  onPicked,
 }: {
   students: ClassroomStudent[];
-  onAward: (studentId: string, points: number, reason: PointReason) => void;
+  onPicked: (student: ClassroomStudent) => void;
 }) {
   const [fair, setFair] = useState(true);
   const [called, setCalled] = useState<string[]>([]);
@@ -265,6 +268,7 @@ export function RandomStage({
         setWinner(picked);
         setSpinning(false);
         setCalled((prev) => (prev.includes(picked.id) ? prev : [...prev, picked.id]));
+        onPicked(picked);
       }, acc + delay),
     );
   }
@@ -313,34 +317,10 @@ export function RandomStage({
 
       <div className="flex flex-wrap items-center justify-center gap-2">
         <Button size="lg" onClick={spin} disabled={spinning || !students.length}>
-          <Dices className="h-5 w-5" /> {spinning ? "Đang quay…" : "Quay chọn học viên"}
+          <Dices className="h-5 w-5" /> {spinning ? "Đang quay…" : winner ? "Quay bạn khác" : "Quay chọn học viên"}
         </Button>
         {winner && (
-          <>
-            <Button
-              size="lg"
-              variant="gold"
-              onClick={() => {
-                onAward(winner.id, 2, "bonus");
-                setWinner(null);
-              }}
-            >
-              Trả lời tốt +2
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              onClick={() => {
-                onAward(winner.id, 1, "correct");
-                setWinner(null);
-              }}
-            >
-              Đúng +1
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => setWinner(null)}>
-              Bỏ qua
-            </Button>
-          </>
+          <span className="text-sm text-ink-300">Cho điểm ở thanh “đang trả lời” phía dưới màn hình →</span>
         )}
       </div>
     </div>

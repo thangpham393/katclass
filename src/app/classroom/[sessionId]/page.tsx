@@ -112,6 +112,9 @@ export default function ClassroomPage() {
   const [now, setNow] = useState(() => Date.now());
   const [fullscreen, setFullscreen] = useState(false);
   const [timer, setTimer] = useState<{ left: number; running: boolean }>({ left: 0, running: false });
+  /** Học viên vừa được gọi và đang trả lời — chốt lượt bằng cách cho điểm hoặc bỏ qua. */
+  const [answering, setAnswering] = useState<ClassroomStudent | null>(null);
+  const hideOverlayTimer = useRef<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
   /* --- Giờ vào lớp: giữ ở localStorage để F5 giữa giờ không mất --- */
@@ -215,6 +218,13 @@ export default function ClassroomPage() {
     return () => window.clearInterval(id);
   }, []);
 
+  useEffect(
+    () => () => {
+      if (hideOverlayTimer.current) window.clearTimeout(hideOverlayTimer.current);
+    },
+    [],
+  );
+
   useEffect(() => {
     let lock: { release: () => Promise<void> } | null = null;
     const nav = navigator as Navigator & {
@@ -263,6 +273,23 @@ export default function ClassroomPage() {
       .catch(() => {
         queuePoints(sessionId, [{ tmp_id, student_id: studentId, points: value, reason: r, created_at }]);
       });
+  }
+
+  /** Quay trúng ai: giữ tên trên màn 3 giây rồi trả màn hình về slide. */
+  function handlePicked(student: ClassroomStudent) {
+    setAnswering(student);
+    if (user) {
+      logActivity({
+        session_id: sessionId,
+        kind: "random",
+        title: `Gọi ${student.name} phát biểu`,
+        created_by: user.id,
+      });
+    }
+    if (hideOverlayTimer.current) window.clearTimeout(hideOverlayTimer.current);
+    hideOverlayTimer.current = window.setTimeout(() => {
+      setOverlay((cur) => (cur === "random" ? null : cur));
+    }, 3000);
   }
 
   function undo() {
@@ -510,8 +537,23 @@ export default function ClassroomPage() {
             </ToolOverlay>
 
             <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)}>
-              <RandomStage students={presentStudents} onAward={(id, pts, why) => give(id, pts, why)} />
+              <RandomStage students={presentStudents} onPicked={handlePicked} />
             </ToolOverlay>
+
+            {answering && (
+              <AnsweringBar
+                student={answering}
+                onAward={(pts, why) => {
+                  give(answering.id, pts, why);
+                  setAnswering(null);
+                }}
+                onSkip={() => setAnswering(null)}
+                onAgain={() => {
+                  setAnswering(null);
+                  setOverlay("random");
+                }}
+              />
+            )}
 
             <ToolOverlay title="Bấm giờ" open={overlay === "timer"} onClose={() => setOverlay(null)}>
               <TimerStage
@@ -560,6 +602,7 @@ export default function ClassroomPage() {
           onReasonChange={setReason}
           onGive={give}
           onUndo={undo}
+          answeringId={answering?.id ?? null}
           canUndo={points.length > 0}
           pendingCount={pendingCount}
         />
@@ -630,6 +673,54 @@ function ToolOverlay({
           </button>
         </div>
         <div className="min-h-0 flex-1 p-4">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Thanh "đang trả lời": nổi trên vùng trình chiếu sau khi quay trúng học viên.
+ * Lượt trả lời chỉ kết thúc khi giáo viên cho điểm hoặc bấm "chưa trả lời được".
+ */
+function AnsweringBar({
+  student,
+  onAward,
+  onSkip,
+  onAgain,
+}: {
+  student: ClassroomStudent;
+  onAward: (points: number, reason: PointReason) => void;
+  onSkip: () => void;
+  onAgain: () => void;
+}) {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-4 z-30 flex justify-center px-4">
+      <div className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-2xl border border-gold-500/60 bg-ink-900/95 px-4 py-2.5 shadow-soft backdrop-blur">
+        <Avatar name={student.name} src={student.avatar ?? undefined} size={34} className="ring-gold-500" />
+        <div className="mr-2">
+          <div className="text-[11px] font-semibold uppercase tracking-wide text-gold-300">
+            🎤 Đang trả lời
+          </div>
+          <div className="text-sm font-bold text-white">{student.name}</div>
+        </div>
+        <Button size="sm" variant="gold" onClick={() => onAward(2, "bonus")}>
+          Trả lời tốt +2
+        </Button>
+        <Button size="sm" variant="secondary" onClick={() => onAward(1, "correct")}>
+          Đúng +1
+        </Button>
+        <button
+          onClick={onSkip}
+          className="rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
+        >
+          Chưa trả lời được
+        </button>
+        <button
+          onClick={onAgain}
+          className="rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
+        >
+          Gọi bạn khác
+        </button>
       </div>
     </div>
   );

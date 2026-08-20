@@ -21,6 +21,7 @@ export function RosterRail({
   onGive,
   onUndo,
   canUndo,
+  answeringId,
   pendingCount,
 }: {
   students: ClassroomStudent[];
@@ -31,6 +32,8 @@ export function RosterRail({
   onGive: (studentId: string) => void;
   onUndo: () => void;
   canUndo: boolean;
+  /** Học viên vừa được gọi, đang trả lời trước lớp. */
+  answeringId?: string | null;
   pendingCount: number;
 }) {
   const def = POINT_REASONS.find((r) => r.value === reason)!;
@@ -79,6 +82,7 @@ export function RosterRail({
               const st = attendance[s.id];
               const absent = st ? ABSENT.includes(st) : false;
               const p = points[s.id] ?? 0;
+              const answering = s.id === answeringId;
               return (
                 <button
                   key={s.id}
@@ -86,13 +90,22 @@ export function RosterRail({
                   className={cn(
                     "flex w-full items-center gap-2 rounded-xl px-2 py-2 text-left transition-all active:scale-[0.97]",
                     absent ? "bg-ink-950/60 opacity-50" : "bg-ink-800 hover:bg-ink-700",
+                    answering && "bg-gold-600/20 ring-2 ring-gold-500",
                   )}
                 >
                   <Avatar name={s.name} src={s.avatar ?? undefined} size={34} className="ring-ink-700" />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-sm font-semibold">{s.name}</div>
-                    <div className="text-[11px] text-ink-300">
-                      {absent ? "Vắng" : s.makeup ? "Học bù" : st ? "Có mặt" : "Chưa điểm danh"}
+                    <div className={cn("text-[11px]", answering ? "font-bold text-gold-300" : "text-ink-300")}>
+                      {answering
+                        ? "🎤 Đang trả lời"
+                        : absent
+                          ? "Vắng"
+                          : s.makeup
+                            ? "Học bù"
+                            : st
+                              ? "Có mặt"
+                              : "Chưa điểm danh"}
                     </div>
                   </div>
                   <span
