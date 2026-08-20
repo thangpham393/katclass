@@ -381,3 +381,66 @@ export async function fetchLatestReportedSession(studentId: string): Promise<str
   if (!rows.length) return null;
   return rows.sort((a, b) => (b.session?.date ?? "").localeCompare(a.session?.date ?? ""))[0].session_id;
 }
+
+/* ============ Link trình chiếu ============ */
+
+/**
+ * Đổi link chia sẻ thông thường thành link NHÚNG được vào iframe — giáo viên
+ * chỉ cần copy thẳng link trên thanh địa chỉ (Google Slides/Docs/Sheets/Drive,
+ * Canva, YouTube) là chiếu được, không phải đi tìm nút "Nhúng".
+ *
+ * Lưu ý: link Google vẫn phải được chia sẻ ở chế độ "Bất kỳ ai có đường liên
+ * kết" thì máy chiếu (trình duyệt chưa đăng nhập tài khoản đó) mới xem được.
+ */
+export function toEmbedUrl(raw: string): string {
+  const input = (raw ?? "").trim();
+  if (!input) return "";
+  let u: URL;
+  try {
+    u = new URL(input);
+  } catch {
+    return input;
+  }
+  const host = u.hostname.replace(/^www\./, "");
+  const hashSlide = /slide=([^&]+)/.exec(u.hash)?.[1];
+  const slide = u.searchParams.get("slide") ?? hashSlide;
+
+  if (host === "docs.google.com") {
+    // Link "Xuất bản lên web": /presentation/d/e/<id>/pub → /embed
+    const published = /^\/presentation\/d\/e\/([^/]+)/.exec(u.pathname);
+    if (published) {
+      return `https://docs.google.com/presentation/d/e/${published[1]}/embed?start=false&loop=false`;
+    }
+    const slides = /^\/presentation\/d\/([^/]+)/.exec(u.pathname);
+    if (slides) {
+      const base = `https://docs.google.com/presentation/d/${slides[1]}/preview`;
+      return slide ? `${base}?slide=${slide}` : base;
+    }
+    const doc = /^\/(document|spreadsheets|forms)\/d\/([^/]+)/.exec(u.pathname);
+    if (doc) {
+      return doc[1] === "forms"
+        ? `https://docs.google.com/forms/d/${doc[2]}/viewform?embedded=true`
+        : `https://docs.google.com/${doc[1]}/d/${doc[2]}/preview`;
+    }
+  }
+
+  if (host === "drive.google.com") {
+    const file = /^\/file\/d\/([^/]+)/.exec(u.pathname);
+    if (file) return `https://drive.google.com/file/d/${file[1]}/preview`;
+  }
+
+  if (host === "canva.com") {
+    const design = /^\/design\/[^/]+\/[^/]+/.exec(u.pathname);
+    if (design) {
+      const base = `https://www.canva.com${u.pathname.replace(/\/(edit|view|watch).*$/, "/view")}`;
+      return `${base}?embed`;
+    }
+  }
+
+  if (host === "youtube.com" || host === "youtu.be") {
+    const id = host === "youtu.be" ? u.pathname.slice(1) : u.searchParams.get("v");
+    if (id) return `https://www.youtube.com/embed/${id}`;
+  }
+
+  return input;
+}

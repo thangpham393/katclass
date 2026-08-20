@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { speakZh, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
+import { speakZh, toEmbedUrl, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
 import type { LessonDetail, VocabRow } from "@/lib/db-content";
 
 /* ===================== Trình chiếu slide ===================== */
@@ -46,6 +46,9 @@ export function SlideStage({
 
   const lesson = withSlide.find((l) => l.id === current);
   const url = adhocUrl || lesson?.slide_embed_url || "";
+  // Link chia sẻ thông thường (…/edit?slide=…) tự đổi sang dạng nhúng iframe
+  const embed = toEmbedUrl(url);
+  const isGoogle = /docs\.google\.com|drive\.google\.com/.test(embed);
 
   return (
     <div className="flex h-full flex-col gap-3">
@@ -72,7 +75,7 @@ export function SlideStage({
           <input
             value={adhoc}
             onChange={(e) => setAdhoc(e.target.value)}
-            placeholder="Dán link slide/tài liệu…"
+            placeholder="Dán link Google Slides / Drive / Canva / YouTube…"
             className="h-9 w-56 rounded-lg border border-ink-700 bg-ink-900 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           />
           <Button size="sm" variant="secondary" onClick={() => setAdhocUrl(adhoc.trim())} disabled={!adhoc.trim()}>
@@ -92,10 +95,17 @@ export function SlideStage({
         </div>
       </div>
 
+      {isGoogle && (
+        <div className="-mb-1 text-[11px] text-ink-400">
+          Slide Google phải được chia sẻ ở chế độ “Bất kỳ ai có đường liên kết” thì máy chiếu
+          mới xem được (nếu hiện “Bạn cần có quyền truy cập” là do chưa mở chia sẻ).
+        </div>
+      )}
+
       <div className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
         {url ? (
           <iframe
-            src={url}
+            src={embed}
             className="h-full w-full"
             allow="fullscreen; autoplay"
             allowFullScreen
@@ -107,8 +117,9 @@ export function SlideStage({
               <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
               <div className="font-semibold text-white">Buổi này chưa có slide</div>
               <p className="mx-auto mt-1 max-w-md text-sm">
-                Gán bài học có link slide cho buổi ở trang chi tiết buổi, hoặc dán tạm một link
-                vào ô trên để chiếu ngay.
+                Gán bài học có link slide cho buổi ở trang chi tiết buổi, hoặc dán tạm link
+                Google Slides / Drive / Canva / YouTube vào ô trên là chiếu được ngay — hệ
+                thống tự đổi sang dạng nhúng.
               </p>
             </div>
           </div>

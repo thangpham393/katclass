@@ -9,6 +9,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { FlashcardPlayer } from "@/components/flashcard/flashcard-player";
 import { useLoad } from "@/lib/use-load";
 import { fetchLesson, type VocabRow } from "@/lib/db-content";
+import { toEmbedUrl } from "@/lib/db-classroom";
 import { LEVEL_LABELS } from "@/lib/db";
 
 function speakVocab(v: VocabRow) {
@@ -76,7 +77,7 @@ export default function StudentLessonPage() {
           <Card className="overflow-hidden">
             <div className="relative aspect-video w-full bg-muted">
               <iframe
-                src={l.slide_embed_url}
+                src={toEmbedUrl(l.slide_embed_url)}
                 className="absolute inset-0 h-full w-full"
                 allow="autoplay; fullscreen"
                 allowFullScreen
