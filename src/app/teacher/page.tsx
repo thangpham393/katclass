@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   Clock,
   GraduationCap,
+  Presentation,
   School,
   Timer,
   Users,
@@ -313,13 +314,20 @@ function TeachingCard({
       )}
 
       <div className="flex shrink-0 gap-2">
+        {!future && (
+          <Link href={`/classroom/${s.id}`}>
+            <Button size="sm">
+              <Presentation className="h-3.5 w-3.5" /> Vào lớp dạy
+            </Button>
+          </Link>
+        )}
         <Link href={`/teacher/sessions/${s.id}`}>
           <Button size="sm" variant="outline">
             <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh HV
           </Button>
         </Link>
         {!future && (
-          <Button size="sm" variant={log ? "outline" : "default"} onClick={onLog}>
+          <Button size="sm" variant="outline" onClick={onLog}>
             <Timer className="h-3.5 w-3.5" /> {log ? "Sửa công" : "Chấm công"}
           </Button>
         )}

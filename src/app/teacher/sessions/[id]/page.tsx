@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, BookOpen, CheckCheck, MessageSquarePlus, MessageSquareText, Star, Timer } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCheck, MessageSquarePlus, MessageSquareText, Presentation, Star, Timer } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -211,6 +211,11 @@ export default function TeacherSessionPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Link href={`/classroom/${sessionId}`}>
+            <Button>
+              <Presentation className="h-4 w-4" /> Vào lớp dạy
+            </Button>
+          </Link>
           <Button variant={log.data ? "ghost" : "gold"} onClick={() => setLogOpen(true)}>
             <Timer className="h-4 w-4" /> {log.data ? "Sửa chấm công" : "Chấm công ca dạy"}
           </Button>

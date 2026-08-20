@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/ui/stat-card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
+import { LatestSessionReport } from "@/components/session-report";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import { fetchStudentAttendanceSummary, WEEKDAY_LABELS } from "@/lib/db";
@@ -123,6 +124,8 @@ export default function StudentHome() {
 
       {/* Gói buổi còn lại (chỉ hiện khi đã mua gói) */}
       {studentId && <PackageSummaryCard studentId={studentId} />}
+
+      {studentId && <LatestSessionReport studentId={studentId} />}
 
       {classes.error && <ErrorNote message={classes.error} />}
 

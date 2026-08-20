@@ -58,9 +58,18 @@ Tiếp tục dự án CLASSHUB (hệ quản lý trung tâm tiếng Trung KAT Edu
   - **Công thức (user chốt 20/08/2026)**: thỉnh giảng = tổng tiền từng buổi, tra bậc theo **sĩ số lớp hiện tại** (số HV `class_students.status='active'`, KHÔNG theo số HV có mặt buổi đó; buổi bù riêng không gắn lớp thì lấy số HV đã điểm danh). Full time = lương cứng + max(0, tổng giờ tháng − giờ chuẩn) × đơn giá vượt giờ; giờ lấy theo `payHours` (giờ thực tế đã chấm công, chưa chấm thì giờ lịch). Tiền **không lưu sẵn** — tính lại từ buổi + mức lương hiện hành (sửa mức lương thì tháng cũ đổi theo).
   - Data layer `src/lib/db-payroll.ts`: `fetchPayProfiles` / `fetchPayTiers` / `savePayConfig` (ghi đè toàn bộ bậc) / `fetchClassSizes` / `computePayroll(sessions, profiles, tiers, sizes)` → `TeacherPay[]` (kèm cờ `unconfigured`, `missingTier`), helper `tierLabel`, `DEFAULT_TIERS` (bậc gợi ý 1-2/3-5/6+ = 150k/200k/250k).
   - **UI** /admin/payroll giờ 3 tab: *Theo dõi theo ngày* · *Bảng công & lương tháng* (thêm cột tiền mỗi GV, badge loại GV, stat **Tổng chi lương**, mở rộng xem tiền từng buổi + sĩ số, GV full time có khối tóm tắt lương cứng/giờ chuẩn/giờ vượt; cảnh báo GV chưa thiết lập lương hoặc có buổi sĩ số ngoài bậc) · **Mức lương giáo viên** (danh sách GV + mức hiện tại, modal `src/components/pay-config-modal.tsx`: chọn loại, bảng bậc thêm/xóa dòng + nút "Dùng bậc gợi ý", hoặc lương cứng/giờ chuẩn/tiền vượt giờ).
+- **CHẾ ĐỘ LỚP HỌC TRỰC TIẾP — P1 + nhật ký buổi (20/08/2026, migration 0020)** — kế hoạch đầy đủ ở `docs/KE-HOACH-LOP-HOC-TRUC-TIEP.md` (đọc trước khi làm tiếp P2/P3/P5):
+  - **Bối cảnh chốt**: học viên KHÔNG dùng thiết bị trong giờ → toàn bộ chế độ lớp học là **GV-only, không realtime**, không có mã vào lớp/buzzer. HV chỉ đăng nhập ở nhà để xem + làm bài.
+  - **Route `/classroom/[sessionId]`** (layout riêng, `AuthGuard` có prop mới `bare` → không sidebar/topbar): màn **điểm danh đầu giờ** (lưới avatar, "Tất cả có mặt", lưu `attendance` rồi vào dạy; buổi đã điểm danh thì vào thẳng) → **màn dạy** gồm header (tên lớp, đồng hồ buổi tính từ giờ vào lớp lưu ở localStorage, toàn màn hình, "Kết thúc buổi"), **stage** 4 công cụ, **dock** (phím tắt 1–4) và **roster rail** bên phải.
+  - **4 công cụ** (`src/components/classroom/stages.tsx`): `SlideStage` (iframe `lessons.slide_embed_url` của bài đã gán cho buổi + ô dán link tạm + nút mở tab mới), `VocabStage` (lưới từ vựng, ẩn/hiện nghĩa để kiểm tra miệng, TTS zh-CN), `RandomStage` (quay gọi tên có chế độ "công bằng" loại dần người đã gọi; trúng ai thì cộng điểm ngay +2/+1), `TimerStage` (đếm ngược cỡ lớn, preset 30s–10′, chuông WebAudio).
+  - **Điểm ★ trong giờ** (`class_points`): GV chọn lý do 1 lần (9 lý do trong `POINT_REASONS`, `behavior` = −1) rồi **chạm học viên là cộng**; hoàn tác được. Mất wifi giữa giờ → điểm xếp hàng chờ ở localStorage (`queuePoints`), tự đẩy lại mỗi 20s và khi có mạng (`flushPoints`).
+  - **Wizard kết thúc buổi** (`wrap-up-modal.tsx`, mỗi bước lưu ngay): 1) điểm danh 2) nhận xét từng HV — **gợi ý tự sinh** từ số ★ + lý do ("phát biểu 3 lần…") ghi vào `session_comments` 3) giao BTVN 1 click (chọn bài đã gán → lấy cả bộ câu hỏi ngân hàng, hạn mặc định +2 ngày 20:00, bỏ qua được; buổi bù riêng không lớp thì bỏ bước) 4) chốt buổi = `saveTeachingLog` (giờ thực tế mặc định giờ vào lớp → lúc bấm, nội dung điền sẵn từ bài đã gán) → trigger cũ chuyển buổi `completed` + trigger mới `notify_session_report` gửi "Báo cáo buổi học" cho HV có mặt + PH.
+  - **HV/PH xem lại**: `src/components/session-report.tsx` — `SessionReportView` (học gì, mấy ★ vì việc gì, hoạt động trong giờ, nhận xét GV, BTVN + hạn) dùng ở `/student/sessions/[id]` (đích của thông báo) và `LatestSessionReport` (thẻ buổi gần nhất) đặt ở trang chủ HV + cổng PH.
+  - **Lối vào**: trang chủ GV (nút "Vào lớp dạy" ở ca hôm qua/hôm nay), banner "Buổi học hôm nay" ở `/teacher/classes/[id]`, nút ở `/teacher/sessions/[id]`.
+  - **Chưa làm**: P2 bảng viết 田字格 + stroke order (hanzi-writer đã có trong deps), P3 game từ vựng + chia đội + bảng xếp hạng, P4 phần còn lại (sao tích lũy, huy hiệu, nhắc BTVN, thống kê tham gia), P5 giáo án chuẩn bị trước + presenter 2 màn hình.
 - **Dữ liệu thật**: 123 học viên, 62 lớp active, 12 khóa học.
 - **Setup cần kiểm tra trước khi làm gì khác** (hỏi tôi nếu chưa chắc):
-  1. Migrations đã dán đến 0019 (user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0020 trở đi: viết xong nhắc dán 1 lần là đủ.
+  1. Migrations đã dán đến 0020 (user luôn dán ngay khi migration viết xong, KHÔNG cần hỏi lại các migration cũ). Migration mới từ 0020 trở đi: viết xong nhắc dán 1 lần là đủ.
   2. Env `SUPABASE_SERVICE_ROLE_KEY` đã có ở `.env.local` + Vercel.
 - **Quy ước quan trọng**:
   - `profiles.id` là business key; `profiles.user_id` liên kết auth (null = chưa cấp tài khoản). RLS dùng `my_profile_id()`. `profiles.student_code` = mã thành viên mọi vai trò.
@@ -82,8 +91,9 @@ Theo lộ trình `docs/KE-HOACH-CHUC-NANG.md` (mục 6, Giai đoạn 2):
 
 1. ~~GV đăng ký nghỉ / đề xuất đổi buổi~~ **ĐÃ XONG 16/07/2026** (migration 0015).
 2. ~~Bài kiểm tra định kỳ có giới hạn thời gian~~ **ĐÃ XONG 17/07/2026** (migration 0017, xem mục trạng thái).
-3. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong ← **LÀM TIẾP TỪ ĐÂY** (hợp với bài kiểm tra: đề thi có câu tự luận thì điểm chờ GV chấm).
-4. **Zalo OA/ZNS** khi trung tâm có OA: bảng notifications đã có cột `channel` ('inapp'/'zalo') — cần worker gửi + template ZNS.
-5. (Tùy chọn, nếu tôi yêu cầu) Nâng cấp học phí: sửa gói đã bán, báo cáo doanh thu theo tháng, xuất Excel công nợ.
+3. **Lớp học trực tiếp P2/P3** (bảng viết 田字格, stroke order, game từ vựng) — theo `docs/KE-HOACH-LOP-HOC-TRUC-TIEP.md`.
+4. **Hàng chờ chấm tay** (tự luận, ghi âm — mục 5.3): thêm dạng câu không tự chấm, submissions có trạng thái chờ GV chấm, điểm chốt khi GV chấm xong ← **LÀM TIẾP TỪ ĐÂY** (hợp với bài kiểm tra: đề thi có câu tự luận thì điểm chờ GV chấm).
+5. **Zalo OA/ZNS** khi trung tâm có OA: bảng notifications đã có cột `channel` ('inapp'/'zalo') — cần worker gửi + template ZNS.
+6. (Tùy chọn, nếu tôi yêu cầu) Nâng cấp học phí: sửa gói đã bán, báo cáo doanh thu theo tháng, xuất Excel công nợ.
 
 Làm xong build + commit + push, cập nhật lại file này cho session sau.

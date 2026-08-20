@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ClipboardCheck } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, Presentation } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,7 @@ export default function TeacherClassDetailPage() {
   const list = (sessions.data ?? []).filter((s) => s.status !== "cancelled");
   const upcoming = list.filter((s) => s.date >= today);
   const past = list.filter((s) => s.date < today).reverse();
+  const todaySession = list.find((s) => s.date === today && s.status !== "completed");
 
   return (
     <div className="space-y-6">
@@ -65,6 +66,25 @@ export default function TeacherClassDetailPage() {
           </div>
         </div>
       </div>
+
+      {todaySession && (
+        <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4">
+          <div className="min-w-0 flex-1">
+            <div className="text-sm font-extrabold text-brand-800">Buổi học hôm nay</div>
+            <div className="text-sm text-brand-700">
+              {todaySession.start_time.slice(0, 5)}–{todaySession.end_time.slice(0, 5)}
+              {todaySession.room ? ` · Phòng ${todaySession.room.name}` : ""}
+              {todaySession.session_no ? ` · Buổi ${todaySession.session_no}` : ""} · điểm danh, trình chiếu,
+              hoạt động và chốt buổi trong một màn hình.
+            </div>
+          </div>
+          <Link href={`/classroom/${todaySession.id}`}>
+            <Button size="lg">
+              <Presentation className="h-5 w-5" /> Vào lớp dạy
+            </Button>
+          </Link>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">

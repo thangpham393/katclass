@@ -17,6 +17,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
+import { LatestSessionReport } from "@/components/session-report";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import {
@@ -180,6 +181,14 @@ export default function ParentHome() {
 
           {/* Gói buổi còn lại của con (chỉ hiện khi đã mua gói) */}
           {childId && <PackageSummaryCard studentId={childId} forParent />}
+
+          {childId && (
+            <LatestSessionReport
+              studentId={childId}
+              forParent
+              studentName={children.data?.find((c) => c.student_id === childId)?.student?.name}
+            />
+          )}
 
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Lịch học */}

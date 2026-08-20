@@ -12,12 +12,17 @@ import type { Role } from "@/lib/types";
  * - Chưa đăng nhập → về /login
  * - Sai vai trò → về trang chủ của vai trò mình
  * Nhận 1 role hoặc danh sách role được phép (vd admin + staff dùng chung khu quản trị).
+ *
+ * `bare`: bỏ sidebar/topbar — dùng cho màn hình toàn khung như chế độ lớp
+ * học trực tiếp (chiếu lên máy chiếu, không còn chỗ cho khung điều hướng).
  */
 export function AuthGuard({
   role,
+  bare,
   children,
 }: {
   role: Role | Role[];
+  bare?: boolean;
   children: React.ReactNode;
 }) {
   const roles = Array.isArray(role) ? role : [role];
@@ -44,6 +49,8 @@ export function AuthGuard({
       </div>
     );
   }
+
+  if (bare) return <>{children}</>;
 
   return <AppShell user={user}>{children}</AppShell>;
 }
