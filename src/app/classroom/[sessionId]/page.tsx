@@ -157,6 +157,13 @@ export default function ClassroomPage() {
     return list;
   }, [classStudents.data, makeups.data]);
 
+  /**
+   * Từ vựng của các bài đã gán cho buổi. Bắt buộc memo: trang re-render mỗi giây
+   * (đồng hồ buổi), mảng tạo mới mỗi lần render sẽ khiến trò chơi và lưới từ
+   * vựng tưởng dữ liệu đổi rồi tự xáo lại liên tục.
+   */
+  const vocab = useMemo(() => (lessons.data ?? []).flatMap((l) => l.vocab), [lessons.data]);
+
   /* --- Nạp điểm danh đã có; đã điểm danh rồi thì vào thẳng chế độ dạy --- */
   useEffect(() => {
     if (!attendanceRows.data) return;
@@ -386,7 +393,6 @@ export default function ClassroomPage() {
     const a = attendance[st.id];
     return !a || !ABSENT.includes(a);
   });
-  const vocab = (lessons.data ?? []).flatMap((l) => l.vocab);
 
   /* ---------- Màn điểm danh đầu giờ ---------- */
   if (phase === "checkin") {

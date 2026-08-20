@@ -175,8 +175,10 @@ function ChoiceGame({
     const answer = vocab[Math.floor(Math.random() * vocab.length)];
     const distractors = shuffle(vocab.filter((v) => v.id !== answer.id)).slice(0, 3);
     return { answer, options: shuffle([answer, ...distractors]) };
+    // Chỉ đổi câu khi giáo viên bấm "Câu tiếp theo" (round) — KHÔNG phụ thuộc
+    // tham chiếu mảng vocab, kẻo trang re-render là tự nhảy câu khác.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [round, vocab]);
+  }, [round, vocab.length]);
 
   const speak = useCallback(() => speakZh(answer.hanzi), [answer]);
 
@@ -291,8 +293,9 @@ function MemoryGame({
       { key: `${v.id}-vi`, pairId: v.id, text: v.meaning, zh: false },
     ]);
     return shuffle(all);
+    // Chỉ xáo lại khi đổi số cặp hoặc bấm "Ván mới" (seed)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vocab, size, seed]);
+  }, [vocab.length, size, seed]);
 
   function flip(card: MemoryCard) {
     if (matched.includes(card.pairId) || open.includes(card.key) || open.length === 2) return;
@@ -304,9 +307,10 @@ function MemoryGame({
       const [a, b] = next.map((k) => cards.find((c) => c.key === k)!);
       if (a.pairId === b.pairId) {
         setMatched((m) => [...m, a.pairId]);
-        window.setTimeout(() => setOpen([]), 350);
+        window.setTimeout(() => setOpen([]), 600);
       } else {
-        window.setTimeout(() => setOpen([]), 900);
+        // Đủ lâu để cả lớp kịp đọc hai thẻ vừa lật trước khi úp lại
+        window.setTimeout(() => setOpen([]), 1600);
       }
     }
   }
