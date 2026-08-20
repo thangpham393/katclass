@@ -6,8 +6,9 @@
 > phải nhập lại lần thứ hai.
 
 Ngày soạn: 20/08/2026.
-Trạng thái: **P1 (lõi lớp học) + P4 rút gọn (nhật ký buổi cho HV/PH) ĐÃ CODE 20/08/2026**
-(migration `0020_classroom.sql`). P2/P3/P5 chưa làm — xem lộ trình mục 7.
+Trạng thái: **P1 + P2 + P3 + P4 ĐÃ CODE XONG 20/08/2026** (migrations
+`0020_classroom.sql`, `0021_points_reminders.sql`). Chỉ còn **P5 (tuỳ chọn)**:
+giáo án chuẩn bị trước, bảng điều khiển nổi (Document PiP), kho thưởng đổi sao.
 
 ---
 
@@ -224,9 +225,9 @@ create view public.student_points_summary ...  -- security_invoker, tổng theo 
 | Phần | Nội dung | Kết quả dùng được ngay |
 |---|---|---|
 | **P1 — Lõi lớp học** ✅ | Route + layout fullscreen, điểm danh nhanh, roster ★, random gọi tên, bấm giờ, chiếu slide, lưới từ vựng + TTS, wizard kết thúc buổi (nối attendance / session_comments / teaching_logs / homework). Migration 0020 (`class_points`, `session_activities`). | GV dạy trọn buổi trong 1 màn hình |
-| **P2 — Công cụ tiếng Trung** | Bảng viết 田字格 + lưu ảnh bảng, stroke order (hanzi-writer), tra từ + TTS nhanh, chiếu lưới từ vựng | Dạy viết chữ không cần app ngoài |
-| **P3 — Game & thi đua** | Chia đội, bảng xếp hạng chiếu, 4 game đầu (lật thẻ, ai nhanh hơn, nghe đoán chữ, quiz nhanh từ ngân hàng câu hỏi) | Lớp sôi động, HV tương tác |
-| **P4 — HV & phụ huynh** 🟡 | ✅ Nhật ký buổi học (`/student/sessions/[id]` + thẻ buổi gần nhất ở trang chủ HV và cổng PH) + thông báo "Báo cáo buổi học" khi chốt buổi. ⏳ Còn: sao tích lũy + huy hiệu, nút nhắc làm BTVN, thống kê tham gia theo tháng cho GV | PH theo dõi được "hôm nay con học thế nào" |
+| **P2 — Công cụ tiếng Trung** ✅ | Bảng viết 田字格 (bút/tẩy/hoàn tác, lưu ảnh về máy), luyện nét chữ hanzi-writer (viết mẫu, tốc độ, học viên viết thử máy chấm từng nét), tra từ nhanh cả kho + TTS | Dạy viết chữ không cần app ngoài |
+| **P3 — Game & thi đua** ✅ | 3 game (Ai nhanh hơn, Nghe đoán chữ, Lật thẻ trí nhớ) lấy từ vựng của bài + cộng ★ ngay trong game, bảng ★ có bục huy chương chiếu được | Lớp sôi động, HV tương tác |
+| **P4 — HV & phụ huynh** ✅ | Nhật ký buổi học (`/student/sessions/[id]` + thẻ buổi gần nhất ở trang chủ HV và cổng PH), thông báo "Báo cáo buổi học", sao tích luỹ + 7 huy hiệu, nút "Nhắc con làm bài" (RPC chống dội 6 giờ), thống kê tham gia 30 ngày cho GV kèm nhãn "Ít được gọi" | PH theo dõi được "hôm nay con học thế nào" |
 | **P5 — Tùy chọn** | Giáo án chuẩn bị trước (`lesson_plans`), presenter 2 màn hình, kho thưởng đổi sao | Nâng cấp chất lượng, vẫn GV-only |
 
 Ưu tiên: **P1 → P4 → P2 → P3 → P5** (P4 đẩy lên sớm vì giá trị với phụ huynh lớn nhất và
@@ -262,10 +263,40 @@ trả lời quiz realtime — HV không dùng thiết bị trong giờ.
 | `src/app/classroom/layout.tsx` | Layout toàn khung (AuthGuard `bare` — không sidebar/topbar) |
 | `src/app/classroom/[sessionId]/page.tsx` | Màn điểm danh đầu giờ → màn dạy (header + stage + dock + roster), wake lock, phím tắt 1–4, toàn màn hình |
 | `src/components/classroom/roster-rail.tsx` | Cột học viên: chọn lý do rồi chạm để cộng ★, hoàn tác, cảnh báo điểm chờ đồng bộ |
-| `src/components/classroom/stages.tsx` | 4 công cụ: `SlideStage`, `VocabStage`, `RandomStage`, `TimerStage` |
+| `src/components/classroom/stages.tsx` | `SlideStage` (link Google/Canva/YouTube tự đổi sang dạng nhúng, file PDF/ảnh từ máy, nhận chia sẻ màn hình), `VocabStage` (kèm tra từ), `RandomStage`, `TimerStage` |
+| `src/components/classroom/whiteboard.tsx` | Bảng viết nền 田字格 / dòng kẻ / trắng |
+| `src/components/classroom/stroke-stage.tsx` | Luyện nét chữ Hán (hanzi-writer, dữ liệu nét tải từ CDN → cần mạng) |
+| `src/components/classroom/game-stage.tsx` | 3 game từ vựng + `LeaderboardStage` bảng ★ |
+| `src/components/points-summary.tsx` | Sao tích luỹ + huy hiệu (HV/PH) |
+| `src/components/remind-homework-button.tsx` | Nút nhắc con làm bài (RPC `remind_homework`) |
+| `supabase/migrations/0021_points_reminders.sql` | Type `homework_reminder`, RPC `remind_homework`, hàm `points_since` |
 | `src/components/classroom/wrap-up-modal.tsx` | Wizard 4 bước kết thúc buổi (mỗi bước lưu ngay) |
 | `src/components/session-report.tsx` | `SessionReportView` + `LatestSessionReport` cho HV/PH |
 | `src/app/student/sessions/[id]/page.tsx` | Trang nhật ký buổi của học viên (đích của thông báo) |
 
 Lối vào chế độ lớp học: trang chủ GV (ca hôm nay/hôm qua), `/teacher/classes/[id]` (banner buổi
 hôm nay), `/teacher/sessions/[id]` (nút "Vào lớp dạy").
+
+
+---
+
+## 10. Chiếu slide — các đường đã hỗ trợ (cập nhật 20/08/2026)
+
+Thứ tự ưu tiên khi giáo viên gặp slide không lên được:
+
+1. **Link Google Slides/Drive/Canva/YouTube** — `toEmbedUrl()` tự đổi sang dạng nhúng; dán được
+   cả mã `<iframe src="…">`. Có 4 kiểu nhúng bấm đổi tại chỗ: Tự động / Google Slides /
+   Trình xem Drive / Office (.pptx), kèm nút Tải lại.
+2. **File .pptx quá lớn** (`rtpof=true`): Google báo "tệp quá lớn không xem trước được" — giới
+   hạn cứng của Drive. Đổi kiểu nhúng sang Trình xem Drive hoặc Office, hoặc dùng cách 3/4.
+3. **Nhận chia sẻ màn hình** (`getDisplayMedia`): PowerPoint chạy thật trên máy (đủ hiệu ứng),
+   lớp học soi lại cửa sổ đó và phủ công cụ lên trên. Chọn tab "Cửa sổ" để tránh soi gương.
+   Không điều khiển được slide từ trong app — trình duyệt không được phép gửi phím sang ứng
+   dụng khác; chuyển slide bằng PowerPoint hoặc bút trình chiếu.
+4. **File PDF/ảnh từ máy**: blob URL, lật trang bằng ← →, không cần mạng, không giới hạn dung lượng.
+5. **Chế độ "Chiếu ngoài"**: ẩn khung chiếu trong app, PowerPoint chiếu ra máy chiếu, cửa sổ lớp
+   học nằm trên laptop làm bảng điều khiển (kèm bảng ★ top 5).
+
+**OneDrive**: link chia sẻ mở tab được nhưng Microsoft chặn nhúng (`X-Frame-Options: SAMEORIGIN`,
+CSP `frame-ancestors 'self' *.office.com …`) — đã kiểm chứng bằng curl, không phải lỗi quyền chia
+sẻ. `embedBlockReason()` phát hiện và hiện hướng dẫn thay vì iframe trắng.
