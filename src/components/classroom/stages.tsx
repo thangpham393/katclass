@@ -14,6 +14,7 @@ import {
   Play,
   Presentation,
   RotateCcw,
+  Search,
   Volume2,
   X,
 } from "lucide-react";
@@ -28,7 +29,7 @@ import {
   type ClassroomStudent,
   type EmbedMode,
 } from "@/lib/db-classroom";
-import type { LessonDetail, VocabRow } from "@/lib/db-content";
+import { fetchVocabItems, type LessonDetail, type VocabRow } from "@/lib/db-content";
 
 /* ===================== Trình chiếu slide ===================== */
 
@@ -414,10 +415,35 @@ export function SlideStage({
 
 /* ===================== Lưới từ vựng ===================== */
 
-/** Chiếu từ vựng của bài: ẩn/hiện nghĩa để kiểm tra miệng, bấm loa để đọc mẫu. */
+/**
+ * Chiếu từ vựng của bài: ẩn/hiện nghĩa để kiểm tra miệng, bấm loa để đọc mẫu.
+ * Có ô tra nhanh cả kho từ vựng cho lúc học viên hỏi một từ ngoài bài.
+ */
 export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
   const [hidden, setHidden] = useState(false);
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
+  const [query, setQuery] = useState("");
+  const [found, setFound] = useState<VocabRow[] | null>(null);
+  const [searching, setSearching] = useState(false);
+
+  // Tra từ: gõ xong 400ms mới gọi server, xoá ô thì về lại từ của bài
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setFound(null);
+      return;
+    }
+    setSearching(true);
+    const id = window.setTimeout(() => {
+      fetchVocabItems(q)
+        .then((rows) => setFound(rows.slice(0, 60)))
+        .catch(() => setFound([]))
+        .finally(() => setSearching(false));
+    }, 400);
+    return () => window.clearTimeout(id);
+  }, [query]);
+
+  const list = found ?? vocab;
 
   function toggle(id: string) {
     setRevealed((prev) => {
@@ -426,17 +452,6 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
       else next.add(id);
       return next;
     });
-  }
-
-  if (!vocab.length) {
-    return (
-      <div className="grid h-full place-items-center rounded-2xl border border-ink-800 bg-ink-900 text-center text-ink-300">
-        <div className="max-w-md p-8">
-          <div className="font-semibold text-white">Bài học chưa gắn từ vựng</div>
-          <p className="mt-1 text-sm">Gán bài học (có từ vựng) cho buổi để chiếu bảng từ tại đây.</p>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -453,11 +468,34 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
           {hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           {hidden ? "Đang ẩn nghĩa — bấm thẻ để lật" : "Ẩn nghĩa (kiểm tra miệng)"}
         </Button>
-        <span className="text-sm text-ink-300">{vocab.length} từ</span>
+        <span className="text-sm text-ink-300">{list.length} từ</span>
+        <div className="ml-auto flex items-center gap-2">
+          <Search className="h-4 w-4 text-ink-400" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Tra nhanh cả kho từ (hán tự / pinyin / nghĩa)…"
+            className="h-9 w-72 rounded-lg border border-ink-700 bg-ink-900 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          />
+          {query && (
+            <button onClick={() => setQuery("")} className="text-xs font-semibold text-ink-300 hover:text-white">
+              Về từ của bài
+            </button>
+          )}
+        </div>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4">
+        {list.length === 0 && (
+          <div className="grid h-full place-items-center text-center text-sm text-ink-300">
+            {searching
+              ? "Đang tra…"
+              : query
+                ? "Không tìm thấy từ nào."
+                : "Buổi chưa gán bài có từ vựng — dùng ô tra nhanh phía trên."}
+          </div>
+        )}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {vocab.map((v) => {
+          {list.map((v) => {
             const show = !hidden || revealed.has(v.id);
             return (
               <button

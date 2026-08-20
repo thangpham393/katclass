@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   BookMarked,
+  Brush,
   CheckCheck,
   Dices,
   Flag,
@@ -13,6 +14,7 @@ import {
   Minimize2,
   Monitor,
   MonitorOff,
+  PenLine,
   Presentation,
   Timer as TimerIcon,
   WifiOff,
@@ -24,6 +26,8 @@ import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { RosterRail } from "@/components/classroom/roster-rail";
 import { RandomStage, SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
+import { StrokeStage } from "@/components/classroom/stroke-stage";
+import { WhiteboardStage } from "@/components/classroom/whiteboard";
 import { WrapUpModal } from "@/components/classroom/wrap-up-modal";
 import { cn } from "@/lib/utils";
 import {
@@ -55,13 +59,15 @@ import {
 } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 
-type Tool = "slide" | "vocab" | "random" | "timer";
+type Tool = "slide" | "vocab" | "random" | "timer" | "board" | "stroke";
 
 const TOOLS: { key: Tool; label: string; icon: typeof Presentation; hotkey: string }[] = [
   { key: "slide", label: "Trình chiếu", icon: Presentation, hotkey: "1" },
   { key: "vocab", label: "Từ vựng", icon: BookMarked, hotkey: "2" },
   { key: "random", label: "Gọi tên", icon: Dices, hotkey: "3" },
   { key: "timer", label: "Bấm giờ", icon: TimerIcon, hotkey: "4" },
+  { key: "board", label: "Bảng viết", icon: PenLine, hotkey: "5" },
+  { key: "stroke", label: "Nét chữ", icon: Brush, hotkey: "6" },
 ];
 
 /** Một lần cộng điểm ở client: chưa có id server thì giữ tmp_id để hoàn tác/đồng bộ. */
@@ -578,6 +584,14 @@ export default function ClassroomPage() {
               />
             )}
 
+            <ToolOverlay title="Bảng viết" open={overlay === "board"} onClose={() => setOverlay(null)} wide>
+              <WhiteboardStage />
+            </ToolOverlay>
+
+            <ToolOverlay title="Luyện nét chữ Hán" open={overlay === "stroke"} onClose={() => setOverlay(null)} wide>
+              <StrokeStage vocab={vocab} />
+            </ToolOverlay>
+
             <ToolOverlay title="Bấm giờ" open={overlay === "timer"} onClose={() => setOverlay(null)}>
               <TimerStage
                 onTick={(left, running) => setTimer({ left, running })}
@@ -612,7 +626,7 @@ export default function ClassroomPage() {
               </button>
             ))}
             <span className="ml-auto text-xs text-ink-400">
-              Phím 1–4 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
+              Phím 1–6 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
             </span>
           </nav>
         </div>
@@ -671,6 +685,13 @@ function ToolOverlay({
   wide?: boolean;
   children: React.ReactNode;
 }) {
+  // Chỉ dựng nội dung khi công cụ được mở lần đầu (bảng viết cần đo khung, luyện
+  // nét chữ phải tải dữ liệu nét) — mở rồi thì giữ luôn để không mất trạng thái.
+  const [mounted, setMounted] = useState(open);
+  useEffect(() => {
+    if (open) setMounted(true);
+  }, [open]);
+
   return (
     <div
       className={cn(
@@ -695,7 +716,7 @@ function ToolOverlay({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="min-h-0 flex-1 p-4">{children}</div>
+        <div className="min-h-0 flex-1 p-4">{mounted ? children : null}</div>
       </div>
     </div>
   );

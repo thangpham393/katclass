@@ -48,6 +48,15 @@ export interface ScheduleRow {
   start_time: string;
   end_time: string;
   room_id: string | null;
+  teacher_id: string | null; // GV đứng buổi này trong tuần (null = theo GV chính của lớp)
+  teacher?: Pick<ProfileRow, "id" | "name"> | null;
+}
+
+/** Một giáo viên của lớp: 'main' = GV chính (đồng bộ với classes.teacher_id). */
+export interface ClassTeacherRow {
+  teacher_id: string;
+  role: "main" | "assistant";
+  teacher: Pick<ProfileRow, "id" | "name"> | null;
 }
 
 export interface ClassRow {
@@ -59,6 +68,7 @@ export interface ClassRow {
   course: Pick<CourseRow, "id" | "name" | "level" | "total_sessions"> | null;
   textbook: { id: string; name: string; level: string | null } | null;
   teacher: Pick<ProfileRow, "id" | "name"> | null;
+  class_teachers: ClassTeacherRow[];
   class_schedules: ScheduleRow[];
   class_students: { count: number }[];
 }
@@ -189,7 +199,8 @@ const CLASS_SELECT = `
   course:courses ( id, name, level, total_sessions ),
   textbook:textbooks ( id, name, level ),
   teacher:profiles!classes_teacher_id_fkey ( id, name ),
-  class_schedules ( id, weekday, start_time, end_time, room_id ),
+  class_teachers ( teacher_id, role, teacher:profiles!class_teachers_teacher_id_fkey ( id, name ) ),
+  class_schedules ( id, weekday, start_time, end_time, room_id, teacher_id, teacher:profiles!class_schedules_teacher_id_fkey ( id, name ) ),
   class_students ( count )
 `;
 
@@ -214,7 +225,7 @@ export interface CreateClassInput {
   teacher_id: string | null;
   status: ClassRow["status"];
   start_date: string | null;
-  schedules: { weekday: number; start_time: string; end_time: string; room_id: string | null }[];
+  schedules: ScheduleInput[];
 }
 
 /** Đổi giáo trình của lớp (null = bỏ gán). */
@@ -502,15 +513,55 @@ export async function updateClassTeacher(
   const supabase = getSupabase();
   const { error } = await supabase.from("classes").update({ teacher_id: teacherId }).eq("id", classId);
   if (error) throw error;
-  if (updateUpcomingSessions) {
-    const { error: sessErr } = await supabase
-      .from("sessions")
-      .update({ teacher_id: teacherId })
-      .eq("class_id", classId)
-      .eq("status", "scheduled")
-      .gte("date", todayISO());
-    if (sessErr) throw sessErr;
+  if (updateUpcomingSessions) await applyScheduleTeachers(classId);
+}
+
+export interface ApplyTeachersResult {
+  updated: number;
+  conflicts: string[]; // buổi không gán được vì GV đã bận giờ đó
+}
+
+/**
+ * Gán GV cho các buổi sắp tới theo lịch tuần: buổi nào trong tuần có GV riêng
+ * thì dùng GV đó, còn lại dùng GV chính của lớp.
+ * Buổi trùng giờ GV (23P01) được bỏ qua và trả về trong `conflicts`.
+ */
+export async function applyScheduleTeachers(classId: string): Promise<ApplyTeachersResult> {
+  const supabase = getSupabase();
+  const [clsRes, schedRes, sessRes] = await Promise.all([
+    supabase.from("classes").select("teacher_id").eq("id", classId).single(),
+    supabase.from("class_schedules").select("weekday, start_time, teacher_id").eq("class_id", classId),
+    supabase
+      .from("sessions").select("id, date, start_time, teacher_id")
+      .eq("class_id", classId).eq("status", "scheduled").gte("date", todayISO()),
+  ]);
+  if (clsRes.error) throw clsRes.error;
+  if (schedRes.error) throw schedRes.error;
+  if (sessRes.error) throw sessRes.error;
+
+  const mainTeacher = clsRes.data.teacher_id as string | null;
+  const byWeekday = new Map<string, string | null>();
+  for (const s of schedRes.data ?? []) {
+    byWeekday.set(`${s.weekday}|${s.start_time.slice(0, 5)}`, s.teacher_id ?? null);
+    if (!byWeekday.has(`${s.weekday}`)) byWeekday.set(`${s.weekday}`, s.teacher_id ?? null);
   }
+
+  let updated = 0;
+  const conflicts: string[] = [];
+  for (const sess of sessRes.data ?? []) {
+    const weekday = new Date(sess.date + "T00:00:00").getDay();
+    const key = `${weekday}|${sess.start_time.slice(0, 5)}`;
+    const target = (byWeekday.has(key) ? byWeekday.get(key) : byWeekday.get(`${weekday}`)) ?? mainTeacher;
+    if ((sess.teacher_id ?? null) === (target ?? null)) continue;
+    const { error } = await supabase.from("sessions").update({ teacher_id: target }).eq("id", sess.id);
+    if (!error) updated++;
+    else if (error.code === "23P01") {
+      conflicts.push(
+        `${new Date(sess.date + "T00:00:00").toLocaleDateString("vi-VN")} ${sess.start_time.slice(0, 5)}`,
+      );
+    } else throw error;
+  }
+  return { updated, conflicts };
 }
 
 export interface ScheduleInput {
@@ -518,6 +569,38 @@ export interface ScheduleInput {
   start_time: string;
   end_time: string;
   room_id: string | null;
+  /** GV dạy buổi này trong tuần; null = dùng GV chính của lớp. */
+  teacher_id?: string | null;
+}
+
+/* ============ Nhiều giáo viên trong một lớp ============ */
+
+/** Thêm GV vào lớp (không đổi GV chính). */
+export async function addClassTeacher(classId: string, teacherId: string) {
+  const { error } = await getSupabase()
+    .from("class_teachers")
+    .upsert({ class_id: classId, teacher_id: teacherId, role: "assistant" }, { onConflict: "class_id,teacher_id" });
+  if (error) throw error;
+}
+
+/** Bỏ GV khỏi lớp. Nếu là GV chính thì gỡ luôn classes.teacher_id. */
+export async function removeClassTeacher(classId: string, teacherId: string) {
+  const supabase = getSupabase();
+  const { data: cls, error: clsErr } = await supabase
+    .from("classes").select("teacher_id").eq("id", classId).single();
+  if (clsErr) throw clsErr;
+  if (cls.teacher_id === teacherId) {
+    const { error } = await supabase.from("classes").update({ teacher_id: null }).eq("id", classId);
+    if (error) throw error;
+  }
+  const { error } = await supabase
+    .from("class_teachers").delete().eq("class_id", classId).eq("teacher_id", teacherId);
+  if (error) throw error;
+  // Gỡ GV này khỏi các buổi trong lịch tuần đang gán cho họ
+  const { error: schedErr } = await supabase
+    .from("class_schedules").update({ teacher_id: null })
+    .eq("class_id", classId).eq("teacher_id", teacherId);
+  if (schedErr) throw schedErr;
 }
 
 /** Thay toàn bộ lịch tuần của lớp (sessions đã sinh không bị ảnh hưởng). */
@@ -601,10 +684,17 @@ export async function fetchTeacherSessions(
 }
 
 export async function fetchTeacherClasses(teacherId: string): Promise<ClassRow[]> {
-  const { data, error } = await getSupabase()
-    .from("classes").select(CLASS_SELECT)
-    .eq("teacher_id", teacherId)
-    .order("name");
+  const supabase = getSupabase();
+  // Lớp GV phụ trách chính + lớp GV được thêm vào (class_teachers)
+  const { data: links, error: linkErr } = await supabase
+    .from("class_teachers").select("class_id").eq("teacher_id", teacherId);
+  if (linkErr) throw linkErr;
+  const ids = Array.from(new Set((links ?? []).map((l) => l.class_id as string)));
+  const filter = ids.length
+    ? `teacher_id.eq.${teacherId},id.in.(${ids.join(",")})`
+    : `teacher_id.eq.${teacherId}`;
+  const { data, error } = await supabase
+    .from("classes").select(CLASS_SELECT).or(filter).order("name");
   if (error) throw error;
   return data as unknown as ClassRow[];
 }
@@ -659,7 +749,7 @@ export async function generateSessions(classId: string, weeks: number): Promise<
   const supabase = getSupabase();
   const [clsRes, schedRes, existingRes] = await Promise.all([
     supabase.from("classes").select("id, teacher_id").eq("id", classId).single(),
-    supabase.from("class_schedules").select("weekday, start_time, end_time, room_id").eq("class_id", classId),
+    supabase.from("class_schedules").select("weekday, start_time, end_time, room_id, teacher_id").eq("class_id", classId),
     supabase.from("sessions").select("date, start_time, session_no").eq("class_id", classId),
   ]);
   if (clsRes.error) throw clsRes.error;
@@ -676,7 +766,9 @@ export async function generateSessions(classId: string, weeks: number): Promise<
   let nextNo = Math.max(existing.length, ...existing.map((s) => s.session_no ?? 0), 0) + 1;
 
   // Duyệt từng ngày trong N tuần tới (tính từ hôm nay)
-  const candidates: { date: string; start_time: string; end_time: string; room_id: string | null }[] = [];
+  const candidates: {
+    date: string; start_time: string; end_time: string; room_id: string | null; teacher_id: string | null;
+  }[] = [];
   const cursor = new Date();
   for (let i = 0; i < weeks * 7; i++) {
     for (const s of schedules) {
@@ -686,6 +778,7 @@ export async function generateSessions(classId: string, weeks: number): Promise<
           start_time: s.start_time,
           end_time: s.end_time,
           room_id: s.room_id,
+          teacher_id: s.teacher_id ?? clsRes.data.teacher_id,
         });
       }
     }
@@ -704,7 +797,6 @@ export async function generateSessions(classId: string, weeks: number): Promise<
     const { error } = await supabase.from("sessions").insert({
       class_id: classId,
       session_no: nextNo,
-      teacher_id: clsRes.data.teacher_id,
       ...c,
     });
     if (!error) {
