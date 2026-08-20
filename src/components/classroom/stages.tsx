@@ -9,6 +9,7 @@ import {
   Eye,
   EyeOff,
   FolderOpen,
+  MonitorUp,
   Pause,
   Play,
   Presentation,
@@ -59,6 +60,10 @@ export function SlideStage({
   const [local, setLocal] = useState<LocalDeck | null>(null);
   const [page, setPage] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
+  const [sharing, setSharing] = useState(false);
+  const [shareError, setShareError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   // Thu hồi blob URL khi đổi/đóng file để không rò bộ nhớ trong buổi dài
   useEffect(() => {
@@ -105,6 +110,61 @@ export function SlideStage({
     }
     setPage(0);
   }
+
+  /**
+   * Nhận hình từ chính máy giáo viên: PowerPoint chạy thật (đủ hiệu ứng, hoạt
+   * ảnh), màn hình lớp học chỉ soi lại cửa sổ đó rồi phủ công cụ lên trên.
+   * Nên chọn tab "Cửa sổ" → PowerPoint, tránh chọn "Toàn màn hình" vì sẽ soi
+   * gương chính cửa sổ này.
+   */
+  async function startShare() {
+    setShareError(null);
+    try {
+      const media = navigator.mediaDevices as MediaDevices & {
+        getDisplayMedia?: (c: MediaStreamConstraints) => Promise<MediaStream>;
+      };
+      if (!media?.getDisplayMedia) {
+        setShareError("Trình duyệt này không hỗ trợ nhận chia sẻ màn hình. Dùng Chrome/Edge/Cốc Cốc bản mới.");
+        return;
+      }
+      const stream = await media.getDisplayMedia({
+        video: { frameRate: { ideal: 30 } } as MediaTrackConstraints,
+        audio: false,
+      });
+      streamRef.current = stream;
+      setSharing(true);
+      closeLocal();
+      stream.getVideoTracks()[0]?.addEventListener("ended", () => {
+        streamRef.current = null;
+        setSharing(false);
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(() => {});
+      }
+    } catch (e) {
+      // Người dùng bấm Huỷ trong hộp chọn màn hình → không coi là lỗi
+      if ((e as DOMException)?.name !== "NotAllowedError") {
+        setShareError("Không nhận được màn hình. Thử lại và chọn cửa sổ PowerPoint.");
+      }
+    }
+  }
+
+  function stopShare() {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    setSharing(false);
+  }
+
+  // Gắn lại luồng khi <video> vừa được render (lúc bật chia sẻ)
+  useEffect(() => {
+    if (sharing && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [sharing]);
+
+  useEffect(() => () => streamRef.current?.getTracks().forEach((t) => t.stop()), []);
 
   function closeLocal() {
     local?.urls.forEach((u) => URL.revokeObjectURL(u));
@@ -170,6 +230,16 @@ export function SlideStage({
             }}
           />
           <button
+            onClick={sharing ? stopShare : startShare}
+            className={cn(
+              "inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold",
+              sharing ? "bg-gold-600 text-white hover:bg-gold-700" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
+            )}
+            title="Chiếu bằng PowerPoint trên máy rồi soi cửa sổ đó vào đây — giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên"
+          >
+            <MonitorUp className="h-4 w-4" /> {sharing ? "Dừng nhận màn hình" : "Nhận màn hình"}
+          </button>
+          <button
             onClick={() => fileInput.current?.click()}
             className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-800 px-3 text-sm font-semibold text-ink-100 hover:bg-ink-700"
             title="Chiếu file PDF hoặc ảnh slide ngay từ máy — không cần mạng, không giới hạn dung lượng"
@@ -194,7 +264,9 @@ export function SlideStage({
         </div>
       </div>
 
-      {isGoogle && !local && (
+      {shareError && <div className="-mb-1 text-[11px] font-semibold text-gold-300">{shareError}</div>}
+
+      {isGoogle && !local && !sharing && (
         <div className="-mb-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-400">
           <span className="font-semibold text-ink-300">Không hiện được slide?</span>
           {(["auto", "slides", "drive", "office"] as EmbedMode[]).map((m) => (
@@ -236,7 +308,23 @@ export function SlideStage({
       )}
 
       <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
-        {local ? (
+        {sharing ? (
+          <>
+            <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-contain" />
+            <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-ink-950/80 px-3 py-2 text-xs text-ink-200 backdrop-blur">
+              <span className="font-semibold text-gold-300">● Đang soi màn hình máy tính</span>
+              <span className="text-ink-400">
+                Bấm chuyển slide ngay trên PowerPoint (hoặc bút trình chiếu) — hình ở đây tự cập nhật.
+              </span>
+              <button
+                onClick={stopShare}
+                className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+              >
+                <X className="h-3.5 w-3.5" /> Dừng
+              </button>
+            </div>
+          </>
+        ) : local ? (
           <>
             {local.kind === "pdf" ? (
               <iframe src={`${local.urls[0]}#toolbar=1&view=FitH`} className="h-full w-full" title={local.name} />
@@ -312,8 +400,9 @@ export function SlideStage({
               <p className="mx-auto mt-1 max-w-md text-sm">
                 Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
                 Slides / Drive / Canva / YouTube vào ô trên (hệ thống tự đổi sang dạng nhúng),
-                hoặc bấm <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh
-                slide từ máy tính — cách này không phụ thuộc mạng và không giới hạn dung lượng.
+                bấm <b className="text-white">Nhận màn hình</b> để soi cửa sổ PowerPoint đang
+                chạy trên máy (giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên), hoặc{" "}
+                <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
               </p>
             </div>
           </div>
