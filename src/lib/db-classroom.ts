@@ -415,8 +415,11 @@ export const EMBED_MODE_LABELS: Record<EmbedMode, string> = {
  * kết" thì máy chiếu (trình duyệt chưa đăng nhập tài khoản đó) mới xem được.
  */
 export function toEmbedUrl(raw: string, mode: EmbedMode = "auto"): string {
-  const input = (raw ?? "").trim();
+  let input = (raw ?? "").trim();
   if (!input) return "";
+  // Dán nguyên mã nhúng <iframe src="..."> cũng nhận (OneDrive/Canva hay cho kiểu này)
+  const inIframe = /<iframe[^>]+src=["']([^"']+)["']/i.exec(input)?.[1];
+  if (inIframe) input = inIframe.replace(/&amp;/g, "&");
   let u: URL;
   try {
     u = new URL(input);
@@ -486,6 +489,32 @@ export function toEmbedUrl(raw: string, mode: EmbedMode = "auto"): string {
   }
 
   return input;
+}
+
+/**
+ * Link biết chắc là KHÔNG nhúng được vào trang ngoài → trả về lời nhắc cách xử
+ * lý, để màn hình trình chiếu chỉ dẫn thay vì hiện iframe trắng/“từ chối kết nối”.
+ *
+ * OneDrive/SharePoint cá nhân trả `X-Frame-Options: SAMEORIGIN` và CSP
+ * `frame-ancestors 'self' *.office.com …` cho link chia sẻ thường — bật “bất kỳ
+ * ai có liên kết” cũng không nhúng được; chỉ mã nhúng chính thức (đường dẫn
+ * /embed, có authkey) mới cho phép.
+ */
+export function embedBlockReason(raw: string): string | null {
+  const input = (raw ?? "").trim();
+  if (!input) return null;
+  let u: URL;
+  try {
+    u = new URL(toEmbedUrl(input));
+  } catch {
+    return null;
+  }
+  const host = u.hostname.replace(/^www\./, "");
+  const oneDrive = host === "1drv.ms" || host === "onedrive.live.com" || host.endsWith("sharepoint.com");
+  if (oneDrive && !/\/embed/.test(u.pathname)) {
+    return "Link chia sẻ OneDrive không nhúng được vào trang ngoài (Microsoft chặn). Lấy MÃ NHÚNG: mở file trên OneDrive → Chia sẻ → Nhúng → copy cả đoạn <iframe…> rồi dán vào ô trên. Hoặc dùng “Cửa sổ trình chiếu” / “File từ máy”.";
+  }
+  return null;
 }
 
 /**

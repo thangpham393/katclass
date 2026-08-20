@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   EMBED_MODE_LABELS,
+  embedBlockReason,
   presentUrl,
   speakZh,
   toEmbedUrl,
@@ -123,6 +124,8 @@ export function SlideStage({
   // Link chia sẻ thông thường (…/edit?slide=…) tự đổi sang dạng nhúng iframe
   const embed = toEmbedUrl(url, mode);
   const isGoogle = /docs\.google\.com|drive\.google\.com/.test(embed);
+  // Nguồn biết chắc bị chặn nhúng (OneDrive/SharePoint) → chỉ dẫn thay vì iframe lỗi
+  const blocked = embedBlockReason(url);
 
   return (
     <div className="flex h-full flex-col gap-3">
@@ -273,6 +276,25 @@ export function SlideStage({
               </button>
             </div>
           </>
+        ) : url && blocked ? (
+          <div className="grid h-full place-items-center p-8 text-center text-ink-300">
+            <div className="max-w-lg">
+              <div className="mb-2 text-lg font-bold text-white">Nguồn này chặn nhúng</div>
+              <p className="text-sm leading-relaxed">{blocked}</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <Button
+                  onClick={() =>
+                    window.open(url, "kat-present", "noopener,noreferrer,width=1280,height=760")
+                  }
+                >
+                  <ExternalLink className="h-4 w-4" /> Mở cửa sổ trình chiếu
+                </Button>
+                <Button variant="secondary" onClick={() => fileInput.current?.click()}>
+                  <FolderOpen className="h-4 w-4" /> Chiếu file từ máy
+                </Button>
+              </div>
+            </div>
+          </div>
         ) : url ? (
           <iframe
             key={`${embed}-${reloadKey}`}
