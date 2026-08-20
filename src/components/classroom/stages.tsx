@@ -351,8 +351,18 @@ export function RandomStage({
 
 const PRESETS = [30, 60, 180, 300, 600];
 
-/** Đồng hồ đếm ngược cỡ lớn cho hoạt động nhóm; hết giờ có chuông báo. */
-export function TimerStage({ onFinish }: { onFinish?: (seconds: number) => void }) {
+/**
+ * Đồng hồ đếm ngược cỡ lớn cho hoạt động nhóm; hết giờ có chuông báo.
+ * `onTick` báo thời gian còn lại ra ngoài để header vẫn thấy đồng hồ khi giáo
+ * viên chuyển sang chiếu slide giữa lúc học viên đang làm bài.
+ */
+export function TimerStage({
+  onFinish,
+  onTick,
+}: {
+  onFinish?: (seconds: number) => void;
+  onTick?: (left: number, running: boolean) => void;
+}) {
   const [total, setTotal] = useState(60);
   const [left, setLeft] = useState(60);
   const [running, setRunning] = useState(false);
@@ -374,6 +384,11 @@ export function TimerStage({ onFinish }: { onFinish?: (seconds: number) => void 
     return () => window.clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, total]);
+
+  useEffect(() => {
+    onTick?.(left, running);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [left, running]);
 
   function pick(sec: number) {
     setTotal(sec);

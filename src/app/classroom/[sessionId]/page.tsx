@@ -14,6 +14,7 @@ import {
   Presentation,
   Timer as TimerIcon,
   WifiOff,
+  X,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -103,13 +104,14 @@ export default function ClassroomPage() {
   const [attendance, setAttendance] = useState<Record<string, AttendanceStatus | undefined>>({});
   const [points, setPoints] = useState<LocalPoint[]>([]);
   const [reason, setReason] = useState<PointReason>("speak");
-  const [tool, setTool] = useState<Tool>("slide");
+  const [overlay, setOverlay] = useState<Exclude<Tool, "slide"> | null>(null);
   const [phase, setPhase] = useState<"checkin" | "teach">("checkin");
   const [wrapOpen, setWrapOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const [fullscreen, setFullscreen] = useState(false);
+  const [timer, setTimer] = useState<{ left: number; running: boolean }>({ left: 0, running: false });
   const rootRef = useRef<HTMLDivElement>(null);
 
   /* --- Giờ vào lớp: giữ ở localStorage để F5 giữa giờ không mất --- */
@@ -229,8 +231,12 @@ export default function ClassroomPage() {
     function onKey(e: KeyboardEvent) {
       const el = e.target as HTMLElement | null;
       if (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)) return;
+      if (e.key === "Escape") {
+        setOverlay(null);
+        return;
+      }
       const t = TOOLS.find((x) => x.hotkey === e.key);
-      if (t) setTool(t.key);
+      if (t) setOverlay(t.key === "slide" ? null : (t.key as Exclude<Tool, "slide">));
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -442,6 +448,16 @@ export default function ClassroomPage() {
         <div className="ml-4 rounded-lg bg-ink-800 px-3 py-1 font-mono text-sm tabular-nums text-brand-200">
           {clock}
         </div>
+        {timer.running && overlay !== "timer" && (
+          <button
+            onClick={() => setOverlay("timer")}
+            className="rounded-lg bg-gold-600/20 px-3 py-1 font-mono text-sm font-bold tabular-nums text-gold-300 hover:bg-gold-600/30"
+            title="Đồng hồ đang chạy — bấm để mở lại"
+          >
+            ⏱ {String(Math.floor(timer.left / 60)).padStart(2, "0")}:
+            {String(timer.left % 60).padStart(2, "0")}
+          </button>
+        )}
         {pendingCount > 0 && (
           <span className="flex items-center gap-1 text-xs text-gold-300">
             <WifiOff className="h-3.5 w-3.5" /> {pendingCount} chờ đồng bộ
@@ -463,28 +479,43 @@ export default function ClassroomPage() {
 
       <div className="flex min-h-0 flex-1">
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 p-4">
-            {tool === "slide" && (
-              <SlideStage
-                lessons={lessons.data ?? []}
-                onOpen={(l) =>
-                  user &&
-                  logActivity({
-                    session_id: sessionId,
-                    kind: "slide",
-                    title: l.unit != null ? `Bài ${l.unit}: ${l.title}` : l.title,
-                    ref_id: l.id,
-                    created_by: user.id,
-                  })
-                }
-              />
-            )}
-            {tool === "vocab" && <VocabStage vocab={vocab} />}
-            {tool === "random" && (
+          {/*
+            Slide luôn nằm dưới; các công cụ khác mở đè lên dạng lớp phủ (không
+            đổi tab) nên giáo viên không mất trang slide đang chiếu. Tất cả đều
+            được mount sẵn — ẩn bằng CSS để iframe không tải lại và đồng hồ
+            đang chạy không bị reset.
+          */}
+          <div className="relative min-h-0 flex-1 p-4">
+            <SlideStage
+              lessons={lessons.data ?? []}
+              onOpen={(l) =>
+                user &&
+                logActivity({
+                  session_id: sessionId,
+                  kind: "slide",
+                  title: l.unit != null ? `Bài ${l.unit}: ${l.title}` : l.title,
+                  ref_id: l.id,
+                  created_by: user.id,
+                })
+              }
+            />
+
+            <ToolOverlay
+              title="Từ vựng bài học"
+              open={overlay === "vocab"}
+              onClose={() => setOverlay(null)}
+              wide
+            >
+              <VocabStage vocab={vocab} />
+            </ToolOverlay>
+
+            <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)}>
               <RandomStage students={presentStudents} onAward={(id, pts, why) => give(id, pts, why)} />
-            )}
-            {tool === "timer" && (
+            </ToolOverlay>
+
+            <ToolOverlay title="Bấm giờ" open={overlay === "timer"} onClose={() => setOverlay(null)}>
               <TimerStage
+                onTick={(left, running) => setTimer({ left, running })}
                 onFinish={(sec) =>
                   user &&
                   logActivity({
@@ -496,17 +527,19 @@ export default function ClassroomPage() {
                   })
                 }
               />
-            )}
+            </ToolOverlay>
           </div>
 
           <nav className="flex items-center gap-2 border-t border-ink-800 bg-ink-900 px-4 py-2">
             {TOOLS.map((t) => (
               <button
                 key={t.key}
-                onClick={() => setTool(t.key)}
+                onClick={() => setOverlay((cur) => (t.key === "slide" ? null : cur === t.key ? null : t.key))}
                 className={cn(
                   "flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
-                  tool === t.key ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+                  (t.key === "slide" ? overlay === null : overlay === t.key)
+                    ? "bg-brand-600 text-white"
+                    : "bg-ink-800 text-ink-200 hover:bg-ink-700",
                 )}
                 title={`Phím tắt ${t.hotkey}`}
               >
@@ -514,7 +547,7 @@ export default function ClassroomPage() {
               </button>
             ))}
             <span className="ml-auto text-xs text-ink-400">
-              Phím 1–4 để đổi công cụ · chạm học viên bên phải để cộng điểm
+              Phím 1–4 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
             </span>
           </nav>
         </div>
@@ -550,6 +583,54 @@ export default function ClassroomPage() {
           }}
         />
       )}
+    </div>
+  );
+}
+
+/**
+ * Lớp phủ công cụ: mở đè lên slide đang chiếu thay vì đổi tab, đóng bằng nút X
+ * hoặc phím Esc. Chỉ phủ vùng trình chiếu — cột học viên bên phải vẫn bấm cộng
+ * điểm được trong lúc đang chơi/gọi tên.
+ */
+function ToolOverlay({
+  title,
+  open,
+  onClose,
+  wide,
+  children,
+}: {
+  title: string;
+  open: boolean;
+  onClose: () => void;
+  wide?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "absolute inset-0 z-20 flex flex-col p-4 backdrop-blur-sm",
+        "bg-ink-950/80",
+        !open && "hidden",
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex min-h-0 w-full flex-1 flex-col rounded-2xl border border-ink-700 bg-ink-950/95 shadow-soft",
+          wide ? "max-w-6xl" : "max-w-4xl",
+        )}
+      >
+        <div className="flex items-center justify-between border-b border-ink-800 px-4 py-2">
+          <span className="text-sm font-bold text-white">{title}</span>
+          <button
+            onClick={onClose}
+            className="grid h-8 w-8 place-items-center rounded-lg bg-ink-800 text-ink-200 hover:bg-ink-700"
+            title="Đóng (Esc)"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 p-4">{children}</div>
+      </div>
     </div>
   );
 }
