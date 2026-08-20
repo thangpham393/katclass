@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Plus, School, Search, Trash2 } from "lucide-react";
+import { FilterX, Plus, School, Search, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,20 +28,59 @@ import { useLoad } from "@/lib/use-load";
 
 export default function AdminClassesPage() {
   const { data: classes, loading, error, reload } = useLoad(fetchClasses);
+  const rooms = useLoad(fetchRooms, []);
   const [creating, setCreating] = useState(false);
   const [q, setQ] = useState("");
+  const [teacherId, setTeacherId] = useState("");   // "" = tất cả, "none" = chưa gán GV
+  const [courseId, setCourseId] = useState("");
+  const [status, setStatus] = useState("");
+  const [weekday, setWeekday] = useState("");       // thứ trong tuần có buổi
+  const [roomId, setRoomId] = useState("");
+
+  // Danh sách lọc lấy ngay từ dữ liệu lớp (không cần query thêm)
+  const teacherOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of classes ?? []) if (c.teacher) map.set(c.teacher.id, c.teacher.name);
+    return [...map.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name, "vi"));
+  }, [classes]);
+
+  const courseOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of classes ?? []) if (c.course) map.set(c.course.id, c.course.name);
+    return [...map.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name, "vi"));
+  }, [classes]);
+
+  const activeFilters =
+    (q.trim() ? 1 : 0) + [teacherId, courseId, status, weekday, roomId].filter(Boolean).length;
 
   const filtered = useMemo(() => {
-    const list = classes ?? [];
-    if (!q.trim()) return list;
     const needle = q.trim().toLowerCase();
-    return list.filter(
-      (c) =>
-        c.name.toLowerCase().includes(needle) ||
-        c.teacher?.name.toLowerCase().includes(needle) ||
-        c.course?.name.toLowerCase().includes(needle),
-    );
-  }, [classes, q]);
+    return (classes ?? []).filter((c) => {
+      if (
+        needle &&
+        !c.name.toLowerCase().includes(needle) &&
+        !c.teacher?.name.toLowerCase().includes(needle) &&
+        !c.course?.name.toLowerCase().includes(needle)
+      ) {
+        return false;
+      }
+      if (teacherId === "none" ? c.teacher : teacherId && c.teacher?.id !== teacherId) return false;
+      if (courseId && c.course?.id !== courseId) return false;
+      if (status && c.status !== status) return false;
+      if (weekday && !c.class_schedules.some((s) => String(s.weekday) === weekday)) return false;
+      if (roomId && !c.class_schedules.some((s) => s.room_id === roomId)) return false;
+      return true;
+    });
+  }, [classes, q, teacherId, courseId, status, weekday, roomId]);
+
+  function clearFilters() {
+    setQ("");
+    setTeacherId("");
+    setCourseId("");
+    setStatus("");
+    setWeekday("");
+    setRoomId("");
+  }
 
   return (
     <div className="space-y-6">
@@ -60,15 +99,76 @@ export default function AdminClassesPage() {
       {error && <ErrorNote message={error} />}
 
       <Card>
-        <CardContent className="p-4">
-          <div className="relative max-w-md">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Tìm theo tên lớp, giáo viên, khóa học..."
-              className="pl-9"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
+        <CardContent className="space-y-3 p-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative min-w-[240px] flex-1">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Tìm theo tên lớp, giáo viên, khóa học..."
+                className="pl-9"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+              />
+            </div>
+            {activeFilters > 0 && (
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                <FilterX className="h-4 w-4" /> Xóa lọc ({activeFilters})
+              </Button>
+            )}
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <Select value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+              <option value="">Tất cả giáo viên</option>
+              {teacherOptions.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+              <option value="none">— Chưa gán giáo viên —</option>
+            </Select>
+
+            <Select value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+              <option value="">Tất cả khóa học</option>
+              {courseOptions.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Select>
+
+            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="">Mọi trạng thái</option>
+              {(Object.keys(CLASS_STATUS_LABELS) as (keyof typeof CLASS_STATUS_LABELS)[]).map((k) => (
+                <option key={k} value={k}>
+                  {CLASS_STATUS_LABELS[k]}
+                </option>
+              ))}
+            </Select>
+
+            <Select value={weekday} onChange={(e) => setWeekday(e.target.value)}>
+              <option value="">Học vào mọi thứ</option>
+              {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                <option key={d} value={String(d)}>
+                  Có buổi {WEEKDAY_LABELS[d]}
+                </option>
+              ))}
+            </Select>
+
+            <Select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+              <option value="">Mọi phòng học</option>
+              {(rooms.data ?? []).map((r) => (
+                <option key={r.id} value={r.id}>
+                  Phòng {r.name}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="text-xs text-muted-foreground">
+            {loading
+              ? "Đang tải…"
+              : `Hiện ${filtered.length}/${classes?.length ?? 0} lớp · ${filtered.reduce((n, c) => n + (c.class_students?.[0]?.count ?? 0), 0)} học viên`}
           </div>
         </CardContent>
       </Card>
@@ -78,8 +178,10 @@ export default function AdminClassesPage() {
       ) : filtered.length === 0 ? (
         <Empty
           icon={School}
-          title={q ? "Không tìm thấy lớp nào" : "Chưa có lớp học"}
-          description={q ? "Thử từ khóa khác." : "Tạo lớp đầu tiên từ một khóa học có sẵn."}
+          title={activeFilters > 0 ? "Không có lớp nào khớp bộ lọc" : "Chưa có lớp học"}
+          description={
+            activeFilters > 0 ? "Thử bỏ bớt điều kiện lọc." : "Tạo lớp đầu tiên từ một khóa học có sẵn."
+          }
         />
       ) : (
         <Card>

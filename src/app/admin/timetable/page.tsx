@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
   DoorOpen,
+  FilterX,
   GraduationCap,
   School,
 } from "lucide-react";
@@ -72,6 +73,8 @@ export default function AdminTimetablePage() {
 
   const [roomId, setRoomId] = useState("");
   const [teacherId, setTeacherId] = useState("");
+  const [classId, setClassId] = useState("");
+  const [hideCancelled, setHideCancelled] = useState(false);
 
   const rooms = useMemo(() => {
     const map = new Map<string, string>();
@@ -84,15 +87,25 @@ export default function AdminTimetablePage() {
     return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1]));
   }, [sessions.data]);
 
+  const classOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const s of sessions.data ?? []) if (s.class) map.set(s.class.id, s.class.name);
+    return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1], "vi"));
+  }, [sessions.data]);
+
   const filtered = useMemo(
     () =>
       (sessions.data ?? []).filter(
         (s) =>
           (!roomId || s.room?.id === roomId) &&
-          (!teacherId || s.teacher?.id === teacherId),
+          (!teacherId || s.teacher?.id === teacherId) &&
+          (!classId || s.class?.id === classId) &&
+          (!hideCancelled || s.status !== "cancelled"),
       ),
-    [sessions.data, roomId, teacherId],
+    [sessions.data, roomId, teacherId, classId, hideCancelled],
   );
+
+  const activeFilters = [roomId, teacherId, classId].filter(Boolean).length + (hideCancelled ? 1 : 0);
 
   const byDate = useMemo(() => {
     const map = new Map<string, SessionRow[]>();
@@ -249,6 +262,35 @@ export default function AdminTimetablePage() {
               <option key={id} value={id}>{name}</option>
             ))}
           </Select>
+          <Select className="w-52" value={classId} onChange={(e) => setClassId(e.target.value)}>
+            <option value="">Mọi lớp</option>
+            {classOptions.map(([id, name]) => (
+              <option key={id} value={id}>{name}</option>
+            ))}
+          </Select>
+          <label className="flex cursor-pointer items-center gap-1.5 text-xs font-medium text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={hideCancelled}
+              onChange={(e) => setHideCancelled(e.target.checked)}
+              className="h-3.5 w-3.5 rounded border-input"
+            />
+            Ẩn buổi đã hủy
+          </label>
+          {activeFilters > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setRoomId("");
+                setTeacherId("");
+                setClassId("");
+                setHideCancelled(false);
+              }}
+            >
+              <FilterX className="h-4 w-4" /> Xóa lọc ({activeFilters})
+            </Button>
+          )}
           <div className="ml-auto flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-sm bg-brand-500" /> Sắp diễn ra
