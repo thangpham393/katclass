@@ -384,6 +384,27 @@ export async function fetchLatestReportedSession(studentId: string): Promise<str
 
 /* ============ Link trình chiếu ============ */
 
+/** Id file trên Google Drive lấy từ mọi kiểu link (Slides, Docs, Drive). */
+export function googleFileId(raw: string): string | null {
+  return /\/d\/(?:e\/)?([a-zA-Z0-9_-]{10,})/.exec(raw ?? "")?.[1] ?? null;
+}
+
+/**
+ * Cách nhúng slide Google:
+ *  - `auto`   : tự chọn (file PowerPoint gốc `rtpof=true` → dùng trình xem Drive)
+ *  - `slides` : trình xem Google Slides (`/preview`) — mượt nhất với file đã
+ *               chuyển sang định dạng Google Trang trình bày
+ *  - `drive`  : trình xem Drive (`/file/d/<id>/preview`) — chịu được file
+ *               PowerPoint gốc và file nặng mà Slides báo không xem trước được
+ */
+export type EmbedMode = "auto" | "slides" | "drive";
+
+export const EMBED_MODE_LABELS: Record<EmbedMode, string> = {
+  auto: "Tự động",
+  slides: "Google Slides",
+  drive: "Trình xem Drive",
+};
+
 /**
  * Đổi link chia sẻ thông thường thành link NHÚNG được vào iframe — giáo viên
  * chỉ cần copy thẳng link trên thanh địa chỉ (Google Slides/Docs/Sheets/Drive,
@@ -392,7 +413,7 @@ export async function fetchLatestReportedSession(studentId: string): Promise<str
  * Lưu ý: link Google vẫn phải được chia sẻ ở chế độ "Bất kỳ ai có đường liên
  * kết" thì máy chiếu (trình duyệt chưa đăng nhập tài khoản đó) mới xem được.
  */
-export function toEmbedUrl(raw: string): string {
+export function toEmbedUrl(raw: string, mode: EmbedMode = "auto"): string {
   const input = (raw ?? "").trim();
   if (!input) return "";
   let u: URL;
@@ -404,6 +425,15 @@ export function toEmbedUrl(raw: string): string {
   const host = u.hostname.replace(/^www\./, "");
   const hashSlide = /slide=([^&]+)/.exec(u.hash)?.[1];
   const slide = u.searchParams.get("slide") ?? hashSlide;
+  const id = googleFileId(input);
+  const isGoogleDoc = host === "docs.google.com" || host === "drive.google.com";
+
+  // Người dùng ép kiểu nhúng (slide nặng / file PowerPoint không xem trước được)
+  if (isGoogleDoc && id && mode !== "auto" && !/^\/presentation\/d\/e\//.test(u.pathname)) {
+    if (mode === "drive") return `https://drive.google.com/file/d/${id}/preview`;
+    const base = `https://docs.google.com/presentation/d/${id}/preview`;
+    return slide ? `${base}?slide=${slide}` : base;
+  }
 
   if (host === "docs.google.com") {
     // Link "Xuất bản lên web": /presentation/d/e/<id>/pub → /embed
@@ -413,6 +443,11 @@ export function toEmbedUrl(raw: string): string {
     }
     const slides = /^\/presentation\/d\/([^/]+)/.exec(u.pathname);
     if (slides) {
+      // rtpof=true = file PowerPoint gốc chưa chuyển sang Google Trang trình bày,
+      // Slides hay báo "không xem trước được" → nhúng bằng trình xem Drive.
+      if (u.searchParams.get("rtpof") === "true") {
+        return `https://drive.google.com/file/d/${slides[1]}/preview`;
+      }
       const base = `https://docs.google.com/presentation/d/${slides[1]}/preview`;
       return slide ? `${base}?slide=${slide}` : base;
     }
@@ -438,9 +473,23 @@ export function toEmbedUrl(raw: string): string {
   }
 
   if (host === "youtube.com" || host === "youtu.be") {
-    const id = host === "youtu.be" ? u.pathname.slice(1) : u.searchParams.get("v");
-    if (id) return `https://www.youtube.com/embed/${id}`;
+    const id2 = host === "youtu.be" ? u.pathname.slice(1) : u.searchParams.get("v");
+    if (id2) return `https://www.youtube.com/embed/${id2}`;
   }
 
+  return input;
+}
+
+/**
+ * Link mở cửa sổ trình chiếu riêng (dự phòng khi nhúng thất bại): Google Slides
+ * mở thẳng chế độ trình chiếu, các nguồn khác mở link gốc.
+ */
+export function presentUrl(raw: string): string {
+  const input = (raw ?? "").trim();
+  if (!input) return "";
+  const id = googleFileId(input);
+  if (id && /docs\.google\.com\/presentation/.test(input) && !/\/d\/e\//.test(input)) {
+    return `https://docs.google.com/presentation/d/${id}/present`;
+  }
   return input;
 }

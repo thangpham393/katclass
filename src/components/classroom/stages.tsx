@@ -14,7 +14,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { speakZh, toEmbedUrl, type ClassroomStudent } from "@/lib/db-classroom";
+import {
+  EMBED_MODE_LABELS,
+  presentUrl,
+  speakZh,
+  toEmbedUrl,
+  type ClassroomStudent,
+  type EmbedMode,
+} from "@/lib/db-classroom";
 import type { LessonDetail, VocabRow } from "@/lib/db-content";
 
 /* ===================== Trình chiếu slide ===================== */
@@ -35,6 +42,8 @@ export function SlideStage({
   const [current, setCurrent] = useState<string>(withSlide[0]?.id ?? "");
   const [adhoc, setAdhoc] = useState("");
   const [adhocUrl, setAdhocUrl] = useState("");
+  const [mode, setMode] = useState<EmbedMode>("auto");
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!current && withSlide[0]) {
@@ -47,7 +56,7 @@ export function SlideStage({
   const lesson = withSlide.find((l) => l.id === current);
   const url = adhocUrl || lesson?.slide_embed_url || "";
   // Link chia sẻ thông thường (…/edit?slide=…) tự đổi sang dạng nhúng iframe
-  const embed = toEmbedUrl(url);
+  const embed = toEmbedUrl(url, mode);
   const isGoogle = /docs\.google\.com|drive\.google\.com/.test(embed);
 
   return (
@@ -82,29 +91,65 @@ export function SlideStage({
             Chiếu
           </Button>
           {url && (
-            <a
-              href={url}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              onClick={() =>
+                window.open(
+                  presentUrl(url),
+                  "kat-present",
+                  "noopener,noreferrer,width=1280,height=760",
+                )
+              }
               className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-800 px-3 text-sm font-semibold text-ink-100 hover:bg-ink-700"
-              title="Mở tab mới nếu slide chặn nhúng"
+              title="Mở cửa sổ trình chiếu riêng (kéo sang màn hình máy chiếu) — dùng khi slide không nhúng được"
             >
-              <ExternalLink className="h-4 w-4" /> Tab mới
-            </a>
+              <ExternalLink className="h-4 w-4" /> Cửa sổ trình chiếu
+            </button>
           )}
         </div>
       </div>
 
       {isGoogle && (
-        <div className="-mb-1 text-[11px] text-ink-400">
-          Slide Google phải được chia sẻ ở chế độ “Bất kỳ ai có đường liên kết” thì máy chiếu
-          mới xem được (nếu hiện “Bạn cần có quyền truy cập” là do chưa mở chia sẻ).
+        <div className="-mb-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-400">
+          <span className="font-semibold text-ink-300">Không hiện được slide?</span>
+          {(["auto", "slides", "drive"] as EmbedMode[]).map((m) => (
+            <button
+              key={m}
+              onClick={() => {
+                setMode(m);
+                setReloadKey((k) => k + 1);
+              }}
+              className={cn(
+                "rounded-md px-2 py-1 font-semibold",
+                mode === m ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+              )}
+              title={
+                m === "drive"
+                  ? "Dùng cho file PowerPoint gốc hoặc slide nặng mà Google Slides báo không xem trước được"
+                  : m === "slides"
+                    ? "Trình xem Google Slides"
+                    : "Tự chọn theo loại file"
+              }
+            >
+              {EMBED_MODE_LABELS[m]}
+            </button>
+          ))}
+          <button
+            onClick={() => setReloadKey((k) => k + 1)}
+            className="inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold text-ink-200 hover:bg-ink-700"
+          >
+            <RotateCcw className="h-3 w-3" /> Tải lại
+          </button>
+          <span>
+            · Slide phải chia sẻ “Bất kỳ ai có đường liên kết”; file .pptx nặng nên đặt kiểu
+            “Trình xem Drive” hoặc mở cửa sổ trình chiếu riêng.
+          </span>
         </div>
       )}
 
       <div className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
         {url ? (
           <iframe
+            key={`${embed}-${reloadKey}`}
             src={embed}
             className="h-full w-full"
             allow="fullscreen; autoplay"
