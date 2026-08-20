@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CalendarPlus, Plus, Sparkles, Trash2, UserMinus } from "lucide-react";
+import { ArrowLeft, CalendarPlus, Check, Pencil, Plus, Sparkles, Trash2, UserMinus, X } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import {
   fetchRooms,
   addStudentToClass,
   removeStudentFromClass,
+  updateClassInfo,
   updateClassStatus,
   updateClassTeacher,
   updateClassTextbook,
@@ -52,6 +53,25 @@ export default function AdminClassDetailPage() {
   const textbooks = useLoad(fetchTextbooks);
   const [adding, setAdding] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [renaming, setRenaming] = useState(false);
+  const [nameDraft, setNameDraft] = useState("");
+  const [savingName, setSavingName] = useState(false);
+
+  async function handleRename() {
+    const name = nameDraft.trim();
+    if (!name) return setActionError("Tên lớp không được để trống.");
+    setSavingName(true);
+    setActionError(null);
+    try {
+      await updateClassInfo(classId, { name });
+      setRenaming(false);
+      cls.reload();
+    } catch (e) {
+      setActionError(dbErrorMessage(e));
+    } finally {
+      setSavingName(false);
+    }
+  }
 
   async function handleStatusChange(status: ClassRow["status"]) {
     setActionError(null);
@@ -123,7 +143,40 @@ export default function AdminClassDetailPage() {
             {c.course?.level ? LEVEL_LABELS[c.course.level] ?? c.course.level : "—"}
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight">{c.name}</h1>
+            {renaming ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <Input
+                  autoFocus
+                  className="h-9 w-64 text-lg font-bold"
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleRename();
+                    if (e.key === "Escape") setRenaming(false);
+                  }}
+                />
+                <Button size="sm" onClick={handleRename} disabled={savingName}>
+                  <Check className="h-3.5 w-3.5" /> {savingName ? "Đang lưu…" : "Lưu"}
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setRenaming(false)} disabled={savingName}>
+                  <X className="h-3.5 w-3.5" /> Hủy
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-extrabold tracking-tight">{c.name}</h1>
+                <button
+                  onClick={() => {
+                    setNameDraft(c.name);
+                    setRenaming(true);
+                  }}
+                  className="grid h-7 w-7 place-items-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  title="Đổi tên lớp"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
             <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <span>{c.course?.name ?? "Chưa gắn khóa học"}</span>
               <span className="text-border">·</span>
