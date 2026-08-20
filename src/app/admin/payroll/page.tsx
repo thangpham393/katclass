@@ -10,10 +10,10 @@ import {
   ChevronRight,
   CircleAlert,
   Pencil,
+  Wallet,
   Clock,
   GraduationCap,
   Timer,
-  Users,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -26,25 +26,29 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { SessionEditModal } from "@/components/session-edit-modal";
+import { PayConfigModal } from "@/components/pay-config-modal";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
-import { WEEKDAY_LABELS, sessionClassLabel, todayISO } from "@/lib/db";
+import { WEEKDAY_LABELS, fetchProfilesByRole, sessionClassLabel, todayISO } from "@/lib/db";
 import {
   attendanceCount,
   fetchTeachingSessions,
+  fmtVND,
   payHours,
   pickLog,
   sessionHours,
   type TeachingSessionRow,
 } from "@/lib/db-tuition";
-
-interface TeacherTally {
-  teacherId: string;
-  teacherName: string;
-  sessions: TeachingSessionRow[];
-  hours: number;
-  logged: number;
-}
+import {
+  computePayroll,
+  fetchClassSizes,
+  fetchPayProfiles,
+  fetchPayTiers,
+  tierLabel,
+  PAY_TYPE_LABELS,
+  type PayTierRow,
+  type TeacherPay,
+} from "@/lib/db-payroll";
 
 /** [from, to] của một tháng dạng YYYY-MM. */
 function monthRange(month: string): [string, string] {
@@ -61,7 +65,7 @@ function shiftDate(date: string, days: number): string {
 }
 
 export default function AdminPayrollPage() {
-  const [tab, setTab] = useState<"day" | "month">("day");
+  const [tab, setTab] = useState<"day" | "month" | "rates">("day");
 
   return (
     <div className="space-y-6">
@@ -76,7 +80,8 @@ export default function AdminPayrollPage() {
       <div className="flex w-fit rounded-lg border bg-secondary/40 p-0.5">
         {([
           { key: "day", label: "Theo dõi theo ngày" },
-          { key: "month", label: "Bảng công tháng" },
+          { key: "month", label: "Bảng công & lương tháng" },
+          { key: "rates", label: "Mức lương giáo viên" },
         ] as const).map((t) => (
           <button
             key={t.key}
@@ -91,7 +96,7 @@ export default function AdminPayrollPage() {
         ))}
       </div>
 
-      {tab === "day" ? <DayTracking /> : <MonthTally />}
+      {tab === "day" ? <DayTracking /> : tab === "month" ? <MonthTally /> : <PayRates />}
     </div>
   );
 }
@@ -238,7 +243,7 @@ function DayTracking() {
   );
 }
 
-/* ---------------- Bảng công tháng ---------------- */
+/* ---------------- Bảng công & lương tháng ---------------- */
 
 function MonthTally() {
   const [month, setMonth] = useState(todayISO().slice(0, 7));
@@ -248,36 +253,30 @@ function MonthTally() {
     const [from, to] = monthRange(month);
     return fetchTeachingSessions(from, to, { completedOnly: true });
   }, [month]);
+  const profiles = useLoad(fetchPayProfiles, []);
+  const tiers = useLoad(fetchPayTiers, []);
+  const sizes = useLoad(fetchClassSizes, []);
 
-  const tallies = useMemo<TeacherTally[]>(() => {
-    const map = new Map<string, TeacherTally>();
-    for (const s of sessions.data ?? []) {
-      if (!s.teacher) continue;
-      const entry = map.get(s.teacher.id) ?? {
-        teacherId: s.teacher.id,
-        teacherName: s.teacher.name,
-        sessions: [],
-        hours: 0,
-        logged: 0,
-      };
-      entry.sessions.push(s);
-      entry.hours += payHours(s);
-      if (pickLog(s)) entry.logged += 1;
-      map.set(s.teacher.id, entry);
-    }
-    return [...map.values()].sort((a, b) => b.sessions.length - a.sessions.length);
-  }, [sessions.data]);
+  const loading = sessions.loading || profiles.loading || tiers.loading || sizes.loading;
 
-  const totalSessions = tallies.reduce((s, t) => s + t.sessions.length, 0);
-  const totalHours = tallies.reduce((s, t) => s + t.hours, 0);
+  const rows = useMemo<TeacherPay[]>(
+    () =>
+      computePayroll(sessions.data ?? [], profiles.data ?? [], tiers.data ?? [], sizes.data ?? {}),
+    [sessions.data, profiles.data, tiers.data, sizes.data],
+  );
+
+  const totalSessions = rows.reduce((s, t) => s + t.sessions.length, 0);
+  const totalHours = Math.round(rows.reduce((s, t) => s + t.hours, 0) * 100) / 100;
+  const totalMoney = rows.reduce((s, t) => s + t.total, 0);
   const noTeacher = (sessions.data ?? []).filter((s) => !s.teacher).length;
+  const warnings = rows.filter((t) => t.unconfigured || t.missingTier > 0);
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">
-          Số giờ lấy theo <span className="font-semibold text-foreground">giờ dạy thực tế</span> khi ca đã chấm công,
-          ca chưa chấm thì tạm tính theo giờ lịch.
+          Giờ dạy lấy theo <span className="font-semibold text-foreground">giờ thực tế đã chấm công</span> (buổi chưa
+          chấm tạm tính theo giờ lịch). Tiền công tính lại theo mức lương hiện hành ở tab “Mức lương giáo viên”.
         </p>
         <div className="w-44">
           <Input type="month" value={month} onChange={(e) => e.target.value && setMonth(e.target.value)} />
@@ -285,22 +284,46 @@ function MonthTally() {
       </div>
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-        <StatCard label="GV có công trong tháng" value={sessions.loading ? "—" : tallies.length} icon={GraduationCap} accent="brand" />
-        <StatCard label="Tổng buổi dạy" value={sessions.loading ? "—" : totalSessions} icon={CalendarCheck} accent="jade" />
-        <StatCard label="Tổng giờ dạy" value={sessions.loading ? "—" : `${totalHours}h`} icon={Clock} accent="sky" />
-        <StatCard label="Buổi chưa gán GV" value={sessions.loading ? "—" : noTeacher} icon={Users} accent="gold" />
+        <StatCard label="GV có công trong tháng" value={loading ? "—" : rows.length} icon={GraduationCap} accent="brand" />
+        <StatCard label="Tổng buổi dạy" value={loading ? "—" : totalSessions} icon={CalendarCheck} accent="jade" />
+        <StatCard label="Tổng giờ dạy" value={loading ? "—" : `${totalHours}h`} icon={Clock} accent="sky" />
+        <StatCard label="Tổng chi lương" value={loading ? "—" : fmtVND(totalMoney)} icon={Wallet} accent="gold" />
       </section>
 
       {sessions.error && <ErrorNote message={sessions.error} />}
+      {profiles.error && <ErrorNote message={profiles.error} />}
+
+      {!loading && noTeacher > 0 && (
+        <div className="flex items-center gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3 py-2 text-sm text-gold-800">
+          <CircleAlert className="h-4 w-4" /> {noTeacher} buổi hoàn thành chưa gán giáo viên — không tính công được.
+        </div>
+      )}
+      {!loading && warnings.length > 0 && (
+        <div className="rounded-lg border border-gold-200 bg-gold-50 px-3 py-2 text-sm text-gold-800">
+          <div className="flex items-center gap-2 font-semibold">
+            <CircleAlert className="h-4 w-4" /> Cần thiết lập mức lương
+          </div>
+          <ul className="mt-1 list-inside list-disc text-xs">
+            {warnings.map((t) => (
+              <li key={t.teacherId}>
+                {t.teacherName}:{" "}
+                {t.unconfigured
+                  ? "chưa thiết lập mức lương → tạm tính 0 ₫"
+                  : `${t.missingTier} buổi có sĩ số không khớp bậc nào → tính 0 ₫`}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <Card>
         <CardHeader>
           <CardTitle>Bảng công tháng {month.split("-")[1]}/{month.split("-")[0]}</CardTitle>
         </CardHeader>
         <CardContent className="p-5 pt-0">
-          {sessions.loading ? (
+          {loading ? (
             <LoadingRows rows={4} className="p-0" />
-          ) : tallies.length === 0 ? (
+          ) : rows.length === 0 ? (
             <Empty
               icon={CalendarCheck}
               title="Chưa có buổi dạy hoàn thành nào trong tháng này"
@@ -309,8 +332,9 @@ function MonthTally() {
             />
           ) : (
             <div className="divide-y">
-              {tallies.map((t) => {
+              {rows.map((t) => {
                 const open = expanded === t.teacherId;
+                const fulltime = t.profile?.pay_type === "fulltime";
                 return (
                   <div key={t.teacherId}>
                     <button
@@ -319,46 +343,87 @@ function MonthTally() {
                     >
                       <Avatar name={t.teacherName} size={38} />
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-sm font-semibold">{t.teacherName}</div>
+                        <div className="flex items-center gap-2 truncate text-sm font-semibold">
+                          {t.teacherName}
+                          {t.profile ? (
+                            <Badge variant={fulltime ? "default" : "muted"}>
+                              {PAY_TYPE_LABELS[t.profile.pay_type]}
+                            </Badge>
+                          ) : (
+                            <Badge variant="gold">Chưa thiết lập lương</Badge>
+                          )}
+                        </div>
                         <div className="text-xs text-muted-foreground">
-                          {new Set(t.sessions.map((s) => s.class?.id)).size} lớp · đã chấm công {t.logged}/
-                          {t.sessions.length} ca
-                          {t.sessions.some((s) => s.type === "makeup") && " · có buổi học bù"}
+                          {t.sessions.length} công · {t.hours}h
+                          {fulltime && t.overtimeHours > 0 && ` · vượt ${t.overtimeHours}h`}
+                          {!fulltime && t.missingTier > 0 && ` · ${t.missingTier} buổi ngoài bậc`}
                         </div>
                       </div>
                       <div className="shrink-0 text-right">
-                        <div className="text-lg font-extrabold">{t.sessions.length} công</div>
-                        <div className="text-xs text-muted-foreground">{t.hours}h dạy</div>
+                        <div className="text-lg font-extrabold">{fmtVND(t.total)}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {fulltime
+                            ? `cứng ${fmtVND(t.baseSalary)}${t.overtimeTotal > 0 ? ` + vượt ${fmtVND(t.overtimeTotal)}` : ""}`
+                            : `${t.sessions.length} buổi`}
+                        </div>
                       </div>
                       <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
                     </button>
                     {open && (
-                      <div className="mb-3 max-h-72 overflow-y-auto rounded-lg border bg-secondary/30 scrollbar-thin">
-                        <div className="divide-y">
-                          {t.sessions.map((s) => {
-                            const d = new Date(s.date + "T00:00:00");
-                            const log = pickLog(s);
-                            return (
-                              <div key={s.id} className="flex flex-wrap items-center gap-3 px-3 py-2 text-sm">
-                                <span className="w-28 shrink-0 text-xs text-muted-foreground">
-                                  {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")}
-                                </span>
-                                <span className="w-24 shrink-0 text-xs text-muted-foreground">
-                                  {(log?.actual_start ?? s.start_time).slice(0, 5)}–
-                                  {(log?.actual_end ?? s.end_time).slice(0, 5)}
-                                </span>
-                                <span className="min-w-0 flex-1 truncate font-medium">
-                                  {sessionClassLabel(s)}
-                                  {log?.lesson_content && (
-                                    <span className="font-normal text-muted-foreground"> — {log.lesson_content}</span>
-                                  )}
-                                </span>
-                                {s.type === "makeup" && <Badge variant="jade">Buổi bù</Badge>}
-                                {!log && <Badge variant="gold">Chưa chấm công</Badge>}
-                                <span className="shrink-0 text-xs text-muted-foreground">{payHours(s)}h</span>
+                      <div className="mb-3 space-y-2">
+                        {fulltime && t.profile && (
+                          <div className="rounded-lg border bg-secondary/30 p-3 text-xs">
+                            <div className="grid gap-1 sm:grid-cols-2">
+                              <div>Lương cứng: <span className="font-semibold">{fmtVND(t.baseSalary)}</span></div>
+                              <div>Giờ chuẩn tháng: <span className="font-semibold">{Number(t.profile.standard_hours)}h</span></div>
+                              <div>Đã dạy: <span className="font-semibold">{t.hours}h</span></div>
+                              <div>
+                                Vượt giờ: <span className="font-semibold">{t.overtimeHours}h</span> ×{" "}
+                                {fmtVND(Number(t.profile.overtime_rate))} ={" "}
+                                <span className="font-semibold">{fmtVND(t.overtimeTotal)}</span>
                               </div>
-                            );
-                          })}
+                            </div>
+                          </div>
+                        )}
+                        <div className="max-h-72 overflow-y-auto rounded-lg border bg-secondary/30 scrollbar-thin">
+                          <div className="divide-y">
+                            {t.sessions.map((sp) => {
+                              const s = sp.session;
+                              const d = new Date(s.date + "T00:00:00");
+                              const log = pickLog(s);
+                              return (
+                                <div key={s.id} className="flex flex-wrap items-center gap-3 px-3 py-2 text-sm">
+                                  <span className="w-28 shrink-0 text-xs text-muted-foreground">
+                                    {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")}
+                                  </span>
+                                  <span className="w-24 shrink-0 text-xs text-muted-foreground">
+                                    {(log?.actual_start ?? s.start_time).slice(0, 5)}–
+                                    {(log?.actual_end ?? s.end_time).slice(0, 5)}
+                                  </span>
+                                  <span className="min-w-0 flex-1 truncate font-medium">
+                                    {sessionClassLabel(s)}
+                                    {log?.lesson_content && (
+                                      <span className="font-normal text-muted-foreground"> — {log.lesson_content}</span>
+                                    )}
+                                  </span>
+                                  {s.type === "makeup" && <Badge variant="jade">Buổi bù</Badge>}
+                                  {!log && <Badge variant="gold">Chưa chấm công</Badge>}
+                                  <span className="shrink-0 text-xs text-muted-foreground">{sp.students} HV</span>
+                                  <span className="shrink-0 text-xs text-muted-foreground">{sp.hours}h</span>
+                                  {!fulltime && (
+                                    <span
+                                      className={cn(
+                                        "w-24 shrink-0 text-right text-xs font-semibold",
+                                        sp.amount === 0 && "text-destructive",
+                                      )}
+                                    >
+                                      {fmtVND(sp.amount)}
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
                     )}
@@ -369,6 +434,127 @@ function MonthTally() {
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+/* ---------------- Mức lương giáo viên ---------------- */
+
+function PayRates() {
+  const [editFor, setEditFor] = useState<{ id: string; name: string } | null>(null);
+
+  const teachers = useLoad(() => fetchProfilesByRole("teacher"), []);
+  const profiles = useLoad(fetchPayProfiles, []);
+  const tiers = useLoad(fetchPayTiers, []);
+
+  const profileBy = useMemo(
+    () => new Map((profiles.data ?? []).map((p) => [p.teacher_id, p])),
+    [profiles.data],
+  );
+  const tiersBy = useMemo(() => {
+    const map = new Map<string, PayTierRow[]>();
+    for (const t of tiers.data ?? []) {
+      const list = map.get(t.teacher_id) ?? [];
+      list.push(t);
+      map.set(t.teacher_id, list);
+    }
+    return map;
+  }, [tiers.data]);
+
+  const loading = teachers.loading || profiles.loading || tiers.loading;
+  const configured = (teachers.data ?? []).filter((t) => profileBy.has(t.id)).length;
+
+  return (
+    <div className="space-y-6">
+      <p className="text-sm text-muted-foreground">
+        <span className="font-semibold text-foreground">Thỉnh giảng</span>: trả theo từng buổi dạy, mức tiền tra theo sĩ
+        số lớp.{" "}
+        <span className="font-semibold text-foreground">Full time</span>: lương cứng tháng, dạy vượt số giờ chuẩn thì
+        cộng thêm tiền vượt giờ. Chỉ tài khoản quản lý/hành chính xem được mục này.
+      </p>
+
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <StatCard label="Giáo viên" value={loading ? "—" : teachers.data!.length} icon={GraduationCap} accent="brand" />
+        <StatCard label="Đã thiết lập lương" value={loading ? "—" : configured} icon={Wallet} accent="jade" />
+        <StatCard
+          label="Chưa thiết lập"
+          value={loading ? "—" : (teachers.data?.length ?? 0) - configured}
+          icon={CircleAlert}
+          accent="gold"
+        />
+        <StatCard
+          label="GV full time"
+          value={loading ? "—" : (profiles.data ?? []).filter((p) => p.pay_type === "fulltime").length}
+          icon={Clock}
+          accent="sky"
+        />
+      </section>
+
+      {teachers.error && <ErrorNote message={teachers.error} />}
+      {profiles.error && <ErrorNote message={profiles.error} />}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Mức tiền công từng giáo viên</CardTitle>
+        </CardHeader>
+        <CardContent className="p-5 pt-0">
+          {loading ? (
+            <LoadingRows rows={4} className="p-0" />
+          ) : (teachers.data?.length ?? 0) === 0 ? (
+            <Empty icon={GraduationCap} title="Chưa có giáo viên nào" description="Thêm giáo viên ở mục Đội ngũ." className="p-10" />
+          ) : (
+            <div className="divide-y">
+              {teachers.data!.map((t) => {
+                const p = profileBy.get(t.id);
+                const list = tiersBy.get(t.id) ?? [];
+                return (
+                  <div key={t.id} className="flex flex-wrap items-center gap-3 py-3">
+                    <Avatar name={t.name} size={38} />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 truncate text-sm font-semibold">
+                        {t.name}
+                        {p ? (
+                          <Badge variant={p.pay_type === "fulltime" ? "default" : "muted"}>
+                            {PAY_TYPE_LABELS[p.pay_type]}
+                          </Badge>
+                        ) : (
+                          <Badge variant="gold">Chưa thiết lập</Badge>
+                        )}
+                      </div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {!p
+                          ? "Buổi dạy của GV này đang tính 0 ₫"
+                          : p.pay_type === "fulltime"
+                            ? `Lương cứng ${fmtVND(Number(p.base_salary))} · chuẩn ${Number(p.standard_hours)}h/tháng · vượt giờ ${fmtVND(Number(p.overtime_rate))}/h`
+                            : list.length
+                              ? list
+                                  .map((x) => `${tierLabel(x)}: ${fmtVND(Number(x.amount))}`)
+                                  .join(" · ")
+                              : "Chưa có bậc theo sĩ số → buổi dạy tính 0 ₫"}
+                        {p?.note ? ` · ${p.note}` : ""}
+                      </div>
+                    </div>
+                    <Button size="sm" variant="outline" onClick={() => setEditFor({ id: t.id, name: t.name })}>
+                      <Pencil className="h-3.5 w-3.5" /> {p ? "Sửa mức lương" : "Thiết lập"}
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <PayConfigModal
+        teacher={editFor}
+        profile={editFor ? profileBy.get(editFor.id) ?? null : null}
+        tiers={editFor ? tiersBy.get(editFor.id) ?? [] : []}
+        onClose={() => setEditFor(null)}
+        onSaved={() => {
+          profiles.reload();
+          tiers.reload();
+        }}
+      />
     </div>
   );
 }
