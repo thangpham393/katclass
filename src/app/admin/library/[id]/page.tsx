@@ -11,6 +11,7 @@ import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useLoad } from "@/lib/use-load";
 import { LEVEL_LABELS } from "@/lib/db";
+import { TextbookCover } from "@/components/library/textbook-cover";
 import { fetchLesson, fetchQuestions, questionPreview, QUESTION_TYPE_LABELS } from "@/lib/db-content";
 import { fetchTextbook, fetchTextbookLessons, type TextbookLessonRow } from "@/lib/db-library";
 
@@ -45,14 +46,24 @@ export default function AdminTextbookPage() {
         <ArrowLeft className="h-4 w-4" /> Thư viện giáo trình
       </Link>
 
-      <div>
-        <div className="flex flex-wrap items-center gap-2">
-          {tb.level && <Badge variant="gold">{LEVEL_LABELS[tb.level] ?? tb.level}</Badge>}
-          <Badge variant="outline">{list.length} bài học</Badge>
+      <div className="flex flex-wrap items-start gap-5">
+        <TextbookCover
+          name={tb.name}
+          name_zh={tb.name_zh}
+          level={tb.level}
+          code={tb.code}
+          cover_url={tb.cover_url}
+          className="w-28"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            {tb.level && <Badge variant="gold">{LEVEL_LABELS[tb.level] ?? tb.level}</Badge>}
+            <Badge variant="outline">{list.length} bài học</Badge>
+          </div>
+          {tb.name_zh && <div className="zh mt-3 text-4xl font-bold text-brand-700">{tb.name_zh}</div>}
+          <h1 className="mt-1 text-2xl font-bold tracking-tight">{tb.name}</h1>
+          {tb.description && <p className="mt-2 max-w-2xl leading-relaxed text-muted-foreground">{tb.description}</p>}
         </div>
-        {tb.name_zh && <div className="zh mt-3 text-4xl font-bold text-brand-700">{tb.name_zh}</div>}
-        <h1 className="mt-1 text-2xl font-bold tracking-tight">{tb.name}</h1>
-        {tb.description && <p className="mt-2 max-w-2xl leading-relaxed text-muted-foreground">{tb.description}</p>}
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">

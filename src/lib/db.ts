@@ -84,6 +84,7 @@ export const WEEKDAY_LABELS = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 export const LEVELS = ["HSK1", "HSK2", "HSK3", "HSK4", "HSK5", "HSK6", "KIDS", "GIAO_TIEP", "OTHER"];
 export const LEVEL_LABELS: Record<string, string> = {
   HSK1: "HSK 1", HSK2: "HSK 2", HSK3: "HSK 3", HSK4: "HSK 4", HSK5: "HSK 5", HSK6: "HSK 6",
+  YCT1: "YCT 1", YCT2: "YCT 2", YCT3: "YCT 3", YCT4: "YCT 4",
   KIDS: "Thiếu nhi", GIAO_TIEP: "Giao tiếp", OTHER: "Khác",
 };
 export const CLASS_STATUS_LABELS: Record<ClassRow["status"], string> = {
