@@ -20,10 +20,13 @@ export function SessionContentCard({
   sessionId,
   courseId,
   textbook,
+  onChange,
 }: {
   sessionId: string;
   courseId: string | null;
   textbook: { id: string; name: string } | null;
+  /** Báo ngay danh sách bài đang chọn để trang cha cập nhật từ vựng/checklist. */
+  onChange?: (lessonIds: string[]) => void;
 }) {
   const assigned = useLoad(() => fetchSessionLessons(sessionId), [sessionId]);
   const lessons = useLoad(() => fetchLessons(), []);
@@ -35,8 +38,11 @@ export function SessionContentCard({
 
   useEffect(() => {
     if (assigned.data && selected === null) {
-      setSelected(assigned.data.map((sl) => sl.lesson.id));
+      const ids = assigned.data.map((sl) => sl.lesson.id);
+      setSelected(ids);
+      onChange?.(ids);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assigned.data, selected]);
 
   const all = lessons.data ?? [];
@@ -58,22 +64,24 @@ export function SessionContentCard({
     JSON.stringify([...current].sort()) !==
       JSON.stringify(assigned.data.map((sl) => sl.lesson.id).sort());
 
+  /** Bấm bài nào là lưu luôn bài đó — không bắt giáo viên nhớ bấm nút lưu. */
   function toggle(id: string) {
     setNotice(null);
-    setSelected((ids) => {
-      const cur = ids ?? [];
-      return cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
-    });
+    const cur = selected ?? [];
+    const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
+    setSelected(next);
+    onChange?.(next);
+    void save(next);
   }
 
-  async function handleSave() {
-    if (selected === null) return;
+  async function save(ids: string[]) {
     setSaving(true);
     setError(null);
     try {
-      await setSessionLessons(sessionId, selected);
+      await setSessionLessons(sessionId, ids);
       assigned.reload();
-      setNotice("Đã lưu nội dung ôn tập — học viên xem được ngay trong lớp của mình. ✓");
+      setNotice("Đã lưu ✓");
+      window.setTimeout(() => setNotice(null), 2000);
     } catch (e) {
       setError(dbErrorMessage(e));
     } finally {
@@ -88,15 +96,17 @@ export function SessionContentCard({
           <BookOpen className="h-4 w-4 text-brand-600" /> Nội dung ôn tập buổi này
           <Badge variant="muted">{current.length} bài</Badge>
         </CardTitle>
-        <Button size="sm" onClick={handleSave} disabled={saving || !dirty}>
-          {saving ? "Đang lưu..." : "Lưu nội dung"}
-        </Button>
+        <span className="text-xs font-semibold text-muted-foreground">
+          {saving ? "Đang lưu…" : error ? "" : dirty ? "Chưa lưu" : notice ? "Đã lưu ✓" : "Tự lưu khi chọn"}
+        </span>
       </CardHeader>
       <CardContent className="p-5 pt-0">
-        {error && <ErrorNote message={error} />}
-        {notice && (
-          <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800">
-            {notice}
+        {error && (
+          <div className="mb-3 space-y-2">
+            <ErrorNote message={error} />
+            <Button size="sm" variant="outline" onClick={() => save(selected ?? [])}>
+              Thử lưu lại
+            </Button>
           </div>
         )}
         {textbook && (

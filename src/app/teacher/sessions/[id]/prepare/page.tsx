@@ -27,12 +27,7 @@ import {
   fetchSession,
   sessionClassLabel,
 } from "@/lib/db";
-import {
-  fetchLesson,
-  fetchQuestions,
-  fetchSessionLessons,
-  type LessonDetail,
-} from "@/lib/db-content";
+import { fetchLesson, fetchQuestions, type LessonDetail } from "@/lib/db-content";
 import { saveSessionPrep, speakZh, toEmbedUrl } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 
@@ -46,23 +41,29 @@ export default function PrepareSessionPage() {
   const sessionId = params.id;
 
   const session = useLoad(() => fetchSession(sessionId), [sessionId]);
-  const sessionLessons = useLoad(() => fetchSessionLessons(sessionId), [sessionId]);
 
-  // Bài đã gán → nạp bản đầy đủ để xem từ vựng + link slide sẵn có của bài
+  /**
+   * Bài đang chọn — thẻ chọn bài báo lên ngay khi bấm (đã tự lưu), nên từ vựng
+   * và checklist bên dưới cập nhật tức thì chứ không đợi tải lại trang.
+   */
+  const [lessonIds, setLessonIds] = useState<string[]>([]);
+  const idKey = lessonIds.join(",");
+
+  // Nạp bản đầy đủ của bài đang chọn: từ vựng + link slide sẵn có của bài
   const lessons = useLoad<LessonDetail[]>(async () => {
-    const ids = (sessionLessons.data ?? []).map((r) => r.lesson.id);
-    if (!ids.length) return [];
-    const rows = await Promise.all(ids.map((id) => fetchLesson(id)));
+    if (!lessonIds.length) return [];
+    const rows = await Promise.all(lessonIds.map((id) => fetchLesson(id)));
     return rows.filter(Boolean) as LessonDetail[];
-  }, [sessionLessons.data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idKey]);
 
   // Ngân hàng câu hỏi của các bài này — để biết cuối buổi có bộ nào giao BTVN
   const questionCount = useLoad<number>(async () => {
-    const ids = (sessionLessons.data ?? []).map((r) => r.lesson.id);
-    if (!ids.length) return 0;
-    const rows = await Promise.all(ids.map((id) => fetchQuestions({ lessonId: id })));
+    if (!lessonIds.length) return 0;
+    const rows = await Promise.all(lessonIds.map((id) => fetchQuestions({ lessonId: id })));
     return rows.flat().length;
-  }, [sessionLessons.data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idKey]);
 
   const [slide, setSlide] = useState("");
   const [note, setNote] = useState("");
@@ -90,14 +91,15 @@ export default function PrepareSessionPage() {
   const s = session.data;
   const d = new Date(s.date + "T00:00:00");
   const lessonList = lessons.data ?? [];
+  const loadingContent = lessons.loading && lessonIds.length > 0;
   const vocab = lessonList.flatMap((l) => l.vocab);
   const lessonSlide = lessonList.find((l) => l.slide_embed_url)?.slide_embed_url ?? "";
   const effectiveSlide = slide || lessonSlide;
 
   const checklist = [
     {
-      done: lessonList.length > 0,
-      label: lessonList.length > 0 ? `Đã chọn ${lessonList.length} bài học` : "Chưa chọn bài học",
+      done: lessonIds.length > 0,
+      label: lessonIds.length > 0 ? `Đã chọn ${lessonIds.length} bài học` : "Chưa chọn bài học",
     },
     {
       done: !!effectiveSlide,
@@ -105,14 +107,22 @@ export default function PrepareSessionPage() {
     },
     {
       done: vocab.length > 0,
-      label: vocab.length > 0 ? `${vocab.length} từ vựng sẵn cho lớp` : "Bài chưa có từ vựng",
+      label: vocab.length > 0
+        ? `${vocab.length} từ vựng sẵn cho lớp`
+        : loadingContent
+          ? "Đang lấy từ vựng…"
+          : lessonIds.length === 0
+            ? "Chọn bài để lấy từ vựng"
+            : "Bài chưa có từ vựng",
     },
     {
       done: (questionCount.data ?? 0) > 0,
       label:
         (questionCount.data ?? 0) > 0
           ? `${questionCount.data} câu hỏi để giao bài về nhà`
-          : "Chưa có câu hỏi để giao BTVN",
+          : questionCount.loading && lessonIds.length > 0
+            ? "Đang đếm câu hỏi…"
+            : "Chưa có câu hỏi để giao BTVN",
     },
   ];
 
@@ -191,6 +201,7 @@ export default function PrepareSessionPage() {
         sessionId={sessionId}
         courseId={s.class?.course?.id ?? null}
         textbook={s.class?.textbook ?? null}
+        onChange={setLessonIds}
       />
 
       {/* Bước 2: slide cho buổi */}
@@ -277,11 +288,13 @@ export default function PrepareSessionPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-5 pt-0">
-          {lessons.loading ? (
+          {loadingContent ? (
             <LoadingRows rows={2} className="p-0" />
           ) : vocab.length === 0 ? (
             <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-              Bài đã chọn chưa có từ vựng — gắn từ cho bài ở mục “Bài học”.
+              {lessonIds.length === 0
+                ? "Chọn bài học ở khung trên — từ vựng của bài tự hiện ra đây."
+                : "Bài đã chọn chưa có từ vựng — gắn từ cho bài ở mục “Bài học”."}
             </div>
           ) : (
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
