@@ -512,7 +512,7 @@ export function embedBlockReason(raw: string): string | null {
   const host = u.hostname.replace(/^www\./, "");
   const oneDrive = host === "1drv.ms" || host === "onedrive.live.com" || host.endsWith("sharepoint.com");
   if (oneDrive && !/\/embed/.test(u.pathname)) {
-    return "Link chia sẻ OneDrive không nhúng được vào trang ngoài (Microsoft chặn). Lấy MÃ NHÚNG: mở file trên OneDrive → Chia sẻ → Nhúng → copy cả đoạn <iframe…> rồi dán vào ô trên. Hoặc dùng “Cửa sổ trình chiếu” / “File từ máy”.";
+    return "Link OneDrive mở trong tab thì được nhưng Microsoft chặn nhúng vào trang ngoài (X-Frame-Options: SAMEORIGIN) — không phải do quyền chia sẻ. Cách giữ nguyên hiệu ứng slide: bấm “Mở cửa sổ trình chiếu”, kéo cửa sổ đó sang máy chiếu rồi bấm Trình chiếu trong PowerPoint Online, còn cửa sổ lớp học để trên laptop (bật nút “Chiếu ngoài” trên thanh trên cùng). Nếu OneDrive có menu Chia sẻ → Nhúng thì copy cả đoạn <iframe…> dán vào ô trên cũng chiếu được trong app.";
   }
   return null;
 }
