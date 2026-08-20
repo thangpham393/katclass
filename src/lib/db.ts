@@ -98,8 +98,27 @@ export function formatSchedules(schedules: ScheduleRow[]): string {
   return schedules
     .slice()
     .sort((a, b) => a.weekday - b.weekday)
-    .map((s) => `${WEEKDAY_LABELS[s.weekday]} ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}`)
+    .map(
+      (s) =>
+        `${WEEKDAY_LABELS[s.weekday]} ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}` +
+        (s.teacher ? ` (${s.teacher.name})` : ""),
+    )
     .join(" · ");
+}
+
+/** Danh sách GV của lớp, GV chính đứng đầu. */
+export function classTeachers(c: Pick<ClassRow, "teacher" | "class_teachers">): {
+  id: string;
+  name: string;
+  isMain: boolean;
+}[] {
+  const rows = (c.class_teachers ?? [])
+    .filter((t) => t.teacher)
+    .map((t) => ({ id: t.teacher!.id, name: t.teacher!.name, isMain: t.role === "main" }));
+  if (c.teacher && !rows.some((t) => t.id === c.teacher!.id)) {
+    rows.unshift({ id: c.teacher.id, name: c.teacher.name, isMain: true });
+  }
+  return rows.sort((a, b) => Number(b.isMain) - Number(a.isMain) || a.name.localeCompare(b.name));
 }
 
 /* ============ Dashboard ============ */

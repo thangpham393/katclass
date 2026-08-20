@@ -24,6 +24,10 @@ import {
   updateClassStatus,
   updateClassTeacher,
   updateClassTextbook,
+  addClassTeacher,
+  removeClassTeacher,
+  applyScheduleTeachers,
+  classTeachers,
   replaceClassSchedules,
   generateSessions,
   deleteClass,
@@ -181,10 +185,15 @@ export default function AdminClassDetailPage() {
               <span>{c.course?.name ?? "Chưa gắn khóa học"}</span>
               <span className="text-border">·</span>
               <span>{formatSchedules(c.class_schedules)}</span>
-              {c.teacher && (
+              {classTeachers(c).length > 0 && (
                 <>
                   <span className="text-border">·</span>
-                  <span>GV: <span className="font-medium text-foreground">{c.teacher.name}</span></span>
+                  <span>
+                    GV:{" "}
+                    <span className="font-medium text-foreground">
+                      {classTeachers(c).map((t) => t.name).join(", ")}
+                    </span>
+                  </span>
                 </>
               )}
             </div>
@@ -299,6 +308,7 @@ interface ScheduleDraft {
   start_time: string;
   end_time: string;
   room_id: string;
+  teacher_id: string; // "" = theo GV chính của lớp
 }
 
 function draftsFromClass(c: ClassRow): ScheduleDraft[] {
@@ -310,6 +320,7 @@ function draftsFromClass(c: ClassRow): ScheduleDraft[] {
       start_time: s.start_time.slice(0, 5),
       end_time: s.end_time.slice(0, 5),
       room_id: s.room_id ?? "",
+      teacher_id: s.teacher_id ?? "",
     }));
 }
 
@@ -320,8 +331,10 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
   const [teacherId, setTeacherId] = useState(cls.teacher?.id ?? "");
   const [updateSessions, setUpdateSessions] = useState(true);
   const [drafts, setDrafts] = useState<ScheduleDraft[]>(() => draftsFromClass(cls));
+  const [addTeacherId, setAddTeacherId] = useState("");
   const [savingTeacher, setSavingTeacher] = useState(false);
   const [savingSchedule, setSavingSchedule] = useState(false);
+  const [busyTeam, setBusyTeam] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -329,7 +342,15 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
   useEffect(() => {
     setTeacherId(cls.teacher?.id ?? "");
     setDrafts(draftsFromClass(cls));
+    setAddTeacherId("");
   }, [cls]);
+
+  const team = useMemo(() => classTeachers(cls), [cls]);
+  const teamIds = useMemo(() => new Set(team.map((t) => t.id)), [team]);
+  const others = useMemo(
+    () => (teachers.data ?? []).filter((t) => !teamIds.has(t.id)),
+    [teachers.data, teamIds],
+  );
 
   const suggestion = useMemo(() => parseScheduleFromName(cls.name), [cls.name]);
 
@@ -341,9 +362,10 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
         start_time: suggestion.start_time,
         end_time: suggestion.end_time,
         room_id: "",
+        teacher_id: "",
       })),
     );
-    setNotice("Đã điền lịch gợi ý từ tên lớp — kiểm tra rồi bấm “Lưu lịch tuần”.");
+    setNotice("Đã điền lịch gợi ý từ tên lớp — chọn giáo viên cho từng buổi rồi bấm “Lưu lịch tuần”.");
   }
 
   function updateDraft(i: number, patch: Partial<ScheduleDraft>) {
@@ -356,7 +378,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
     setNotice(null);
     try {
       await updateClassTeacher(cls.id, teacherId || null, updateSessions);
-      setNotice("Đã cập nhật giáo viên phụ trách.");
+      setNotice("Đã cập nhật giáo viên chính.");
       onSaved();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -365,11 +387,49 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
     }
   }
 
+  async function handleAddTeacher(id: string) {
+    if (!id) return;
+    setBusyTeam(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await addClassTeacher(cls.id, id);
+      setAddTeacherId("");
+      setNotice("Đã thêm giáo viên vào lớp — chọn ngày dạy ở lịch tuần bên dưới.");
+      onSaved();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setBusyTeam(false);
+    }
+  }
+
+  async function handleRemoveTeacher(id: string, name: string) {
+    if (!confirm(`Bỏ ${name} khỏi lớp này? Các buổi trong lịch tuần đang gán cho GV sẽ trở về GV chính.`)) return;
+    setBusyTeam(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await removeClassTeacher(cls.id, id);
+      onSaved();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setBusyTeam(false);
+    }
+  }
+
   async function handleSaveSchedule() {
     setSavingSchedule(true);
     setError(null);
     setNotice(null);
     try {
+      // GV được chọn cho một ngày mà chưa có trong lớp → thêm vào lớp luôn
+      const extra = Array.from(
+        new Set(drafts.map((s) => s.teacher_id).filter((id) => id && !teamIds.has(id))),
+      );
+      for (const id of extra) await addClassTeacher(cls.id, id);
+
       await replaceClassSchedules(
         cls.id,
         drafts.map((s) => ({
@@ -377,9 +437,19 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
           start_time: s.start_time,
           end_time: s.end_time,
           room_id: s.room_id || null,
+          teacher_id: s.teacher_id || null,
         })),
       );
-      setNotice("Đã lưu lịch tuần. Các buổi đã sinh trước đó không đổi — dùng “Sinh buổi học” cho lịch mới.");
+
+      let msg = "Đã lưu lịch tuần. Các buổi đã sinh trước đó không đổi — dùng “Sinh buổi học” cho lịch mới.";
+      if (updateSessions) {
+        const res = await applyScheduleTeachers(cls.id);
+        msg = `Đã lưu lịch tuần. Cập nhật giáo viên cho ${res.updated} buổi sắp tới.`;
+        if (res.conflicts.length) {
+          msg += ` ${res.conflicts.length} buổi giữ nguyên vì GV trùng giờ dạy: ${res.conflicts.join(", ")}.`;
+        }
+      }
+      setNotice(msg);
       onSaved();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -403,7 +473,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
 
         <div className="flex flex-wrap items-end gap-3">
           <div className="w-full max-w-xs">
-            <Field label="Giáo viên phụ trách">
+            <Field label="Giáo viên chính">
               <Select value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
                 <option value="">— Chưa có giáo viên —</option>
                 {(teachers.data ?? []).map((t) => (
@@ -430,6 +500,51 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
           </Button>
         </div>
 
+        {/* Danh sách GV của lớp */}
+        <div className="border-t pt-4">
+          <div className="mb-2 text-sm font-medium">Giáo viên của lớp</div>
+          <div className="flex flex-wrap items-center gap-2">
+            {team.length === 0 && (
+              <span className="text-sm text-muted-foreground">Chưa có giáo viên nào.</span>
+            )}
+            {team.map((t) => (
+              <span
+                key={t.id}
+                className="inline-flex items-center gap-1.5 rounded-full border bg-secondary/50 px-3 py-1 text-sm"
+              >
+                <span className="font-medium">{t.name}</span>
+                {t.isMain && <Badge variant="muted">GV chính</Badge>}
+                <button
+                  type="button"
+                  disabled={busyTeam}
+                  onClick={() => handleRemoveTeacher(t.id, t.name)}
+                  className="grid h-5 w-5 place-items-center rounded-full text-muted-foreground hover:bg-gold-50 hover:text-gold-700"
+                  title="Bỏ khỏi lớp"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+            <Select
+              className="h-9 w-52 text-xs"
+              value={addTeacherId}
+              disabled={busyTeam || others.length === 0}
+              onChange={(e) => {
+                setAddTeacherId(e.target.value);
+                handleAddTeacher(e.target.value);
+              }}
+            >
+              <option value="">+ Thêm giáo viên…</option>
+              {others.map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </Select>
+          </div>
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            Một lớp có thể có nhiều giáo viên — chọn ai dạy ngày nào ở lịch tuần bên dưới.
+          </p>
+        </div>
+
         <div className="border-t pt-4">
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <span className="text-sm font-medium">Lịch học hằng tuần</span>
@@ -446,7 +561,10 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
                 variant="ghost"
                 size="sm"
                 onClick={() =>
-                  setDrafts((prev) => [...prev, { weekday: 1, start_time: "18:00", end_time: "19:30", room_id: "" }])
+                  setDrafts((prev) => [
+                    ...prev,
+                    { weekday: 1, start_time: "18:00", end_time: "19:30", room_id: "", teacher_id: "" },
+                  ])
                 }
               >
                 <Plus className="h-3.5 w-3.5" /> Thêm buổi
@@ -486,6 +604,24 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
                     onChange={(e) => updateDraft(i, { end_time: e.target.value })}
                     required
                   />
+                  <Select
+                    className="w-44"
+                    value={s.teacher_id}
+                    onChange={(e) => updateDraft(i, { teacher_id: e.target.value })}
+                    title="Giáo viên dạy buổi này"
+                  >
+                    <option value="">GV chính{cls.teacher ? ` (${cls.teacher.name})` : ""}</option>
+                    {team.map((t) => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                    {others.length > 0 && (
+                      <optgroup label="Giáo viên khác (sẽ thêm vào lớp)">
+                        {others.map((t) => (
+                          <option key={t.id} value={t.id}>{t.name}</option>
+                        ))}
+                      </optgroup>
+                    )}
+                  </Select>
                   <Select
                     className="w-36 flex-1"
                     value={s.room_id}

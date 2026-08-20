@@ -10,6 +10,7 @@ import {
   CheckCheck,
   Dices,
   Flag,
+  Gamepad2,
   Maximize2,
   Minimize2,
   Monitor,
@@ -17,6 +18,7 @@ import {
   PenLine,
   Presentation,
   Timer as TimerIcon,
+  Trophy,
   WifiOff,
   X,
 } from "lucide-react";
@@ -26,6 +28,7 @@ import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { RosterRail } from "@/components/classroom/roster-rail";
 import { RandomStage, SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
+import { GameStage, LeaderboardStage } from "@/components/classroom/game-stage";
 import { StrokeStage } from "@/components/classroom/stroke-stage";
 import { WhiteboardStage } from "@/components/classroom/whiteboard";
 import { WrapUpModal } from "@/components/classroom/wrap-up-modal";
@@ -59,7 +62,7 @@ import {
 } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 
-type Tool = "slide" | "vocab" | "random" | "timer" | "board" | "stroke";
+type Tool = "slide" | "vocab" | "random" | "timer" | "board" | "stroke" | "game" | "rank";
 
 const TOOLS: { key: Tool; label: string; icon: typeof Presentation; hotkey: string }[] = [
   { key: "slide", label: "Trình chiếu", icon: Presentation, hotkey: "1" },
@@ -68,6 +71,8 @@ const TOOLS: { key: Tool; label: string; icon: typeof Presentation; hotkey: stri
   { key: "timer", label: "Bấm giờ", icon: TimerIcon, hotkey: "4" },
   { key: "board", label: "Bảng viết", icon: PenLine, hotkey: "5" },
   { key: "stroke", label: "Nét chữ", icon: Brush, hotkey: "6" },
+  { key: "game", label: "Trò chơi", icon: Gamepad2, hotkey: "7" },
+  { key: "rank", label: "Bảng ★", icon: Trophy, hotkey: "8" },
 ];
 
 /** Một lần cộng điểm ở client: chưa có id server thì giữ tmp_id để hoàn tác/đồng bộ. */
@@ -584,6 +589,18 @@ export default function ClassroomPage() {
               />
             )}
 
+            <ToolOverlay title="Trò chơi từ vựng" open={overlay === "game"} onClose={() => setOverlay(null)} wide>
+              <GameStage
+                vocab={vocab}
+                students={presentStudents}
+                onAward={(id, pts, why) => give(id, pts, why)}
+              />
+            </ToolOverlay>
+
+            <ToolOverlay title="Bảng ★ của buổi" open={overlay === "rank"} onClose={() => setOverlay(null)} wide>
+              <LeaderboardStage students={students} totals={totals} />
+            </ToolOverlay>
+
             <ToolOverlay title="Bảng viết" open={overlay === "board"} onClose={() => setOverlay(null)} wide>
               <WhiteboardStage />
             </ToolOverlay>
@@ -626,7 +643,7 @@ export default function ClassroomPage() {
               </button>
             ))}
             <span className="ml-auto text-xs text-ink-400">
-              Phím 1–6 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
+              Phím 1–8 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
             </span>
           </nav>
         </div>
