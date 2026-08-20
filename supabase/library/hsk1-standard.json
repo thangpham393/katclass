@@ -38,7 +38,7 @@
         {
           "hanzi": "您",
           "pinyin": "nín",
-          "meaning": "(lịch sự) ông, bà, ngài...",
+          "meaning": "ông, bà, cô... (ngôi thứ hai, cách nói trang trọng)",
           "example": {
             "zh": "您好！",
             "pinyin": "Nín hǎo!",
@@ -58,7 +58,7 @@
         {
           "hanzi": "对不起",
           "pinyin": "duìbuqǐ",
-          "meaning": "xin lỗi",
+          "meaning": "Xin lỗi.",
           "example": {
             "zh": "对不起！",
             "pinyin": "Duìbuqǐ!",
@@ -68,7 +68,7 @@
         {
           "hanzi": "没关系",
           "pinyin": "méi guānxi",
-          "meaning": "không sao đâu, không có vấn đề gì đâu",
+          "meaning": "Không sao đâu, không có vấn đề gì đâu.",
           "example": {
             "zh": "没关系！",
             "pinyin": "Méi guānxi!",
@@ -198,7 +198,7 @@
         {
           "hanzi": "不客气",
           "pinyin": "bú kèqi",
-          "meaning": "đừng khách sáo",
+          "meaning": "Đừng khách sáo.",
           "example": {
             "zh": "不客气！",
             "pinyin": "Bú kèqi!",
@@ -315,7 +315,7 @@
         {
           "hanzi": "叫",
           "pinyin": "jiào",
-          "meaning": "tên (là)",
+          "meaning": "gọi, là, tên là",
           "example": {
             "zh": "你叫什么名字？",
             "pinyin": "Nǐ jiào shénme míngzi?",
@@ -365,7 +365,7 @@
         {
           "hanzi": "老师",
           "pinyin": "lǎoshī",
-          "meaning": "thầy/cô giáo",
+          "meaning": "giáo viên, thầy/cô",
           "example": {
             "zh": "你是老师吗？",
             "pinyin": "Nǐ shì lǎoshī ma?",
@@ -537,7 +537,7 @@
         {
           "hanzi": "她",
           "pinyin": "tā",
-          "meaning": "cô ấy, bà ấy...",
+          "meaning": "cô ấy, chị ấy...",
           "example": {
             "zh": "她是谁？",
             "pinyin": "Tā shì shéi?",
@@ -597,7 +597,7 @@
         {
           "hanzi": "呢",
           "pinyin": "ne",
-          "meaning": "trợ từ nghi vấn, được dùng ở cuối câu hỏi",
+          "meaning": "trợ từ ngữ khí, được dùng ở cuối câu hỏi",
           "example": {
             "zh": "我是美国人。你呢？",
             "pinyin": "Wǒ shì Měiguó rén. Nǐ ne?",
@@ -607,7 +607,7 @@
         {
           "hanzi": "他",
           "pinyin": "tā",
-          "meaning": "anh ấy, ông ấy...",
+          "meaning": "anh ấy, ông ấy, nó...",
           "example": {
             "zh": "他是谁？",
             "pinyin": "Tā shì shéi?",
@@ -617,7 +617,7 @@
         {
           "hanzi": "同学",
           "pinyin": "tóngxué",
-          "meaning": "bạn cùng lớp",
+          "meaning": "bạn học, bạn cùng lớp",
           "example": {
             "zh": "他是我同学。",
             "pinyin": "Tā shì wǒ tóngxué.",
@@ -627,7 +627,7 @@
         {
           "hanzi": "朋友",
           "pinyin": "péngyou",
-          "meaning": "bạn",
+          "meaning": "bạn, bạn bè",
           "example": {
             "zh": "她是我朋友。",
             "pinyin": "Tā shì wǒ péngyou.",
@@ -741,7 +741,7 @@
         {
           "hanzi": "家",
           "pinyin": "jiā",
-          "meaning": "nhà",
+          "meaning": "nhà, gia đình",
           "example": {
             "zh": "我家有三口人。",
             "pinyin": "Wǒ jiā yǒu sān kǒu rén.",
@@ -761,7 +761,7 @@
         {
           "hanzi": "口",
           "pinyin": "kǒu",
-          "meaning": "lượng từ, dùng cho người",
+          "meaning": "lượng từ dùng cho người (các thành viên trong gia đình)",
           "example": {
             "zh": "我家有三口人。",
             "pinyin": "Wǒ jiā yǒu sān kǒu rén.",
@@ -781,7 +781,7 @@
         {
           "hanzi": "几",
           "pinyin": "jǐ",
-          "meaning": "mấy",
+          "meaning": "mấy (được dùng để hỏi số lượng không nhiều)",
           "example": {
             "zh": "你女儿几岁了？",
             "pinyin": "Nǐ nǚ'ér jǐ suì le?",
@@ -831,7 +831,7 @@
         {
           "hanzi": "大",
           "pinyin": "dà",
-          "meaning": "lớn",
+          "meaning": "to, lớn",
           "example": {
             "zh": "李老师多大了？",
             "pinyin": "Lǐ lǎoshī duō dà le?",
@@ -841,52 +841,52 @@
         {
           "hanzi": "一",
           "pinyin": "yī",
-          "meaning": "số 1"
+          "meaning": "(số) một"
         },
         {
           "hanzi": "二",
           "pinyin": "èr",
-          "meaning": "số 2"
+          "meaning": "(số) hai"
         },
         {
           "hanzi": "三",
           "pinyin": "sān",
-          "meaning": "số 3"
+          "meaning": "(số) ba"
         },
         {
           "hanzi": "四",
           "pinyin": "sì",
-          "meaning": "số 4"
+          "meaning": "(số) bốn"
         },
         {
           "hanzi": "五",
           "pinyin": "wǔ",
-          "meaning": "số 5"
+          "meaning": "(số) năm"
         },
         {
           "hanzi": "六",
           "pinyin": "liù",
-          "meaning": "số 6"
+          "meaning": "(số) sáu"
         },
         {
           "hanzi": "七",
           "pinyin": "qī",
-          "meaning": "số 7"
+          "meaning": "(số) bảy"
         },
         {
           "hanzi": "八",
           "pinyin": "bā",
-          "meaning": "số 8"
+          "meaning": "(số) tám"
         },
         {
           "hanzi": "九",
           "pinyin": "jiǔ",
-          "meaning": "số 9"
+          "meaning": "(số) chín"
         },
         {
           "hanzi": "十",
           "pinyin": "shí",
-          "meaning": "số 10"
+          "meaning": "(số) mười"
         }
       ],
       "questions": [
@@ -993,7 +993,7 @@
         {
           "hanzi": "会",
           "pinyin": "huì",
-          "meaning": "biết",
+          "meaning": "biết (có được kiến thức hoặc kỹ năng nào đó)",
           "example": {
             "zh": "我会说汉语。",
             "pinyin": "Wǒ huì shuō Hànyǔ.",
@@ -1013,7 +1013,7 @@
         {
           "hanzi": "妈妈",
           "pinyin": "māma",
-          "meaning": "mẹ",
+          "meaning": "mẹ, má",
           "example": {
             "zh": "你妈妈会说汉语吗？",
             "pinyin": "Nǐ māma huì shuō Hànyǔ ma?",
@@ -1043,7 +1043,7 @@
         {
           "hanzi": "好吃",
           "pinyin": "hǎochī",
-          "meaning": "ngon",
+          "meaning": "ngon (thức ăn)",
           "example": {
             "zh": "中国菜很好吃。",
             "pinyin": "Zhōngguó cài hěn hǎochī.",
@@ -1305,7 +1305,7 @@
         {
           "hanzi": "学校",
           "pinyin": "xuéxiào",
-          "meaning": "trường",
+          "meaning": "trường học",
           "example": {
             "zh": "你去学校做什么？",
             "pinyin": "Nǐ qù xuéxiào zuò shénme?",
@@ -1438,7 +1438,7 @@
         {
           "hanzi": "想",
           "pinyin": "xiǎng",
-          "meaning": "muốn",
+          "meaning": "muốn, nghĩ",
           "example": {
             "zh": "我想喝茶。",
             "pinyin": "Wǒ xiǎng hē chá.",
@@ -1517,8 +1517,8 @@
         },
         {
           "hanzi": "个",
-          "pinyin": "gè",
-          "meaning": "cái (lượng từ)",
+          "pinyin": "ge",
+          "meaning": "cái, con... (lượng từ dùng chung cho nhiều đối tượng)",
           "example": {
             "zh": "我想买一个杯子。",
             "pinyin": "Wǒ xiǎng mǎi yí ge bēizi.",
@@ -1528,7 +1528,7 @@
         {
           "hanzi": "杯子",
           "pinyin": "bēizi",
-          "meaning": "ly, tách",
+          "meaning": "cốc, ly, tách",
           "example": {
             "zh": "这个杯子多少钱？",
             "pinyin": "Zhège bēizi duōshao qián?",
@@ -1568,7 +1568,7 @@
         {
           "hanzi": "块",
           "pinyin": "kuài",
-          "meaning": "đồng (đơn vị tiền tệ)",
+          "meaning": "đồng (đơn vị tiền tệ của Trung Quốc)",
           "example": {
             "zh": "那个杯子18块钱。",
             "pinyin": "Nàge bēizi shíbā kuài qián.",
@@ -1740,7 +1740,7 @@
         {
           "hanzi": "椅子",
           "pinyin": "yǐzi",
-          "meaning": "ghế dựa",
+          "meaning": "ghế, ghế dựa",
           "example": {
             "zh": "小狗在椅子下面。",
             "pinyin": "Xiǎo gǒu zài yǐzi xiàmiàn.",
@@ -1760,7 +1760,7 @@
         {
           "hanzi": "哪儿",
           "pinyin": "nǎr",
-          "meaning": "đâu",
+          "meaning": "chỗ nào, đâu",
           "example": {
             "zh": "你在哪儿工作？",
             "pinyin": "Nǐ zài nǎr gōngzuò?",
@@ -1810,7 +1810,7 @@
         {
           "hanzi": "爸爸",
           "pinyin": "bàba",
-          "meaning": "cha, bố",
+          "meaning": "cha, bố, ba",
           "example": {
             "zh": "你爸爸在家吗？",
             "pinyin": "Nǐ bàba zài jiā ma?",
@@ -1964,7 +1964,7 @@
         {
           "hanzi": "本",
           "pinyin": "běn",
-          "meaning": "quyển, cuốn",
+          "meaning": "quyển, cuốn (lượng từ dùng cho sách)",
           "example": {
             "zh": "一本书",
             "pinyin": "yì běn shū",
@@ -2024,7 +2024,7 @@
         {
           "hanzi": "能",
           "pinyin": "néng",
-          "meaning": "có thể",
+          "meaning": "có thể, được (có khả năng)",
           "example": {
             "zh": "我能坐这儿吗？",
             "pinyin": "Wǒ néng zuò zhèr ma?",
@@ -2218,7 +2218,7 @@
         {
           "hanzi": "时候",
           "pinyin": "shíhou",
-          "meaning": "lúc, khi",
+          "meaning": "lúc, khi, thời gian",
           "example": {
             "zh": "爸爸什么时候回家？",
             "pinyin": "Bàba shénme shíhou huí jiā?",
@@ -2238,7 +2238,7 @@
         {
           "hanzi": "我们",
           "pinyin": "wǒmen",
-          "meaning": "chúng ta, chúng tôi",
+          "meaning": "chúng tôi, chúng ta...",
           "example": {
             "zh": "我们什么时候去看电影？",
             "pinyin": "Wǒmen shénme shíhou qù kàn diànyǐng?",
@@ -2248,7 +2248,7 @@
         {
           "hanzi": "电影",
           "pinyin": "diànyǐng",
-          "meaning": "phim",
+          "meaning": "điện ảnh, phim",
           "example": {
             "zh": "我们什么时候去看电影？",
             "pinyin": "Wǒmen shénme shíhou qù kàn diànyǐng?",
@@ -2478,7 +2478,7 @@
         {
           "hanzi": "身体",
           "pinyin": "shēntǐ",
-          "meaning": "sức khỏe, cơ thể",
+          "meaning": "thân thể, sức khỏe",
           "example": {
             "zh": "我身体不太好。",
             "pinyin": "Wǒ shēntǐ bú tài hǎo.",
@@ -2628,7 +2628,7 @@
         {
           "hanzi": "喂",
           "pinyin": "wèi",
-          "meaning": "a lô, này",
+          "meaning": "alô (được dùng để trả lời điện thoại)",
           "example": {
             "zh": "喂，你在做什么呢？",
             "pinyin": "Wèi, nǐ zài zuò shénme ne?",
@@ -2648,7 +2648,7 @@
         {
           "hanzi": "学习",
           "pinyin": "xuéxí",
-          "meaning": "học (nói tắt: 学)",
+          "meaning": "học, học tập",
           "example": {
             "zh": "他在学做中国菜呢。",
             "pinyin": "Tā zài xué zuò Zhōngguó cài ne.",
@@ -2668,7 +2668,7 @@
         {
           "hanzi": "睡觉",
           "pinyin": "shuì jiào",
-          "meaning": "ngủ",
+          "meaning": "ngủ, đi ngủ",
           "example": {
             "zh": "我在睡觉呢。",
             "pinyin": "Wǒ zài shuì jiào ne.",
@@ -2698,7 +2698,7 @@
         {
           "hanzi": "给",
           "pinyin": "gěi",
-          "meaning": "cho",
+          "meaning": "cho (động từ)",
           "example": {
             "zh": "我现在给她打电话。",
             "pinyin": "Wǒ xiànzài gěi tā dǎ diànhuà.",
@@ -2842,7 +2842,7 @@
         {
           "hanzi": "东西",
           "pinyin": "dōngxi",
-          "meaning": "đồ, đồ đạc",
+          "meaning": "đồ vật, vật, đồ",
           "example": {
             "zh": "我去商店买东西了。",
             "pinyin": "Wǒ qù shāngdiàn mǎi dōngxi le.",
@@ -2942,7 +2942,7 @@
         {
           "hanzi": "衣服",
           "pinyin": "yīfu",
-          "meaning": "quần áo",
+          "meaning": "quần áo, áo",
           "example": {
             "zh": "王方的衣服太漂亮了！",
             "pinyin": "Wáng Fāng de yīfu tài piàoliang le!",
@@ -3007,7 +3007,7 @@
         {
           "hanzi": "张",
           "pinyin": "Zhāng",
-          "meaning": "Trương (họ của người Trung Quốc)",
+          "meaning": "Trương (họ)",
           "example": {
             "zh": "你看见张先生了吗？",
             "pinyin": "Nǐ kànjiàn Zhāng xiānsheng le ma?",

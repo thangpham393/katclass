@@ -1,0 +1,907 @@
+{
+  "textbook": {
+    "code": "yct3-standard",
+    "name": "YCT 3",
+    "name_zh": "标准教程 YCT 3",
+    "level": "YCT3",
+    "sort": 13,
+    "description": "Giáo trình chuẩn YCT 3 (标准教程 YCT 3, bản dịch tiếng Việt — Nhân Trí Việt / NXB Tổng hợp TP.HCM) dành cho học sinh tiểu học và THCS. 12 bài (bài 12 là ôn tập), 79 từ vựng theo đại cương YCT cấp 3 cùng một số từ mở rộng sách đánh dấu *; mỗi bài gồm hai câu quan trọng, từ mới, bài đọc, hoạt động, bài hát và bài thi mẫu. Từ vựng và mẫu câu trích đúng theo sách."
+  },
+  "lessons": [
+    {
+      "unit": 1,
+      "title": "Chị học lớp ba.",
+      "title_zh": "我三年级。",
+      "summary": "Hỏi – đáp về khối lớp và môn tiếng Trung Quốc ở trường; giới thiệu hai thầy cô mới của lớp trên trang web trường.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 我们都有汉语课。(Wǒmen dōu yǒu Hànyǔ kè.) — Các chị đều có môn tiếng Trung Quốc.\n• 还有一个是女老师。(Hái yǒu yí ge shì nǚ lǎoshī.) — Còn người kia là cô giáo.\n\n2) HỎI KHỐI LỚP: “几年级?”:\n• 你几年级？— Chị học lớp mấy?\n• 我三年级。— Chị học lớp ba.\n\n3) PHÓ TỪ “都” — đặt SAU chủ ngữ (phần liệt kê) và TRƯỚC động từ:\n• 我们都有汉语课。— Các chị đều có môn tiếng Trung Quốc.\n• 一年级、二年级和三年级都有汉语课。— Lớp một, lớp hai và lớp ba đều có môn tiếng Trung Quốc.\n• 他们都是新老师。— Họ đều là giáo viên mới.\n• 都有，都是 — đều có, đều là\n\n4) “还” CHỈ SỰ BỔ SUNG:\n• 还有，还要 — còn có, còn phải\n• 我们班有两个张老师，一个是男老师，还有一个是女老师。— Lớp chúng em có hai thầy cô họ Trương, một người là thầy giáo, còn người kia là cô giáo.",
+      "vocab": [
+        {
+          "hanzi": "年级",
+          "pinyin": "niánjí",
+          "meaning": "lớp",
+          "example": {
+            "zh": "几年级",
+            "pinyin": "jǐ niánjí",
+            "vi": "lớp mấy"
+          }
+        },
+        {
+          "hanzi": "课",
+          "pinyin": "kè",
+          "meaning": "giờ học, môn, bài",
+          "example": {
+            "zh": "汉语课",
+            "pinyin": "Hànyǔ kè",
+            "vi": "môn tiếng Trung Quốc"
+          }
+        },
+        {
+          "hanzi": "都",
+          "pinyin": "dōu",
+          "meaning": "đều",
+          "example": {
+            "zh": "都有，都是",
+            "pinyin": "dōu yǒu, dōu shì",
+            "vi": "đều có, đều là"
+          }
+        },
+        {
+          "hanzi": "班",
+          "pinyin": "bān",
+          "meaning": "lớp học",
+          "example": {
+            "zh": "我们班",
+            "pinyin": "wǒmen bān",
+            "vi": "lớp chúng em"
+          }
+        },
+        {
+          "hanzi": "张",
+          "pinyin": "Zhāng",
+          "meaning": "Trương (họ)",
+          "example": {
+            "zh": "张老师",
+            "pinyin": "Zhāng lǎoshī",
+            "vi": "thầy/cô Trương"
+          }
+        },
+        {
+          "hanzi": "还",
+          "pinyin": "hái",
+          "meaning": "còn, vẫn còn",
+          "example": {
+            "zh": "还有，还要",
+            "pinyin": "hái yǒu, hái yào",
+            "vi": "còn có, còn phải"
+          }
+        },
+        {
+          "hanzi": "新",
+          "pinyin": "xīn",
+          "meaning": "mới",
+          "example": {
+            "zh": "新老师，新的",
+            "pinyin": "xīn lǎoshī, xīn de",
+            "vi": "giáo viên mới, cái mới"
+          }
+        },
+        {
+          "hanzi": "男",
+          "pinyin": "nán",
+          "meaning": "thuộc về nam giới",
+          "example": {
+            "zh": "一个是男老师。",
+            "pinyin": "Yí ge shì nán lǎoshī.",
+            "vi": "Một người là thầy giáo."
+          }
+        },
+        {
+          "hanzi": "女",
+          "pinyin": "nǚ",
+          "meaning": "thuộc về nữ giới",
+          "example": {
+            "zh": "还有一个是女老师。",
+            "pinyin": "Hái yǒu yí ge shì nǚ lǎoshī.",
+            "vi": "Còn người kia là cô giáo."
+          }
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Bạn thích môn thể thao nào?",
+      "title_zh": "你喜欢什么运动？",
+      "summary": "Hỏi nhau thích môn thể thao nào ở sân trường và xin nhập hội đá bóng cùng các bạn.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 太好了！(Tài hǎo le!) — Tốt quá!\n• 我和你们一起踢，好吗？(Wǒ hé nǐmen yìqǐ tī, hǎo ma?) — Tớ cùng chơi bóng đá với các cậu được không?\n\n2) HỎI SỞ THÍCH: “你喜欢什么 + danh từ?”:\n• 你喜欢什么运动？— Bạn thích môn thể thao nào?\n• 我喜欢游泳，还喜欢打篮球。— Mình thích bơi lội, còn thích chơi bóng rổ nữa.\n\n3) CẢM THÁN “太……了!”:\n• 太好了，太大了 — tốt quá, to quá\n\n4) “A 和 B 一起 + động từ” CHỈ CÙNG LÀM:\n• 一起玩，一起学习 — cùng chơi, cùng học\n• 我和你们一起踢，好吗？— Tớ cùng chơi bóng đá với các cậu được không?\n\n5) “每” + LƯỢNG TỪ, THƯỜNG ĐI VỚI “都”:\n• 每天，每个人 — mỗi ngày, mỗi người\n• 我们每天都在学校踢足球。— Ngày nào bọn mình cũng đá bóng ở trường.",
+      "vocab": [
+        {
+          "hanzi": "运动",
+          "pinyin": "yùndòng",
+          "meaning": "môn thể thao; tập thể dục/thể thao",
+          "example": {
+            "zh": "你喜欢什么运动？",
+            "pinyin": "Nǐ xǐhuan shénme yùndòng?",
+            "vi": "Bạn thích môn thể thao nào?"
+          }
+        },
+        {
+          "hanzi": "游泳",
+          "pinyin": "yóu yǒng",
+          "meaning": "bơi lội",
+          "example": {
+            "zh": "我喜欢游泳。",
+            "pinyin": "Wǒ xǐhuan yóuyǒng.",
+            "vi": "Mình thích bơi lội."
+          }
+        },
+        {
+          "hanzi": "打篮球",
+          "pinyin": "dǎ lánqiú",
+          "meaning": "chơi bóng rổ",
+          "example": {
+            "zh": "还喜欢打篮球。",
+            "pinyin": "Hái xǐhuan dǎ lánqiú.",
+            "vi": "Còn thích chơi bóng rổ nữa."
+          }
+        },
+        {
+          "hanzi": "踢足球",
+          "pinyin": "tī zúqiú",
+          "meaning": "chơi bóng đá",
+          "example": {
+            "zh": "你喜欢踢足球？",
+            "pinyin": "Nǐ xǐhuan tī zúqiú?",
+            "vi": "Bạn thích chơi bóng đá à?"
+          }
+        },
+        {
+          "hanzi": "太",
+          "pinyin": "tài",
+          "meaning": "quá, lắm (太……了)",
+          "example": {
+            "zh": "太好了，太大了",
+            "pinyin": "tài hǎo le, tài dà le",
+            "vi": "tốt quá, to quá"
+          }
+        },
+        {
+          "hanzi": "每",
+          "pinyin": "měi",
+          "meaning": "mỗi",
+          "example": {
+            "zh": "每天，每个人",
+            "pinyin": "měi tiān, měi ge rén",
+            "vi": "mỗi ngày, mỗi người"
+          }
+        },
+        {
+          "hanzi": "一起",
+          "pinyin": "yìqǐ",
+          "meaning": "cùng",
+          "example": {
+            "zh": "一起玩，一起学习",
+            "pinyin": "yìqǐ wán, yìqǐ xuéxí",
+            "vi": "cùng chơi, cùng học"
+          }
+        },
+        {
+          "hanzi": "欢迎",
+          "pinyin": "huānyíng",
+          "meaning": "hoan nghênh, chào mừng",
+          "example": {
+            "zh": "欢迎你",
+            "pinyin": "huānyíng nǐ",
+            "vi": "hoan nghênh bạn"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Tớ đang vẽ tranh.",
+      "title_zh": "我在画画儿呢。",
+      "summary": "Nói về việc đang diễn ra: cô bé đang vẽ tranh mặt trời và mặt trăng chạy bộ; ông bà đang ca hát, nhảy múa trong công viên.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 我在画画儿呢。(Wǒ zài huà huàr ne.) — Tớ đang vẽ tranh.\n• 让我看看。(Ràng wǒ kànkan.) — Cho mình xem với.\n\n2) DIỄN TẢ VIỆC ĐANG DIỄN RA: “（正）在 + động từ + 呢” — có thể dùng đủ cả 在……呢 hoặc chỉ một trong hai:\n• 你在做什么呢？— Cậu đang làm gì thế?\n• 我在画画儿呢。— Tớ đang vẽ tranh.\n• 太阳和月亮在跑步。— Mặt trời và mặt trăng đang chạy bộ.\n• 爷爷唱歌呢，奶奶跳舞呢。— Ông đang ca hát, bà đang nhảy múa.\n\n3) CÂU KIÊM NGỮ VỚI “让”: “让 + ai + động từ”:\n• 让我说，让我看看 — cho tớ nói, cho tớ xem\n• 让我看看，你画的是什么？— Cho mình xem với, cậu vẽ cái gì vậy?\n\n4) LẶP LẠI ĐỘNG TỪ ĐỂ NÓI NHẸ NHÀNG:\n• 看看 — xem một chút\n• 说说 — nói một chút",
+      "vocab": [
+        {
+          "hanzi": "太阳",
+          "pinyin": "tàiyáng",
+          "meaning": "mặt trời",
+          "example": {
+            "zh": "太阳和月亮在跑步。",
+            "pinyin": "Tàiyáng hé yuèliang zài pǎobù.",
+            "vi": "Mặt trời và mặt trăng đang chạy bộ."
+          }
+        },
+        {
+          "hanzi": "月亮",
+          "pinyin": "yuèliang",
+          "meaning": "mặt trăng",
+          "example": {
+            "zh": "太阳和月亮在跑步。",
+            "pinyin": "Tàiyáng hé yuèliang zài pǎobù.",
+            "vi": "Mặt trời và mặt trăng đang chạy bộ."
+          }
+        },
+        {
+          "hanzi": "跑步",
+          "pinyin": "pǎo bù",
+          "meaning": "chạy bộ",
+          "example": {
+            "zh": "太阳和月亮在跑步。",
+            "pinyin": "Tàiyáng hé yuèliang zài pǎobù.",
+            "vi": "Mặt trời và mặt trăng đang chạy bộ."
+          }
+        },
+        {
+          "hanzi": "爷爷",
+          "pinyin": "yéye",
+          "meaning": "ông nội",
+          "example": {
+            "zh": "爷爷唱歌呢。",
+            "pinyin": "Yéye chànggē ne.",
+            "vi": "Ông đang ca hát."
+          }
+        },
+        {
+          "hanzi": "奶奶",
+          "pinyin": "nǎinai",
+          "meaning": "bà nội",
+          "example": {
+            "zh": "奶奶跳舞呢。",
+            "pinyin": "Nǎinai tiàowǔ ne.",
+            "vi": "Bà đang nhảy múa."
+          }
+        },
+        {
+          "hanzi": "唱歌",
+          "pinyin": "chàng gē",
+          "meaning": "ca hát",
+          "example": {
+            "zh": "爷爷唱歌呢。",
+            "pinyin": "Yéye chànggē ne.",
+            "vi": "Ông đang ca hát."
+          }
+        },
+        {
+          "hanzi": "跳舞",
+          "pinyin": "tiào wǔ",
+          "meaning": "múa, khiêu vũ",
+          "example": {
+            "zh": "奶奶跳舞呢。",
+            "pinyin": "Nǎinai tiàowǔ ne.",
+            "vi": "Bà đang nhảy múa."
+          }
+        },
+        {
+          "hanzi": "让",
+          "pinyin": "ràng",
+          "meaning": "để/cho/khiến (ai làm gì)",
+          "example": {
+            "zh": "让我说，让我看看",
+            "pinyin": "ràng wǒ shuō, ràng wǒ kànkan",
+            "vi": "cho tớ nói, cho tớ xem"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Alô, xin chào!",
+      "title_zh": "喂，您好！",
+      "summary": "Gọi điện thoại tìm người: bé gái gọi tìm mẹ ở bệnh viện, bạn khác gọi tìm cô giáo để hỏi bài.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 喂，您好！(Wèi, nín hǎo!) — Alô, xin chào!\n• 我找我妈妈。(Wǒ zhǎo wǒ māma.) — Cháu tìm mẹ ạ.\n\n2) MẪU CÂU GỌI ĐIỆN THOẠI:\n• 喂，您好！— Alô, xin chào!\n• 我找我妈妈。— Cháu tìm mẹ ạ.\n• 张老师在吗？— Cô Trương có ở đó không ạ?\n• 张老师回家了。— Cô Trương về nhà rồi.\n\n3) “您” — cách xưng hô lịch sự, trang trọng của 你:\n• 您好！— Xin chào ạ!\n• 可以问您吗？— Cháu hỏi cô được không ạ?\n\n4) HỎI CHỌN MỘT TRONG NHIỀU: “哪个?”:\n• 这儿有两个黄医生，你找哪个？— Ở đây có hai bác sĩ họ Hoàng, cháu tìm ai vậy?\n\n5) XIN PHÉP: “可以……吗?”:\n• 我有一个问题，可以问您吗？— Em có một câu hỏi, em hỏi cô được không ạ?",
+      "vocab": [
+        {
+          "hanzi": "喂",
+          "pinyin": "wèi",
+          "meaning": "alô (được dùng để trả lời điện thoại)",
+          "example": {
+            "zh": "喂，你好！",
+            "pinyin": "Wèi, nǐ hǎo!",
+            "vi": "Alô, xin chào!"
+          }
+        },
+        {
+          "hanzi": "您",
+          "pinyin": "nín",
+          "meaning": "ông, bà, cô... (ngôi thứ hai, cách nói trang trọng)",
+          "example": {
+            "zh": "您好！",
+            "pinyin": "Nín hǎo!",
+            "vi": "Xin chào ạ!"
+          }
+        },
+        {
+          "hanzi": "找",
+          "pinyin": "zhǎo",
+          "meaning": "tìm",
+          "example": {
+            "zh": "你找谁？",
+            "pinyin": "Nǐ zhǎo shéi?",
+            "vi": "Cháu tìm ai vậy?"
+          }
+        },
+        {
+          "hanzi": "回",
+          "pinyin": "huí",
+          "meaning": "về, trở về",
+          "example": {
+            "zh": "回家",
+            "pinyin": "huí jiā",
+            "vi": "về nhà"
+          }
+        },
+        {
+          "hanzi": "问题",
+          "pinyin": "wèntí",
+          "meaning": "vấn đề, câu hỏi",
+          "example": {
+            "zh": "我有一个问题。",
+            "pinyin": "Wǒ yǒu yí ge wèntí.",
+            "vi": "Em có một câu hỏi."
+          }
+        },
+        {
+          "hanzi": "问",
+          "pinyin": "wèn",
+          "meaning": "hỏi",
+          "example": {
+            "zh": "问老师，问问题",
+            "pinyin": "wèn lǎoshī, wèn wèntí",
+            "vi": "hỏi thầy cô, hỏi câu hỏi"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Cháu ăn thêm vài cái đi.",
+      "title_zh": "再吃几个。",
+      "summary": "Chuyện ăn uống với bà: cháu đói bụng xin mì sợi, bà làm bánh chẻo, cháu ăn no rồi thì thôi.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 我最爱吃饺子。(Wǒ zuì ài chī jiǎozi.) — Cháu thích ăn bánh chẻo nhất.\n• 再吃几个。(Zài chī jǐ ge.) — Cháu ăn thêm vài cái đi.\n\n2) “最” CHỈ MỨC ĐỘ CAO NHẤT:\n• 最爱吃饺子 — thích ăn bánh chẻo nhất\n• 我最爱吃奶奶做的饺子。— Cháu thích ăn bánh chẻo bà làm nhất.\n\n3) “再” CHỈ SỰ LẶP LẠI/THÊM NỮA — dùng cho việc CHƯA xảy ra:\n• 再吃一个。— Ăn thêm một cái nữa đi.\n• 再吃几个。— Ăn thêm vài cái đi.\n\n4) “几” CHỈ SỐ LƯỢNG KHÔNG XÁC ĐỊNH — ngoài nghĩa hỏi “mấy”, 几 còn có nghĩa “vài”:\n• 再吃几个 — ăn thêm vài cái\n\n5) CỤM DANH TỪ CÓ “的” LÀM ĐỊNH NGỮ:\n• 奶奶做的饺子 — bánh chẻo bà làm\n\n6) “太……了” VÀ TRẠNG THÁI MỚI VỚI “了”:\n• 饺子太好吃了！— Bánh chẻo ngon quá!\n• 我饿了。／ 我饱了。— Cháu đói rồi. / Cháu no rồi.\n• 不吃了，太饱了。— Cháu không ăn nữa, no quá rồi.",
+      "vocab": [
+        {
+          "hanzi": "面条儿",
+          "pinyin": "miàntiáor",
+          "meaning": "mì sợi",
+          "example": {
+            "zh": "有面条儿吗？",
+            "pinyin": "Yǒu miàntiáor ma?",
+            "vi": "Có mì sợi không ạ?"
+          }
+        },
+        {
+          "hanzi": "饺子",
+          "pinyin": "jiǎozi",
+          "meaning": "bánh chẻo",
+          "example": {
+            "zh": "奶奶做了饺子。",
+            "pinyin": "Nǎinai zuò le jiǎozi.",
+            "vi": "Bà làm bánh chẻo rồi."
+          }
+        },
+        {
+          "hanzi": "饿",
+          "pinyin": "è",
+          "meaning": "đói",
+          "example": {
+            "zh": "我饿了。",
+            "pinyin": "Wǒ è le.",
+            "vi": "Cháu đói rồi."
+          }
+        },
+        {
+          "hanzi": "想",
+          "pinyin": "xiǎng",
+          "meaning": "muốn, nghĩ",
+          "example": {
+            "zh": "想吃",
+            "pinyin": "xiǎng chī",
+            "vi": "muốn ăn"
+          }
+        },
+        {
+          "hanzi": "最",
+          "pinyin": "zuì",
+          "meaning": "... nhất",
+          "example": {
+            "zh": "最爱吃饺子",
+            "pinyin": "zuì ài chī jiǎozi",
+            "vi": "thích ăn bánh chẻo nhất"
+          }
+        },
+        {
+          "hanzi": "给",
+          "pinyin": "gěi",
+          "meaning": "cho (động từ)",
+          "example": {
+            "zh": "给你。",
+            "pinyin": "Gěi nǐ.",
+            "vi": "Cho cháu này."
+          }
+        },
+        {
+          "hanzi": "再",
+          "pinyin": "zài",
+          "meaning": "lại, lần nữa, hãy, sẽ",
+          "example": {
+            "zh": "再吃一个。",
+            "pinyin": "Zài chī yí ge.",
+            "vi": "Ăn thêm một cái nữa đi."
+          }
+        },
+        {
+          "hanzi": "饱",
+          "pinyin": "bǎo",
+          "meaning": "no",
+          "example": {
+            "zh": "我饱了。",
+            "pinyin": "Wǒ bǎo le.",
+            "vi": "Cháu no rồi."
+          }
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Em tự mặc được.",
+      "title_zh": "我能自己穿。",
+      "summary": "Chị giúp em mặc quần áo buổi sáng nhưng em muốn tự làm; em hỏi mượn giày của chị nhưng chân em nhỏ quá.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 我帮你，好不好？(Wǒ bāng nǐ, hǎo bu hǎo?) — Chị giúp em nhé?\n• 我能自己穿。(Wǒ néng zìjǐ chuān.) — Em tự mặc được.\n\n2) HỎI Ý KIẾN: “……，好不好?” — dạng chính phản của 好吗:\n• 我帮你，好不好？— Chị giúp em nhé?\n• 我帮你穿衣服，好不好？— Chị giúp em mặc quần áo nhé?\n\n3) TRỢ ĐỘNG TỪ “能” CHỈ KHẢ NĂNG — dạng chính phản là 能不能, phủ định là 不能:\n• 能不能 — có được không\n• 我能自己穿。— Em tự mặc được.\n• 我能穿你的鞋吗？— Em mang giày của chị được không?\n• 不能。我的鞋大，你的脚小。— Không được. Giày của chị to, chân em nhỏ.\n\n4) “自己” CHỈ TỰ MÌNH LÀM:\n• 自己穿，我自己 — tự mặc, chính mình\n\n5) HỎI VỊ TRÍ VÀ TRẢ LỜI: “……在哪儿?” — “在 + nơi chốn”:\n• 你的鞋在哪儿？— Giày của chị ở đâu?\n• 在桌子下边。— Ở dưới gầm bàn.",
+      "vocab": [
+        {
+          "hanzi": "衣服",
+          "pinyin": "yīfu",
+          "meaning": "quần áo, áo",
+          "example": {
+            "zh": "穿衣服",
+            "pinyin": "chuān yīfu",
+            "vi": "mặc quần áo"
+          }
+        },
+        {
+          "hanzi": "鞋",
+          "pinyin": "xié",
+          "meaning": "giày",
+          "example": {
+            "zh": "穿鞋",
+            "pinyin": "chuān xié",
+            "vi": "mang giày"
+          }
+        },
+        {
+          "hanzi": "帮（助）",
+          "pinyin": "bāng (zhù)",
+          "meaning": "giúp",
+          "example": {
+            "zh": "我帮你。",
+            "pinyin": "Wǒ bāng nǐ.",
+            "vi": "Chị giúp em."
+          }
+        },
+        {
+          "hanzi": "穿",
+          "pinyin": "chuān",
+          "meaning": "mặc, mang, đeo",
+          "example": {
+            "zh": "穿衣服，穿鞋",
+            "pinyin": "chuān yīfu, chuān xié",
+            "vi": "mặc quần áo, mang giày"
+          }
+        },
+        {
+          "hanzi": "能",
+          "pinyin": "néng",
+          "meaning": "có thể, được (có khả năng)",
+          "example": {
+            "zh": "能不能",
+            "pinyin": "néng bu néng",
+            "vi": "có được không"
+          }
+        },
+        {
+          "hanzi": "自己",
+          "pinyin": "zìjǐ",
+          "meaning": "tự mình, bản thân",
+          "example": {
+            "zh": "自己穿，我自己",
+            "pinyin": "zìjǐ chuān, wǒ zìjǐ",
+            "vi": "tự mặc, chính mình"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Sinh nhật vui vẻ!",
+      "title_zh": "生日快乐！",
+      "summary": "Hai chị em bàn nhau tặng quà gì cho mẹ nhân sinh nhật, rồi cả nhà mừng sinh nhật mẹ với hoa và bánh ga-tô.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 我们给妈妈做一个蛋糕吧。(Wǒmen gěi māma zuò yí ge dàngāo ba.) — Chúng ta làm một cái bánh ga-tô cho mẹ đi.\n• 我不会做蛋糕，但是我会画蛋糕。(Wǒ bú huì zuò dàngāo, dànshì wǒ huì huà dàngāo.) — Em không biết làm bánh ga-tô nhưng biết vẽ bánh ga-tô.\n\n2) GIỚI TỪ “给”: “给 + ai + động từ” — làm việc gì cho ai:\n• 给妈妈做蛋糕，给他打电话 — làm bánh cho mẹ, gọi điện cho anh ấy\n\n3) TRỢ TỪ NGỮ KHÍ “吧” — đặt cuối câu để đề nghị, rủ rê:\n• 说吧，来吧 — nói đi, đến đi\n• 我们给妈妈做一个蛋糕吧。— Chúng ta làm một cái bánh ga-tô cho mẹ đi.\n\n4) “但是” NỐI HAI Ý ĐỐI LẬP:\n• 这个蛋糕好吃，但是不好看。— Cái bánh này ngon nhưng không đẹp.\n• 我不会做蛋糕，但是我会画蛋糕。— Em không biết làm bánh nhưng biết vẽ bánh.\n\n5) “送 + ai + cái gì” — tặng ai vật gì:\n• 送你一个礼物 — tặng bạn một món quà\n• 我们送她什么礼物？— Chúng ta tặng mẹ món quà gì?\n\n6) CHÚC MỪNG:\n• 生日快乐！— Sinh nhật vui vẻ!",
+      "vocab": [
+        {
+          "hanzi": "礼物",
+          "pinyin": "lǐwù",
+          "meaning": "quà biếu, quà tặng",
+          "example": {
+            "zh": "我们送她什么礼物？",
+            "pinyin": "Wǒmen sòng tā shénme lǐwù?",
+            "vi": "Chúng ta tặng mẹ món quà gì?"
+          }
+        },
+        {
+          "hanzi": "花",
+          "pinyin": "huā",
+          "meaning": "hoa",
+          "example": {
+            "zh": "这是我们送您的花。",
+            "pinyin": "Zhè shì wǒmen sòng nín de huā.",
+            "vi": "Đây là hoa chúng con tặng mẹ."
+          }
+        },
+        {
+          "hanzi": "蛋糕",
+          "pinyin": "dàngāo",
+          "meaning": "bánh ga-tô, bánh ngọt",
+          "example": {
+            "zh": "我们给妈妈做一个蛋糕吧。",
+            "pinyin": "Wǒmen gěi māma zuò yí ge dàngāo ba.",
+            "vi": "Chúng ta làm một cái bánh ga-tô cho mẹ đi."
+          }
+        },
+        {
+          "hanzi": "生日",
+          "pinyin": "shēngrì",
+          "meaning": "sinh nhật",
+          "example": {
+            "zh": "你的生日",
+            "pinyin": "nǐ de shēngrì",
+            "vi": "sinh nhật của bạn"
+          }
+        },
+        {
+          "hanzi": "送",
+          "pinyin": "sòng",
+          "meaning": "giao, đưa",
+          "example": {
+            "zh": "送你一个礼物",
+            "pinyin": "sòng nǐ yí ge lǐwù",
+            "vi": "tặng bạn một món quà"
+          }
+        },
+        {
+          "hanzi": "给",
+          "pinyin": "gěi",
+          "meaning": "cho (giới từ, dùng sau động từ)",
+          "example": {
+            "zh": "给妈妈做蛋糕，给他打电话",
+            "pinyin": "gěi māma zuò dàngāo, gěi tā dǎ diànhuà",
+            "vi": "làm bánh cho mẹ, gọi điện cho anh ấy"
+          }
+        },
+        {
+          "hanzi": "吧",
+          "pinyin": "ba",
+          "meaning": "trợ từ ngữ khí, dùng ở cuối câu để diễn tả sự thương lượng, lời đề nghị, thỉnh cầu hay mệnh lệnh",
+          "example": {
+            "zh": "说吧，来吧",
+            "pinyin": "shuō ba, lái ba",
+            "vi": "nói đi, đến đi"
+          }
+        },
+        {
+          "hanzi": "但是",
+          "pinyin": "dànshì",
+          "meaning": "nhưng, nhưng mà",
+          "example": {
+            "zh": "这个蛋糕好吃，但是不好看。",
+            "pinyin": "Zhège dàngāo hǎochī, dànshì bù hǎokàn.",
+            "vi": "Cái bánh này ngon nhưng không đẹp."
+          }
+        },
+        {
+          "hanzi": "快乐",
+          "pinyin": "kuàilè",
+          "meaning": "vui vẻ",
+          "example": {
+            "zh": "生日快乐！",
+            "pinyin": "Shēngrì kuàilè!",
+            "vi": "Sinh nhật vui vẻ!"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Tuyết rơi rồi.",
+      "title_zh": "下雪了。",
+      "summary": "Hai anh em vui mừng vì tuyết rơi và rủ nhau ra ngoài chơi; cậu em nhờ chị ở nhà giúp làm bài tập vì trời đổ mưa.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 外面很冷吧？(Wàimian hěn lěng ba?) — Chắc bên ngoài lạnh lắm nhỉ?\n• 别出去跑步了。(Bié chūqu pǎobù le.) — Đừng ra ngoài chạy bộ nữa.\n\n2) TRỢ TỪ “吧” CHỈ SỰ PHỎNG ĐOÁN — đặt cuối câu, nghĩa “chắc là… nhỉ?”:\n• 外面很冷吧？— Chắc bên ngoài lạnh lắm nhỉ?\n\n3) CÂU CẦU KHIẾN PHỦ ĐỊNH: “别 + động từ + 了”:\n• 别吃，别跑 — đừng ăn, đừng chạy\n• 别出去跑步了。— Đừng ra ngoài chạy bộ nữa.\n\n4) HIỆN TƯỢNG THỜI TIẾT + “了” CHỈ SỰ VIỆC MỚI XẢY RA:\n• 下雪了！— Tuyết rơi rồi!\n• 外面下雨了。— Bên ngoài mưa rồi.\n\n5) BỔ NGỮ CHỈ PHƯƠNG HƯỚNG “出去 / 出来”:\n• 出去，出来 — ra ngoài, đi ra\n• 我们出去玩！— Chúng ta ra ngoài chơi thôi!\n\n6) “还” HỎI VIỆC CÓ TIẾP TỤC HAY KHÔNG:\n• 你还去跑步吗？— Cậu vẫn đi chạy bộ à?",
+      "vocab": [
+        {
+          "hanzi": "下雪",
+          "pinyin": "xiàxuě",
+          "meaning": "tuyết rơi",
+          "example": {
+            "zh": "哥哥，你看，下雪了！",
+            "pinyin": "Gēge, nǐ kàn, xiàxuě le!",
+            "vi": "Anh ơi, anh xem, tuyết rơi rồi!"
+          }
+        },
+        {
+          "hanzi": "听",
+          "pinyin": "tīng",
+          "meaning": "nghe",
+          "example": {
+            "zh": "你听，外面下雨了。",
+            "pinyin": "Nǐ tīng, wàimian xiàyǔ le.",
+            "vi": "Chị nghe này, bên ngoài mưa rồi."
+          }
+        },
+        {
+          "hanzi": "下雨",
+          "pinyin": "xià yǔ",
+          "meaning": "có mưa, đổ mưa",
+          "example": {
+            "zh": "外面下雨了。",
+            "pinyin": "Wàimian xiàyǔ le.",
+            "vi": "Bên ngoài mưa rồi."
+          }
+        },
+        {
+          "hanzi": "外面",
+          "pinyin": "wàimian",
+          "meaning": "bên ngoài, phía ngoài",
+          "example": {
+            "zh": "在外面",
+            "pinyin": "zài wàimian",
+            "vi": "ở bên ngoài"
+          }
+        },
+        {
+          "hanzi": "出",
+          "pinyin": "chū",
+          "meaning": "ra, ra ngoài",
+          "example": {
+            "zh": "出去，出来",
+            "pinyin": "chūqu, chūlai",
+            "vi": "ra ngoài, đi ra"
+          }
+        },
+        {
+          "hanzi": "别",
+          "pinyin": "bié",
+          "meaning": "đừng, chớ",
+          "example": {
+            "zh": "别吃，别跑",
+            "pinyin": "bié chī, bié pǎo",
+            "vi": "đừng ăn, đừng chạy"
+          }
+        },
+        {
+          "hanzi": "作业",
+          "pinyin": "zuòyè",
+          "meaning": "bài tập về nhà",
+          "example": {
+            "zh": "做作业",
+            "pinyin": "zuò zuòyè",
+            "vi": "làm bài tập về nhà"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Cười lên đi!",
+      "title_zh": "笑一笑！",
+      "summary": "Cậu bé khóc vì mất con gấu trúc bông; chị gái an ủi, cùng đi tìm và cuối cùng đã tìm được.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 什么东西丢了？(Shénme dōngxi diū le?) — Mất thứ gì vậy?\n• 笑一笑！(Xiào yi xiào!) — Cười lên đi!\n\n2) LẶP LẠI ĐỘNG TỪ DẠNG “A 一 A” — diễn tả làm gì đó một chút, nhẹ nhàng:\n• 笑一笑 — cười một cái\n• 找一找 — tìm một chút\n• 我们一起找一找。— Chúng ta cùng tìm một chút nào.\n\n3) BỔ NGỮ CHỈ KẾT QUẢ “到” — đặt sau động từ, cho biết hành động đạt kết quả:\n• 看到，找到 — nhìn thấy, tìm được\n• 找到了！— Tìm được rồi!\n\n4) HỎI NGUYÊN NHÂN: “怎么 + động từ + 了?”:\n• 你怎么哭了？— Sao em lại khóc thế?\n\n5) “东西” VÀ CÂU CÓ “丢了”:\n• 买东西，找东西 — mua đồ, tìm đồ\n• 我的东西丢了。— Đồ của em bị mất rồi.\n• 我的熊猫丢了。— Con gấu trúc của em bị mất rồi.",
+      "vocab": [
+        {
+          "hanzi": "哭",
+          "pinyin": "kū",
+          "meaning": "khóc",
+          "example": {
+            "zh": "你怎么哭了？",
+            "pinyin": "Nǐ zěnme kū le?",
+            "vi": "Sao em lại khóc thế?"
+          }
+        },
+        {
+          "hanzi": "笑",
+          "pinyin": "xiào",
+          "meaning": "cười",
+          "example": {
+            "zh": "笑一笑吧！",
+            "pinyin": "Xiào yi xiào ba!",
+            "vi": "Cười lên nào!"
+          }
+        },
+        {
+          "hanzi": "东西",
+          "pinyin": "dōngxi",
+          "meaning": "đồ vật, vật, đồ",
+          "example": {
+            "zh": "买东西，找东西",
+            "pinyin": "mǎi dōngxi, zhǎo dōngxi",
+            "vi": "mua đồ, tìm đồ"
+          }
+        },
+        {
+          "hanzi": "丢",
+          "pinyin": "diū",
+          "meaning": "mất",
+          "example": {
+            "zh": "东西丢了",
+            "pinyin": "dōngxi diū le",
+            "vi": "đồ bị mất rồi"
+          }
+        },
+        {
+          "hanzi": "到",
+          "pinyin": "dào",
+          "meaning": "được (bổ ngữ chỉ kết quả được dùng sau động từ)",
+          "example": {
+            "zh": "看到，找到",
+            "pinyin": "kàndào, zhǎodào",
+            "vi": "nhìn thấy, tìm được"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Ai chạy nhanh?",
+      "title_zh": "谁跑得快？",
+      "summary": "Các con vật xem cuộc thi chạy của bầy hổ và đoán xem con nào chạy nhanh nhất; cuối cùng chú hổ béo về nhất.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 谁跑得快？(Shéi pǎo de kuài?) — Ai chạy nhanh?\n• 胖的第一。(Pàngde dì yī.) — Chú hổ béo về nhất.\n\n2) BỔ NGỮ CHỈ TRẠNG THÁI VỚI “得”: “động từ + 得 + tính từ” — nhận xét hành động làm thế nào:\n• 吃得多，说得很好 — ăn nhiều, nói rất hay\n• 谁跑得快？— Ai chạy nhanh?\n• 那只老虎最胖，但是跑得最快。— Con hổ đó béo nhất nhưng chạy nhanh nhất.\n\n3) CỤM TỪ CÓ “的” THAY CHO DANH TỪ — lược bỏ danh từ trung tâm:\n• 胖的第一，瘦的第三。— Con béo về nhất, con gầy về thứ ba.\n• 瘦的那只。— Con gầy kia.\n\n4) “些” CHỈ SỐ LƯỢNG KHÔNG XÁC ĐỊNH:\n• 这些，那些，一些 — những cái này, những cái kia, một vài\n• 这些老虎谁跑得快？— Trong đám hổ này con nào chạy nhanh?\n\n5) “第一” CHỈ THỨ TỰ:\n• 谁能跑第一？— Ai có thể về nhất?",
+      "vocab": [
+        {
+          "hanzi": "老虎",
+          "pinyin": "lǎohǔ",
+          "meaning": "hổ, cọp",
+          "example": {
+            "zh": "这些老虎谁跑得快？",
+            "pinyin": "Zhè xiē lǎohǔ shéi pǎo de kuài?",
+            "vi": "Trong đám hổ này con nào chạy nhanh?"
+          }
+        },
+        {
+          "hanzi": "第一",
+          "pinyin": "dì yī",
+          "meaning": "thứ nhất, đầu tiên",
+          "example": {
+            "zh": "你觉得谁能跑第一？",
+            "pinyin": "Nǐ juéde shéi néng pǎo dì yī?",
+            "vi": "Cậu nghĩ ai có thể về nhất?"
+          }
+        },
+        {
+          "hanzi": "胖",
+          "pinyin": "pàng",
+          "meaning": "béo, mập",
+          "example": {
+            "zh": "那只老虎最胖。",
+            "pinyin": "Nà zhī lǎohǔ zuì pàng.",
+            "vi": "Con hổ đó béo nhất."
+          }
+        },
+        {
+          "hanzi": "瘦",
+          "pinyin": "shòu",
+          "meaning": "gầy, gầy còm",
+          "example": {
+            "zh": "瘦的那只。",
+            "pinyin": "Shòude nà zhī.",
+            "vi": "Con gầy kia."
+          }
+        },
+        {
+          "hanzi": "些",
+          "pinyin": "xiē",
+          "meaning": "một ít, một vài",
+          "example": {
+            "zh": "这些，那些，一些",
+            "pinyin": "zhè xiē, nà xiē, yìxiē",
+            "vi": "những cái này, những cái kia, một vài"
+          }
+        },
+        {
+          "hanzi": "得",
+          "pinyin": "de",
+          "meaning": "được dùng sau động từ hay tính từ, theo sau 得 là bổ ngữ chỉ kết quả hay mức độ",
+          "example": {
+            "zh": "吃得多，说得很好",
+            "pinyin": "chī de duō, shuō de hěn hǎo",
+            "vi": "ăn nhiều, nói rất hay"
+          }
+        },
+        {
+          "hanzi": "快",
+          "pinyin": "kuài",
+          "meaning": "nhanh",
+          "example": {
+            "zh": "跑得快",
+            "pinyin": "pǎo de kuài",
+            "vi": "chạy nhanh"
+          }
+        },
+        {
+          "hanzi": "知道",
+          "pinyin": "zhīdào",
+          "meaning": "biết",
+          "example": {
+            "zh": "你知道吗？不知道。",
+            "pinyin": "Nǐ zhīdào ma? Bù zhīdào.",
+            "vi": "Cậu biết không? Không biết."
+          }
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "title": "Mẹ đưa kẹo cho em (trai) rồi.",
+      "title_zh": "妈妈把糖给弟弟了。",
+      "summary": "Bữa sáng trong gia đình và chuyện túi kẹo Halloween: em trai đã đem hết kẹo của cả nhà cho bạn học.",
+      "grammar": "1) NHỮNG CÂU QUAN TRỌNG:\n• 把西瓜给我。(Bǎ xīguā gěi wǒ.) — Đưa dưa hấu cho anh.\n• 妈妈把糖给弟弟了。(Māma bǎ táng gěi dìdi le.) — Mẹ đưa kẹo cho em (trai) rồi.\n\n2) CÂU CÓ TỪ “把”: “把 + đồ vật + 给 + người” — đưa vật gì cho ai. Đồ vật phải là vật xác định, cả người nói và người nghe đều biết:\n• 把面包给妈妈 — đưa bánh mì cho mẹ\n• 把西瓜给我吧。— Đưa dưa hấu cho anh đi.\n• 爸爸，把糖给我吧。— Ba ơi, đưa kẹo cho con đi.\n• 妈妈把糖给弟弟了。— Mẹ đưa kẹo cho em trai rồi.\n• 弟弟把我们的糖都给那个同学了。— Em trai đem hết kẹo của nhà mình cho bạn học đó rồi.\n\n3) “都” TRONG CÂU CÓ “把” — đặt sau tân ngữ của 把, trước động từ:\n• 弟弟把我们的糖都给那个同学了。— Em trai đưa hết chỗ kẹo của nhà mình cho bạn học đó.\n\n4) HỎI VỊ TRÍ NGẮN GỌN: “danh từ + 呢?”:\n• 弟弟呢？— Em trai đâu rồi?\n• 在外面。— Ở bên ngoài.",
+      "vocab": [
+        {
+          "hanzi": "水果",
+          "pinyin": "shuǐguǒ",
+          "meaning": "trái cây",
+          "example": {
+            "zh": "要水果吗？",
+            "pinyin": "Yào shuǐguǒ ma?",
+            "vi": "Anh ăn trái cây không?"
+          }
+        },
+        {
+          "hanzi": "糖",
+          "pinyin": "táng",
+          "meaning": "kẹo",
+          "example": {
+            "zh": "妈妈把糖给弟弟了。",
+            "pinyin": "Māma bǎ táng gěi dìdi le.",
+            "vi": "Mẹ đưa kẹo cho em trai rồi."
+          }
+        },
+        {
+          "hanzi": "西瓜",
+          "pinyin": "xīguā",
+          "meaning": "dưa hấu",
+          "example": {
+            "zh": "把西瓜给我吧。",
+            "pinyin": "Bǎ xīguā gěi wǒ ba.",
+            "vi": "Đưa dưa hấu cho anh đi."
+          }
+        },
+        {
+          "hanzi": "鸡蛋",
+          "pinyin": "jīdàn",
+          "meaning": "trứng gà",
+          "example": {
+            "zh": "我吃面包和鸡蛋。",
+            "pinyin": "Wǒ chī miànbāo hé jīdàn.",
+            "vi": "Anh ăn bánh mì và trứng gà."
+          }
+        },
+        {
+          "hanzi": "把",
+          "pinyin": "bǎ",
+          "meaning": "(được dùng cho vật có cán hoặc tay cầm) con, cây",
+          "example": {
+            "zh": "把面包给妈妈",
+            "pinyin": "bǎ miànbāo gěi māma",
+            "vi": "đưa bánh mì cho mẹ"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "title": "Ôn tập",
+      "title_zh": "复习",
+      "summary": "Bài ôn tập cuối sách, không có từ mới: gọi tên các hình rồi xếp từ vào bốn nhóm chủ đề (thể thao và giải trí, thiên nhiên, cảm xúc, thức ăn); ôn lại toàn bộ mẫu câu của bài 1–11: khối lớp và môn học, sở thích thể thao, việc đang diễn ra với 在……呢, gọi điện thoại, 最 và 再, 能 / 自己, 给 và 吧, 别……了 và thời tiết, lặp lại động từ và bổ ngữ 到, bổ ngữ trạng thái với 得, câu có 把."
+    }
+  ]
+}

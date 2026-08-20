@@ -18,9 +18,11 @@
  *   }]
  * }
  * Import lặp lại được (idempotent): giáo trình khớp theo code, bài theo
- * unit, từ vựng khớp kho chung theo hanzi — từ đã có được cập nhật lại
- * pinyin / nghĩa / ví dụ theo file (import sau cùng thắng), câu hỏi trùng
- * nội dung thì bỏ qua (không xóa câu cũ để không vỡ bài tập đã giao).
+ * unit, từ vựng khớp kho chung theo BỘ BA hanzi + pinyin + nghĩa — nhờ vậy
+ * một chữ Hán nhiều nghĩa được giữ thành nhiều mục riêng (还 hái "cũng, khá"
+ * và 还 huán "trả" là hai từ khác nhau) thay vì giáo trình import sau ghi đè
+ * nghĩa của giáo trình trước; câu hỏi trùng nội dung thì bỏ qua (không xóa
+ * câu cũ để không vỡ bài tập đã giao).
  *
  * Cập nhật MỀM: với bài đã tồn tại, chỉ ghi đè field có mặt trong payload
  * (summary/grammar/... không khai báo thì giữ nguyên); "vocab" không khai
@@ -285,39 +287,44 @@ export async function importTextbook(
     }
   }
 
-  // 3. Từ vựng: tái dùng kho chung theo hanzi, thiếu thì thêm mới
+  // 3. Từ vựng: tái dùng kho chung theo (hanzi + pinyin + nghĩa), thiếu thì
+  //    thêm mới. Khớp cả ba trường nên MỘT CHỮ HÁN NHIỀU NGHĨA giữ được các
+  //    mục riêng (还 hái "cũng, khá" và 还 huán "trả" là hai từ khác nhau),
+  //    không còn cảnh giáo trình import sau ghi đè nghĩa của giáo trình trước.
   progress("Đang nạp từ vựng...");
   const allVocab = payload.lessons.flatMap((l) => l.vocab ?? []);
-  const vocabIdByHanzi = new Map<string, string>();
+  const vocabKey = (v: { hanzi: string; pinyin: string; meaning: string }) =>
+    `${v.hanzi.trim()}|${v.pinyin.trim()}|${v.meaning.trim()}`;
+  const vocabIdByKey = new Map<string, string>();
   if (allVocab.length) {
     const hanziList = [...new Set(allVocab.map((v) => v.hanzi.trim()))];
     const { data: existingVocab, error: vErr } = await supabase
-      .from("vocab_items").select("id, hanzi").in("hanzi", hanziList);
+      .from("vocab_items").select("id, hanzi, pinyin, meaning").in("hanzi", hanziList);
     if (vErr) throw vErr;
     for (const v of existingVocab ?? []) {
-      if (!vocabIdByHanzi.has(v.hanzi)) vocabIdByHanzi.set(v.hanzi, v.id);
+      const key = vocabKey(v as { hanzi: string; pinyin: string; meaning: string });
+      if (!vocabIdByKey.has(key)) vocabIdByKey.set(key, v.id as string);
     }
-    result.vocabReused = vocabIdByHanzi.size;
 
-    // Từ đã có trong kho: cập nhật pinyin / nghĩa (và ví dụ nếu file có khai
-    // báo) theo payload, để import giáo trình chuẩn hơn làm mới được nghĩa cũ.
-    if (vocabIdByHanzi.size) {
-      progress("Đang cập nhật nghĩa từ vựng có sẵn...");
-      const payloadByHanzi = new Map<string, TextbookImportVocab>();
-      for (const v of allVocab) {
-        const hanzi = v.hanzi.trim();
-        if (!payloadByHanzi.has(hanzi)) payloadByHanzi.set(hanzi, v);
-      }
-      for (const [hanzi, id] of vocabIdByHanzi) {
-        const v = payloadByHanzi.get(hanzi);
-        if (!v) continue;
-        const fields: Record<string, unknown> = {
-          pinyin: v.pinyin.trim(),
-          meaning: v.meaning.trim(),
-        };
+    // Từ khớp sẵn: chỉ làm mới ví dụ / audio nếu file có khai báo. Pinyin và
+    // nghĩa đã nằm trong khóa nên không cần (và không được) ghi đè.
+    const payloadByKey = new Map<string, TextbookImportVocab>();
+    for (const v of allVocab) {
+      const key = vocabKey(v);
+      if (!payloadByKey.has(key)) payloadByKey.set(key, v);
+    }
+    const reusedKeys = [...vocabIdByKey.keys()].filter((k) => payloadByKey.has(k));
+    result.vocabReused = reusedKeys.length;
+    if (reusedKeys.length) {
+      progress("Đang cập nhật ví dụ từ vựng có sẵn...");
+      for (const key of reusedKeys) {
+        const v = payloadByKey.get(key)!;
+        const fields: Record<string, unknown> = {};
         if (v.example !== undefined) fields.example = v.example;
         if (v.audio_url !== undefined) fields.audio_url = v.audio_url;
-        const { error } = await supabase.from("vocab_items").update(fields).eq("id", id);
+        if (!Object.keys(fields).length) continue;
+        const { error } = await supabase
+          .from("vocab_items").update(fields).eq("id", vocabIdByKey.get(key)!);
         if (error) throw error;
       }
     }
@@ -325,9 +332,9 @@ export async function importTextbook(
     const missing: TextbookImportVocab[] = [];
     const seen = new Set<string>();
     for (const v of allVocab) {
-      const hanzi = v.hanzi.trim();
-      if (vocabIdByHanzi.has(hanzi) || seen.has(hanzi)) continue;
-      seen.add(hanzi);
+      const key = vocabKey(v);
+      if (vocabIdByKey.has(key) || seen.has(key)) continue;
+      seen.add(key);
       missing.push(v);
     }
     if (missing.length) {
@@ -343,9 +350,11 @@ export async function importTextbook(
           tags: [tb.code.trim()],
           created_by: createdBy,
         })))
-        .select("id, hanzi");
+        .select("id, hanzi, pinyin, meaning");
       if (error) throw error;
-      for (const v of inserted ?? []) vocabIdByHanzi.set(v.hanzi, v.id);
+      for (const v of inserted ?? []) {
+        vocabIdByKey.set(vocabKey(v as { hanzi: string; pinyin: string; meaning: string }), v.id as string);
+      }
       result.vocabCreated = missing.length;
     }
   }
@@ -356,7 +365,7 @@ export async function importTextbook(
     if (lesson.vocab === undefined) continue;
     const lessonId = lessonIdByUnit.get(lesson.unit)!;
     const ids = lesson.vocab
-      .map((v) => vocabIdByHanzi.get(v.hanzi.trim()))
+      .map((v) => vocabIdByKey.get(vocabKey(v)))
       .filter((id): id is string => Boolean(id));
     const { error: delErr } = await supabase.from("lesson_vocab").delete().eq("lesson_id", lessonId);
     if (delErr) throw delErr;
