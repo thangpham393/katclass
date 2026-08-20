@@ -254,8 +254,10 @@ export default function ClassroomPage() {
   /* --- Phím tắt đổi công cụ (bỏ qua khi đang gõ vào ô nhập) --- */
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
+      // Đang gõ bằng bộ gõ tiếng Trung → phím thuộc về bộ gõ, không phải phím tắt
+      if (e.isComposing) return;
       const el = e.target as HTMLElement | null;
-      if (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)) return;
+      if (el && (["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName) || el.isContentEditable)) return;
       if (e.key === "Escape") {
         setOverlay(null);
         return;

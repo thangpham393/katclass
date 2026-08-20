@@ -39,6 +39,10 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
   const target = useRef<HTMLDivElement>(null);
   const writer = useRef<Writer | null>(null);
   const [char, setChar] = useState("");
+  // Ô nhập giữ nguyên chuỗi người dùng gõ: bộ gõ tiếng Trung (IME) cần thấy cả
+  // pinyin đang gõ dở, lọc ký tự ngay trong onChange sẽ làm mất chữ đang soạn.
+  const [raw, setRaw] = useState("");
+  const composing = useRef(false);
   const [speed, setSpeed] = useState(1);
   const [quizing, setQuizing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
@@ -46,7 +50,16 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
 
   // Chữ gợi ý: các chữ Hán xuất hiện trong từ vựng của bài đang dạy
   const suggestions = Array.from(new Set(vocab.flatMap((v) => hanChars(v.hanzi)))).slice(0, 60);
-  const current = char || suggestions[0] || "你";
+  const typed = Array.from(new Set(hanChars(raw)));
+  const current = char || typed[0] || suggestions[0] || "你";
+
+  /** Gõ/dán xong mới lấy chữ Hán ra — gõ dở bằng IME thì để yên. */
+  function applyRaw(value: string) {
+    setRaw(value);
+    if (composing.current) return;
+    const chars = hanChars(value);
+    if (chars.length) setChar(chars[chars.length - 1]);
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -167,11 +180,44 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
 
       <div className="flex w-64 shrink-0 flex-col gap-2 rounded-2xl border border-ink-800 bg-ink-900 p-3">
         <input
-          value={char}
-          onChange={(e) => setChar(hanChars(e.target.value).slice(-1)[0] ?? "")}
-          placeholder="Gõ một chữ Hán…"
+          value={raw}
+          onChange={(e) => applyRaw(e.target.value)}
+          onCompositionStart={() => {
+            composing.current = true;
+          }}
+          onCompositionEnd={(e) => {
+            composing.current = false;
+            applyRaw((e.target as HTMLInputElement).value);
+          }}
+          placeholder="Gõ hoặc dán chữ Hán…"
           className="zh h-11 w-full rounded-lg border border-ink-700 bg-ink-950 px-3 text-center text-2xl text-white placeholder:text-sm placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         />
+        {typed.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {typed.map((c) => (
+              <button
+                key={c}
+                onClick={() => setChar(c)}
+                className={cn(
+                  "zh grid h-10 w-10 place-items-center rounded-lg text-xl transition-colors",
+                  c === current ? "bg-brand-600 text-white" : "bg-ink-800 text-white hover:bg-ink-700",
+                )}
+                title="Chọn chữ để xem nét"
+              >
+                {c}
+              </button>
+            ))}
+            <button
+              onClick={() => {
+                setRaw("");
+                setChar("");
+              }}
+              className="rounded-lg px-2 text-xs font-semibold text-ink-300 hover:text-white"
+            >
+              Xoá
+            </button>
+          </div>
+        )}
         {meaning && (
           <div className="rounded-lg bg-ink-800 p-2 text-center">
             <div className="text-sm font-semibold text-brand-300">{meaning.pinyin}</div>
