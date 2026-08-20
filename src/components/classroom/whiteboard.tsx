@@ -1,17 +1,38 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Download, Eraser, Grid3x3, Pen, Trash2, Undo2 } from "lucide-react";
+import { Download, Eraser, Grid3x3, Pen, Trash2, Type, Undo2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Background = "plain" | "tianzi" | "lines";
 
 interface Stroke {
+  kind: "stroke";
   points: { x: number; y: number }[];
   color: string;
   width: number;
   erase: boolean;
 }
+
+/** Chữ gõ bằng bàn phím, đặt tại vị trí bấm chuột trên bảng. */
+interface TextItem {
+  kind: "text";
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  size: number;
+}
+
+type Item = Stroke | TextItem;
+
+const FONT_SIZES = [
+  { label: "Vừa", value: 48 },
+  { label: "To", value: 80 },
+  { label: "Rất to", value: 120 },
+];
+
+const TEXT_FONT = '"Noto Serif SC", "Songti SC", "PingFang SC", "Microsoft YaHei", serif';
 
 const COLORS = ["#111827", "#dc2626", "#2549ec", "#0a7d59", "#d97706", "#7c3aed"];
 const WIDTHS = [3, 6, 12];
@@ -30,13 +51,20 @@ const BACKGROUNDS: { value: Background; label: string }[] = [
 export function WhiteboardStage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
-  const strokes = useRef<Stroke[]>([]);
+  const items = useRef<Item[]>([]);
   const drawing = useRef<Stroke | null>(null);
   const [bg, setBg] = useState<Background>("tianzi");
   const [color, setColor] = useState(COLORS[0]);
   const [width, setWidth] = useState(WIDTHS[1]);
-  const [erasing, setErasing] = useState(false);
+  const [mode, setMode] = useState<"pen" | "eraser" | "text">("pen");
+  const [fontSize, setFontSize] = useState(FONT_SIZES[1].value);
   const [count, setCount] = useState(0);
+  /** Ô nhập đang mở trên bảng (vị trí đặt chữ) — null là không gõ chữ. */
+  const [editing, setEditing] = useState<{ x: number; y: number } | null>(null);
+  /** Bản sao vị trí đang gõ để chốt chữ không phụ thuộc vòng đời state. */
+  const editingRef = useRef<{ x: number; y: number } | null>(null);
+  const [draft, setDraft] = useState("");
+  const draftRef = useRef<HTMLInputElement>(null);
 
   const paint = useCallback(() => {
     const canvas = canvasRef.current;
@@ -49,20 +77,29 @@ export function WhiteboardStage() {
     ctx.fillRect(0, 0, w, h);
     drawBackground(ctx, w, h, bg);
 
-    for (const s of strokes.current) {
-      if (s.points.length < 2) continue;
+    for (const it of items.current) {
+      if (it.kind === "text") {
+        ctx.save();
+        ctx.fillStyle = it.color;
+        ctx.font = `${it.size}px ${TEXT_FONT}`;
+        ctx.textBaseline = "top";
+        ctx.fillText(it.text, it.x, it.y);
+        ctx.restore();
+        continue;
+      }
+      if (it.points.length < 2) continue;
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.lineWidth = s.width;
-      ctx.strokeStyle = s.color;
-      if (s.erase) {
+      ctx.lineWidth = it.width;
+      ctx.strokeStyle = it.color;
+      if (it.erase) {
         ctx.globalCompositeOperation = "destination-out";
-        ctx.lineWidth = s.width * 4;
+        ctx.lineWidth = it.width * 4;
       }
       ctx.beginPath();
-      ctx.moveTo(s.points[0].x, s.points[0].y);
-      for (const p of s.points.slice(1)) ctx.lineTo(p.x, p.y);
+      ctx.moveTo(it.points[0].x, it.points[0].y);
+      for (const p of it.points.slice(1)) ctx.lineTo(p.x, p.y);
       ctx.stroke();
       ctx.restore();
     }
@@ -97,15 +134,39 @@ export function WhiteboardStage() {
   }
 
   function onDown(e: React.PointerEvent<HTMLCanvasElement>) {
+    if (mode === "text") {
+      // Bấm chỗ nào mở ô gõ chữ ngay chỗ đó (gõ được cả bộ gõ tiếng Trung)
+      commitText();
+      const p = pos(e);
+      editingRef.current = { x: p.x, y: p.y };
+      setEditing({ x: p.x, y: p.y });
+      setDraft("");
+      window.setTimeout(() => draftRef.current?.focus(), 0);
+      return;
+    }
     e.currentTarget.setPointerCapture(e.pointerId);
-    drawing.current = { points: [pos(e)], color, width, erase: erasing };
-    strokes.current.push(drawing.current);
+    drawing.current = { kind: "stroke", points: [pos(e)], color, width, erase: mode === "eraser" };
+    items.current.push(drawing.current);
   }
 
   function onMove(e: React.PointerEvent<HTMLCanvasElement>) {
     if (!drawing.current) return;
     drawing.current.points.push(pos(e));
     paint();
+  }
+
+  /** Chốt chữ đang gõ thành nét mực trên bảng. */
+  function commitText() {
+    const cur = editingRef.current;
+    const text = draftRef.current?.value.trim() ?? "";
+    editingRef.current = null;
+    if (cur && text) {
+      items.current.push({ kind: "text", x: cur.x, y: cur.y, text, color, size: fontSize });
+      setCount(items.current.length);
+      paint();
+    }
+    setEditing(null);
+    setDraft("");
   }
 
   function onUp() {
@@ -117,19 +178,21 @@ export function WhiteboardStage() {
       });
     }
     drawing.current = null;
-    setCount(strokes.current.length);
+    setCount(items.current.length);
     paint();
   }
 
   function undo() {
-    strokes.current.pop();
-    setCount(strokes.current.length);
+    items.current.pop();
+    setCount(items.current.length);
     paint();
   }
 
   function clear() {
-    strokes.current = [];
+    items.current = [];
     setCount(0);
+    editingRef.current = null;
+    setEditing(null);
     paint();
   }
 
@@ -146,26 +209,26 @@ export function WhiteboardStage() {
     <div className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <div className="flex gap-1 rounded-lg bg-ink-800 p-1">
-          <button
-            onClick={() => setErasing(false)}
-            className={cn(
-              "grid h-8 w-8 place-items-center rounded-md",
-              !erasing ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
-            )}
-            title="Bút"
-          >
-            <Pen className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => setErasing(true)}
-            className={cn(
-              "grid h-8 w-8 place-items-center rounded-md",
-              erasing ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
-            )}
-            title="Tẩy"
-          >
-            <Eraser className="h-4 w-4" />
-          </button>
+          {([
+            { key: "pen", icon: Pen, title: "Bút viết tay" },
+            { key: "text", icon: Type, title: "Gõ chữ bằng bàn phím — bấm lên bảng rồi gõ" },
+            { key: "eraser", icon: Eraser, title: "Tẩy" },
+          ] as const).map((t) => (
+            <button
+              key={t.key}
+              onClick={() => {
+                commitText();
+                setMode(t.key);
+              }}
+              className={cn(
+                "grid h-8 w-8 place-items-center rounded-md",
+                mode === t.key ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+              )}
+              title={t.title}
+            >
+              <t.icon className="h-4 w-4" />
+            </button>
+          ))}
         </div>
 
         <div className="flex gap-1">
@@ -174,11 +237,11 @@ export function WhiteboardStage() {
               key={c}
               onClick={() => {
                 setColor(c);
-                setErasing(false);
+                if (mode === "eraser") setMode("pen");
               }}
               className={cn(
                 "h-7 w-7 rounded-full border-2 transition-transform",
-                color === c && !erasing ? "scale-110 border-white" : "border-ink-700",
+                color === c && mode !== "eraser" ? "scale-110 border-white" : "border-ink-700",
               )}
               style={{ background: c }}
               title="Màu bút"
@@ -186,7 +249,22 @@ export function WhiteboardStage() {
           ))}
         </div>
 
-        <div className="flex gap-1 rounded-lg bg-ink-800 p-1">
+        <div className={cn("flex gap-1 rounded-lg bg-ink-800 p-1", mode !== "text" && "hidden")}>
+          {FONT_SIZES.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => setFontSize(f.value)}
+              className={cn(
+                "rounded-md px-2 py-1.5 text-xs font-semibold",
+                fontSize === f.value ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+              )}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        <div className={cn("flex gap-1 rounded-lg bg-ink-800 p-1", mode === "text" && "hidden")}>
           {WIDTHS.map((w) => (
             <button
               key={w}
@@ -242,15 +320,51 @@ export function WhiteboardStage() {
         </div>
       </div>
 
-      <div ref={boxRef} className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-700 bg-white">
+      <div
+        ref={boxRef}
+        className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-700 bg-white"
+      >
         <canvas
           ref={canvasRef}
           onPointerDown={onDown}
           onPointerMove={onMove}
           onPointerUp={onUp}
           onPointerLeave={onUp}
-          className="block touch-none"
+          className={cn("block touch-none", mode === "text" && "cursor-text")}
         />
+
+        {editing && (
+          <input
+            ref={draftRef}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.nativeEvent.isComposing) commitText();
+              if (e.key === "Escape") {
+                editingRef.current = null;
+                setEditing(null);
+                setDraft("");
+              }
+            }}
+            onBlur={commitText}
+            placeholder="Gõ rồi Enter…"
+            style={{
+              left: editing.x,
+              top: editing.y,
+              color,
+              fontSize: fontSize,
+              fontFamily: TEXT_FONT,
+              lineHeight: 1.1,
+            }}
+            className="absolute min-w-[8rem] max-w-[80%] border-b-2 border-dashed border-brand-500 bg-transparent p-0 outline-none placeholder:text-base placeholder:text-gray-400"
+          />
+        )}
+
+        {mode === "text" && !editing && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-xs font-semibold text-gray-400">
+            Bấm vào chỗ muốn đặt chữ rồi gõ (dùng được bộ gõ tiếng Trung) · Enter để chốt
+          </div>
+        )}
       </div>
     </div>
   );
