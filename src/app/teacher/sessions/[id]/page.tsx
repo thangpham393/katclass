@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, BookOpen, CheckCheck, MessageSquarePlus, MessageSquareText, Presentation, Star, Timer } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCheck, ListChecks, MessageSquarePlus, MessageSquareText, Presentation, Star, Timer } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,11 +28,7 @@ import {
   type AttendanceStatus,
   type SessionCommentRow,
 } from "@/lib/db";
-import {
-  fetchLessons,
-  fetchSessionLessons,
-  setSessionLessons,
-} from "@/lib/db-content";
+import { SessionContentCard } from "@/components/session-content-card";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { fetchTeachingLog, sessionHours } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
@@ -216,6 +212,11 @@ export default function TeacherSessionPage() {
               <Presentation className="h-4 w-4" /> Vào lớp dạy
             </Button>
           </Link>
+          <Link href={`/teacher/sessions/${sessionId}/prepare`}>
+            <Button variant="outline">
+              <ListChecks className="h-4 w-4" /> Chuẩn bị bài
+            </Button>
+          </Link>
           <Button variant={log.data ? "ghost" : "gold"} onClick={() => setLogOpen(true)}>
             <Timer className="h-4 w-4" /> {log.data ? "Sửa chấm công" : "Chấm công ca dạy"}
           </Button>
@@ -334,157 +335,6 @@ export default function TeacherSessionPage() {
         />
       )}
     </div>
-  );
-}
-
-/**
- * Nội dung ôn tập của buổi: chọn bài học để học viên xem lại từ vựng /
- * ngữ pháp / slide sau buổi học. Lớp đã gán giáo trình thì mặc định chỉ
- * hiện bài của giáo trình đó (bật "Tất cả bài học" để chọn ngoài).
- */
-function SessionContentCard({
-  sessionId,
-  courseId,
-  textbook,
-}: {
-  sessionId: string;
-  courseId: string | null;
-  textbook: { id: string; name: string } | null;
-}) {
-  const assigned = useLoad(() => fetchSessionLessons(sessionId), [sessionId]);
-  const lessons = useLoad(() => fetchLessons(), []);
-  const [selected, setSelected] = useState<string[] | null>(null);
-  const [showAll, setShowAll] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (assigned.data && selected === null) {
-      setSelected(assigned.data.map((sl) => sl.lesson.id));
-    }
-  }, [assigned.data, selected]);
-
-  const all = lessons.data ?? [];
-  const current = selected ?? [];
-  // Lớp có giáo trình: mặc định chỉ bài của giáo trình đó (+ bài đã gán sẵn)
-  const visible =
-    textbook && !showAll
-      ? all.filter((l) => l.textbook_id === textbook.id || current.includes(l.id))
-      : all;
-  // Bài của giáo trình lớp / khóa của lớp lên trước
-  const sorted = [...visible].sort((a, b) => {
-    const rank = (l: (typeof all)[number]) =>
-      textbook && l.textbook_id === textbook.id ? 0 : l.course_id === courseId ? 1 : 2;
-    return rank(a) - rank(b) || (a.unit ?? 0) - (b.unit ?? 0);
-  });
-  const dirty =
-    selected !== null &&
-    assigned.data !== null &&
-    JSON.stringify([...current].sort()) !==
-      JSON.stringify(assigned.data.map((sl) => sl.lesson.id).sort());
-
-  function toggle(id: string) {
-    setNotice(null);
-    setSelected((ids) => {
-      const cur = ids ?? [];
-      return cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
-    });
-  }
-
-  async function handleSave() {
-    if (selected === null) return;
-    setSaving(true);
-    setError(null);
-    try {
-      await setSessionLessons(sessionId, selected);
-      assigned.reload();
-      setNotice("Đã lưu nội dung ôn tập — học viên xem được ngay trong lớp của mình. ✓");
-    } catch (e) {
-      setError(dbErrorMessage(e));
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2">
-          <BookOpen className="h-4 w-4 text-brand-600" /> Nội dung ôn tập buổi này
-          <Badge variant="muted">{current.length} bài</Badge>
-        </CardTitle>
-        <Button size="sm" onClick={handleSave} disabled={saving || !dirty}>
-          {saving ? "Đang lưu..." : "Lưu nội dung"}
-        </Button>
-      </CardHeader>
-      <CardContent className="p-5 pt-0">
-        {error && <ErrorNote message={error} />}
-        {notice && (
-          <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800">
-            {notice}
-          </div>
-        )}
-        {textbook && (
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span>
-              Giáo trình của lớp: <span className="font-semibold text-foreground">{textbook.name}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowAll((v) => !v)}
-              className="font-semibold text-brand-600 hover:underline"
-            >
-              {showAll ? "← Chỉ hiện bài của giáo trình lớp" : "Hiện tất cả bài học →"}
-            </button>
-          </div>
-        )}
-        {assigned.loading || lessons.loading ? (
-          <LoadingRows rows={2} className="p-0" />
-        ) : sorted.length === 0 ? (
-          <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            {all.length === 0
-              ? "Chưa có bài học nào trong thư viện — soạn bài ở mục “Bài học” hoặc nhờ admin import giáo trình."
-              : "Giáo trình của lớp chưa có bài học nào — bấm “Hiện tất cả bài học” để chọn ngoài giáo trình."}
-          </div>
-        ) : (
-          <div className="grid gap-2 sm:grid-cols-2">
-            {sorted.map((l) => {
-              const picked = current.includes(l.id);
-              const inTextbook = textbook != null && l.textbook_id === textbook.id;
-              const inCourse = l.course_id === courseId;
-              return (
-                <button
-                  key={l.id}
-                  type="button"
-                  onClick={() => toggle(l.id)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl border bg-card p-3 text-left transition-all",
-                    picked ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-200" : "hover:border-brand-300",
-                  )}
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold">
-                      {l.unit != null ? `Bài ${l.unit}: ` : ""}
-                      {l.title}
-                    </div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
-                    </div>
-                  </div>
-                  {inTextbook ? (
-                    <Badge variant="gold">GT lớp</Badge>
-                  ) : inCourse ? (
-                    <Badge variant="gold">Khóa này</Badge>
-                  ) : null}
-                  {picked && <Badge variant="jade">✓</Badge>}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </CardContent>
-    </Card>
   );
 }
 

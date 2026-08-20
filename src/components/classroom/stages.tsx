@@ -46,14 +46,17 @@ interface LocalDeck {
  * slide quá nặng, Google từ chối xem trước hoặc phòng học mất mạng.
  */
 export function SlideStage({
+  sessionSlide,
   lessons,
   onOpen,
 }: {
+  /** Link slide giáo viên chuẩn bị sẵn cho buổi (ưu tiên hơn slide của bài học). */
+  sessionSlide?: string | null;
   lessons: LessonDetail[];
   onOpen: (lesson: LessonDetail) => void;
 }) {
   const withSlide = lessons.filter((l) => l.slide_embed_url);
-  const [current, setCurrent] = useState<string>(withSlide[0]?.id ?? "");
+  const [current, setCurrent] = useState<string>(sessionSlide ? "__session" : withSlide[0]?.id ?? "");
   const [adhoc, setAdhoc] = useState("");
   const [adhocUrl, setAdhocUrl] = useState("");
   const [mode, setMode] = useState<EmbedMode>("auto");
@@ -173,15 +176,18 @@ export function SlideStage({
   }
 
   useEffect(() => {
-    if (!current && withSlide[0]) {
+    if (!current && sessionSlide) {
+      setCurrent("__session");
+    } else if (!current && withSlide[0]) {
       setCurrent(withSlide[0].id);
       onOpen(withSlide[0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withSlide.length]);
+  }, [withSlide.length, sessionSlide]);
 
   const lesson = withSlide.find((l) => l.id === current);
-  const url = adhocUrl || lesson?.slide_embed_url || "";
+  const url =
+    adhocUrl || (current === "__session" ? sessionSlide ?? "" : lesson?.slide_embed_url ?? "");
   // Link chia sẻ thông thường (…/edit?slide=…) tự đổi sang dạng nhúng iframe
   const embed = toEmbedUrl(url, mode);
   const isGoogle = /docs\.google\.com|drive\.google\.com/.test(embed);
@@ -191,6 +197,23 @@ export function SlideStage({
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
+        {sessionSlide && (
+          <button
+            onClick={() => {
+              setCurrent("__session");
+              setAdhocUrl("");
+            }}
+            className={cn(
+              "rounded-lg px-3 py-1.5 text-sm font-semibold",
+              current === "__session" && !adhocUrl
+                ? "bg-brand-600 text-white"
+                : "bg-ink-800 text-ink-100 hover:bg-ink-700",
+            )}
+            title="Slide bạn đã chuẩn bị trước cho buổi này"
+          >
+            ★ Slide của buổi
+          </button>
+        )}
         {withSlide.map((l) => (
           <button
             key={l.id}

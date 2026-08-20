@@ -652,3 +652,24 @@ export async function fetchParticipation(
   }
   return out;
 }
+
+/* ============ Chuẩn bị buổi học (migration 0022) ============ */
+
+/**
+ * Lưu phần chuẩn bị của giáo viên cho buổi: link slide riêng của buổi và ghi
+ * chú. Không đụng `lessons.slide_embed_url` vì bài học dùng chung cho mọi lớp
+ * cùng giáo trình — mỗi giáo viên có thể có bản slide riêng.
+ */
+export async function saveSessionPrep(
+  sessionId: string,
+  input: { slide_url?: string | null; prep_note?: string | null },
+) {
+  const { error } = await getSupabase()
+    .from("sessions")
+    .update({
+      ...(input.slide_url !== undefined ? { slide_url: input.slide_url || null } : {}),
+      ...(input.prep_note !== undefined ? { prep_note: input.prep_note || null } : {}),
+    })
+    .eq("id", sessionId);
+  if (error) throw error;
+}

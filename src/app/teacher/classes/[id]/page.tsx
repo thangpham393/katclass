@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ClipboardCheck, Presentation } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, ListChecks, Presentation } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,11 +90,18 @@ export default function TeacherClassDetailPage() {
               hoạt động và chốt buổi trong một màn hình.
             </div>
           </div>
-          <Link href={`/classroom/${todaySession.id}`}>
-            <Button size="lg">
-              <Presentation className="h-5 w-5" /> Vào lớp dạy
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href={`/teacher/sessions/${todaySession.id}/prepare`}>
+              <Button size="lg" variant="outline">
+                <ListChecks className="h-5 w-5" /> Chuẩn bị bài
+              </Button>
+            </Link>
+            <Link href={`/classroom/${todaySession.id}`}>
+              <Button size="lg">
+                <Presentation className="h-5 w-5" /> Vào lớp dạy
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
 

@@ -549,6 +549,7 @@ export default function ClassroomPage() {
               />
             ) : (
             <SlideStage
+              sessionSlide={s.slide_url}
               lessons={lessons.data ?? []}
               onOpen={(l) =>
                 user &&

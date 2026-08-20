@@ -8,8 +8,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-gradient-brand text-primary-foreground shadow-soft hover:shadow-glow",
+        // text-foreground là bắt buộc: nút này dùng cả trên nền tối (lớp học
+        // trực tiếp), thiếu nó thì chữ kế thừa màu trắng → trắng trên nền trắng
         outline:
-          "border border-input bg-card hover:bg-secondary hover:text-secondary-foreground",
+          "border border-input bg-card text-foreground hover:bg-secondary hover:text-secondary-foreground",
         ghost: "hover:bg-secondary hover:text-secondary-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-brand-100",
         destructive:

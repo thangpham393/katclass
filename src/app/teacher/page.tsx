@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   Clock,
   GraduationCap,
+  ListChecks,
   Presentation,
   School,
   Timer,
@@ -314,6 +315,11 @@ function TeachingCard({
       )}
 
       <div className="flex shrink-0 gap-2">
+        <Link href={`/teacher/sessions/${s.id}/prepare`}>
+          <Button size="sm" variant={future ? "default" : "outline"}>
+            <ListChecks className="h-3.5 w-3.5" /> Chuẩn bị bài
+          </Button>
+        </Link>
         {!future && (
           <Link href={`/classroom/${s.id}`}>
             <Button size="sm">
