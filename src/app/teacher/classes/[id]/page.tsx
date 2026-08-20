@@ -18,6 +18,7 @@ import {
   SESSION_STATUS_LABELS,
   WEEKDAY_LABELS,
 } from "@/lib/db";
+import { fetchParticipation } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 
 export default function TeacherClassDetailPage() {
@@ -27,6 +28,15 @@ export default function TeacherClassDetailPage() {
   const cls = useLoad(() => fetchClass(classId), [classId]);
   const students = useLoad(() => fetchClassStudents(classId), [classId]);
   const sessions = useLoad(() => fetchClassSessions(classId), [classId]);
+
+  // Mức tham gia trong lớp 30 ngày qua (điểm ★ giáo viên cộng trong giờ)
+  const recentSessionIds = (sessions.data ?? [])
+    .filter((x) => x.date >= new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10))
+    .map((x) => x.id);
+  const participation = useLoad(
+    () => fetchParticipation(recentSessionIds),
+    [recentSessionIds.join(",")],
+  );
 
   if (cls.loading) return <Card><LoadingRows rows={5} /></Card>;
   if (cls.error) return <ErrorNote message={cls.error} />;
@@ -45,6 +55,8 @@ export default function TeacherClassDetailPage() {
   const upcoming = list.filter((s) => s.date >= today);
   const past = list.filter((s) => s.date < today).reverse();
   const todaySession = list.find((s) => s.date === today && s.status !== "completed");
+  // Chỉ gắn nhãn "ít được gọi" khi lớp thực sự có dùng điểm ★ trong giờ
+  const hasPoints = Object.keys(participation.data ?? {}).length > 0;
 
   return (
     <div className="space-y-6">
@@ -130,21 +142,35 @@ export default function TeacherClassDetailPage() {
             <CardTitle>
               Học viên <Badge variant="muted" className="ml-1">{students.data?.length ?? 0}</Badge>
             </CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Mức tham gia 30 ngày qua — ★ và số lần phát biểu trong giờ.
+            </p>
           </CardHeader>
           <CardContent className="p-5 pt-0">
             {students.loading ? (
               <LoadingRows rows={4} className="p-0" />
             ) : (
               <div className="max-h-[32rem] divide-y overflow-y-auto scrollbar-thin">
-                {(students.data ?? []).map((s) => (
-                  <div key={s.student_id} className="flex items-center gap-3 py-2.5">
-                    <Avatar name={s.student.name} src={s.student.avatar ?? undefined} size={34} />
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-semibold">{s.student.name}</div>
-                      <div className="truncate text-xs text-muted-foreground">{s.student.phone ?? s.student.email}</div>
+                {(students.data ?? []).map((s) => {
+                  const p = participation.data?.[s.student_id];
+                  const quiet = hasPoints && (p?.speak ?? 0) === 0;
+                  return (
+                    <div key={s.student_id} className="flex items-center gap-3 py-2.5">
+                      <Avatar name={s.student.name} src={s.student.avatar ?? undefined} size={34} />
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-semibold">{s.student.name}</div>
+                        <div className="truncate text-xs text-muted-foreground">
+                          {p
+                            ? `${p.points}★ · phát biểu ${p.speak} lần · ${p.sessions} buổi`
+                            : quiet
+                              ? "Chưa phát biểu lần nào"
+                              : (s.student.phone ?? s.student.email)}
+                        </div>
+                      </div>
+                      {quiet && <Badge variant="gold">Ít được gọi</Badge>}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </CardContent>

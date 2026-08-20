@@ -14,6 +14,7 @@ import {
   fetchLatestReportedSession,
   fetchSessionReport,
 } from "@/lib/db-classroom";
+import { RemindHomeworkButton } from "@/components/remind-homework-button";
 import { useLoad } from "@/lib/use-load";
 
 /**
@@ -195,7 +196,9 @@ export function SessionReportView({
                     </div>
                   </div>
                   {hw.kind === "test" && <Badge variant="gold">Kiểm tra</Badge>}
-                  {!forParent && (
+                  {forParent ? (
+                    <RemindHomeworkButton homeworkId={hw.id} studentId={studentId} />
+                  ) : (
                     <Link
                       href={`/student/homework/${hw.id}`}
                       className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white"
@@ -207,7 +210,7 @@ export function SessionReportView({
               ))}
               {forParent && (
                 <p className="text-xs text-muted-foreground">
-                  Nhắc con đăng nhập vào khu học viên để làm bài đúng hạn.
+                  Bấm “Nhắc con làm bài” là con nhận thông báo ngay trong khu học viên.
                 </p>
               )}
             </div>

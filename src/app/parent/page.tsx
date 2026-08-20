@@ -18,6 +18,8 @@ import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
 import { LatestSessionReport } from "@/components/session-report";
+import { PointsSummaryCard } from "@/components/points-summary";
+import { RemindHomeworkButton } from "@/components/remind-homework-button";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import {
@@ -183,6 +185,14 @@ export default function ParentHome() {
           {childId && <PackageSummaryCard studentId={childId} forParent />}
 
           {childId && (
+            <PointsSummaryCard
+              studentId={childId}
+              forParent
+              studentName={children.data?.find((c) => c.student_id === childId)?.student?.name}
+            />
+          )}
+
+          {childId && (
             <LatestSessionReport
               studentId={childId}
               forParent
@@ -344,10 +354,13 @@ export default function ParentHome() {
                         </div>
                         {sub ? (
                           <Badge variant="jade">Đã nộp · {sub.score ?? "—"}/10</Badge>
-                        ) : overdue ? (
-                          <Badge variant="destructive">Quá hạn</Badge>
                         ) : (
-                          <Badge variant="gold">Chưa làm</Badge>
+                          <>
+                            <Badge variant={overdue ? "destructive" : "gold"}>
+                              {overdue ? "Quá hạn" : "Chưa làm"}
+                            </Badge>
+                            <RemindHomeworkButton homeworkId={h.id} studentId={childId} />
+                          </>
                         )}
                       </div>
                     );

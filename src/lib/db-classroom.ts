@@ -530,3 +530,125 @@ export function presentUrl(raw: string): string {
   }
   return input;
 }
+
+/* ============ Sao tích luỹ & huy hiệu ============ */
+
+export interface PointsSummary {
+  total: number;
+  month: number;
+  sessions: number;
+  /** Số lần theo từng lý do (30 ngày gần nhất) — dùng để trao huy hiệu. */
+  reasons: Record<string, number>;
+}
+
+/** Tổng ★ + phân bố lý do của học viên (RLS: HV xem mình, PH xem con). */
+export async function fetchPointsSummary(studentId: string): Promise<PointsSummary> {
+  const rows = await fetchStudentPoints(studentId);
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+  const since = new Date();
+  since.setDate(since.getDate() - 30);
+
+  const reasons: Record<string, number> = {};
+  let total = 0;
+  let month = 0;
+  const sessions = new Set<string>();
+  for (const r of rows) {
+    total += r.points;
+    sessions.add(r.session_id);
+    const at = new Date(r.created_at);
+    if (at >= monthStart) month += r.points;
+    if (at >= since) reasons[r.reason] = (reasons[r.reason] ?? 0) + 1;
+  }
+  return { total, month, sessions: sessions.size, reasons };
+}
+
+export interface Badge {
+  key: string;
+  emoji: string;
+  label: string;
+  hint: string;
+}
+
+/**
+ * Huy hiệu tính từ hoạt động 30 ngày gần nhất — cốt để khen đúng việc học viên
+ * đã làm, không phải xếp hạng ai giỏi hơn ai.
+ */
+export function earnedBadges(s: PointsSummary, attendanceRate?: number): Badge[] {
+  const b: Badge[] = [];
+  if ((s.reasons.speak ?? 0) >= 8) {
+    b.push({ key: "speak", emoji: "🙋", label: "Hăng hái phát biểu", hint: `${s.reasons.speak} lần trong 30 ngày` });
+  }
+  if ((s.reasons.correct ?? 0) >= 8) {
+    b.push({ key: "correct", emoji: "🎯", label: "Trả lời chuẩn", hint: `${s.reasons.correct} câu đúng` });
+  }
+  if ((s.reasons.chinese ?? 0) >= 5) {
+    b.push({ key: "chinese", emoji: "🗣️", label: "Chăm nói tiếng Trung", hint: `${s.reasons.chinese} lần chủ động` });
+  }
+  if ((s.reasons.help ?? 0) >= 3) {
+    b.push({ key: "help", emoji: "🤝", label: "Bạn tốt của lớp", hint: `${s.reasons.help} lần giúp bạn` });
+  }
+  if ((s.reasons.game ?? 0) >= 3) {
+    b.push({ key: "game", emoji: "🏆", label: "Cao thủ hoạt động", hint: `${s.reasons.game} lần thắng` });
+  }
+  if (s.month >= 20) {
+    b.push({ key: "star", emoji: "🌟", label: "Ngôi sao tháng này", hint: `${s.month} ★ trong tháng` });
+  }
+  if (attendanceRate != null && attendanceRate >= 95 && s.sessions >= 4) {
+    b.push({ key: "attend", emoji: "📅", label: "Chuyên cần", hint: `Đi học đều ${attendanceRate}%` });
+  }
+  return b;
+}
+
+/** Phụ huynh / giáo viên nhắc học viên làm bài tập (RPC, chống dội 6 giờ). */
+export async function remindHomework(homeworkId: string, studentId: string) {
+  const { error } = await getSupabase().rpc("remind_homework", {
+    hw_id: homeworkId,
+    sid: studentId,
+  });
+  if (error) throw error;
+}
+
+/* ============ Thống kê tham gia cho giáo viên ============ */
+
+export interface ParticipationRow {
+  student_id: string;
+  points: number;
+  speak: number;
+  sessions: number;
+}
+
+/**
+ * Mức tham gia của học viên trong N ngày gần nhất, cho giáo viên thấy ngay ai
+ * đang ít được gọi để chủ động mời phát biểu buổi sau.
+ */
+export async function fetchParticipation(
+  sessionIds: string[],
+  days = 30,
+): Promise<Record<string, ParticipationRow>> {
+  if (!sessionIds.length) return {};
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+  const { data, error } = await getSupabase()
+    .from("class_points")
+    .select("student_id, session_id, points, reason, created_at")
+    .in("session_id", sessionIds)
+    .gte("created_at", since.toISOString());
+  if (error) throw error;
+
+  const map: Record<string, ParticipationRow & { _sessions: Set<string> }> = {};
+  for (const r of (data ?? []) as ClassPointRow[]) {
+    const row =
+      map[r.student_id] ??
+      (map[r.student_id] = { student_id: r.student_id, points: 0, speak: 0, sessions: 0, _sessions: new Set() });
+    row.points += r.points;
+    if (r.reason === "speak" || r.reason === "correct") row.speak += 1;
+    row._sessions.add(r.session_id);
+  }
+  const out: Record<string, ParticipationRow> = {};
+  for (const [id, row] of Object.entries(map)) {
+    out[id] = { student_id: id, points: row.points, speak: row.speak, sessions: row._sessions.size };
+  }
+  return out;
+}
