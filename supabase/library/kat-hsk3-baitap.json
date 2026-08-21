@@ -1,0 +1,7627 @@
+{
+ "textbook": {
+  "code": "hsk3-standard",
+  "name": "HSK 3",
+  "name_zh": "标准教程 HSK 3",
+  "level": "HSK3",
+  "sort": 3,
+  "description": "Giáo trình chuẩn HSK 3 (标准教程 HSK 3, bản dịch tiếng Việt của Nhân Trí Việt) — 20 bài, khoảng 300 từ vựng mới theo đại cương HSK cấp 3. Bài 1–10 mỗi bài 4 tình huống hội thoại; bài 11–20 gồm 3 hội thoại và 1 đoạn văn ngắn. Từ vựng, ví dụ và chú thích ngữ pháp trích từ sách."
+ },
+ "lessons": [
+  {
+   "unit": 1,
+   "title": "Anh dự định làm gì vào cuối tuần vậy?",
+   "title_zh": "周末你有什么打算？",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 周末 có nghĩa là:",
+      "options": [
+       "tuần này",
+       "cuối tháng",
+       "ngày thường",
+       "cuối tuần"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "作业",
+      "options": [
+       "zuòyè",
+       "zuóyè",
+       "zuòyě",
+       "zhuòyè"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 打算 có nghĩa là:",
+      "options": [
+       "tính toán tiền",
+       "dự định, kế hoạch",
+       "đánh giá",
+       "bàn bạc"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 着急 có nghĩa là:",
+      "options": [
+       "bận rộn",
+       "tức giận",
+       "lo lắng, sốt ruột",
+       "mệt mỏi"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 复习 có nghĩa là:",
+      "options": [
+       "ôn tập",
+       "học lại từ đầu",
+       "trả lời",
+       "phục hồi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 一直 có nghĩa là:",
+      "options": [
+       "thẳng thắn",
+       "một lần",
+       "ngay lập tức",
+       "liên tục, mãi"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "去一个新地方旅游，最好带一张______。",
+      "options": [
+       "面包",
+       "作业",
+       "地图",
+       "游戏"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们是去旅游，不是______，还是少带一些吧。",
+      "options": [
+       "复习",
+       "搬家",
+       "着急",
+       "打算"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "南方太热了，______好一些，不冷也不热。",
+      "options": [
+       "北方",
+       "南方",
+       "周末",
+       "地图"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我早上吃了两个______和一杯牛奶。",
+      "options": [
+       "地图",
+       "游戏",
+       "面包",
+       "作业"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___你有什么打算？"
+     },
+     "answer": [
+      "周末"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "下个月我要去旅游，你能___我一起去吗？"
+     },
+     "answer": [
+      "跟"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你别玩儿电脑___了，快去写作业。"
+     },
+     "answer": [
+      "游戏"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天的___我都写完了。"
+     },
+     "answer": [
+      "作业"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天就要考试了，你怎么一点儿也不___？"
+     },
+     "answer": [
+      "着急"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我早就___好了，一点儿也不怕考试。"
+     },
+     "answer": [
+      "复习"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "去旅游的时候你要___什么东西？"
+     },
+     "answer": [
+      "带"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我还没想好，我的___以后再告诉你。"
+     },
+     "answer": [
+      "打算"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我一个苹果______不想吃。",
+      "options": [
+       "也",
+       "还",
+       "就",
+       "才"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "昨天他一件衣服______没买。",
+      "options": [
+       "就",
+       "都",
+       "才",
+       "再"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "走了这么远，他一点儿______不累。",
+      "options": [
+       "就",
+       "才",
+       "也",
+       "再"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "手机、电脑、地图，一个______不能少。",
+      "options": [
+       "就",
+       "才",
+       "再",
+       "也"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "我一个苹果不想吃也。",
+       "我也一个苹果不想吃。",
+       "我一个苹果也不想吃。",
+       "一个苹果我也想不吃。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个星期我很忙，一点儿时间______没有。",
+      "options": [
+       "都",
+       "就",
+       "才",
+       "再"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天就要考试了，你怎么一点儿______不着急？",
+      "options": [
+       "就",
+       "才",
+       "再",
+       "也"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "我一点儿钱都没带。",
+       "我一点儿累也不。",
+       "南方一点儿都不冷。",
+       "小丽一杯茶也没喝。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "电影票",
+       "好",
+       "买",
+       "已经",
+       "小刚",
+       "了"
+      ]
+     },
+     "answer": [
+      "小刚",
+      "已经",
+      "买",
+      "好",
+      "电影票",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "也",
+       "一个苹果",
+       "我",
+       "不想吃"
+      ]
+     },
+     "answer": [
+      "我",
+      "一个苹果",
+      "也",
+      "不想吃"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "都",
+       "钱",
+       "一点儿",
+       "我",
+       "没带"
+      ]
+     },
+     "answer": [
+      "我",
+      "一点儿",
+      "钱",
+      "都",
+      "没带"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "也",
+       "我",
+       "那",
+       "不去了"
+      ]
+     },
+     "answer": [
+      "那",
+      "我",
+      "也",
+      "不去了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "title": "Khi nào anh ấy quay về?",
+   "title_zh": "他什么时候回来？",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 腿 có nghĩa là:",
+      "options": [
+       "tay",
+       "đầu",
+       "chân",
+       "lưng"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "容易",
+      "options": [
+       "róngyì",
+       "róngyí",
+       "rōngyì",
+       "lóngyì"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 疼 có nghĩa là:",
+      "options": [
+       "mỏi",
+       "đau, nhức",
+       "ngứa",
+       "lạnh"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 秘书 có nghĩa là:",
+      "options": [
+       "sách bí mật",
+       "thủ thư",
+       "giám đốc",
+       "thư ký"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 办公室 có nghĩa là:",
+      "options": [
+       "văn phòng",
+       "phòng họp",
+       "phòng khách",
+       "lớp học"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 其实 có nghĩa là:",
+      "options": [
+       "thành thật",
+       "sự việc",
+       "thật ra",
+       "chân thật"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 胖?",
+      "options": [
+       "高",
+       "矮",
+       "长",
+       "瘦"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "没事，我出去叫一______出租车就行了。",
+      "options": [
+       "把",
+       "辆",
+       "张",
+       "只"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你等等，我上楼去给你拿一______伞。",
+      "options": [
+       "把",
+       "辆",
+       "条",
+       "本"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上山容易下山______，你不知道吗？",
+      "options": [
+       "累",
+       "难",
+       "疼",
+       "瘦"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "走了一天，我的___和脚都很疼。"
+     },
+     "answer": [
+      "腿"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "那边___多，我们过去坐一下吧。"
+     },
+     "answer": [
+      "树"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "周___出去办事了，下午回来。"
+     },
+     "answer": [
+      "经理"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你在这儿等吧，我上___去一下。"
+     },
+     "answer": [
+      "楼"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你等等，我去___一把伞。"
+     },
+     "answer": [
+      "拿"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "雨下得真大，你带___了吗？"
+     },
+     "answer": [
+      "伞"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___我每天都运动，只是没什么用。"
+     },
+     "answer": [
+      "其实"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你一点儿也没___！你做什么运动了？"
+     },
+     "answer": [
+      "瘦"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们在楼上等你呢，你______吧。",
+      "options": [
+       "上来",
+       "上去",
+       "下来",
+       "出去"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "谁在外边？你______看看吧。（người nói đang trong nhà）",
+      "options": [
+       "进来",
+       "出去",
+       "回来",
+       "上去"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "汉语书你______了吗？（mang tới chỗ người nói）",
+      "options": [
+       "带去",
+       "拿去",
+       "带来",
+       "回去"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "那边树多，我们______坐一下吧。",
+      "options": [
+       "过来",
+       "上来",
+       "下来",
+       "过去"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "老师进教室来了。",
+       "老师进来教室了。",
+       "老师教室进来了。",
+       "老师进了教室来。"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下课以后，朋友回家______了。",
+      "options": [
+       "来",
+       "上",
+       "去",
+       "下"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "雨太大了，我上楼______给你拿伞。",
+      "options": [
+       "来",
+       "出",
+       "回",
+       "去"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你出门的时候，帮我买______点儿面包。",
+      "options": [
+       "去",
+       "来",
+       "过",
+       "上"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "你下了课就我们去书店。",
+       "你下了课我们就去书店。",
+       "就你下了课我们去书店。",
+       "你下了课我们去书店就。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "来",
+       "上",
+       "你",
+       "我们在楼上等你呢",
+       "吧"
+      ]
+     },
+     "answer": [
+      "我们在楼上等你呢",
+      "你",
+      "上",
+      "来",
+      "吧"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "就",
+       "课",
+       "了",
+       "下",
+       "我",
+       "吃饭"
+      ]
+     },
+     "answer": [
+      "我",
+      "下",
+      "了",
+      "课",
+      "就",
+      "吃饭"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "去",
+       "过",
+       "我们",
+       "树多",
+       "那边",
+       "坐一下吧"
+      ]
+     },
+     "answer": [
+      "那边",
+      "树多",
+      "我们",
+      "过",
+      "去",
+      "坐一下吧"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "学好",
+       "能",
+       "也不练习",
+       "你不做作业",
+       "吗"
+      ]
+     },
+     "answer": [
+      "你不做作业",
+      "也不练习",
+      "能",
+      "学好",
+      "吗"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "title": "Trên bàn có rất nhiều thức uống.",
+   "title_zh": "桌子上放着很多饮料。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 新鲜 có nghĩa là:",
+      "options": [
+       "mới lạ",
+       "tươi",
+       "sạch sẽ",
+       "hiếm có"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "舒服",
+      "options": [
+       "shūfu",
+       "shúfu",
+       "shūfù",
+       "sūfu"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上面穿______，下面穿裤子。",
+      "options": [
+       "裤子",
+       "伞",
+       "衬衫",
+       "饮料"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我记得你已经有两______这样的裤子了。",
+      "options": [
+       "件",
+       "把",
+       "辆",
+       "条"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 记得 có nghĩa là:",
+      "options": [
+       "còn nhớ",
+       "ghi chép",
+       "nhớ nhung",
+       "đánh dấu"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 小心 có nghĩa là:",
+      "options": [
+       "lòng dạ nhỏ nhen",
+       "bận tâm",
+       "cẩn thận",
+       "quan tâm"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 甜 có nghĩa là:",
+      "options": [
+       "mặn",
+       "ngọt",
+       "chua",
+       "cay"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这件衬衫上面写着三百二十______。",
+      "options": [
+       "岁",
+       "分",
+       "角",
+       "元"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "春天来了，树和草都是______色的。",
+      "options": [
+       "绿",
+       "蓝",
+       "红",
+       "黄"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "桌子上放着很多______，你喝什么？",
+      "options": [
+       "裤子",
+       "衬衫",
+       "饮料",
+       "衣服"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天我们要去___，你也去吗？"
+     },
+     "answer": [
+      "爬山"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "爬山的时候要___点儿。"
+     },
+     "answer": [
+      "小心"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我___你已经有两条这样的裤子了。"
+     },
+     "answer": [
+      "记得"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这些水果真___，我们买西瓜还是买苹果？"
+     },
+     "answer": [
+      "新鲜"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "好啊，今天晚上我们___吃水果不吃饭！"
+     },
+     "answer": [
+      "只"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "桌子上___着很多饮料。"
+     },
+     "answer": [
+      "放"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "天冷的时候，喝杯热茶会很___。"
+     },
+     "answer": [
+      "舒服"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___茶、绿茶、红茶，我都喜欢喝。"
+     },
+     "answer": [
+      "花"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你要喝咖啡______喝茶？",
+      "options": [
+       "还是",
+       "或者",
+       "和",
+       "也"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天晚上吃米饭______面条都可以。",
+      "options": [
+       "还是",
+       "或者",
+       "不但",
+       "因为"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天是晴天______阴天？",
+      "options": [
+       "或者",
+       "和",
+       "还是",
+       "就"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "天冷了______工作累了的时候，喝杯热茶很舒服。",
+      "options": [
+       "还是",
+       "和",
+       "就",
+       "或者"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "小丽还没想好周末去爬山______去看电影。",
+      "options": [
+       "或者",
+       "还是",
+       "和",
+       "也"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他的生日是10月______11月，我不记得了。",
+      "options": [
+       "还是",
+       "或者",
+       "和",
+       "就"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "你喝茶或者喝咖啡？",
+       "我不知道他是男的或者女的。",
+       "我不知道这个人是男的还是女的。",
+       "喝茶还是咖啡都可以。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这些水果真新鲜，我们买西瓜______苹果？",
+      "options": [
+       "或者",
+       "和",
+       "也",
+       "还是"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "还是",
+       "喝咖啡",
+       "你",
+       "喝茶"
+      ]
+     },
+     "answer": [
+      "你",
+      "喝咖啡",
+      "还是",
+      "喝茶"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "着",
+       "放",
+       "桌子上",
+       "很多饮料"
+      ]
+     },
+     "answer": [
+      "桌子上",
+      "放",
+      "着",
+      "很多饮料"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "会",
+       "穿得那么少",
+       "你",
+       "感冒的"
+      ]
+     },
+     "answer": [
+      "你",
+      "穿得那么少",
+      "会",
+      "感冒的"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "面条",
+       "或者",
+       "吃米饭",
+       "今天晚上",
+       "都可以"
+      ]
+     },
+     "answer": [
+      "今天晚上",
+      "吃米饭",
+      "或者",
+      "面条",
+      "都可以"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "title": "Cô ấy luôn cười khi nói chuyện với khách hàng.",
+   "title_zh": "她总是笑着跟客人说话。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 聪明 có nghĩa là:",
+      "options": [
+       "ngoan ngoãn",
+       "chăm chỉ",
+       "thông minh",
+       "xinh đẹp"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "认真",
+      "options": [
+       "rènzhēn",
+       "rénzhēn",
+       "rènzhèn",
+       "lènzhēn"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 热情 có nghĩa là:",
+      "options": [
+       "nóng nảy",
+       "nhiệt tình",
+       "nhiệt độ",
+       "yêu thích"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 努力 có nghĩa là:",
+      "options": [
+       "sức lực",
+       "mệt mỏi",
+       "bận rộn",
+       "chăm chỉ, cố gắng"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 饿 có nghĩa là:",
+      "options": [
+       "đói",
+       "khát",
+       "no",
+       "mệt"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 年轻?",
+      "options": [
+       "小",
+       "高",
+       "老",
+       "瘦"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào GẦN NGHĨA nhất với 总是?",
+      "options": [
+       "有时候",
+       "总共",
+       "从来",
+       "常常"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们买两______蛋糕，回家吃蛋糕看电视吧。",
+      "options": [
+       "条",
+       "块",
+       "把",
+       "辆"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 照片 có nghĩa là:",
+      "options": [
+       "bức ảnh",
+       "tấm thiệp",
+       "tấm gương",
+       "bức tranh"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我有点儿饿了，我们进______买点儿东西吧。",
+      "options": [
+       "办公室",
+       "图书馆",
+       "超市",
+       "教室"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这是我们___以后照的照片。"
+     },
+     "answer": [
+      "比赛"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "那个又高又漂亮的女孩儿是二___的。"
+     },
+     "answer": [
+      "年级"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她总是笑着___老师的问题。"
+     },
+     "answer": [
+      "回答"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "很多人拿着花___在门口，都是等她的。"
+     },
+     "answer": [
+      "站"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们饭馆儿的服务员对每个___都很热情。"
+     },
+     "answer": [
+      "客人"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们这儿___、漂亮的服务员有很多。"
+     },
+     "answer": [
+      "年轻"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她工作又___又热情。"
+     },
+     "answer": [
+      "认真"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她又聪明又热情，学习也很___。"
+     },
+     "answer": [
+      "努力"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个西瓜______大______甜。",
+      "options": [
+       "又…又",
+       "越…越",
+       "一边…一边",
+       "也…也"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这家超市的蛋糕又便宜______好吃。",
+      "options": [
+       "也",
+       "又",
+       "还",
+       "就"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "她工作又认真热情。",
+       "她又工作认真又热情。",
+       "她工作又认真又热情。",
+       "她工作认真又热情又。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "外边______黑______冷，我们别出去了。",
+      "options": [
+       "越…越",
+       "一边…一边",
+       "先…然后",
+       "又…又"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们这儿的服务员又年轻______漂亮。",
+      "options": [
+       "也",
+       "又",
+       "还",
+       "再"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他做饭做得______快______好。",
+      "options": [
+       "又…又",
+       "越…越",
+       "一…就",
+       "不…也不"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这件衣服我很喜欢，它______便宜______好看。",
+      "options": [
+       "越…越",
+       "一边…一边",
+       "如果…就",
+       "又…又"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "这个西瓜又大又甜。",
+       "外边又黑又冷。",
+       "她又聪明又很热情。",
+       "服务员又年轻又漂亮。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "很多人拿着花站在门口。",
+       "很多人站着拿花在门口。",
+       "很多人拿花着站在门口。",
+       "很多人拿着站花在门口。"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "又",
+       "大",
+       "又",
+       "这个西瓜",
+       "甜"
+      ]
+     },
+     "answer": [
+      "这个西瓜",
+      "又",
+      "大",
+      "又",
+      "甜"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "着",
+       "笑",
+       "总是",
+       "她",
+       "跟客人说话"
+      ]
+     },
+     "answer": [
+      "她",
+      "总是",
+      "笑",
+      "着",
+      "跟客人说话"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "又",
+       "年轻",
+       "又",
+       "服务员",
+       "漂亮"
+      ]
+     },
+     "answer": [
+      "服务员",
+      "又",
+      "年轻",
+      "又",
+      "漂亮"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "苹果",
+       "着",
+       "吃",
+       "弟弟",
+       "写作业"
+      ]
+     },
+     "answer": [
+      "弟弟",
+      "吃",
+      "着",
+      "苹果",
+      "写作业"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "title": "Dạo này em ngày càng béo ra.",
+   "title_zh": "我最近越来越胖了。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 发烧 có nghĩa là:",
+      "options": [
+       "nổi giận",
+       "sốt",
+       "nấu chín",
+       "cháy"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "照顾",
+      "options": [
+       "zhàogù",
+       "zhāogù",
+       "zhàogǔ",
+       "zhàokù"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 感冒 có nghĩa là:",
+      "options": [
+       "cảm động",
+       "mạo hiểm",
+       "cảm cúm",
+       "cảm thấy"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 季节 có nghĩa là:",
+      "options": [
+       "dịp lễ",
+       "tiết học",
+       "đốt tre",
+       "mùa"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 当然 có nghĩa là:",
+      "options": [
+       "đương nhiên",
+       "bỗng nhiên",
+       "tuy nhiên",
+       "vẫn còn"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "春天以后是______，天气越来越热。",
+      "options": [
+       "秋天",
+       "冬天",
+       "夏天",
+       "春天"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这条______是去年买的，今年就不能穿了。",
+      "options": [
+       "衬衫",
+       "裙子",
+       "帽子",
+       "皮鞋"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 最近 có nghĩa là:",
+      "options": [
+       "gần nhất về khoảng cách",
+       "sắp tới",
+       "lần trước",
+       "dạo này, gần đây"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 草 có nghĩa là:",
+      "options": [
+       "cỏ",
+       "hoa",
+       "lá",
+       "cây"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "不______去医院，昨天吃了感冒药，现在好一些了。",
+      "options": [
+       "要",
+       "能",
+       "用",
+       "会"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我前几天有点儿___，现在好多了。"
+     },
+     "answer": [
+      "发烧"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "喝杯茶吧，这是我___你买的绿茶，很不错。"
+     },
+     "answer": [
+      "为"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我儿子生病了，我要在家___他。"
+     },
+     "answer": [
+      "照顾"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "不用去医院，昨天吃了___药，现在好一些了。"
+     },
+     "answer": [
+      "感冒"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___是春天。"
+     },
+     "answer": [
+      "当然"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___来了，树都绿了，花也开了。"
+     },
+     "answer": [
+      "春天"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我最近___来越胖了。"
+     },
+     "answer": [
+      "越"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "春天的时候，___是绿色的，看着很舒服。"
+     },
+     "answer": [
+      "草"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上个月很冷，现在天气不那么冷______。",
+      "options": [
+       "了",
+       "的",
+       "吗",
+       "呢"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào diễn tả SỰ THAY ĐỔI?",
+      "options": [
+       "我喜欢夏天。",
+       "我现在喜欢夏天了。",
+       "我很喜欢夏天。",
+       "我不喜欢夏天。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这条裙子是去年买的，今年就不能穿______。",
+      "options": [
+       "吧",
+       "呢",
+       "了",
+       "吗"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上个月草和树还没绿，花还没开，现在都______。",
+      "options": [
+       "绿、开",
+       "绿着、开着",
+       "要绿、要开",
+       "绿了、开了"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我前几天有点儿发烧，现在好多______。",
+      "options": [
+       "呢",
+       "了",
+       "的",
+       "吧"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu 我现在没钱了 có nghĩa là gì?",
+      "options": [
+       "Tôi chưa bao giờ có tiền.",
+       "Tôi sắp có tiền.",
+       "Trước đây tôi có tiền, bây giờ thì không còn.",
+       "Tôi không cần tiền."
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "昨天腿有点儿疼，今天早上______。",
+      "options": [
+       "不疼了",
+       "没疼",
+       "不疼着",
+       "疼过"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "现在天气不那么冷了。",
+       "我现在喜欢夏天了。",
+       "这些水果现在都坏了。",
+       "我昨天了买裙子。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "你越来越漂亮了。",
+       "我越来越喜欢运动。",
+       "天气越来越很热。",
+       "我认识的汉字越来越多。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "不那么冷",
+       "天气",
+       "现在",
+       "上个月很冷",
+       "了"
+      ]
+     },
+     "answer": [
+      "上个月很冷",
+      "现在",
+      "天气",
+      "不那么冷",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "越来越",
+       "认识的汉字",
+       "我",
+       "多"
+      ]
+     },
+     "answer": [
+      "我",
+      "认识的汉字",
+      "越来越",
+      "多"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "就不能穿",
+       "今年",
+       "是去年买的",
+       "这条裙子",
+       "了"
+      ]
+     },
+     "answer": [
+      "这条裙子",
+      "是去年买的",
+      "今年",
+      "就不能穿",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "越来越",
+       "我做的饭",
+       "好吃"
+      ]
+     },
+     "answer": [
+      "我做的饭",
+      "越来越",
+      "好吃"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "title": "Sao bỗng dưng lại không tìm thấy?",
+   "title_zh": "怎么突然找不到了？",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 眼镜 có nghĩa là:",
+      "options": [
+       "con mắt",
+       "tấm gương",
+       "kính mắt",
+       "ống nhòm"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "乐",
+      "options": [
+       "yīnyuè",
+       "yīnlè",
+       "yīnyè",
+       "yīngyuè"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 突然 có nghĩa là:",
+      "options": [
+       "quả nhiên",
+       "đột nhiên",
+       "đương nhiên",
+       "tuy nhiên"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 清楚 có nghĩa là:",
+      "options": [
+       "trong sạch",
+       "thanh toán",
+       "sáng sủa",
+       "rõ ràng"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 帮忙 có nghĩa là:",
+      "options": [
+       "giúp đỡ",
+       "bận rộn",
+       "vội vàng",
+       "cho vay tiền"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 明白 có nghĩa là:",
+      "options": [
+       "sáng trắng",
+       "ngày mai",
+       "hiểu rõ",
+       "minh bạch tài chính"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "为了身体好，我每天都去公园______。",
+      "options": [
+       "聊天",
+       "帮忙",
+       "讲",
+       "锻炼"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 聊天儿 có nghĩa là:",
+      "options": [
+       "gọi điện thoại",
+       "tán gẫu",
+       "bàn bạc công việc",
+       "kể chuyện cổ tích"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào GẦN NGHĨA nhất với 特别?",
+      "options": [
+       "非常",
+       "特点",
+       "别的",
+       "当然"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你喝杯牛奶吧，可以睡得______好些。",
+      "options": [
+       "很",
+       "太",
+       "更",
+       "越"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我的___呢？没有它我一个字也看不清楚。"
+     },
+     "answer": [
+      "眼镜"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "怎么___找不到了？刚才还在桌子上呢。"
+     },
+     "answer": [
+      "突然"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我每天七点___家去上班。"
+     },
+     "answer": [
+      "离开"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___我喝了一杯咖啡，现在睡不着了。"
+     },
+     "answer": [
+      "刚才"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这些题特别难，你能给我___一下吗？"
+     },
+     "answer": [
+      "讲"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们去听___会吧，她特别喜欢。"
+     },
+     "answer": [
+      "音乐"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "那去___走走，聊聊天儿吧。"
+     },
+     "answer": [
+      "公园"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你不是说晚上睡不___觉吗？怎么还喝咖啡？"
+     },
+     "answer": [
+      "着"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "楼太高了，我______。",
+      "options": [
+       "上得去",
+       "上不去",
+       "不上去",
+       "上去不"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "那个汉字写得太小了，我______。",
+      "options": [
+       "看得清楚",
+       "不看清楚",
+       "看不清楚",
+       "看清楚不"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "老师说的话你______？",
+      "options": [
+       "听得见听不见",
+       "听见得听见不",
+       "听不见吗听见",
+       "听得不见"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天这些题特别难，我______，不会做。",
+      "options": [
+       "不看懂",
+       "看得不懂",
+       "看懂不",
+       "看不懂"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我想请小丽吃饭，但是______好饭馆儿。",
+      "options": [
+       "找得到",
+       "不找到",
+       "找不到",
+       "找到不"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "音乐会人太多，票______。",
+      "options": [
+       "买得到",
+       "买不到",
+       "不买到",
+       "买到不"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "我看得清楚那个汉字。",
+       "我看清楚得那个汉字。",
+       "我得看清楚那个汉字。",
+       "我看那个汉字得清楚。"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天的作业一点儿也不多，七点以前我一定______。",
+      "options": [
+       "做不完",
+       "不做完",
+       "做完得",
+       "做得完"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "找不到",
+       "突然",
+       "怎么",
+       "我的眼镜",
+       "了"
+      ]
+     },
+     "answer": [
+      "我的眼镜",
+      "怎么",
+      "突然",
+      "找不到",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "清楚",
+       "得",
+       "看",
+       "我",
+       "那个汉字"
+      ]
+     },
+     "answer": [
+      "我",
+      "看",
+      "得",
+      "清楚",
+      "那个汉字"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "刚才",
+       "周明",
+       "眼镜",
+       "放在桌子上了"
+      ]
+     },
+     "answer": [
+      "眼镜",
+      "周明",
+      "刚才",
+      "放在桌子上了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "呢",
+       "你的书",
+       "放在哪儿了"
+      ]
+     },
+     "answer": [
+      "你的书",
+      "呢",
+      "放在哪儿了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "title": "Tôi và cô ấy quen nhau được năm năm rồi.",
+   "title_zh": "我跟她都认识五年了。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 同事 có nghĩa là:",
+      "options": [
+       "bạn học",
+       "bạn cùng phòng",
+       "đồng nghiệp",
+       "việc chung"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "银行",
+      "options": [
+       "yínháng",
+       "yínxíng",
+       "yìnháng",
+       "yínhǎng"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 以前?",
+      "options": [
+       "现在",
+       "以后",
+       "过去",
+       "最近"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 迟到 có nghĩa là:",
+      "options": [
+       "đến sớm",
+       "muộn màng",
+       "chậm chạp",
+       "đến muộn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 结婚 có nghĩa là:",
+      "options": [
+       "kết hôn",
+       "đính hôn",
+       "ly hôn",
+       "sinh nhật"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 欢迎 có nghĩa là:",
+      "options": [
+       "vui vẻ",
+       "tiễn đưa",
+       "hoan nghênh, chào mừng",
+       "mời mọc"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你不是说七点半来______我吗？",
+      "options": [
+       "迟到",
+       "欢迎",
+       "结婚",
+       "接"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 久 có nghĩa là:",
+      "options": [
+       "rất nhanh",
+       "lâu, lâu dài",
+       "số chín",
+       "cuối cùng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "12:45 nói bằng tiếng Hán là:",
+      "options": [
+       "差一刻一点",
+       "一点一刻",
+       "十二点半",
+       "差一刻十二点"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“一刻钟” là bao lâu?",
+      "options": [
+       "5 phút",
+       "10 phút",
+       "15 phút",
+       "30 phút"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "那个漂亮的新___是谁？"
+     },
+     "answer": [
+      "同事"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___她在哪儿工作？"
+     },
+     "answer": [
+      "以前"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她在___工作了两年以后来的我们公司。"
+     },
+     "answer": [
+      "银行"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你们唱了多___？"
+     },
+     "answer": [
+      "久"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我跟小丽下个月___，到时候你一定要来。"
+     },
+     "answer": [
+      "结婚"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "到时候___你来我们家玩儿。"
+     },
+     "answer": [
+      "欢迎"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你看看手表，怎么___了？"
+     },
+     "answer": [
+      "迟到"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你不是说七点___来接我吗？"
+     },
+     "answer": [
+      "半"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "她在北京工作______。（đã ba năm và hiện vẫn đang làm）",
+      "options": [
+       "三年",
+       "了三年",
+       "三年了",
+       "了三年了"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们坐了一个小时______。",
+      "options": [
+       "公共汽车",
+       "公共汽车了",
+       "了公共汽车",
+       "公共汽车的"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "我们唱歌了两个小时。",
+       "我们唱了两个小时歌。",
+       "我们唱了歌两个小时。",
+       "我们两个小时唱了歌。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我学习______汉语了。",
+      "options": [
+       "一年",
+       "了一年的",
+       "了一年",
+       "一年了"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你怎么晚到了______？",
+      "options": [
+       "一刻钟",
+       "一刻",
+       "一个刻",
+       "刻钟"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我都在这儿坐了半个小时______。",
+      "options": [
+       "吗",
+       "呢",
+       "了",
+       "的"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "A: 你学了多长时间汉语了？                      B: ______",
+      "options": [
+       "我两年学汉语了。",
+       "我学汉语了两年。",
+       "我学了汉语两年。",
+       "我学了两年汉语了。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他们______二十分钟______了。",
+      "options": [
+       "游泳了 … 了",
+       "游了 … 泳",
+       "游 … 泳了",
+       "了游 … 泳"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "了",
+       "工作",
+       "在北京",
+       "她",
+       "三年"
+      ]
+     },
+     "answer": [
+      "她",
+      "在北京",
+      "工作",
+      "了",
+      "三年"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "两个小时",
+       "了",
+       "唱",
+       "我们",
+       "歌"
+      ]
+     },
+     "answer": [
+      "我们",
+      "唱",
+      "了",
+      "两个小时",
+      "歌"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "音乐",
+       "对",
+       "她",
+       "感兴趣"
+      ]
+     },
+     "answer": [
+      "她",
+      "对",
+      "音乐",
+      "感兴趣"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "半个小时",
+       "坐了",
+       "都在这儿",
+       "我",
+       "了"
+      ]
+     },
+     "answer": [
+      "我",
+      "都在这儿",
+      "坐了",
+      "半个小时",
+      "了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "title": "Em đi đâu thì anh đi đến đó.",
+   "title_zh": "你去哪儿我就去哪儿。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ \"电梯\" có nghĩa là gì?",
+      "options": [
+       "Cầu thang",
+       "Tàu điện ngầm",
+       "Thang máy",
+       "Xe đạp"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "\"Gấu trúc\" trong tiếng Trung được viết là:",
+      "options": [
+       "熊猫",
+       "猫",
+       "马",
+       "狗"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "几乎",
+      "options": [
+       "jīhu",
+       "jǐhū",
+       "jīhū",
+       "jìhū"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ \"安静\" có nghĩa là gì?",
+      "options": [
+       "An toàn",
+       "Yên tĩnh",
+       "Bình tĩnh",
+       "Sạch sẽ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Lượng từ \"层\" dùng để đếm cái gì?",
+      "options": [
+       "Tầng nhà",
+       "Quyển sách",
+       "Chiếc xe",
+       "Con vật"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào trái nghĩa với \"健康\"?",
+      "options": [
+       "重要",
+       "满意",
+       "安静",
+       "生病"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ \"几乎\" có nghĩa là gì?",
+      "options": [
+       "Nhất định",
+       "Hầu như, gần như",
+       "Thỉnh thoảng",
+       "Rất, vô cùng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "\"Nhà vệ sinh\" trong tiếng Trung được viết là:",
+      "options": [
+       "洗手间",
+       "房间",
+       "客厅",
+       "厨房"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ \"马上\" có nghĩa là gì?",
+      "options": [
+       "Trên lưng ngựa",
+       "Sắp sửa",
+       "Từ từ",
+       "Ngay lập tức"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ \"变化\" có nghĩa là gì?",
+      "options": [
+       "Văn hóa",
+       "Thay đổi",
+       "Biến mất",
+       "Phương pháp"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这儿很___，我们就坐这儿吧。"
+     },
+     "answer": [
+      "安静"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你等我___，我马上回来。"
+     },
+     "answer": [
+      "一会儿"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "快五年了，你___没变化。"
+     },
+     "answer": [
+      "几乎"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "二十层太高了，往下看多___啊！"
+     },
+     "answer": [
+      "害怕"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "健康最___，胖瘦没关系。"
+     },
+     "answer": [
+      "重要"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "您对我们的服务___吗？不错，我玩儿得很高兴。"
+     },
+     "answer": [
+      "满意"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "谢谢你，希望以后能再___。"
+     },
+     "answer": [
+      "见面"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你先坐一下，他___就来。"
+     },
+     "answer": [
+      "马上"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "去",
+       "就",
+       "我",
+       "哪儿",
+       "去",
+       "你",
+       "哪儿"
+      ]
+     },
+     "answer": [
+      "你",
+      "去",
+      "哪儿",
+      "我",
+      "就",
+      "去",
+      "哪儿"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "迟到",
+       "又",
+       "今天",
+       "他",
+       "了"
+      ]
+     },
+     "answer": [
+      "他",
+      "今天",
+      "又",
+      "迟到",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "再",
+       "能",
+       "以后",
+       "希望",
+       "见面"
+      ]
+     },
+     "answer": [
+      "希望",
+      "以后",
+      "能",
+      "再",
+      "见面"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "胖瘦",
+       "重要",
+       "最",
+       "健康",
+       "没关系"
+      ]
+     },
+     "answer": [
+      "健康",
+      "最",
+      "重要",
+      "胖瘦",
+      "没关系"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "title": "Cô ấy nói tiếng Trung Quốc hay như người Trung Quốc vậy.",
+   "title_zh": "她的汉语说得跟中国人一样好。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 中文 gần nghĩa nhất với từ nào?",
+      "options": [
+       "中国",
+       "文化",
+       "汉语",
+       "英语"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 一定 có nghĩa là:",
+      "options": [
+       "nhất định",
+       "một chút",
+       "một lát",
+       "giống nhau"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "影响",
+      "options": [
+       "yīngxiǎng",
+       "yǐngxiǎng",
+       "yǐngxiàng",
+       "yìngxiāng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 担心?",
+      "options": [
+       "害怕",
+       "着急",
+       "生气",
+       "放心"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "小刚已经吃了三______蛋糕了。",
+      "options": [
+       "块",
+       "只",
+       "双",
+       "张"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 了解 có nghĩa là:",
+      "options": [
+       "giải quyết",
+       "cởi ra",
+       "hiểu rõ",
+       "kết thúc"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 一样 được đọc là:",
+      "options": [
+       "yīyàng",
+       "yǐyàng",
+       "yìyàng",
+       "yíyàng"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下个月的篮球比赛，你能______吗？",
+      "options": [
+       "比较",
+       "参加",
+       "放心",
+       "中间"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "别吃了，这是______一块蛋糕了。",
+      "options": [
+       "最后",
+       "中间",
+       "先",
+       "一样"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们______有二十个同学，其中八个是女生。",
+      "options": [
+       "间",
+       "条",
+       "次",
+       "班"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们___有十八个同学，其中六个是女生。"
+     },
+     "answer": [
+      "班"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他学___已经三年了，现在说得很好。"
+     },
+     "answer": [
+      "中文"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天的运动会我___会来，你放心吧。"
+     },
+     "answer": [
+      "一定"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这个电影我不太___，你能给我讲讲吗？"
+     },
+     "answer": [
+      "了解"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们___去吃饭，然后再去看电影。"
+     },
+     "answer": [
+      "先"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你想不想___下个月的汉语比赛？"
+     },
+     "answer": [
+      "参加"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "教室里有很多桌子，老师就站在___。"
+     },
+     "answer": [
+      "中间"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天的作业___难，我做了两个小时。"
+     },
+     "answer": [
+      "比较"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "天气______冷了，你多穿点儿衣服。",
+      "options": [
+       "越",
+       "越来越",
+       "一样",
+       "比较越"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "山______高，路______难走。",
+      "options": [
+       "越来越…越来越",
+       "更…更",
+       "越…越",
+       "越…更"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "外边的雨下得______大了，我们别出去了。",
+      "options": [
+       "一样",
+       "越",
+       "一定",
+       "越来越"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你越担心，事情就______。",
+      "options": [
+       "越难做",
+       "很难做",
+       "太难做",
+       "不太难做"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个电影我越看______喜欢。",
+      "options": [
+       "更",
+       "越",
+       "也",
+       "太"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我最近吃得太多，______胖了。",
+      "options": [
+       "越",
+       "一样",
+       "越…越",
+       "越来越"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "越往南走，天气______。",
+      "options": [
+       "越热",
+       "很热",
+       "一样热",
+       "热得多"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他______跑______快，我在后边越看越担心。",
+      "options": [
+       "更…更",
+       "也…也",
+       "越…越",
+       "越来越…越"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "跟老师",
+       "写得",
+       "中文",
+       "他的",
+       "一样好"
+      ]
+     },
+     "answer": [
+      "他的",
+      "中文",
+      "写得",
+      "跟老师",
+      "一样好"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "越",
+       "天气",
+       "往北走",
+       "越",
+       "冷"
+      ]
+     },
+     "answer": [
+      "越",
+      "往北走",
+      "天气",
+      "越",
+      "冷"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "不一样",
+       "他的",
+       "跟",
+       "我的房子",
+       "大"
+      ]
+     },
+     "answer": [
+      "我的房子",
+      "跟",
+      "他的",
+      "不一样",
+      "大"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有意思",
+       "越来越",
+       "汉语",
+       "我觉得",
+       "了"
+      ]
+     },
+     "answer": [
+      "我觉得",
+      "汉语",
+      "越来越",
+      "有意思",
+      "了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "title": "Môn Toán khó hơn môn Lịch Sử nhiều.",
+   "title_zh": "数学比历史难多了。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 矮?",
+      "options": [
+       "胖",
+       "高",
+       "大",
+       "长"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 旧?",
+      "options": [
+       "快",
+       "贵",
+       "干净",
+       "新"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "自行车",
+      "options": [
+       "zìxíngchē",
+       "zìxìngchē",
+       "zhìxíngchē",
+       "zìxíncē"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "数学",
+      "options": [
+       "shǔxué",
+       "shùxuě",
+       "shùxué",
+       "shuōxué"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 方便 có nghĩa là:",
+      "options": [
+       "phương pháp",
+       "thuận tiện",
+       "một bên",
+       "rẻ tiền"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "学习中国过去的事情，这是______课。",
+      "options": [
+       "体育",
+       "数学",
+       "中文",
+       "历史"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我想买一______自行车。",
+      "options": [
+       "辆",
+       "只",
+       "条",
+       "本"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我每天______自行车去上学。",
+      "options": [
+       "坐",
+       "开",
+       "骑",
+       "走"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我家______有三四个车站，去哪儿都很方便。",
+      "options": [
+       "中间",
+       "主要",
+       "地方",
+       "附近"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这辆自行车太旧了，我想______一辆新的。",
+      "options": [
+       "换",
+       "骑",
+       "矮",
+       "比"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "弟弟今年才十二岁，___已经跟妈妈一样高了。"
+     },
+     "answer": [
+      "个子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我最喜欢上___课，因为可以打篮球。"
+     },
+     "answer": [
+      "体育"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这儿的___很好，又干净又安静。"
+     },
+     "answer": [
+      "环境"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你知道附近有没有便宜一点儿的___吃饭吗？"
+     },
+     "answer": [
+      "地方"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我买这个房子，___是因为它离学校很近。"
+     },
+     "answer": [
+      "主要"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "从我家骑___到公司只要七八分钟。"
+     },
+     "answer": [
+      "自行车"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这件衣服太大了，我想去商店___一件小一点儿的。"
+     },
+     "answer": [
+      "换"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "学校旁边有地铁站，坐车非常___。"
+     },
+     "answer": [
+      "方便"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天的作业比昨天多______，我做到十一点才做完。",
+      "options": [
+       "得多",
+       "很",
+       "太",
+       "非常"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "学校里边的房子没有学校外边的______安静。",
+      "options": [
+       "很",
+       "更",
+       "那么",
+       "得多"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我今天起得比昨天晚______，只晚了五分钟。",
+      "options": [
+       "多了",
+       "一点儿",
+       "得多",
+       "很多"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我的自行车______他的新。（ý: xe tôi không mới bằng xe anh ấy）",
+      "options": [
+       "比",
+       "跟",
+       "不比",
+       "没有"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "数学比历史难______，我完全听不懂。",
+      "options": [
+       "一点儿",
+       "一些",
+       "多了",
+       "很"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他______我这么高。（ý: anh ấy không cao bằng tôi）",
+      "options": [
+       "没有",
+       "比",
+       "不比",
+       "跟"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "大山比马可矮______，两个人差不多一样高。",
+      "options": [
+       "得多",
+       "多了",
+       "很多",
+       "一点儿"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "他比我大两岁。",
+       "这本书比那本书很有意思。",
+       "今天比昨天冷得多。",
+       "我没有他那么高。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有意思",
+       "体育课",
+       "比",
+       "历史课",
+       "得多"
+      ]
+     },
+     "answer": [
+      "历史课",
+      "比",
+      "体育课",
+      "有意思",
+      "得多"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "那么",
+       "他的",
+       "没有",
+       "我的自行车",
+       "新"
+      ]
+     },
+     "answer": [
+      "我的自行车",
+      "没有",
+      "他的",
+      "那么",
+      "新"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "七八分钟",
+       "到学校",
+       "骑车",
+       "从我家",
+       "就能到"
+      ]
+     },
+     "answer": [
+      "从我家",
+      "骑车",
+      "到学校",
+      "七八分钟",
+      "就能到"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "方便",
+       "那个地方",
+       "比",
+       "这个地方",
+       "一些"
+      ]
+     },
+     "answer": [
+      "这个地方",
+      "比",
+      "那个地方",
+      "方便",
+      "一些"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "title": "Đừng quên tắt máy điều hòa không khí nhé.",
+   "title_zh": "别忘了把空调关了。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "桌子上还差一______筷子，你去拿一下。",
+      "options": [
+       "本",
+       "口",
+       "双",
+       "瓶"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我只喝了一______水就走了。",
+      "options": [
+       "口",
+       "双",
+       "件",
+       "条"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "词典",
+      "options": [
+       "cǐdiǎn",
+       "chídiǎn",
+       "cídiān",
+       "cídiǎn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trong câu 我去图书馆还书, chữ 还 được đọc là:",
+      "options": [
+       "hái",
+       "huán",
+       "huàn",
+       "hán"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 借?",
+      "options": [
+       "拿",
+       "买",
+       "还",
+       "用"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 结束?",
+      "options": [
+       "开始",
+       "出发",
+       "结果",
+       "影响"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 忘记 có nghĩa là:",
+      "options": [
+       "ghi nhớ",
+       "quên",
+       "ghi chép",
+       "nhớ lại"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我想去图书馆______一本词典，下个星期还。",
+      "options": [
+       "关",
+       "忘记",
+       "习惯",
+       "借"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "屋子里太热了，快把______打开吧。",
+      "options": [
+       "空调",
+       "词典",
+       "地铁",
+       "瓶子"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我每天坐______去上班，又快又方便。",
+      "options": [
+       "啤酒",
+       "筷子",
+       "地铁",
+       "词典"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "离开教室的时候，请把___关了。"
+     },
+     "answer": [
+      "灯"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我已经___了每天早上跑步。"
+     },
+     "answer": [
+      "习惯"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天上午九点有一个重要的___，你别迟到。"
+     },
+     "answer": [
+      "会议"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这本词典是我从___借的，下星期要还。"
+     },
+     "answer": [
+      "图书馆"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "桌子上有一个空___，你帮我拿一下。"
+     },
+     "answer": [
+      "瓶子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "爸爸生病了，医生说他一口___都不能喝。"
+     },
+     "answer": [
+      "啤酒"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我去年买的这个___电脑，现在便宜多了。"
+     },
+     "answer": [
+      "笔记本"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我每天起床后的第一件事就是看___。"
+     },
+     "answer": [
+      "电子邮件"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "请你______这本词典还给他。",
+      "options": [
+       "比",
+       "把",
+       "跟",
+       "在"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "我把手机忘了别。",
+       "你把别手机忘了。",
+       "别你把手机忘了。",
+       "你别把手机忘了。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我______电脑给你，那是公司的。",
+      "options": [
+       "不能把",
+       "把不能",
+       "能把不",
+       "不把能"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你______把词典还给我，我怎么复习呢？",
+      "options": [
+       "不",
+       "别",
+       "没",
+       "不用"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "睡觉以前别忘了______。",
+      "options": [
+       "关把灯了",
+       "把关灯了",
+       "灯把关了",
+       "把灯关了"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他______爸爸的生日忘了。",
+      "options": [
+       "被",
+       "把",
+       "比",
+       "跟"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "我把作业做完了。",
+       "请你把窗户关上。",
+       "我把一本书看了。",
+       "他把钱给我了。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下班以前，请大家______。",
+      "options": [
+       "把电脑关了",
+       "关了把电脑",
+       "电脑把关了",
+       "把关了电脑"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "词典",
+       "把",
+       "我",
+       "还给图书馆了"
+      ]
+     },
+     "answer": [
+      "我",
+      "把",
+      "词典",
+      "还给图书馆了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "生日",
+       "妈妈的",
+       "把",
+       "别",
+       "你",
+       "忘了"
+      ]
+     },
+     "answer": [
+      "你",
+      "别",
+      "把",
+      "妈妈的",
+      "生日",
+      "忘了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "左右",
+       "六点",
+       "每天",
+       "我",
+       "起床"
+      ]
+     },
+     "answer": [
+      "我",
+      "每天",
+      "六点",
+      "左右",
+      "起床"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "笔记本电脑",
+       "把",
+       "不能",
+       "我",
+       "给你"
+      ]
+     },
+     "answer": [
+      "我",
+      "不能",
+      "把",
+      "笔记本电脑",
+      "给你"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 12,
+   "title": "Hãy để những đồ quan trọng ở chỗ tôi đi.",
+   "title_zh": "把重要的东西放在我这儿吧。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "出国旅游一定要带______。",
+      "options": [
+       "黑板",
+       "护照",
+       "太阳",
+       "司机"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "护照",
+      "options": [
+       "hùzhào",
+       "hǔzhào",
+       "hùzhāo",
+       "fùzhào"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 司机 có nghĩa là:",
+      "options": [
+       "người thợ",
+       "hành khách",
+       "tài xế",
+       "cảnh sát"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "太阳每天从______边出来。",
+      "options": [
+       "西",
+       "南",
+       "北",
+       "东"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 生气 có nghĩa là:",
+      "options": [
+       "tức giận",
+       "sinh nhật",
+       "sức khoẻ",
+       "không khí"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trong câu 我教学生画画儿, chữ 教 được đọc là:",
+      "options": [
+       "jiào",
+       "jiāo",
+       "jiǎo",
+       "qiáo"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "老师把今天的生词写在______上了。",
+      "options": [
+       "包",
+       "护照",
+       "行李箱",
+       "黑板"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 发现 có nghĩa là:",
+      "options": [
+       "phát triển",
+       "biểu hiện",
+       "phát hiện",
+       "xuất phát"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "快点儿吧，飞机就要______了。",
+      "options": [
+       "生气",
+       "起飞",
+       "发现",
+       "需要"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我把衣服都放在______里了。",
+      "options": [
+       "黑板",
+       "护照",
+       "太阳",
+       "行李箱"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "爸爸妈妈不在家，你要照顾好___。"
+     },
+     "answer": [
+      "自己"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我的钱和护照都在这个___里。"
+     },
+     "answer": [
+      "包"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你___什么东西？我可以帮你买。"
+     },
+     "answer": [
+      "需要"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我妹妹很喜欢___画儿，她画得非常好。"
+     },
+     "answer": [
+      "画"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "经理___了，因为小刚又迟到了。"
+     },
+     "answer": [
+      "生气"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我在中学___汉语，已经十年了。"
+     },
+     "answer": [
+      "教"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天___很好，我们出去走走吧。"
+     },
+     "answer": [
+      "太阳"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "到了机场，我才___忘带钱包了。"
+     },
+     "answer": [
+      "发现"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "黑板上",
+       "写在",
+       "生词",
+       "把",
+       "老师",
+       "了"
+      ]
+     },
+     "answer": [
+      "老师",
+      "把",
+      "生词",
+      "写在",
+      "黑板上",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "发现",
+       "才",
+       "到机场",
+       "我",
+       "忘带护照了"
+      ]
+     },
+     "answer": [
+      "我",
+      "到机场",
+      "才",
+      "发现",
+      "忘带护照了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "就",
+       "七点",
+       "每天",
+       "他",
+       "到公司了"
+      ]
+     },
+     "answer": [
+      "他",
+      "每天",
+      "七点",
+      "就",
+      "到公司了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "带给",
+       "这个包",
+       "把",
+       "请你",
+       "小丽"
+      ]
+     },
+     "answer": [
+      "请你",
+      "把",
+      "这个包",
+      "带给",
+      "小丽"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 13,
+   "title": "Anh đi bộ về.",
+   "title_zh": "我是走回来的。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 终于 có nghĩa là:",
+      "options": [
+       "bắt đầu",
+       "đột nhiên",
+       "thường xuyên",
+       "cuối cùng, rốt cuộc"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "爸爸的爸爸，我们应该叫他______。",
+      "options": [
+       "爷爷",
+       "奶奶",
+       "校长",
+       "叔叔"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "愿意",
+      "options": [
+       "yuányì",
+       "yuànyí",
+       "yuànyì",
+       "wànyì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào GẦN NGHĨA nhất với 经常?",
+      "options": [
+       "非常",
+       "常常",
+       "一般",
+       "终于"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 应该 có nghĩa là:",
+      "options": [
+       "hy vọng",
+       "có thể",
+       "muốn",
+       "nên, cần phải"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 遇到 có nghĩa là:",
+      "options": [
+       "tình cờ gặp",
+       "đi tới",
+       "chờ đợi",
+       "tìm thấy"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 生活 có nghĩa là:",
+      "options": [
+       "sức sống",
+       "cuộc sống",
+       "công việc",
+       "sinh viên"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们学校的______是一位五十多岁的老师。",
+      "options": [
+       "爷爷",
+       "同事",
+       "校长",
+       "司机"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天是奶奶的生日，我买了一个______送给她。",
+      "options": [
+       "礼物",
+       "生活",
+       "过去",
+       "一般"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我今天累______了，什么都不想做。",
+      "options": [
+       "过",
+       "完",
+       "到",
+       "坏"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你___回来了！我等了你两个小时。"
+     },
+     "answer": [
+      "终于"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "昨天我在路上___一个老同学，我们聊了很久。"
+     },
+     "answer": [
+      "遇到"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "爷爷___今年都八十岁了，身体还很好。"
+     },
+     "answer": [
+      "奶奶"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "周末我___不出门，喜欢在家看电视。"
+     },
+     "answer": [
+      "一般"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他不___去医院，说自己没病。"
+     },
+     "answer": [
+      "愿意"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们聊了很多___的事，都很有意思。"
+     },
+     "answer": [
+      "过去"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我___去图书馆看书，一个星期去三四次。"
+     },
+     "answer": [
+      "经常"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "坐久了，你可以站___休息一会儿。"
+     },
+     "answer": [
+      "起来"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "外边下雨了，你快______吧！（người nói đang ở trong nhà）",
+      "options": [
+       "进去",
+       "进来",
+       "出来",
+       "上去"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我在楼下等你，你快______吧。",
+      "options": [
+       "上来",
+       "上去",
+       "进去",
+       "下来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "老师从包里拿______一本词典。",
+      "options": [
+       "出来",
+       "进来",
+       "回去",
+       "过来"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "爸爸从国外带______一些礼物。",
+      "options": [
+       "回去",
+       "出去",
+       "回来",
+       "下来"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "坐久了，还可以站______休息一会儿。",
+      "options": [
+       "下去",
+       "过来",
+       "出来",
+       "起来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "老师走进来教室。",
+       "老师走进教室来。",
+       "老师走教室进来。",
+       "老师进走教室来。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他今天没坐车，是骑自行车______的。",
+      "options": [
+       "回去",
+       "过来",
+       "回来",
+       "起来"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "小狗从房间里跑______了。（người nói đang ở ngoài phòng）",
+      "options": [
+       "出来",
+       "进去",
+       "上来",
+       "下去"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "词典",
+       "一本",
+       "拿出",
+       "从包里",
+       "老师",
+       "来"
+      ]
+     },
+     "answer": [
+      "老师",
+      "从包里",
+      "拿出",
+      "一本",
+      "词典",
+      "来"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "一边",
+       "吃早饭",
+       "一边",
+       "他",
+       "看报纸"
+      ]
+     },
+     "answer": [
+      "他",
+      "一边",
+      "吃早饭",
+      "一边",
+      "看报纸"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "把作业",
+       "终于",
+       "我",
+       "做完了"
+      ]
+     },
+     "answer": [
+      "我",
+      "终于",
+      "把作业",
+      "做完了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "来",
+       "教室",
+       "走进",
+       "校长",
+       "了"
+      ]
+     },
+     "answer": [
+      "校长",
+      "走进",
+      "教室",
+      "来",
+      "了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 14,
+   "title": "Cậu hãy mang trái cây đến đây.",
+   "title_zh": "你把水果拿过来。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 干净 có nghĩa là:",
+      "options": [
+       "khô ráo",
+       "sạch sẽ",
+       "yên tĩnh",
+       "đơn giản"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "洗澡",
+      "options": [
+       "xǐ zǎo",
+       "xǐ zào",
+       "xī zǎo",
+       "xǐ cǎo"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "爸爸的弟弟，我们应该叫他______。",
+      "options": [
+       "爷爷",
+       "阿姨",
+       "校长",
+       "叔叔"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "水果放在______里比较新鲜。",
+      "options": [
+       "盘子",
+       "菜单",
+       "冰箱",
+       "节目"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今晚的月亮真漂亮，好______一个白色的盘子。",
+      "options": [
+       "跟",
+       "像",
+       "比",
+       "把"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào GẦN NGHĨA nhất với 简单?",
+      "options": [
+       "容易",
+       "干净",
+       "一般",
+       "经常"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 菜单 có nghĩa là:",
+      "options": [
+       "món ăn",
+       "hoá đơn",
+       "thực đơn",
+       "rau xanh"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "外边______了，你把窗户关上吧。",
+      "options": [
+       "洗澡",
+       "打扫",
+       "简单",
+       "刮风"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào dưới đây là tên một loại trái cây?",
+      "options": [
+       "盘子",
+       "菜单",
+       "香蕉",
+       "节目"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "电视的______太大了，请你关小一点儿。",
+      "options": [
+       "声音",
+       "故事",
+       "月亮",
+       "阿姨"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "客人快来了，我们快把房间___干净吧。"
+     },
+     "answer": [
+      "打扫"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我先写作业，___再看电视。"
+     },
+     "answer": [
+      "然后"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天晚上有一个很好看的电视___。"
+     },
+     "answer": [
+      "节目"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "爷爷给我们讲了一个很有意思的___。"
+     },
+     "answer": [
+      "故事"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今晚的___很亮，我们坐在外边看吧。"
+     },
+     "answer": [
+      "月亮"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "妈妈的姐姐，我应该叫她___。"
+     },
+     "answer": [
+      "阿姨"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "妈妈把水果放在一个白色的___里。"
+     },
+     "answer": [
+      "盘子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我刚才在___，没听见你的电话。"
+     },
+     "answer": [
+      "洗澡"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "请同学们把铅笔拿______。",
+      "options": [
+       "进去",
+       "起来",
+       "出来",
+       "过去"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "妈妈还没把饭做______呢。",
+      "options": [
+       "好",
+       "干净",
+       "过来",
+       "出去"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你把水果拿______吧，我们一起吃。（mang lại đây）",
+      "options": [
+       "过去",
+       "下去",
+       "回去",
+       "过来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我把桌子和椅子搬______了，我们坐在外边吧。",
+      "options": [
+       "进来",
+       "出去",
+       "起来",
+       "上去"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你先把这个电视节目看______吧，然后再给我回电话。",
+      "options": [
+       "完",
+       "干净",
+       "过去",
+       "出来"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "我把衣服洗干净了。",
+       "他把作业做完了。",
+       "我把房间打扫。",
+       "请你把水果拿过来。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我已经把房间打扫______了。",
+      "options": [
+       "出来",
+       "干净",
+       "起来",
+       "过去"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他把冰箱里的西瓜拿______了。",
+      "options": [
+       "进去",
+       "上来",
+       "回去",
+       "出来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "房间",
+       "把",
+       "妈妈",
+       "打扫干净了"
+      ]
+     },
+     "answer": [
+      "妈妈",
+      "把",
+      "房间",
+      "打扫干净了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "冰箱里的西瓜",
+       "把",
+       "请你",
+       "拿出来"
+      ]
+     },
+     "answer": [
+      "请你",
+      "把",
+      "冰箱里的西瓜",
+      "拿出来"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "再",
+       "然后",
+       "洗澡",
+       "先",
+       "我",
+       "看电视"
+      ]
+     },
+     "answer": [
+      "我",
+      "先",
+      "洗澡",
+      "然后",
+      "再",
+      "看电视"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "又",
+       "坐了公共汽车",
+       "先",
+       "我",
+       "坐了地铁"
+      ]
+     },
+     "answer": [
+      "我",
+      "先",
+      "坐了公共汽车",
+      "又",
+      "坐了地铁"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 15,
+   "title": "Những câu khác đều không có vấn đề gì.",
+   "title_zh": "其他都没什么问题。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 留学 có nghĩa là:",
+      "options": [
+       "lưu lại",
+       "học thêm",
+       "du học",
+       "giữ chỗ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "水平",
+      "options": [
+       "shuǐpíng",
+       "shuípíng",
+       "shuǐpín",
+       "shuǐbíng"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我来中国两年了，汉语水平______得很快。",
+      "options": [
+       "完成",
+       "举行",
+       "注意",
+       "提高"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 完成 có nghĩa là:",
+      "options": [
+       "hoàn toàn",
+       "hoàn thành",
+       "trọn vẹn",
+       "đầy đủ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 其他 có nghĩa là:",
+      "options": [
+       "bản thân",
+       "lẫn nhau",
+       "cái khác, những cái còn",
+       "mỗi cái lại"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 新闻 có nghĩa là:",
+      "options": [
+       "tin tức",
+       "tờ báo",
+       "tạp chí",
+       "người mới"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 世界 có nghĩa là:",
+      "options": [
+       "thế kỷ",
+       "ranh giới",
+       "thế hệ",
+       "thế giới"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "春节和中秋节都是中国很重要的______。",
+      "options": [
+       "节目",
+       "节日",
+       "街道",
+       "文化"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这件衣服我______了三百块钱。",
+      "options": [
+       "花",
+       "发",
+       "举行",
+       "完成"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "现在用电脑______真方便，看新闻、买东西都可以。",
+      "options": [
+       "留学",
+       "练习",
+       "上网",
+       "提高"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "每天做___，你的汉语一定会提高。"
+     },
+     "answer": [
+      "练习"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这个___的意思有些不清楚，你再看看。"
+     },
+     "answer": [
+      "句子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "有不明白的地方，可以给我打电话或者___电子邮件。"
+     },
+     "answer": [
+      "发"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "老师先给大家讲讲这次比赛的___。"
+     },
+     "answer": [
+      "要求"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "老师还说了一些需要___的地方。"
+     },
+     "answer": [
+      "注意"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这个地方每年夏天都要___一次啤酒节。"
+     },
+     "answer": [
+      "举行"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "在___两边有很多商店和饭馆。"
+     },
+     "answer": [
+      "街道"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很想了解中国的___和历史。"
+     },
+     "answer": [
+      "文化"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "除了小云以外，其他人______来了，我们等她一会儿吧。",
+      "options": [
+       "都",
+       "还",
+       "也",
+       "才"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "除了唱歌以外，他______喜欢跳舞。",
+      "options": [
+       "都",
+       "还",
+       "没",
+       "才"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "除了这个汉字以外，别的汉字我______认识。",
+      "options": [
+       "还",
+       "再",
+       "都",
+       "才"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "除了汉语以外，我______会说英语。",
+      "options": [
+       "都",
+       "没",
+       "才",
+       "还"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上网除了看新闻，______可以听歌、看电影。",
+      "options": [
+       "都",
+       "还",
+       "才",
+       "就"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "除了春节、中秋节以外，啤酒节______是这里很重要的节日。",
+      "options": [
+       "都",
+       "才",
+       "也",
+       "就"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào diễn tả ý \"chỉ mình Tiểu Vân là chưa đến\"?",
+      "options": [
+       "除了小云以外，其他人都来了。",
+       "除了小云以外，其他人还来了。",
+       "小云和其他人都来了。",
+       "除了小云以外，别人也来了。"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们班除了王老师是中国人以外，其他人______是外国人。",
+      "options": [
+       "还",
+       "就",
+       "才",
+       "都"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "别的水果",
+       "以外",
+       "香蕉",
+       "除了",
+       "我都不喜欢吃"
+      ]
+     },
+     "answer": [
+      "除了",
+      "香蕉",
+      "以外",
+      "别的水果",
+      "我都不喜欢吃"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "还",
+       "我",
+       "以外",
+       "看新闻",
+       "除了",
+       "喜欢上网买东西"
+      ]
+     },
+     "answer": [
+      "除了",
+      "看新闻",
+      "以外",
+      "我",
+      "还",
+      "喜欢上网买东西"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有意思",
+       "电视节目",
+       "这个",
+       "极了"
+      ]
+     },
+     "answer": [
+      "这个",
+      "电视节目",
+      "有意思",
+      "极了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "打算",
+       "什么",
+       "有",
+       "你",
+       "周末",
+       "吗"
+      ]
+     },
+     "answer": [
+      "周末",
+      "你",
+      "有",
+      "什么",
+      "打算",
+      "吗"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 16,
+   "title": "Bây giờ tôi mệt đến nỗi chỉ muốn đi ngủ sau khi hết giờ làm việc.",
+   "title_zh": "我现在累得下了班就想睡觉。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 城市 có nghĩa là:",
+      "options": [
+       "nông thôn",
+       "chợ búa",
+       "thành phố",
+       "công dân"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "帽子",
+      "options": [
+       "màozi",
+       "máozi",
+       "màozǐ",
+       "mòzi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 公斤 có nghĩa là:",
+      "options": [
+       "cây số",
+       "mét vuông",
+       "công cộng",
+       "ki-lô-gam"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 认为 có nghĩa là:",
+      "options": [
+       "quen biết",
+       "cho rằng",
+       "nhận lỗi",
+       "làm việc"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 检查 có nghĩa là:",
+      "options": [
+       "tìm kiếm",
+       "sửa chữa",
+       "kiểm tra, khám",
+       "đơn giản"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 别人 có nghĩa là:",
+      "options": [
+       "người khác",
+       "người lạ",
+       "mọi người",
+       "người ấy"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我女儿快一______了，二十五公斤。",
+      "options": [
+       "公斤",
+       "米",
+       "块",
+       "岁"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "医生说，回家以后要好好儿______。",
+      "options": [
+       "检查",
+       "洗澡",
+       "刷鞋",
+       "刷牙"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我和同屋的______不太好，怎么办？",
+      "options": [
+       "关系",
+       "城市",
+       "词语",
+       "鼻子"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trong câu 她长得像谁？, chữ 长 được đọc là:",
+      "options": [
+       "cháng",
+       "zhǎng",
+       "chǎng",
+       "zhàng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___明天不下雨，我们就去爬山。"
+     },
+     "answer": [
+      "如果"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "那个小狗真___，我们把它带回家吧。"
+     },
+     "answer": [
+      "可爱"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她___小小的，眼睛大大的，很好看。"
+     },
+     "answer": [
+      "鼻子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我想去其他___看一看，不想一直住在这儿。"
+     },
+     "answer": [
+      "城市"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "说话的时候多用一些“您好”“谢谢”这样的___。"
+     },
+     "answer": [
+      "词语"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我女朋友___长长的，非常好看。"
+     },
+     "answer": [
+      "头发"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你送的小___和小帽子真漂亮！"
+     },
+     "answer": [
+      "皮鞋"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "牙疼的话，应该去医院___一下。"
+     },
+     "answer": [
+      "检查"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "如果明天下雨的话，______。",
+      "options": [
+       "我们不就去了",
+       "就我们不去了",
+       "我们就不去了",
+       "不我们就去了"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "如果你喜欢，我______给你买。",
+      "options": [
+       "才",
+       "就",
+       "也",
+       "还"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "______有钱的话，我就去旅游。",
+      "options": [
+       "如果",
+       "因为",
+       "但是",
+       "虽然"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "如果不舒服，______去医院检查一下吧。",
+      "options": [
+       "才",
+       "又",
+       "再",
+       "就"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "如果你来的话，就我很高兴。",
+       "如果你来的话，我就很高兴。",
+       "如果你来的话，很高兴我就。",
+       "就如果你来的话，我很高兴。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "如果你想提高汉语水平，______。",
+      "options": [
+       "应该每天就练习",
+       "每天应该就练习",
+       "就应该每天练习",
+       "应该每天练习就"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "如果明天下雨，我就不去了。",
+       "如果明天下雨的话，我就不去了。",
+       "明天下雨的话，我就不去了。",
+       "如果明天下雨的话就，我不去了。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "如果有时间的话，你______去看看爷爷奶奶吧。",
+      "options": [
+       "就",
+       "才",
+       "再",
+       "又"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "就",
+       "我",
+       "的话",
+       "有时间",
+       "如果",
+       "去看你"
+      ]
+     },
+     "answer": [
+      "如果",
+      "有时间",
+      "的话",
+      "我",
+      "就",
+      "去看你"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "不想",
+       "得",
+       "累",
+       "他",
+       "说话"
+      ]
+     },
+     "answer": [
+      "他",
+      "累",
+      "得",
+      "不想",
+      "说话"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "胖胖的",
+       "白白的",
+       "长得",
+       "你女儿",
+       "真可爱"
+      ]
+     },
+     "answer": [
+      "你女儿",
+      "长得",
+      "白白的",
+      "胖胖的",
+      "真可爱"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "就",
+       "不舒服",
+       "如果",
+       "去医院检查一下"
+      ]
+     },
+     "answer": [
+      "如果",
+      "不舒服",
+      "就",
+      "去医院检查一下"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 17,
+   "title": "Ai cũng có cách chữa khỏi “bệnh” của em.",
+   "title_zh": "谁都有办法看好你的“病”。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 请假 có nghĩa là:",
+      "options": [
+       "mời khách",
+       "xin nghỉ phép",
+       "nghỉ hè",
+       "nhờ giúp đỡ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "一共",
+      "options": [
+       "yígòng",
+       "yīgòng",
+       "yìgòng",
+       "yígōng"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 邻居 có nghĩa là:",
+      "options": [
+       "họ hàng",
+       "đồng nghiệp",
+       "hàng xóm",
+       "bạn cùng phòng"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 爱好 có nghĩa là:",
+      "options": [
+       "tình cảm",
+       "thói quen",
+       "ưu điểm",
+       "sở thích"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我已经吃______了，不能再吃了。",
+      "options": [
+       "饱",
+       "渴",
+       "干净",
+       "坏"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 渴 có nghĩa là:",
+      "options": [
+       "đói",
+       "khát",
+       "mệt",
+       "buồn ngủ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 必须 có nghĩa là:",
+      "options": [
+       "có thể",
+       "hy vọng",
+       "cần thiết",
+       "nhất thiết phải"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "从明天起，我______每天去长跑。",
+      "options": [
+       "选择",
+       "请假",
+       "决定",
+       "根据"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "为了健康，我真应该多______了。",
+      "options": [
+       "锻炼",
+       "请假",
+       "决定",
+       "选择"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 根据 có nghĩa là:",
+      "options": [
+       "gốc rễ",
+       "chứng cứ",
+       "căn cứ vào, dựa vào",
+       "theo sau"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___三天。"
+     },
+     "answer": [
+      "一共"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我和他住在同一个楼里，是___。"
+     },
+     "answer": [
+      "邻居"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们过去是同学，___又成了同事。"
+     },
+     "answer": [
+      "后来"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "别着急，谁都有___看好你的“病”。"
+     },
+     "answer": [
+      "办法"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___健康，我决定每天早上跑步。"
+     },
+     "answer": [
+      "为了"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "运动要___“对”的时间和地点。"
+     },
+     "answer": [
+      "选择"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___天很冷，早上可以晚一点儿起来。"
+     },
+     "answer": [
+      "冬"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "要根据自己的身体___运动，别太累了。"
+     },
+     "answer": [
+      "情况"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他是新来的，有时间你帮助______他吧。",
+      "options": [
+       "帮助",
+       "帮",
+       "助帮",
+       "帮帮"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "太累了，我们休休息息吧。",
+       "太累了，我们休息休息吧。",
+       "太累了，我们休息息吧。",
+       "太累了，我们休休息吧。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这是一本新书，你学习______吧。",
+      "options": [
+       "学",
+       "习学",
+       "学习",
+       "学学"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我真应该多锻炼______了。",
+      "options": [
+       "锻",
+       "炼",
+       "锻锻",
+       "锻炼"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你带我去医院检查______吧。",
+      "options": [
+       "检检",
+       "检查",
+       "查查",
+       "检检查查"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他是谁？你介绍我们认识______吧。",
+      "options": [
+       "认认",
+       "识识",
+       "认识",
+       "认认识识"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Động từ nào KHÔNG lặp theo kiểu ABAB?",
+      "options": [
+       "休息",
+       "锻炼",
+       "介绍",
+       "看"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "房间不太干净，我们______吧。",
+      "options": [
+       "打扫打扫",
+       "打打扫扫",
+       "打扫扫",
+       "扫扫打打"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "锻炼锻炼",
+       "多",
+       "应该",
+       "真",
+       "我",
+       "了"
+      ]
+     },
+     "answer": [
+      "我",
+      "真",
+      "应该",
+      "多",
+      "锻炼锻炼",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "都",
+       "哪儿",
+       "我觉得",
+       "最近",
+       "不舒服"
+      ]
+     },
+     "answer": [
+      "最近",
+      "我觉得",
+      "哪儿",
+      "都",
+      "不舒服"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "决定",
+       "我",
+       "健康",
+       "为了",
+       "每天去长跑"
+      ]
+     },
+     "answer": [
+      "为了",
+      "健康",
+      "我",
+      "决定",
+      "每天去长跑"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 18,
+   "title": "Tôi tin họ sẽ đồng ý.",
+   "title_zh": "我相信他们会同意的。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我在动物园看见了一______大熊猫。",
+      "options": [
+       "条",
+       "只",
+       "张",
+       "位"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "奇怪",
+      "options": [
+       "qíguài",
+       "qīguài",
+       "qíguāi",
+       "jīguài"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 同意 có nghĩa là:",
+      "options": [
+       "đồng nghiệp",
+       "cùng nhau",
+       "đồng thời",
+       "đồng ý"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 相信 có nghĩa là:",
+      "options": [
+       "tin tức",
+       "thư từ",
+       "tin tưởng",
+       "tương tự"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 国家 có nghĩa là:",
+      "options": [
+       "đất nước, quốc gia",
+       "quê hương",
+       "nhà nước",
+       "gia đình"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 机会 có nghĩa là:",
+      "options": [
+       "máy móc",
+       "cơ hội",
+       "cuộc họp",
+       "sân bay"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 有名 có nghĩa là:",
+      "options": [
+       "có tên",
+       "hữu ích",
+       "có lý",
+       "nổi tiếng"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "坐火车的时候，我喜欢______外看。",
+      "options": [
+       "在",
+       "关于",
+       "向",
+       "被"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个城市一共有五百______人。",
+      "options": [
+       "千",
+       "万",
+       "段",
+       "种"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "每______文化都有自己的特点。",
+      "options": [
+       "只",
+       "段",
+       "种",
+       "位"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她的___小小的，笑起来很好看。"
+     },
+     "answer": [
+      "嘴"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "过一___时间以后我们再说吧。"
+     },
+     "answer": [
+      "段"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "每种文化都有自己的___。"
+     },
+     "answer": [
+      "特点"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "小孩子喜欢快乐___学习。"
+     },
+     "answer": [
+      "地"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这家饭馆不但菜很好吃，___环境也很好。"
+     },
+     "answer": [
+      "而且"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "真___，桌子上的词典怎么不见了？"
+     },
+     "answer": [
+      "奇怪"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你最喜欢什么___？我最喜欢小狗。"
+     },
+     "answer": [
+      "动物"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你给我介绍几个___中国文化的电影吧。"
+     },
+     "answer": [
+      "关于"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "只要我有时间，______一定跟你去旅游。",
+      "options": [
+       "才",
+       "就",
+       "再",
+       "也"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "______你想去，我就跟你去。",
+      "options": [
+       "只要",
+       "因为",
+       "虽然",
+       "但是"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "只要你给我买，我______能照顾好它。",
+      "options": [
+       "才",
+       "又",
+       "就",
+       "再"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "只要你努力学习，就你一定会进步。",
+       "只要努力学习你，你就一定会进步。",
+       "你只要努力学习，一定就会进步。",
+       "只要你努力学习，你就一定会进步。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "只要经过一段时间，你______会慢慢地习惯的。",
+      "options": [
+       "就",
+       "才",
+       "再",
+       "又"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "只要东西好吃，我______吃得很多。",
+      "options": [
+       "才",
+       "再",
+       "就",
+       "又"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "只要我有时间，我就去。",
+       "我只要有时间，就去。",
+       "只要有时间的话，我就去。",
+       "只要我有时间，就我去。"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "______这件事，我们还没有决定。",
+      "options": [
+       "只要",
+       "关于",
+       "因为",
+       "如果"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "我看了一本书关于动物的。",
+       "我看了一本关于动物的书。",
+       "我关于动物看了一本书。",
+       "我看了关于一本动物的书。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "一定",
+       "就",
+       "有时间",
+       "我",
+       "只要",
+       "跟你去旅游"
+      ]
+     },
+     "answer": [
+      "只要",
+      "我",
+      "有时间",
+      "就",
+      "一定",
+      "跟你去旅游"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "中国文化",
+       "关于",
+       "一些",
+       "借了",
+       "我",
+       "的书"
+      ]
+     },
+     "answer": [
+      "我",
+      "借了",
+      "一些",
+      "关于",
+      "中国文化",
+      "的书"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有",
+       "都",
+       "每种文化",
+       "自己的特点"
+      ]
+     },
+     "answer": [
+      "每种文化",
+      "都",
+      "有",
+      "自己的特点"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "而且",
+       "菜很好吃",
+       "不但",
+       "这家饭馆",
+       "环境也很好"
+      ]
+     },
+     "answer": [
+      "这家饭馆",
+      "不但",
+      "菜很好吃",
+      "而且",
+      "环境也很好"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 19,
+   "title": "Anh không nhìn ra được à?",
+   "title_zh": "你没看出来吗？",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 耳朵 có nghĩa là:",
+      "options": [
+       "mắt",
+       "mũi",
+       "miệng",
+       "tai"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "脸",
+      "options": [
+       "liǎn",
+       "lián",
+       "niǎn",
+       "jiǎn"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ nào TRÁI NGHĨA với 短?",
+      "options": [
+       "小",
+       "长",
+       "高",
+       "大"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "秋天的天是______色的，又高又干净。",
+      "options": [
+       "黄",
+       "绿",
+       "蓝",
+       "红"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我买了三______电影票。",
+      "options": [
+       "张",
+       "位",
+       "只",
+       "条"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们学校来了一______新老师。",
+      "options": [
+       "只",
+       "张",
+       "种",
+       "位"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "夏天以后是______，天气开始冷起来。",
+      "options": [
+       "冬天",
+       "秋天",
+       "春天",
+       "夏天"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 鸟 có nghĩa là:",
+      "options": [
+       "con cá",
+       "con ngựa",
+       "con chim",
+       "con mèo"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们坐______过黄河。",
+      "options": [
+       "船",
+       "马",
+       "鸟",
+       "脸"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 经过 có nghĩa là:",
+      "options": [
+       "kinh nghiệm",
+       "thông qua ai đó",
+       "đi ngang qua; trải qua",
+       "đã từng"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "妹妹___了，因为她的小鸟不见了。"
+     },
+     "answer": [
+      "哭"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他骑___骑得非常好。"
+     },
+     "answer": [
+      "马"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我还没去___北京，很想去看看。"
+     },
+     "answer": [
+      "过"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___是中国很有名的一条河。"
+     },
+     "answer": [
+      "黄河"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "冬天白天很___，晚上很长。"
+     },
+     "answer": [
+      "短"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她的___红红的，是不是不舒服？"
+     },
+     "answer": [
+      "脸"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "把头发放在___后边，脸看上去会漂亮一些。"
+     },
+     "answer": [
+      "耳朵"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___一段时间，你就会慢慢习惯的。"
+     },
+     "answer": [
+      "经过"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个字你能写______吗？",
+      "options": [
+       "出来",
+       "下来",
+       "起来",
+       "过来"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你听______了吗？这是谁的声音？",
+      "options": [
+       "下来",
+       "出来",
+       "起来",
+       "过去"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "前边的车越开越慢，停______了。",
+      "options": [
+       "出来",
+       "起来",
+       "下来",
+       "过来"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "对不起，我想不______你的名字了。",
+      "options": [
+       "出来",
+       "下来",
+       "过来",
+       "起来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "天黑______了，孩子们要回家了。",
+      "options": [
+       "下来",
+       "出来",
+       "起来",
+       "过来"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你记______我是谁了吗？",
+      "options": [
+       "出来",
+       "下来",
+       "起来",
+       "过去"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这是你做的饭吗？______很好吃。",
+      "options": [
+       "想起来",
+       "看起来",
+       "听出来",
+       "停下来"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我喝不______这两杯咖啡有什么不一样。",
+      "options": [
+       "起来",
+       "下来",
+       "过来",
+       "出来"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "这件事让我很高兴。",
+       "这件事让很高兴我。",
+       "让这件事我很高兴。",
+       "这件事我让很高兴。 Câu 31–32: viết tiếp cho hoàn chỉnh câu."
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "他的声音",
+       "出来",
+       "听",
+       "我",
+       "了"
+      ]
+     },
+     "answer": [
+      "我",
+      "听",
+      "出来",
+      "他的声音",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "下来",
+       "冷",
+       "慢慢",
+       "天气",
+       "了"
+      ]
+     },
+     "answer": [
+      "天气",
+      "慢慢",
+      "冷",
+      "下来",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "她的名字",
+       "起来",
+       "想",
+       "我",
+       "了"
+      ]
+     },
+     "answer": [
+      "我",
+      "想",
+      "起来",
+      "她的名字",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "我",
+       "让",
+       "这件事",
+       "很高兴"
+      ]
+     },
+     "answer": [
+      "这件事",
+      "让",
+      "我",
+      "很高兴"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 20,
+   "title": "Mình chịu ảnh hưởng từ anh ấy.",
+   "title_zh": "我被他影响了。",
+   "questions": [
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 照相机 có nghĩa là:",
+      "options": [
+       "ti vi",
+       "máy vi tính",
+       "máy ảnh",
+       "máy giặt"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "成绩",
+      "options": [
+       "chéngjì",
+       "chéngjí",
+       "chénjì",
+       "céngjì"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 难过 có nghĩa là:",
+      "options": [
+       "khó đi qua",
+       "buồn, đau lòng",
+       "khó khăn",
+       "vượt qua"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "在商店买东西的时候，我一般用______。",
+      "options": [
+       "照相机",
+       "成绩",
+       "碗",
+       "信用卡"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 关心 có nghĩa là:",
+      "options": [
+       "quan tâm",
+       "lo lắng",
+       "yên tâm",
+       "cẩn thận"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我今天很饿，吃了两______米饭。",
+      "options": [
+       "张",
+       "只",
+       "碗",
+       "位"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 解决 có nghĩa là:",
+      "options": [
+       "giải thích",
+       "cởi ra",
+       "kết thúc",
+       "giải quyết"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这次考试我考了九十______。",
+      "options": [
+       "块",
+       "分",
+       "岁",
+       "碗"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "别怕，有些问题得______着做做。",
+      "options": [
+       "试",
+       "被",
+       "分",
+       "解决"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Từ 多么 có nghĩa là:",
+      "options": [
+       "rất nhiều",
+       "biết bao, thật là",
+       "bao nhiêu",
+       "nhiều hơn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我的___被谁拿走了？"
+     },
+     "answer": [
+      "照相机"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "小鸟不见了，妹妹很___，哭了半天。"
+     },
+     "answer": [
+      "难过"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "公司___门外就有一个大商场。"
+     },
+     "answer": [
+      "东"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他一直都很___我，我要谢谢他。"
+     },
+     "answer": [
+      "关心"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你是怎么提高历史___的？"
+     },
+     "answer": [
+      "成绩"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "桌子上的那两个___已经洗干净了。"
+     },
+     "answer": [
+      "碗"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "别着急，这个问题一定会___的。"
+     },
+     "answer": [
+      "解决"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "要___了解一个人，需要很长时间。"
+     },
+     "answer": [
+      "真正"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我的照相机______谁拿走了？",
+      "options": [
+       "把",
+       "被",
+       "比",
+       "跟"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "帽子______风刮跑了。",
+      "options": [
+       "把",
+       "在",
+       "被",
+       "向"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "蛋糕______弟弟吃完了。",
+      "options": [
+       "让",
+       "把",
+       "向",
+       "从"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "问题还______解决呢。",
+      "options": [
+       "被没有",
+       "被不",
+       "不被",
+       "没有被"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下个月她______妈妈送到美国。",
+      "options": [
+       "被会",
+       "会被",
+       "被能",
+       "把会"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây SAI?",
+      "options": [
+       "我被男朋友影响了。",
+       "帽子被风刮跑了。",
+       "我的自行车被借走。",
+       "蛋糕让弟弟吃完了。"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们经常______别人认错。",
+      "options": [
+       "把",
+       "向",
+       "跟",
+       "被"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu chữ 把 nào có cùng nghĩa với 蛋糕被弟弟吃完了。?",
+      "options": [
+       "弟弟把蛋糕吃完了。",
+       "弟弟被蛋糕吃完了。",
+       "蛋糕把弟弟吃完了。",
+       "弟弟把蛋糕吃完。"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu nào dưới đây ĐÚNG?",
+      "options": [
+       "只有努力学习，就能考好。",
+       "只有努力学习，才能考好。",
+       "只要努力学习，才能考好。",
+       "只有努力学习，你才就能考好。"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "谁",
+       "被",
+       "我的照相机",
+       "拿走了"
+      ]
+     },
+     "answer": [
+      "我的照相机",
+      "被",
+      "谁",
+      "拿走了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "才",
+       "你",
+       "写完作业",
+       "只有",
+       "能看电视"
+      ]
+     },
+     "answer": [
+      "只有",
+      "写完作业",
+      "你",
+      "才",
+      "能看电视"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "被",
+       "都会",
+       "多么难的问题",
+       "解决的"
+      ]
+     },
+     "answer": [
+      "多么难的问题",
+      "都会",
+      "被",
+      "解决的"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "弟弟",
+       "让",
+       "蛋糕",
+       "吃完了"
+      ]
+     },
+     "answer": [
+      "蛋糕",
+      "让",
+      "弟弟",
+      "吃完了"
+     ]
+    }
+   ]
+  }
+ ]
+}

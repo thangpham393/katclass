@@ -1,0 +1,4391 @@
+{
+ "textbook": {
+  "code": "hsk1-standard",
+  "name": "HSK 1",
+  "name_zh": "标准教程 HSK 1",
+  "level": "HSK1",
+  "description": "Giáo trình chuẩn HSK 1 (标准教程 HSK 1, bản dịch tiếng Việt) — 15 bài, khoảng 150 từ vựng theo đại cương HSK cấp 1. Từ vựng và ngữ pháp trích từ sách; bài 1–2 thiên về ngữ âm, bài 3–15 mỗi bài 3 tình huống hội thoại kèm chú thích ngữ pháp.",
+  "sort": 1
+ },
+ "lessons": [
+  {
+   "unit": 3,
+   "title": "Cô tên gì?",
+   "title_zh": "你叫什么名字？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "名字",
+      "options": [
+       "míngzi",
+       "mīngzi",
+       "míngzì",
+       "mìngzi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你____什么名字？ nǐ ___ shénme míngzi?",
+      "options": [
+       "是 shì",
+       "叫 jiào",
+       "人 rén",
+       "吗 ma"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他是我们的汉语____。 tā shì wǒmen de Hànyǔ ___.",
+      "options": [
+       "人 rén",
+       "名字 míngzi",
+       "老师 lǎoshī",
+       "什么 shénme"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“学生” 的意思是：",
+      "options": [
+       "giáo viên",
+       "học sinh",
+       "người",
+       "tên gọi"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我是____人，不是美国人。 wǒ shì ___ rén, bù shì Měiguó rén.",
+      "options": [
+       "老师 lǎoshī",
+       "学生 xuésheng",
+       "名字 míngzi",
+       "中国 Zhōngguó"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "我",
+      "options": [
+       "wō",
+       "wò",
+       "wǒ",
+       "wó"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你___什么名字？"
+     },
+     "answer": [
+      "叫"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她___我的汉语老师。"
+     },
+     "answer": [
+      "是"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你是哪国___？"
+     },
+     "answer": [
+      "人"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这是___？"
+     },
+     "answer": [
+      "什么"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我是___，不是老师。"
+     },
+     "answer": [
+      "学生"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这是____？ zhè shì ___?",
+      "options": [
+       "谁 shéi/shuí",
+       "什么 shénme",
+       "吗 ma",
+       "是 shì"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他____我的汉语老师。 tā ___ wǒ de Hànyǔ lǎoshī.",
+      "options": [
+       "叫 jiào",
+       "什么 shénme",
+       "是 shì",
+       "吗 ma"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你是老师____？ nǐ shì lǎoshī ___?",
+      "options": [
+       "吗 ma",
+       "什么 shénme",
+       "呢 ne",
+       "叫 jiào"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我不____学生，我是老师。 wǒ bù ___ xuésheng, wǒ shì lǎoshī.",
+      "options": [
+       "叫 jiào",
+       "什么 shénme",
+       "吗 ma",
+       "是 shì"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你叫什么名字？",
+       "她是谁？",
+       "你是中国人吗？"
+      ],
+      "right": [
+       "我不是，我是美国人。",
+       "我叫李月。",
+       "她是我的汉语老师。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "c",
+      "2": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "叫",
+       "我",
+       "李月"
+      ]
+     },
+     "answer": [
+      "我",
+      "叫",
+      "李月"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "我的",
+       "是",
+       "她",
+       "老师"
+      ]
+     },
+     "answer": [
+      "她",
+      "是",
+      "我的",
+      "老师"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "title": "Cô ấy là cô giáo dạy tôi tiếng Trung Quốc",
+   "title_zh": "她是我的汉语老师",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "谁",
+      "options": [
+       "shéi",
+       "shēi",
+       "shèi",
+       "shǎi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他是我的好____，我们常常一起学习。 tā shì wǒ de hǎo ___, wǒmen cháng cháng yìqǐ xuéxí.",
+      "options": [
+       "国 guó",
+       "呢 ne",
+       "朋友 péngyou",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们是____，一起学汉语。 wǒmen shì ___, yìqǐ xué Hànyǔ.",
+      "options": [
+       "老师 lǎoshī",
+       "同学 tóngxué",
+       "国 guó",
+       "谁 shéi/shuí"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“汉语” 的意思是：",
+      "options": [
+       "tiếng Trung",
+       "tiếng Anh",
+       "tiếng Việt",
+       "người Hán"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你是____国人？ nǐ shì ___ guó rén?",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "呢 ne",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“他” 和 “她” khác nhau ởch ỗnào?",
+      "options": [
+       "Khác thanh điệu",
+       "他 chỉ nam, 她 chỉ nữ",
+       "Khác nghĩa hoàn toàn",
+       "Không khác gì cả"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她是___？"
+     },
+     "answer": [
+      "谁"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这是我___汉语书。"
+     },
+     "answer": [
+      "的"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你是___国人？"
+     },
+     "answer": [
+      "哪"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很好，你___？"
+     },
+     "answer": [
+      "呢"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他是我的好___。"
+     },
+     "answer": [
+      "朋友"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "她是____？我不认识她。 tā shì ___? wǒ bù rènshi tā.",
+      "options": [
+       "谁 shéi/shuí",
+       "什么 shénme",
+       "哪 nǎ",
+       "呢 ne"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我很好，你____？ wǒ hěn hǎo, nǐ ___?",
+      "options": [
+       "吗 ma",
+       "什么 shénme",
+       "呢 ne",
+       "谁 shéi/shuí"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这是我____汉语书。 zhè shì wǒ ___ Hànyǔ shū.",
+      "options": [
+       "是 shì",
+       "的 de",
+       "呢 ne",
+       "吗 ma"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你是____国人？我是中国人。 nǐ shì ___ guó rén? wǒ shì Zhōngguó rén.",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "呢 ne",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "她是谁？",
+       "你是哪国人？",
+       "我很好，你呢？"
+      ],
+      "right": [
+       "我是中国人。",
+       "我很好，谢谢。",
+       "她是我的同学。"
+      ]
+     },
+     "answer": {
+      "0": "c",
+      "1": "a",
+      "2": "b"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "我的",
+       "是",
+       "她",
+       "同学"
+      ]
+     },
+     "answer": [
+      "她",
+      "是",
+      "我的",
+      "同学"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "是",
+       "你",
+       "哪国人"
+      ]
+     },
+     "answer": [
+      "你",
+      "是",
+      "哪国人"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "title": "Con gái của cô ấy năm nay 20 tuổi",
+   "title_zh": "她女儿今年二十岁",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "岁",
+      "options": [
+       "suì",
+       "sùi",
+       "suí",
+       "shuì"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你家有____口人？ nǐ jiā yǒu ___ kǒu rén?",
+      "options": [
+       "什么 shénme",
+       "几 jǐ",
+       "谁 shéi/shuí",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "她是我的____，今年五岁。 tā shì wǒ de ___, jīnnián wǔ suì.",
+      "options": [
+       "老师 lǎoshī",
+       "同学 tóngxué",
+       "女儿 nǚ'ér",
+       "朋友 péngyou"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“今年” 的意思是：",
+      "options": [
+       "năm ngoái",
+       "năm nay",
+       "năm sau",
+       "hôm nay"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "数字 “20” 写成汉语是： shù zì \"2 0\" xiě chéng Hànyǔ shì:",
+      "options": [
+       "二零 èr líng",
+       "十二 shí èr",
+       "二十 èr shí",
+       "两十 liǎng shí"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我家有五____人。 wǒ jiā yǒu wǔ ___ rén.",
+      "options": [
+       "个 gè",
+       "岁 suì",
+       "家 jiā",
+       "口 kǒu"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你家___几口人？"
+     },
+     "answer": [
+      "有"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她___二十岁。"
+     },
+     "answer": [
+      "今年"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你女儿___大了？"
+     },
+     "answer": [
+      "多"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你儿子今年___岁了？"
+     },
+     "answer": [
+      "几"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我今年二十岁___。"
+     },
+     "answer": [
+      "了"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你家有____口人？ nǐ jiā yǒu ___ kǒu rén?",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "几 jǐ",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你女儿____大了？ nǐ nǚ'ér ___ dà le?",
+      "options": [
+       "多 duō",
+       "几 jǐ",
+       "什么 shénme",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我今年二十岁____。 wǒ jīnnián èr shí suì ___.",
+      "options": [
+       "吗 ma",
+       "呢 ne",
+       "了 le",
+       "的 de"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "数字 “58” 写成汉语是： shù zì \"5 8\" xiě chéng Hànyǔ shì:",
+      "options": [
+       "五八 wǔ bā",
+       "八十五 bā shí wǔ",
+       "五十八十 wǔ shí bā shí",
+       "五十八 wǔ shí bā"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你家有几口人？",
+       "你女儿多大了？",
+       "她是谁？"
+      ],
+      "right": [
+       "她是我的女儿。",
+       "我家有四口人。",
+       "她今年八岁了。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "c",
+      "2": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有",
+       "我家",
+       "四口人"
+      ]
+     },
+     "answer": [
+      "我家",
+      "有",
+      "四口人"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "二十岁",
+       "今年",
+       "她",
+       "了"
+      ]
+     },
+     "answer": [
+      "她",
+      "今年",
+      "二十岁",
+      "了"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "title": "Tôi biết nói tiếng Trung Quốc",
+   "title_zh": "我会说汉语",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "汉字",
+      "options": [
+       "Hànzì",
+       "hànzi",
+       "Hànzi",
+       "Hànzí"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我妈妈____的菜很好吃。 wǒ māma ___ de cài hěn hǎochī.",
+      "options": [
+       "说 shuō",
+       "做 zuò",
+       "写 xiě",
+       "读 dú"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个字____读？ zhège zì ___ dú?",
+      "options": [
+       "做 zuò",
+       "会 huì",
+       "怎么 zěnme",
+       "说 shuō"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“好吃” 的意思是：",
+      "options": [
+       "khó ăn",
+       "đẹp",
+       "dễ đọc",
+       "ngon"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____说汉语，但是说得不太好。 wǒ ___ shuō Hànyǔ, dàn shì shuō dé bù tài hǎo.",
+      "options": [
+       "会 huì",
+       "做 zuò",
+       "吃 chi",
+       "读 dú"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我不会____汉字，太难了。 wǒ bù huì ___ Hànzì, tài nán le.",
+      "options": [
+       "吃 chi",
+       "写 xiě",
+       "做 zuò",
+       "说 shuō"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“怎么” 的意思是：",
+      "options": [
+       "ai",
+       "cái gì",
+       "như thế nào",
+       "ở đâu"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "妈妈做的这个菜很____。 māma zuò de zhège cài hěn ___.",
+      "options": [
+       "写 xiě",
+       "读 dú",
+       "说 shuō",
+       "好吃 hǎochī"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我妈妈___的菜非常好吃。"
+     },
+     "answer": [
+      "做"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "老师，这个字___读？"
+     },
+     "answer": [
+      "怎么"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我___说汉语，不会写汉字。"
+     },
+     "answer": [
+      "会"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天的这个___真好吃。"
+     },
+     "answer": [
+      "菜"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他的___写得很好看。"
+     },
+     "answer": [
+      "汉字"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "老师___得很慢，我们都听得懂。"
+     },
+     "answer": [
+      "说"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天的菜___好吃，我吃了很多。"
+     },
+     "answer": [
+      "很"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____说一点儿汉语。 wǒ ___ shuō yìdiǎnr Hànyǔ.",
+      "options": [
+       "会 huì",
+       "是 shì",
+       "有 yǒu",
+       "叫 jiào"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他不____写汉字。 tā bù ___ xiě Hànzì.",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "会 huì",
+       "叫 jiào"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个菜____好吃。 zhège cài ___ hǎochī.",
+      "options": [
+       "是 shì",
+       "很 hěn",
+       "会 huì",
+       "有 yǒu"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个菜好吃____？ zhège cài hǎochī ___?",
+      "options": [
+       "吗 ma",
+       "什么 shénme",
+       "怎么 zěnme",
+       "呢 ne"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个字____读？我不认识。 zhège zì ___ dú? wǒ bù rènshi.",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "哪 nǎ",
+       "怎么 zěnme"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个汉字____写？ zhège Hànzì ___ xiě?",
+      "options": [
+       "什么 shénme",
+       "怎么 zěnme",
+       "谁 shéi/shuí",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你会说汉语吗？",
+       "这个字怎么读？",
+       "你妈妈做的菜好吃吗？",
+       "你会写汉字吗？"
+      ],
+      "right": [
+       "很好吃，我很喜欢。",
+       "会说，但是说得不太好。",
+       "会，我会写一些。",
+       "这个字读"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "d",
+      "2": "a",
+      "3": "c"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "说",
+       "会",
+       "我",
+       "汉语"
+      ]
+     },
+     "answer": [
+      "我",
+      "会",
+      "说",
+      "汉语"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "菜",
+       "的",
+       "做",
+       "妈妈",
+       "很好吃"
+      ]
+     },
+     "answer": [
+      "妈妈",
+      "做",
+      "的",
+      "菜",
+      "很好吃"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "怎么",
+       "这个字",
+       "读"
+      ]
+     },
+     "answer": [
+      "这个字",
+      "怎么",
+      "读"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Mẹ tôi biết nấu món Trung Quốc và nấu rất ngon.",
+      "passage": "我妈妈会做中国菜，做得很好吃。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Tôi biết viết chữ Hán.",
+      "passage": "我会说汉语，但是不会写汉字。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "title": "Hôm nay là ngày mấy?",
+   "title_zh": "今天几号？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "星期",
+      "options": [
+       "xīngqī",
+       "xīngqí",
+       "xìngqī",
+       "xīngqi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天几____？ jīntiān jǐ ___?",
+      "options": [
+       "月 yuè",
+       "号 hào",
+       "星期 xīngqī",
+       "书 shū"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我明天____学校。 wǒ míngtiān ___ xuéxiào.",
+      "options": [
+       "看 kàn",
+       "请 qǐng",
+       "去 qù",
+       "问 wèn"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“昨天” 的意思是：",
+      "options": [
+       "hôm nay",
+       "hôm qua",
+       "ngày mai",
+       "tuần trước"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我去学校____书。 wǒ qù xuéxiào ___ shū.",
+      "options": [
+       "请 qǐng",
+       "问 wèn",
+       "去 qù",
+       "看 kàn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "____问，今天几号？ ___ wèn, jīntiān jǐ hào?",
+      "options": [
+       "请 qǐng",
+       "看 kàn",
+       "去 qù",
+       "书 shū"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天是____三。 jīntiān shì ___ sān.",
+      "options": [
+       "号 hào",
+       "月 yuè",
+       "星期 xīngqī",
+       "天 tiān"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“去” 的意思是：",
+      "options": [
+       "đến đây",
+       "đi (đến nơi khác)",
+       "xem",
+       "hỏi"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天几___？"
+     },
+     "answer": [
+      "号"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我明天___学校看书。"
+     },
+     "answer": [
+      "去"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___问，你叫什么名字？"
+     },
+     "answer": [
+      "请"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天是___几？"
+     },
+     "answer": [
+      "星期"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我去学校___书。"
+     },
+     "answer": [
+      "看"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___我要去学校，今天我在家。"
+     },
+     "answer": [
+      "明天"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "现在是九___，天气很好。"
+     },
+     "answer": [
+      "月"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天几____？我想看看日历。 jīntiān jǐ ___? wǒ xiǎng kàn kàn rì lì.",
+      "options": [
+       "月 yuè",
+       "号 hào",
+       "星期 xīngqī",
+       "天 tiān"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天是星期____？ jīntiān shì xīngqī ___?",
+      "options": [
+       "几 jǐ",
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "哪 nǎ"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天九月八____。 jīntiān jiǔ yuè bā ___.",
+      "options": [
+       "星期 xīngqī",
+       "月 yuè",
+       "号 hào",
+       "天 tiān"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我明天____学校看书。 wǒ míngtiān ___ xuéxiào kàn shū.",
+      "options": [
+       "看 kàn",
+       "请 qǐng",
+       "问 wèn",
+       "去 qù"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "我看书去学校。 wǒ kàn shū qù xuéxiào.",
+       "我学校去看书。 wǒ xuéxiào qù kàn shū.",
+       "我去学校看书。 wǒ qù xuéxiào kàn shū.",
+       "去我学校看书。 qù wǒ xuéxiào kàn shū."
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“今天是星期一。” 这句话也可以说成： \"jīntiān shì xīngqī yī.\" zhè jù huà yě kěyǐ shuō chéng:",
+      "options": [
+       "今天有星期一。 jīntiān yǒu xīngqī yī.",
+       "今天星期一。 jīntiān xīngqī yī.",
+       "今天会星期一。 jīntiān huì xīngqī yī.",
+       "今天在星期一。 jīntiān zài xīngqī yī."
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "今天几号？",
+       "今天星期几？",
+       "你明天去学校吗？",
+       "你去学校做什么？"
+      ],
+      "right": [
+       "我去学校看书。",
+       "今天九月八号。",
+       "去，我明天去学校。",
+       "今天星期三。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "d",
+      "2": "c",
+      "3": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "九月",
+       "今天",
+       "八号"
+      ]
+     },
+     "answer": [
+      "今天",
+      "九月",
+      "八号"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "学校",
+       "去",
+       "我",
+       "看书"
+      ]
+     },
+     "answer": [
+      "我",
+      "去",
+      "学校",
+      "看书"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "是",
+       "明天",
+       "星期几"
+      ]
+     },
+     "answer": [
+      "明天",
+      "是",
+      "星期几"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Ngày mai là thứ Bảy, tôi không đến trường.",
+      "passage": "明天是星期六，我不去学校。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Hôm nay là ngày 8 tháng 9, thứ Năm.",
+      "passage": "今天九月八号，星期三。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "title": "Tôi muốn uống trà",
+   "title_zh": "我想喝茶",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "多少",
+      "options": [
+       "duōshao",
+       "duóshǎo",
+       "duōshǎo",
+       "duóshao"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____喝茶，不想喝水。 wǒ ___ hē chá, bù xiǎng hē shuǐ.",
+      "options": [
+       "吃 chi",
+       "想 xiǎng",
+       "买 mǎi",
+       "是 shì"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个杯子____钱？ zhège bēizi ___ qián?",
+      "options": [
+       "几 jǐ",
+       "什么 shénme",
+       "多少 duōshao",
+       "谁 shéi/shuí"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“商店” 的意思是：",
+      "options": [
+       "trường học",
+       "cửa hàng",
+       "bệnh viện",
+       "nhà hàng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下午我去____买两个杯子。 xiàwǔ wǒ qù ___ mǎi liǎng gè bēizi.",
+      "options": [
+       "学校 xuéxiào",
+       "医院 yīyuàn",
+       "家 jiā",
+       "商店 shāngdiàn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我想____米饭，不想吃面。 wǒ xiǎng ___ mǐfàn, bù xiǎng chi miàn.",
+      "options": [
+       "喝 hē",
+       "吃 chi",
+       "买 mǎi",
+       "看 kàn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个杯子二十____钱。 zhège bēizi èr shí ___ qián.",
+      "options": [
+       "个 gè",
+       "口 kǒu",
+       "块 kuài",
+       "岁 suì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“喝” 和 “吃” khác nhau thếnào?",
+      "options": [
+       "Hai từ dùng như nhau",
+       "喝 dùng cho đồ ăn, 吃 dùng cho đồ uống",
+       "Chỉ khác thanh điệu",
+       "喝 dùng cho đồ uống, 吃 dùng cho đồ ăn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我___喝一杯茶。"
+     },
+     "answer": [
+      "想"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这个杯子___钱？"
+     },
+     "answer": [
+      "多少"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我想___一个新杯子。"
+     },
+     "answer": [
+      "买"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这个杯子二十___钱。"
+     },
+     "answer": [
+      "块"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "中午我想___米饭。"
+     },
+     "answer": [
+      "吃"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "下午我要去___看看。"
+     },
+     "answer": [
+      "商店"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我有两___哥哥。"
+     },
+     "answer": [
+      "个"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____喝茶。 wǒ ___ hē chá.",
+      "options": [
+       "是 shì",
+       "想 xiǎng",
+       "有 yǒu",
+       "会 huì"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这个杯子多少____？ zhège bēizi duōshao ___?",
+      "options": [
+       "个 gè",
+       "块 kuài",
+       "钱 qián",
+       "岁 suì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你家有几____人？ nǐ jiā yǒu jǐ ___ rén?",
+      "options": [
+       "个 gè",
+       "口 kǒu",
+       "块 kuài",
+       "钱 qián"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我买了三____杯子。 wǒ mǎi le sān ___ bēizi.",
+      "options": [
+       "口 kǒu",
+       "块 kuài",
+       "岁 suì",
+       "个 gè"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“35 块” 用汉语写是： \"3 5 kuài\" yòng Hànyǔ xiě shì:",
+      "options": [
+       "三十五块 sān shí wǔ kuài",
+       "五十三块 wǔ shí sān kuài",
+       "三五块 sān wǔ kuài",
+       "三十块五 sān shí kuài wǔ"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "我喝想茶。 wǒ hē xiǎng chá.",
+       "想我喝茶。 xiǎng wǒ hē chá.",
+       "我想喝茶。 wǒ xiǎng hē chá.",
+       "我喝茶想。 wǒ hē chá xiǎng."
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你想喝什么？",
+       "这个杯子多少钱？",
+       "你下午去商店吗？",
+       "你家有几口人？"
+      ],
+      "right": [
+       "二十块钱。",
+       "我想喝茶。",
+       "我家有四口人。",
+       "去，我下午去买杯子。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "a",
+      "2": "d",
+      "3": "c"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "喝",
+       "想",
+       "我",
+       "茶"
+      ]
+     },
+     "answer": [
+      "我",
+      "想",
+      "喝",
+      "茶"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "多少",
+       "杯子",
+       "这个",
+       "钱"
+      ]
+     },
+     "answer": [
+      "这个",
+      "杯子",
+      "多少",
+      "钱"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "商店",
+       "去",
+       "我",
+       "下午",
+       "买杯子"
+      ]
+     },
+     "answer": [
+      "下午",
+      "我",
+      "去",
+      "商店",
+      "买杯子"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Chiều nay tôi muốn đi cửa hàng mua hai cái cốc.",
+      "passage": "我下午想去商店买两个杯子。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Cái cốc này giá mười ba tệ.",
+      "passage": "这个杯子三十块钱。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "title": "Con trai anh làm việc ở đâu?",
+   "title_zh": "你儿子在哪儿工作？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "哪儿",
+      "options": [
+       "nǎr",
+       "nàr",
+       "nár",
+       "nǎer"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我家的猫____椅子下面。 wǒ jiā de māo ___ yǐzi xiàmiàn.",
+      "options": [
+       "是 shì",
+       "在 zài",
+       "有 yǒu",
+       "会 huì"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你儿子在____工作？ nǐ érzi zài ___ gōngzuò?",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "哪儿 nǎr",
+       "几 jǐ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“医生” 的意思是：",
+      "options": [
+       "y tá",
+       "bệnh viện",
+       "giáo viên",
+       "bác sĩ"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我爸爸在____工作，他是医生。 wǒ bàba zài ___ gōngzuò, tā shì yīshēng.",
+      "options": [
+       "学校 xuéxiào",
+       "商店 shāngdiàn",
+       "医院 yīyuàn",
+       "家 jiā"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我很喜欢小____和小猫。 wǒ hěn xǐhuan xiǎo ___ hé xiǎo māo.",
+      "options": [
+       "狗 gǒu",
+       "椅子 yǐzi",
+       "医院 yīyuàn",
+       "工作 gōngzuò"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "请坐这个____。 qǐng zuò zhège ___.",
+      "options": [
+       "猫 māo",
+       "狗 gǒu",
+       "医院 yīyuàn",
+       "椅子 yǐzi"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "在句子 “我在医院工作” 里，“在” 的意思是：",
+      "options": [
+       "ở tại (giới từ)",
+       "có",
+       "là",
+       "đi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你爸爸在___工作？"
+     },
+     "answer": [
+      "哪儿"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我爸爸___医院工作。"
+     },
+     "answer": [
+      "在"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我家的猫在椅子___。"
+     },
+     "answer": [
+      "下面"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他是一名___，在医院工作。"
+     },
+     "answer": [
+      "医生"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很好，你___？"
+     },
+     "answer": [
+      "呢"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "请坐这个___吧。"
+     },
+     "answer": [
+      "椅子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我家有一个小___，它很喜欢睡觉。"
+     },
+     "answer": [
+      "猫"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你在____工作？ nǐ zài ___ gōngzuò?",
+      "options": [
+       "什么 shénme",
+       "谁 shéi/shuí",
+       "哪儿 nǎr",
+       "几 jǐ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我爸爸____医院工作。 wǒ bàba ___ yīyuàn gōngzuò.",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "会 huì",
+       "在 zài"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我家的猫____椅子下面。 wǒ jiā de māo ___ yǐzi xiàmiàn.",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "在 zài",
+       "会 huì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我爸爸是医生，你爸爸____？ wǒ bàba shì yīshēng, nǐ bàba ___?",
+      "options": [
+       "吗 ma",
+       "呢 ne",
+       "什么 shénme",
+       "哪儿 nǎr"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "我在医院工作。 wǒ zài yīyuàn gōngzuò.",
+       "我工作在医院。 wǒ gōngzuò zài yīyuàn.",
+       "在我医院工作。 zài wǒ yīyuàn gōngzuò.",
+       "我医院在工作。 wǒ yīyuàn zài gōngzuò."
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪一句里的 “在” 是动词（không phải giới từ）？",
+      "options": [
+       "我家的猫在椅子下面。 wǒ jiā de māo zài yǐzi xiàmiàn.",
+       "我在医院工作。 wǒ zài yīyuàn gōngzuò.",
+       "他在学校学习。 tā zài xuéxiào xuéxí.",
+       "妈妈在家做饭。 māma zài jiā zuò fàn."
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你在哪儿工作？",
+       "猫在哪儿？",
+       "我很好，你呢？",
+       "你儿子多大了？"
+      ],
+      "right": [
+       "我在医院工作。",
+       "猫在椅子下面。",
+       "他今年八岁了。",
+       "我很好，谢谢。"
+      ]
+     },
+     "answer": {
+      "0": "a",
+      "1": "b",
+      "2": "d",
+      "3": "c"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "医院",
+       "在",
+       "我爸爸",
+       "工作"
+      ]
+     },
+     "answer": [
+      "我爸爸",
+      "在",
+      "医院",
+      "工作"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "椅子",
+       "在",
+       "猫",
+       "下面"
+      ]
+     },
+     "answer": [
+      "猫",
+      "在",
+      "椅子",
+      "下面"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "哪儿",
+       "在",
+       "你",
+       "工作"
+      ]
+     },
+     "answer": [
+      "你",
+      "在",
+      "哪儿",
+      "工作"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Bố tôi là bác sĩ, làm việc ở bệnh viện.",
+      "passage": "我爸爸是医生，他在医院工作。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Con mèo nhà tôi đang ở trên ghế.",
+      "passage": "我家的小猫在椅子下面。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "title": "Tôi có thể ngồi ở đây được không?",
+   "title_zh": "我能坐这儿吗？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "电脑",
+      "options": [
+       "diànnǎo",
+       "diānnǎo",
+       "diànnáo",
+       "diǎnnǎo"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "桌子____有一个电脑。 zhuōzi ___ yǒu yī gè diànnǎo.",
+      "options": [
+       "里 li/lǐ",
+       "上 shang/shàng",
+       "和 hé",
+       "本 běn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我昨天买了两____书。 wǒ zuótiān mǎi le liǎng ___ shū.",
+      "options": [
+       "个 gè",
+       "口 kǒu",
+       "本 běn",
+       "块 kuài"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“能” 的意思是：",
+      "options": [
+       "biết (do đã học)",
+       "muốn",
+       "là",
+       "có thể (được phép / có điều kiện)"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "请问，我____坐这儿吗？ qǐngwèn, wǒ ___ zuò zhèr ma?",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "能 néng",
+       "和 hé"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我有一个哥哥____一个妹妹。 wǒ yǒu yī gè gēge ___ yī gè mèimei.",
+      "options": [
+       "和 hé",
+       "能 néng",
+       "里 li/lǐ",
+       "上 shang/shàng"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "家里____人，他们都去学校了。 jiā li/lǐ ___ rén, tāmen dōu qù xuéxiào le.",
+      "options": [
+       "有 yǒu",
+       "没有 méiyǒu",
+       "能 néng",
+       "坐 zuò"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“前面” 的反义词是： \"qiánmiàn\" de fǎn yì cí shì:",
+      "options": [
+       "上面 shang/shàng miàn",
+       "下面 xiàmiàn",
+       "里面 li/lǐ miàn",
+       "后面 hòumiàn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___上有一个电脑和两本书。"
+     },
+     "answer": [
+      "桌子"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我昨天买了三___汉语书。"
+     },
+     "answer": [
+      "本"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我有一个哥哥___一个姐姐。"
+     },
+     "answer": [
+      "和"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "请问，我___坐这儿吗？"
+     },
+     "answer": [
+      "能"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "现在家里___人。"
+     },
+     "answer": [
+      "没有"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "请___这儿，这个椅子没有人。"
+     },
+     "answer": [
+      "坐"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我的书在桌子___面。"
+     },
+     "answer": [
+      "上"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "桌子上____一个电脑。 zhuōzi shang/shàng ___ yī gè diànnǎo.",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "在 zài",
+       "能 néng"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "桌子上____电脑。 zhuōzi shang/shàng ___ diànnǎo.",
+      "options": [
+       "不有 bù yǒu",
+       "不是 bù shì",
+       "没有 méiyǒu",
+       "没是 méi shì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我有一个哥哥____一个妹妹。 wǒ yǒu yī gè gēge ___ yī gè mèimei.",
+      "options": [
+       "也 yě",
+       "都 dōu",
+       "还 hái",
+       "和 hé"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "请问，我____坐这儿吗？ qǐngwèn, wǒ ___ zuò zhèr ma?",
+      "options": [
+       "能 néng",
+       "会 huì",
+       "想 xiǎng",
+       "是 shì"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "坐请这儿。 zuò qǐng zhèr.",
+       "这儿请坐吗。 zhèr qǐng zuò ma.",
+       "请坐这儿。 qǐng zuò zhèr.",
+       "请这儿坐吗。 qǐng zhèr zuò ma."
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "câu chữ 有 chỉ sự tồn tại có trật tự đúng là:",
+      "options": [
+       "người/vật + 有 + nơi chốn",
+       "nơi chốn + 有 + người/vật",
+       "有 + nơi chốn + người/vật",
+       "nơi chốn + người/vật + 有"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "桌子上有什么？",
+       "请问，我能坐这儿吗？",
+       "你家有几口人？",
+       "我的书呢？"
+      ],
+      "right": [
+       "你的书在桌子上。",
+       "能，请坐。",
+       "桌子上有一个电脑和两本书。",
+       "我家有五口人。"
+      ]
+     },
+     "answer": {
+      "0": "c",
+      "1": "b",
+      "2": "d",
+      "3": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "有",
+       "上",
+       "桌子",
+       "一个电脑"
+      ]
+     },
+     "answer": [
+      "桌子",
+      "上",
+      "有",
+      "一个电脑"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "这儿",
+       "坐",
+       "能",
+       "我",
+       "吗"
+      ]
+     },
+     "answer": [
+      "我",
+      "能",
+      "坐",
+      "这儿",
+      "吗"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "和",
+       "一个哥哥",
+       "有",
+       "我",
+       "一个妹妹"
+      ]
+     },
+     "answer": [
+      "我",
+      "有",
+      "一个哥哥",
+      "和",
+      "一个妹妹"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trên bàn có một cái máy tính và ba quyển sách.",
+      "passage": "桌子上有一个电脑和三本书。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Nhà tôi có nuôi mèo.",
+      "passage": "我家里没有猫，有一个小狗。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "title": "Bây giờ là mấy giờ?",
+   "title_zh": "现在几点？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "现在",
+      "options": [
+       "xiànzài",
+       "xiānzài",
+       "xiànzhài",
+       "xiànzai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "____几点了？我想回家了。 ___ jǐ diǎn le? wǒ xiǎng huí jiā le.",
+      "options": [
+       "时候 shíhou",
+       "中午 zhōngwǔ",
+       "现在 xiànzài",
+       "分 fēn"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们中午十二点____。 wǒmen zhōngwǔ shí èr diǎn ___.",
+      "options": [
+       "回 huí",
+       "吃饭 chī fàn",
+       "住 zhù",
+       "看 kàn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“电影” 的意思是：",
+      "options": [
+       "ti vi",
+       "điện thoại",
+       "phim",
+       "máy tính"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____在北京，我家在北京。 wǒ ___ zài Běijīng, wǒ jiā zài Běijīng.",
+      "options": [
+       "吃 chi",
+       "看 kàn",
+       "住 zhù",
+       "回 huí"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "现在八点三十____。 xiànzài bā diǎn sān shí ___.",
+      "options": [
+       "点 diǎn",
+       "时候 shíhou",
+       "前 qián",
+       "分 fēn"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们下午五点回____。 wǒmen xiàwǔ wǔ diǎn huí ___.",
+      "options": [
+       "家 jiā",
+       "点 diǎn",
+       "分 fēn",
+       "前 qián"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“中午” 的意思是：",
+      "options": [
+       "buổi sáng",
+       "buổi trưa",
+       "buổi chiều",
+       "buổi tối"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "上课的____不能说话。 shàngkè de ___ bù néng shuōhuà.",
+      "options": [
+       "现在 xiànzài",
+       "时候 shíhou",
+       "前 qián",
+       "分 fēn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "上课的___，我们不能玩手机。"
+     },
+     "answer": [
+      "时候"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___几点了？"
+     },
+     "answer": [
+      "现在"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "现在八___三十分。"
+     },
+     "answer": [
+      "点"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "现在两点十五___。"
+     },
+     "answer": [
+      "分"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我们中午十二点___。"
+     },
+     "answer": [
+      "吃饭"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "下午五点我___家。"
+     },
+     "answer": [
+      "回"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我___在北京，我很喜欢这个城市。"
+     },
+     "answer": [
+      "住"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "昨天晚上我们看了一个___。"
+     },
+     "answer": [
+      "电影"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "现在几____了？ xiànzài jǐ ___ le?",
+      "options": [
+       "分 fēn",
+       "点 diǎn",
+       "时候 shíhou",
+       "前 qián"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "现在八点三十____。 xiànzài bā diǎn sān shí ___.",
+      "options": [
+       "点 diǎn",
+       "时候 shíhou",
+       "分 fēn",
+       "回 huí"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“8:15” 用汉语说是： \"8: 1 5\" yòng Hànyǔ shuō shì:",
+      "options": [
+       "八点十五分 bā diǎn shí",
+       "十五点八分 shí wǔ diǎn",
+       "八分十五点 bā fēn shí wǔ",
+       "十五分八点 shí wǔ fēn bā wǔ fēn bā fēn diǎn diǎn"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "我们吃饭中午十二点。 wǒmen chī fàn zhōngwǔ shí èr",
+       "中午我们吃饭十二点。 zhōngwǔ wǒmen chī fàn shí èr diǎn. diǎn.",
+       "我们中午十二点吃饭。 wǒmen zhōngwǔ shí èr diǎn chī",
+       "十二点吃饭我们中午。 shí èr diǎn chī fàn wǒmen fàn. zhōngwǔ."
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trạng ngữ chỉ thời gian trong câu tiếng Trung nằm ở đâu?",
+      "options": [
+       "Sau động từ",
+       "Cuối câu",
+       "Sau tân ngữ",
+       "Đầu câu, hoặc sau chủ ngữ và trước động từ"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "十点____我一定要回家。 shí diǎn ___ wǒ yī dìng yào huí jiā.",
+      "options": [
+       "后 hòu",
+       "里 li/lǐ",
+       "前 qián",
+       "上 shang/shàng"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____在北京。 wǒ ___ zài Běijīng.",
+      "options": [
+       "在 zài",
+       "是 shì",
+       "有 yǒu",
+       "会 huì"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "现在几点？",
+       "你们中午几点吃饭？",
+       "你住在哪儿？",
+       "你下午做什么？"
+      ],
+      "right": [
+       "我住在北京。",
+       "现在八点三十分。",
+       "我下午想去看电影。",
+       "我们中午十二点吃饭。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "d",
+      "2": "a",
+      "3": "c"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "八点",
+       "现在",
+       "三十分"
+      ]
+     },
+     "answer": [
+      "现在",
+      "八点",
+      "三十分"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "十二点",
+       "中午",
+       "我们",
+       "吃饭"
+      ]
+     },
+     "answer": [
+      "我们",
+      "中午",
+      "十二点",
+      "吃饭"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "在",
+       "住",
+       "我",
+       "北京"
+      ]
+     },
+     "answer": [
+      "我",
+      "住",
+      "在",
+      "北京"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Chúng tôi ăn cơm lúc 12 giờ trưa, 2 giờ chiều vào học.",
+      "passage": "我们中午十二点吃饭，下午两点上课。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Bây giờ là 3 giờ 8 phút.",
+      "passage": "现在八点三十分。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "王方住在哪儿？ Wáng Fāng zhù zài nǎr?",
+      "options": [
+       "学校 xuéxiào",
+       "北京 Běijīng",
+       "商店 shāngdiàn",
+       "医院 yīyuàn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "王方下午几点回家？ Wáng Fāng xiàwǔ jǐ diǎn huí jiā?",
+      "options": [
+       "九点 jiǔ diǎn",
+       "十二点 shí èr diǎn",
+       "五点 wǔ diǎn",
+       "八点 bā diǎn"
+      ]
+     },
+     "answer": "C"
+    }
+   ]
+  },
+  {
+   "unit": 12,
+   "title": "Ngày mai thời tiết thế nào?",
+   "title_zh": "明天天气怎么样？",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "怎么样",
+      "options": [
+       "zěnmeyàng",
+       "zènmeyàng",
+       "zěnmeyáng",
+       "zěnmayàng"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天____很好，不冷不热。 jīntiān ___ hěn hǎo, bù lěng bù rè.",
+      "options": [
+       "水果 shuǐguǒ",
+       "天气 tiānqì",
+       "小姐 xiǎojiě",
+       "身体 shēntǐ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天____下雨，你别出去了。 míngtiān ___ xià yǔ, nǐ bié chū qù le.",
+      "options": [
+       "是 shì",
+       "有 yǒu",
+       "会 huì",
+       "太 tài"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“冷” 的反义词是： \"lěng\" de fǎn yì cí shì:",
+      "options": [
+       "太 tài",
+       "热 rè",
+       "来 lái",
+       "爱 ài"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天____热了，我不想出去。 jīntiān ___ rè le, wǒ bù xiǎng chū qù.",
+      "options": [
+       "很 hěn",
+       "会 huì",
+       "来 lái",
+       "太 tài"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我很____吃水果，每天都吃。 wǒ hěn ___ chi shuǐguǒ, měi tiān dōu chi.",
+      "options": [
+       "来 lái",
+       "太 tài",
+       "爱 ài",
+       "会 huì"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“怎么样” 的意思是：",
+      "options": [
+       "ở đâu",
+       "bao nhiêu",
+       "thế nào",
+       "ai"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我口渴了，想喝一杯____。 wǒ kǒu kě le, xiǎng hē yī bēi ___.",
+      "options": [
+       "水 shuǐ",
+       "天气 tiānqì",
+       "小姐 xiǎojiě",
+       "些 xie"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他已经____了，我们一起走吧。 tā yǐ jīng ___ le, wǒmen yìqǐ zǒu ba.",
+      "options": [
+       "会 huì",
+       "太 tài",
+       "爱 ài",
+       "来 lái"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天的天气___？"
+     },
+     "answer": [
+      "怎么样"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天___很好，我们出去走走吧。"
+     },
+     "answer": [
+      "天气"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天___热了，我一点儿也不想动。"
+     },
+     "answer": [
+      "太"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天很___，我想喝一杯凉水。"
+     },
+     "answer": [
+      "热"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "明天会___，我们别去了。"
+     },
+     "answer": [
+      "下雨"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很___吃水果，尤其是苹果。"
+     },
+     "answer": [
+      "爱"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你什么时候___我家？我在家等你。"
+     },
+     "answer": [
+      "来"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我想喝一杯___，不想喝茶。"
+     },
+     "answer": [
+      "水"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天天气____？ míngtiān tiānqì ___?",
+      "options": [
+       "什么 shénme",
+       "怎么样 zěnmeyàng",
+       "谁 shéi/shuí",
+       "哪儿 nǎr"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天____热了！ jīntiān ___ rè le!",
+      "options": [
+       "很 hěn",
+       "会 huì",
+       "太 tài",
+       "来 lái"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天____下雨。 míngtiān ___ xià yǔ.",
+      "options": [
+       "会 huì",
+       "是 shì",
+       "有 yǒu",
+       "太 tài"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "他很好身体。 tā hěn hǎo shēntǐ.",
+       "身体他很好。 shēntǐ tā hěn hǎo.",
+       "很好他身体。 hěn hǎo tā shēntǐ.",
+       "他身体很好。 tā shēntǐ hěn hǎo."
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你____来我家？我下午都在。 nǐ ___ lái wǒ jiā? wǒ xiàwǔ dōu zài.",
+      "options": [
+       "什么时候 shénme shíhou",
+       "怎么样 zěnmeyàng",
+       "多少 duōshao",
+       "几 jǐ"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Trong c u “明天会下雨”, ch ỗ会 có nghĩa là gì?",
+      "options": [
+       "biết làm (do đã học)",
+       "sẽ (dự đoán sắp xảy ra)",
+       "có thể, được phép",
+       "muốn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "明天天气怎么样？",
+       "你爱吃水果吗？",
+       "你什么时候来我家？",
+       "今天热吗？"
+      ],
+      "right": [
+       "太热了，我不想出去。",
+       "明天会下雨。",
+       "我明天下午来。",
+       "爱，我很爱吃水果。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "d",
+      "2": "c",
+      "3": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "天气",
+       "明天",
+       "怎么样"
+      ]
+     },
+     "answer": [
+      "明天",
+      "天气",
+      "怎么样"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "热",
+       "太",
+       "今天",
+       "了"
+      ]
+     },
+     "answer": [
+      "今天",
+      "太",
+      "热",
+      "了"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "会",
+       "明天",
+       "下雨"
+      ]
+     },
+     "answer": [
+      "明天",
+      "会",
+      "下雨"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Hôm nay thời tiết đẹp, không lạnh không nóng.",
+      "passage": "今天天气很好，不冷不热。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Ngày mai trời rất nóng.",
+      "passage": "明天太冷了，我不想去学校。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天北京的天气怎么样？ jīntiān Běijīng de tiānqì zěnmeyàng?",
+      "options": [
+       "太冷了 tài lěng le",
+       "很好，不冷不热 hěn",
+       "下大雨 xià dà yǔ",
+       "太热了 tài rè le hǎo, bù lěng bù rè"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "明天小王想做什么？ míngtiān xiǎo wáng xiǎng zuò shénme?",
+      "options": [
+       "去商店买东西 qù",
+       "去学校上课 qù xuéxiào",
+       "在家吃水果、看电影",
+       "去朋友家 qù péngyou jiā shāngdiàn mǎi dōngxi shàngkè zài jiā chi shuǐguǒ, kàn diànyǐng"
+      ]
+     },
+     "answer": "C"
+    }
+   ]
+  },
+  {
+   "unit": 13,
+   "title": "Anh ấy đang học nấu món ăn Trung Quốc",
+   "title_zh": "他在学做中国菜呢",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "睡觉",
+      "options": [
+       "shuìjiào",
+       "shuìjiǎo",
+       "shuǐjiào",
+       "shuìjiāo"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "____，你好！请问大卫在吗？ ___, nǐ hǎo! qǐngwèn Dàwèi zài ma?",
+      "options": [
+       "吧 ba",
+       "喂 wèi",
+       "也 yě",
+       "给 gěi"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他在看____呢，别叫他。 tā zài kàn ___ ne, bié jiào tā.",
+      "options": [
+       "电视 diànshì",
+       "睡觉 shuì jiào",
+       "学习 xuéxí",
+       "喜欢 xǐhuan"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我很____看中国电影。 wǒ hěn ___ kàn Zhōngguó diànyǐng.",
+      "options": [
+       "睡觉 shuì jiào",
+       "打电话 dǎ diànhuà",
+       "学习 xuéxí",
+       "喜欢 xǐhuan"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“睡觉” 的意思是：",
+      "options": [
+       "học tập",
+       "gọi điện",
+       "ngủ",
+       "xem ti vi"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我昨天晚上给妈妈____了。 wǒ zuótiān wǎnshang gěi māma ___ le.",
+      "options": [
+       "睡觉 shuì jiào",
+       "学习 xuéxí",
+       "打电话 dǎ diànhuà",
+       "看 kàn"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们一起去____汉语吧。 wǒmen yìqǐ qù ___ Hànyǔ ba.",
+      "options": [
+       "学习 xuéxí",
+       "电视 diànshì",
+       "喂 wèi",
+       "吧 ba"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“也” 的意思是：",
+      "options": [
+       "và",
+       "rất",
+       "không",
+       "cũng"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "时间不早了，我们走____！ shíjiān bù zǎo le, wǒmen zǒu ___!",
+      "options": [
+       "吗 ma",
+       "呢 ne",
+       "吧 ba",
+       "也 yě"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___，你好！请问大卫在吗？"
+     },
+     "answer": [
+      "喂"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很___看中国电影，一个星期看两个。"
+     },
+     "answer": [
+      "喜欢"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他在家看___呢。"
+     },
+     "answer": [
+      "电视"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "现在十一点了，我要去___了。"
+     },
+     "answer": [
+      "睡觉"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我昨天给妈妈___了，我们聊了很久。"
+     },
+     "answer": [
+      "打电话"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___我在学校学习，下午回家。"
+     },
+     "answer": [
+      "上午"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "时间不早了，我们一起走___！"
+     },
+     "answer": [
+      "吧"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "他是学生，我___是学生。"
+     },
+     "answer": [
+      "也"
+     ]
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "喂，请问大卫在吗？",
+       "他在做什么呢？",
+       "你喜欢看什么？",
+       "我们几点走？"
+      ],
+      "right": [
+       "我们八点走吧。",
+       "他在看电视呢。",
+       "我喜欢看中国电影。",
+       "他不在，他去学校了。"
+      ]
+     },
+     "answer": {
+      "0": "d",
+      "1": "b",
+      "2": "c",
+      "3": "a"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "学习",
+       "在",
+       "他",
+       "呢"
+      ]
+     },
+     "answer": [
+      "他",
+      "在",
+      "学习",
+      "呢"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "吃饭",
+       "去",
+       "一起",
+       "我们",
+       "吧"
+      ]
+     },
+     "answer": [
+      "我们",
+      "一起",
+      "去",
+      "吃饭",
+      "吧"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "打电话",
+       "给妈妈",
+       "昨天",
+       "我",
+       "了"
+      ]
+     },
+     "answer": [
+      "我",
+      "昨天",
+      "给妈妈",
+      "打电话",
+      "了"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "A lô, chào bạn! David đang xem ti vi.",
+      "passage": "喂，你好！大卫在看电视呢。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Bây giờ 11 giờ, anh ấy đang học bài.",
+      "passage": "现在十一点了，他在睡觉呢。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "大卫上午在哪儿？ Dàwèi shàngwǔ zài nǎr?",
+      "options": [
+       "在家 zài jiā",
+       "在学校 zài xuéxiào",
+       "在商店 zài shāngdiàn",
+       "在医院 zài yīyuàn"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "大卫现在在做什么？ Dàwèi xiànzài zài zuò shénme?",
+      "options": [
+       "在学习 zài xuéxí",
+       "在吃饭 zài chī fàn",
+       "在看电视 zài kàn diànshì",
+       "在打电话 zài dǎ diànhuà"
+      ]
+     },
+     "answer": "C"
+    }
+   ]
+  },
+  {
+   "unit": 14,
+   "title": "Cô ấy đã mua nhiều quần áo",
+   "title_zh": "她买了不少衣服",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "漂亮",
+      "options": [
+       "piàoliang",
+       "piāoliàng",
+       "piàoliàng",
+       "piáoliang"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "她昨天买____不少衣服。 tā zuótiān mǎi ___ bù shǎo yīfu.",
+      "options": [
+       "的 de",
+       "了 le",
+       "吧 ba",
+       "呢 ne"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这些衣服都很____。 zhèxiē yīfu dōu hěn ___.",
+      "options": [
+       "漂亮 piàoliang",
+       "东西 dōngxi",
+       "分钟 fēnzhōng",
+       "后 hòu"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“东西” 的意思是：",
+      "options": [
+       "phương Đông",
+       "đông tây",
+       "buổi sáng",
+       "đồ vật"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我今天在商店____了张先生。 wǒ jīntiān zài shāngdiàn ___ le Zhāng xiānsheng.",
+      "options": [
+       "开 kāi",
+       "回来 huílái",
+       "看见 kànjiàn",
+       "都 dōu"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我哥哥会____车，我不会。 wǒ gēge huì ___ chē, wǒ bù huì.",
+      "options": [
+       "看 kàn",
+       "开 kāi",
+       "买 mǎi",
+       "回 huí"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "你等我一下，三十____后我回来。 nǐ děng wǒ yíxià, sān shí ___ hòu wǒ huílái.",
+      "options": [
+       "点 diǎn",
+       "后 hòu",
+       "分钟 fēnzhōng",
+       "些 xie"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我不太饿，只想吃____苹果。 wǒ bù tài è, zhī xiǎng chi ___ píngguǒ.",
+      "options": [
+       "一点儿 yìdiǎnr",
+       "分钟 fēnzhōng",
+       "都 dōu",
+       "些 xie"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们班的同学____是留学生。 wǒmen bān de tóngxué ___ shì liú xuésheng.",
+      "options": [
+       "也 yě",
+       "后 hòu",
+       "啊 a",
+       "都 dōu"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "她昨天买了不少___，都很漂亮。"
+     },
+     "answer": [
+      "衣服"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我今天在商店___了张先生。"
+     },
+     "answer": [
+      "看见"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "张___，您好！请这边坐。"
+     },
+     "answer": [
+      "先生"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我哥哥会___车，他常常开车去上班。"
+     },
+     "answer": [
+      "开"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "你等一下，三十___后我就回来。"
+     },
+     "answer": [
+      "分钟"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我不太饿，只想吃___东西。"
+     },
+     "answer": [
+      "一点儿"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "这些书___是我买的。"
+     },
+     "answer": [
+      "都"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我下午五点___，你在家等我。"
+     },
+     "answer": [
+      "回来"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我三十分钟____就回来。 wǒ sān shí fēnzhōng ___ jiù huílái.",
+      "options": [
+       "前 qián",
+       "上 shang/shàng",
+       "后 hòu",
+       "里 li/lǐ"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这些衣服____很漂亮。 zhèxiē yīfu ___ hěn piàoliang.",
+      "options": [
+       "也 yě",
+       "太 tài",
+       "会 huì",
+       "都 dōu"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "这件衣服真漂亮____！ zhè jiàn yīfu zhēn piàoliang ___!",
+      "options": [
+       "吗 ma",
+       "呢 ne",
+       "啊 a",
+       "吧 ba"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "她买了不少衣服。 tā mǎi le bù shǎo yīfu.",
+       "她买不少衣服了。 tā mǎi bù shǎo yīfu le.",
+       "了她买不少衣服。 le tā mǎi bù shǎo yīfu.",
+       "她不少衣服买了。 tā bù shǎo yīfu mǎi le."
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Phó từ “都” đứng ở vị trí nào trong câu?",
+      "options": [
+       "Trước chủ ngữ",
+       "Sau chủ ngữ, trước động từ hoặc tính từ",
+       "Cuối câu",
+       "Sau tân ngữ"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我昨天没____苹果。 wǒ zuótiān méi ___ píngguǒ.",
+      "options": [
+       "买了 mǎi le",
+       "了买 le mǎi",
+       "买的 mǎi de",
+       "买 mǎi"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "她买了什么？",
+       "你什么时候回来？",
+       "这些衣服都是你的吗？",
+       "你在商店看见谁了？"
+      ],
+      "right": [
+       "三十分钟后我回来。",
+       "我看见张先生了。",
+       "她买了不少衣服。",
+       "都是我的。"
+      ]
+     },
+     "answer": {
+      "0": "c",
+      "1": "a",
+      "2": "d",
+      "3": "b"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "了",
+       "买",
+       "她",
+       "不少衣服"
+      ]
+     },
+     "answer": [
+      "她",
+      "买",
+      "了",
+      "不少衣服"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "我",
+       "后",
+       "三十分钟",
+       "回来"
+      ]
+     },
+     "answer": [
+      "三十分钟",
+      "后",
+      "我",
+      "回来"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "都",
+       "衣服",
+       "这些",
+       "很漂亮"
+      ]
+     },
+     "answer": [
+      "这些",
+      "衣服",
+      "都",
+      "很漂亮"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Hôm qua cô ấy mua khá nhiều quần áo, đều rất đẹp.",
+      "passage": "她昨天买了不少衣服，都很漂亮。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Tôi đã về cách đây 30 phút.",
+      "passage": "我三十分钟后回来。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "张先生买了什么？ Zhāng xiānsheng mǎi le shénme?",
+      "options": [
+       "衣服 yīfu",
+       "苹果 píngguǒ",
+       "车 chē",
+       "书 shū"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "他们几点回来的？ tāmen jǐ diǎn huílái de?",
+      "options": [
+       "三点 sān diǎn",
+       "四点 sì diǎn",
+       "五点 wǔ diǎn",
+       "六点 liù diǎn"
+      ]
+     },
+     "answer": "C"
+    }
+   ]
+  },
+  {
+   "unit": 15,
+   "title": "Tôi đáp máy bay đến đây",
+   "title_zh": "我是坐飞机来的",
+   "questions": [
+    {
+     "type": "pinyin_choice",
+     "content": {
+      "hanzi": "飞机",
+      "options": [
+       "fēijī",
+       "fěijī",
+       "fēijí",
+       "fèijī"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我是坐____来的，不是坐火车来的。 wǒ shì zuò ___ lái de, bù shì zuò huǒchē lái de.",
+      "options": [
+       "大学 dàxué",
+       "飞机 fēijī",
+       "饭店 fàndiàn",
+       "年 nián"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "认识你很____！ rènshi nǐ hěn ___!",
+      "options": [
+       "听 tīng",
+       "一起 yìqǐ",
+       "高兴 gāoxìng",
+       "年 nián"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“出租车” 的意思是：",
+      "options": [
+       "xe buýt",
+       "taxi",
+       "tàu hoả",
+       "máy bay"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我在北京的一个____学习汉语。 wǒ zài Běijīng de yī gè ___ xuéxí Hànyǔ.",
+      "options": [
+       "饭店 fàndiàn",
+       "出租车 chūzūchē",
+       "大学 dàxué",
+       "飞机 fēijī"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "晚上我们一____去吃饭吧。 wǎnshang wǒmen yī ___ qù chī fàn ba.",
+      "options": [
+       "起 qǐ",
+       "年 nián",
+       "听 tīng",
+       "认识 rènshi"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今年是二〇二五____。 jīnnián shì èr líng èr wǔ ___.",
+      "options": [
+       "月 yuè",
+       "号 hào",
+       "年 nián",
+       "星期 xīngqī"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我很喜欢____老师说汉语。 wǒ hěn xǐhuan ___ lǎoshī shuō Hànyǔ.",
+      "options": [
+       "看 kàn",
+       "听 tīng",
+       "开 kāi",
+       "买 mǎi"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "“认识” 的意思是：",
+      "options": [
+       "học tập",
+       "nghe",
+       "vui vẻ",
+       "quen biết"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我是坐___来的，只要三个小时。"
+     },
+     "answer": [
+      "飞机"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "___你很高兴！我叫大卫。"
+     },
+     "answer": [
+      "认识"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我在北京的一个___学习汉语。"
+     },
+     "answer": [
+      "大学"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "晚上我们___去吃饭，好吗？"
+     },
+     "answer": [
+      "一起"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "今天晚上我们去___吃中国菜。"
+     },
+     "answer": [
+      "饭店"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我很喜欢___老师说汉语。"
+     },
+     "answer": [
+      "听"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我不想走路，我们坐___去吧。"
+     },
+     "answer": [
+      "出租车"
+     ]
+    },
+    {
+     "type": "fill_blank",
+     "content": {
+      "prompt": "我是二二___来中国的。"
+     },
+     "answer": [
+      "年"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我____坐飞机来____。 wǒ ___ zuò fēijī lái ___.",
+      "options": [
+       "在…呢 zài… ne",
+       "是…的 shì… de",
+       "太…了 tài… le",
+       "又…又… yòu… yòu…"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Câu “是……的” dùng để nhấn mạnh điều gì?",
+      "options": [
+       "Số lượng",
+       "Nguyên nhân",
+       "Thời gian, địa điểm, cách thức",
+       "Kết quả"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Thứ tự viết ngày tháng đầy đủ trong tiếng Trung là:",
+      "options": [
+       "星期 – 号 – 月 – 年 xīngqī – hào – yuè – nián",
+       "年 – 月 – 号 – 星期 nián – yuè – hào – xīngqī",
+       "月 – 年 – 号 – 星期 yuè – nián – hào – xīngqī",
+       "号 – 月 – 年 – 星期 hào – yuè – nián – xīngqī"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我是二〇二〇____来中国的。 wǒ shì èr líng èr líng ___ lái Zhōngguó de.",
+      "options": [
+       "月 yuè",
+       "号 hào",
+       "年 nián",
+       "星期 xīngqī"
+      ]
+     },
+     "answer": "C"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "下面哪个句子是正确的？ xiàmiàn nǎge jù zi shì < b > zhèng què < / b > de?",
+      "options": [
+       "我是坐飞机来的。 wǒ shì zuò fēijī lái de.",
+       "我坐飞机是来的。 wǒ zuò fēijī shì lái de.",
+       "是我坐飞机来的。 shì wǒ zuò fēijī lái de.",
+       "我坐是飞机来的。 wǒ zuò shì fēijī lái de."
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "我们____去饭店吃饭吧。 wǒmen ___ qù fàndiàn chī fàn ba.",
+      "options": [
+       "高兴 gāoxìng",
+       "认识 rènshi",
+       "听 tīng",
+       "一起 yìqǐ"
+      ]
+     },
+     "answer": "D"
+    },
+    {
+     "type": "matching",
+     "content": {
+      "left": [
+       "你是怎么来的？",
+       "你是什么时候来中国的？",
+       "你在哪儿学习汉语？",
+       "今天几号？"
+      ],
+      "right": [
+       "我在大学学习汉语。",
+       "我是坐飞机来的。",
+       "今天五月八号，星期四。",
+       "我是二二年来的。"
+      ]
+     },
+     "answer": {
+      "0": "b",
+      "1": "d",
+      "2": "a",
+      "3": "c"
+     }
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "来",
+       "坐飞机",
+       "是",
+       "我",
+       "的"
+      ]
+     },
+     "answer": [
+      "我",
+      "是",
+      "坐飞机",
+      "来",
+      "的"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "很",
+       "你",
+       "认识",
+       "高兴"
+      ]
+     },
+     "answer": [
+      "认识",
+      "你",
+      "很",
+      "高兴"
+     ]
+    },
+    {
+     "type": "reorder",
+     "content": {
+      "tokens": [
+       "八号",
+       "五月",
+       "今天",
+       "星期四"
+      ]
+     },
+     "answer": [
+      "今天",
+      "五月",
+      "八号",
+      "星期四"
+     ]
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Tôi đến Trung Quốc năm 2020, hiện đang học tiếng Trung ở đại học.",
+      "passage": "我是二二年来中国的，现在在大学学习汉语。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "A"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "Tôi đến đây bằng taxi.",
+      "passage": "我是坐飞机来的，不是坐出租车来的。",
+      "options": [
+       "Đúng",
+       "Sai"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "大卫是怎么来中国的？ Dàwèi shì zěnme lái Zhōngguó de?",
+      "options": [
+       "坐出租车 zuò chūzūchē",
+       "坐飞机 zuò fēijī",
+       "坐车 zuò chē",
+       "走路 zǒu lù"
+      ]
+     },
+     "answer": "B"
+    },
+    {
+     "type": "multiple_choice",
+     "content": {
+      "prompt": "今天晚上大卫要做什么？ jīntiān wǎnshang Dàwèi yào zuò shénme?",
+      "options": [
+       "在家学习汉语 zài jiā",
+       "去大学上课 qù dàxué",
+       "和朋友一起去饭店吃",
+       "坐飞机回国 zuò fēijī huí xuéxí Hànyǔ shàngkè 饭 hé péngyou yìqǐ qù fàndiàn guó chī fàn"
+      ]
+     },
+     "answer": "C"
+    }
+   ]
+  }
+ ]
+}
