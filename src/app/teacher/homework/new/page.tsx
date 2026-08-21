@@ -278,7 +278,7 @@ export default function NewHomeworkPage() {
                   ) : (
                     <>
                       Không có câu hỏi phù hợp —{" "}
-                      <Link href="/teacher/questions" className="font-semibold text-brand-600 hover:underline">
+                      <Link href="/library/questions" className="font-semibold text-brand-600 hover:underline">
                         tạo ở Ngân hàng câu hỏi
                       </Link>
                       .
@@ -350,7 +350,7 @@ export default function NewHomeworkPage() {
             <Send className="h-4 w-4" />
             {saving ? "Đang giao..." : kind === "test" ? "Giao bài kiểm tra" : "Giao bài tập"}
           </Button>
-          <Link href="/teacher/questions" className="block">
+          <Link href="/library/questions" className="block">
             <Button variant="outline" className="w-full">
               <Plus className="h-4 w-4" /> Tạo thêm câu hỏi
             </Button>
