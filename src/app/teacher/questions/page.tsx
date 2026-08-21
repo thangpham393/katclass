@@ -20,6 +20,7 @@ import {
   fetchQuestionAnswers,
   fetchQuestions,
   questionPreview,
+  shuffleTokens,
   updateQuestion,
   CHOICE_LETTERS,
   QUESTION_TYPE_LABELS,
@@ -275,7 +276,9 @@ function QuestionModal({
     } else if (type === "reorder") {
       const tokens = sentence.split("/").map((s) => s.trim()).filter(Boolean);
       if (tokens.length < 2) return setError("Nhập câu đúng, ngăn cách các cụm bằng dấu / (ít nhất 2 cụm).");
-      content = { tokens, translation: translation.trim() || undefined };
+      // Xáo cụm từ khi lưu — nếu để nguyên thứ tự đúng thì học viên không
+      // còn gì để sắp xếp. Đáp án vẫn là thứ tự đúng vừa nhập.
+      content = { tokens: shuffleTokens(tokens), translation: translation.trim() || undefined };
       ans = tokens;
     } else {
       // matching

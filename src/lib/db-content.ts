@@ -301,6 +301,43 @@ export interface QuestionRow {
   lesson: { id: string; title: string; unit: number | null; textbook_id: string | null } | null;
 }
 
+/**
+ * Xáo các cụm từ của câu "Sắp xếp câu" — dùng CHUNG cho cả lúc lưu câu hỏi và
+ * lúc hiển thị cho học viên.
+ *
+ * `seed` (thường là id câu hỏi) làm bộ xáo ổn định: cùng một câu thì lần nào
+ * mở cũng ra đúng một thứ tự, không nhảy loạn mỗi lần React vẽ lại; bỏ trống
+ * seed thì xáo ngẫu nhiên. Xáo xong còn trùng thứ tự đúng thì đảo tiếp cho
+ * khác đi — trừ khi mọi cụm đều giống nhau (không thể khác được).
+ */
+export function shuffleTokens(tokens: string[], seed?: string): string[] {
+  if (tokens.length < 2) return [...tokens];
+
+  // Bộ sinh số giả ngẫu nhiên gọn (mulberry32) để cùng seed ra cùng kết quả
+  let state = 0x9e3779b9;
+  for (const ch of seed ?? "") state = (state ^ ch.charCodeAt(0)) * 0x01000193 >>> 0;
+  const rand = seed
+    ? () => {
+        state = (state + 0x6d2b79f5) >>> 0;
+        let t = state;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+    : Math.random;
+
+  const out = [...tokens];
+  for (let round = 0; round < 8; round++) {
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    if (out.some((t, i) => t !== tokens[i])) return out;
+  }
+  // Mọi cụm giống hệt nhau → xáo kiểu gì cũng vậy
+  return out;
+}
+
 /** Tóm tắt đề bài để hiển thị trong danh sách (không lộ đáp án). */
 export function questionPreview(q: Pick<QuestionRow, "type" | "content">): string {
   const c = q.content;

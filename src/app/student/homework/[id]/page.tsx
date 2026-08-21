@@ -18,6 +18,7 @@ import {
   fetchHomework,
   fetchMyAttempt,
   fetchMySubmission,
+  shuffleTokens,
   startTest,
   submitHomework,
   CHOICE_LETTERS,
@@ -584,7 +585,9 @@ function ReorderInput({
   value: string[];
   onChange: (v: string[]) => void;
 }) {
-  const tokens = q.content.tokens ?? [];
+  // Xáo lại ngay lúc hiển thị, cố định theo id câu hỏi: câu cũ lỡ lưu đúng
+  // thứ tự vẫn thành đề sắp xếp thật, và học viên mở lại vẫn thấy y như cũ.
+  const tokens = useMemo(() => shuffleTokens(q.content.tokens ?? [], q.id), [q.content.tokens, q.id]);
   // Pool = các token chưa dùng (theo số lần xuất hiện, vì token có thể lặp)
   const pool = useMemo(() => {
     const used = new Map<string, number>();
