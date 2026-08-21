@@ -22,14 +22,25 @@ export const SERIES_LABELS: Record<TextbookSeries, string> = {
 export const SERIES_DESCRIPTIONS: Record<TextbookSeries, string> = {
   HSK: "Bộ chuẩn 标准教程 HSK — dùng cho lớp người lớn, luyện thi HSK.",
   YCT: "Bộ chuẩn 标准教程 YCT — dùng cho lớp tiểu học và THCS.",
-  OTHER: "Các giáo trình còn lại của trung tâm.",
+  OTHER: "Các bộ riêng của trung tâm (MSutong, giáo trình chuyên đề...) — cấp độ ghi trên bìa chỉ là trình độ tương đương.",
 };
 
-/** Xếp giáo trình vào bộ: ưu tiên level (HSK1.../YCT1...), sau đó mã giáo trình. */
+/**
+ * Xếp giáo trình vào bộ theo MÃ giáo trình, không theo cấp độ: một bộ riêng
+ * như MSutong vẫn ghi level HSK3 để chỉ trình độ tương đương, nhưng nó không
+ * thuộc bộ 标准教程 HSK nên phải nằm ở mục "Giáo trình khác".
+ * Chỉ khi giáo trình chưa có mã mới đoán theo level.
+ */
 export function textbookSeries(tb: { level?: string | null; code?: string | null }): TextbookSeries {
-  const key = `${tb.level ?? ""} ${tb.code ?? ""}`.toUpperCase();
-  if (key.includes("YCT")) return "YCT";
-  if (key.includes("HSK")) return "HSK";
+  const code = (tb.code ?? "").trim().toUpperCase();
+  if (code) {
+    if (code.startsWith("YCT")) return "YCT";
+    if (code.startsWith("HSK")) return "HSK";
+    return "OTHER";
+  }
+  const level = (tb.level ?? "").toUpperCase();
+  if (level.startsWith("YCT")) return "YCT";
+  if (level.startsWith("HSK")) return "HSK";
   return "OTHER";
 }
 
@@ -74,8 +85,11 @@ export function TextbookCover({
   className?: string;
 }) {
   const series = textbookSeries({ level, code });
+  // Bộ riêng (OTHER) giữ màu navy của trung tâm, không mượn màu cấp độ HSK/YCT
+  // — nếu không, MSutong 4 (level HSK3) trông y hệt quyển HSK 3.
   const gradient =
-    (level && LEVEL_GRADIENTS[level.trim().toUpperCase()]) ?? SERIES_GRADIENTS[series];
+    (series !== "OTHER" && level && LEVEL_GRADIENTS[level.trim().toUpperCase()]) ||
+    SERIES_GRADIENTS[series];
   const watermark = (name_zh ?? name).trim().slice(0, 1);
   const levelLabel = level ? (LEVEL_LABELS[level] ?? level) : null;
 
