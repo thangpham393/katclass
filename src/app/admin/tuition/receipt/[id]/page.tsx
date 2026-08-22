@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { Logo } from "@/components/brand/logo";
 import { useLoad } from "@/lib/use-load";
-import { fetchReceipt, fmtVND, PAYMENT_METHOD_LABELS } from "@/lib/db-tuition";
+import {
+  discountAmountOf,
+  fetchReceipt,
+  finalPriceOf,
+  fmtVND,
+  PAYMENT_METHOD_LABELS,
+} from "@/lib/db-tuition";
 
 /** Biên lai thu học phí — bấm “In biên lai” để in / lưu PDF (sidebar + topbar tự ẩn khi in). */
 export default function ReceiptPage() {
@@ -20,6 +26,10 @@ export default function ReceiptPage() {
 
   const r = receipt.data;
   const paidDate = new Date(r.paid_at);
+  const pkg = r.package;
+  const pctAmount = pkg ? discountAmountOf(pkg.price, pkg.discount_percent) : 0;
+  const cashAmount = pkg ? Number(pkg.discount) : 0;
+  const hasDiscount = pctAmount + cashAmount > 0;
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
@@ -72,19 +82,39 @@ export default function ReceiptPage() {
           <div className="flex gap-2">
             <dt className="w-40 shrink-0 text-muted-foreground">Nội dung</dt>
             <dd className="font-semibold">
-              Học phí {r.package?.name ?? "gói buổi"}
-              {r.package && (
+              Học phí {pkg?.name ?? "gói buổi"}
+              {pkg && (
                 <span className="ml-1 font-normal text-muted-foreground">
-                  (kích hoạt từ {new Date(r.package.start_date + "T00:00:00").toLocaleDateString("vi-VN")})
+                  (kích hoạt từ {new Date(pkg.start_date + "T00:00:00").toLocaleDateString("vi-VN")})
                 </span>
               )}
             </dd>
           </div>
-          {r.package && Number(r.package.discount) > 0 && (
+          {pkg?.course && (
             <div className="flex gap-2">
-              <dt className="w-40 shrink-0 text-muted-foreground">Giá gói / ưu đãi</dt>
+              <dt className="w-40 shrink-0 text-muted-foreground">Khóa học</dt>
+              <dd>{pkg.course.name}</dd>
+            </div>
+          )}
+          {pkg && (
+            <div className="flex gap-2">
+              <dt className="w-40 shrink-0 text-muted-foreground">Giá gói</dt>
+              <dd>{fmtVND(pkg.price)}</dd>
+            </div>
+          )}
+          {pkg && hasDiscount && (
+            <div className="flex gap-2">
+              <dt className="w-40 shrink-0 text-muted-foreground">Ưu đãi</dt>
               <dd>
-                {fmtVND(r.package.price)} · ưu đãi {fmtVND(r.package.discount)}
+                {[
+                  pctAmount > 0 ? `${Number(pkg.discount_percent)}% (${fmtVND(pctAmount)})` : null,
+                  cashAmount > 0 ? `giảm thẳng ${fmtVND(cashAmount)}` : null,
+                ]
+                  .filter(Boolean)
+                  .join(" + ")}
+                <span className="ml-1 text-muted-foreground">
+                  → phải đóng {fmtVND(finalPriceOf(pkg.price, pkg.discount_percent, cashAmount))}
+                </span>
               </dd>
             </div>
           )}

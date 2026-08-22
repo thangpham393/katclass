@@ -26,7 +26,14 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
-import { dbErrorMessage, fetchProfilesByRole, todayISO, type ProfileRow } from "@/lib/db";
+import {
+  dbErrorMessage,
+  fetchCourses,
+  fetchProfilesByRole,
+  todayISO,
+  LEVEL_LABELS,
+  type ProfileRow,
+} from "@/lib/db";
 import {
   addPayment,
   cancelPackage,
@@ -34,8 +41,10 @@ import {
   fetchPackageBalances,
   fetchPackagePayments,
   fetchPaymentsTotalSince,
+  finalPriceOf,
   firstOfMonthISO,
   fmtVND,
+  discountAmountOf,
   PAYMENT_METHOD_LABELS,
   type PackageBalanceRow,
   type PaymentMethod,
@@ -45,6 +54,15 @@ type FilterTab = "all" | "low" | "debt";
 
 function fmtDate(iso: string): string {
   return new Date(iso.slice(0, 10) + "T00:00:00").toLocaleDateString("vi-VN");
+}
+
+/** Mô tả ưu đãi kép: "10% (360.000 ₫) + 100.000 ₫". */
+function discountLabel(pkg: PackageBalanceRow): string {
+  const parts: string[] = [];
+  if (Number(pkg.discount_percent) > 0)
+    parts.push(`${Number(pkg.discount_percent)}% (${fmtVND(pkg.discount_amount)})`);
+  if (Number(pkg.discount) > 0) parts.push(fmtVND(pkg.discount));
+  return parts.join(" + ") || fmtVND(0);
 }
 
 /** Badge số buổi còn lại: đỏ khi hết, vàng khi ≤ 3. */
@@ -222,10 +240,13 @@ export default function AdminTuitionPage() {
 function SellPackageModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const { user } = useAuth();
   const students = useLoad(() => fetchProfilesByRole("student"));
+  const courses = useLoad(fetchCourses);
   const [student, setStudent] = useState<ProfileRow | null>(null);
   const [q, setQ] = useState("");
+  const [courseId, setCourseId] = useState("");
   const [sessions, setSessions] = useState("12");
   const [price, setPrice] = useState("");
+  const [discountPct, setDiscountPct] = useState("0");
   const [discount, setDiscount] = useState("0");
   const [startDate, setStartDate] = useState(todayISO());
   const [note, setNote] = useState("");
@@ -250,15 +271,32 @@ function SellPackageModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
       .slice(0, 8);
   }, [students.data, q]);
 
-  const finalPrice = Math.max(0, (Number(price) || 0) - (Number(discount) || 0));
+  const course = (courses.data ?? []).find((c) => c.id === courseId) ?? null;
+  const priceNum = Number(price) || 0;
+  const pctAmount = discountAmountOf(priceNum, Number(discountPct) || 0);
+  const cashAmount = Number(discount) || 0;
+  const finalPrice = finalPriceOf(priceNum, Number(discountPct) || 0, cashAmount);
+  const packageName = course
+    ? `${course.name} — ${Number(sessions) || 0} buổi`
+    : `Gói ${Number(sessions) || 0} buổi`;
+
+  /** Chọn khóa → điền sẵn số buổi chuẩn của khóa (vẫn sửa tay được). */
+  function pickCourse(id: string) {
+    setCourseId(id);
+    const c = (courses.data ?? []).find((x) => x.id === id);
+    if (c && c.total_sessions > 0) setSessions(String(c.total_sessions));
+  }
 
   async function handleSubmit() {
     if (!user) return;
     if (!student) return setError("Chọn học viên mua gói.");
     const n = Number(sessions);
     if (!Number.isInteger(n) || n <= 0) return setError("Số buổi phải là số nguyên dương.");
-    if (!price || Number(price) < 0) return setError("Nhập giá gói.");
-    if ((Number(discount) || 0) > Number(price)) return setError("Ưu đãi không được lớn hơn giá gói.");
+    if (!price || priceNum < 0) return setError("Nhập giá gói.");
+    const pct = Number(discountPct) || 0;
+    if (pct < 0 || pct > 100) return setError("Ưu đãi % phải trong khoảng 0–100.");
+    if (pctAmount + cashAmount > priceNum)
+      return setError("Tổng ưu đãi (% + tiền mặt) không được lớn hơn giá gói.");
     const collect = collectNow ? Number(amount || finalPrice) : 0;
     if (collectNow && (collect <= 0 || collect > finalPrice))
       return setError("Số tiền thu phải lớn hơn 0 và không vượt quá giá sau ưu đãi.");
@@ -268,10 +306,12 @@ function SellPackageModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
     try {
       const packageId = await createPackage({
         student_id: student.id,
-        name: `Gói ${n} buổi`,
+        course_id: courseId || null,
+        name: packageName,
         total_sessions: n,
-        price: Number(price),
-        discount: Number(discount) || 0,
+        price: priceNum,
+        discount_percent: pct,
+        discount: cashAmount,
         start_date: startDate,
         note: note.trim() || null,
         created_by: user.id,
@@ -370,16 +410,73 @@ function SellPackageModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
           </div>
         )}
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        <Field
+          label="Khóa học"
+          hint={
+            courses.data?.length === 0
+              ? "Chưa có khóa nào — tạo ở mục Khóa học trước, hoặc để trống để bán gói lẻ."
+              : "Chương trình bán ra. Chọn khóa sẽ tự điền số buổi chuẩn."
+          }
+        >
+          <Select value={courseId} onChange={(e) => pickCourse(e.target.value)}>
+            <option value="">Không gắn khóa (gói lẻ)</option>
+            {(courses.data ?? []).map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+                {c.level ? ` · ${LEVEL_LABELS[c.level] ?? c.level}` : ""} ({c.total_sessions} buổi)
+              </option>
+            ))}
+          </Select>
+        </Field>
+
+        <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Số buổi" required>
             <Input type="number" min={1} value={sessions} onChange={(e) => setSessions(e.target.value)} />
           </Field>
           <Field label="Giá gói (VND)" required>
             <Input type="number" min={0} step={1000} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="vd: 3600000" />
           </Field>
-          <Field label="Ưu đãi (VND)">
-            <Input type="number" min={0} step={1000} value={discount} onChange={(e) => setDiscount(e.target.value)} />
-          </Field>
+        </div>
+
+        <div className="rounded-lg border bg-secondary/40 p-3">
+          <div className="mb-2 text-sm font-bold">Ưu đãi</div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Theo phần trăm (%)" hint="Tính trên giá gói.">
+              <Input
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={discountPct}
+                onChange={(e) => setDiscountPct(e.target.value)}
+              />
+            </Field>
+            <Field label="Giảm thẳng tiền (VND)" hint="Trừ tiếp sau phần %.">
+              <Input type="number" min={0} step={1000} value={discount} onChange={(e) => setDiscount(e.target.value)} />
+            </Field>
+          </div>
+          <dl className="mt-3 space-y-1 border-t pt-3 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-muted-foreground">Giá gói</dt>
+              <dd>{fmtVND(priceNum)}</dd>
+            </div>
+            {pctAmount > 0 && (
+              <div className="flex justify-between text-emerald-700">
+                <dt>Ưu đãi {Number(discountPct)}%</dt>
+                <dd>− {fmtVND(pctAmount)}</dd>
+              </div>
+            )}
+            {cashAmount > 0 && (
+              <div className="flex justify-between text-emerald-700">
+                <dt>Giảm thẳng</dt>
+                <dd>− {fmtVND(cashAmount)}</dd>
+              </div>
+            )}
+            <div className="flex justify-between border-t pt-1 font-bold">
+              <dt>Phải đóng</dt>
+              <dd>{fmtVND(finalPrice)}</dd>
+            </div>
+          </dl>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
@@ -504,6 +601,16 @@ function PackageDetailModal({
       <div className="space-y-4">
         {error && <ErrorNote message={error} />}
 
+        {pkg.course_name && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Khóa học:</span>
+            <span className="font-semibold">{pkg.course_name}</span>
+            {pkg.course_level && (
+              <Badge variant="default">{LEVEL_LABELS[pkg.course_level] ?? pkg.course_level}</Badge>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3 rounded-lg border bg-secondary/40 p-3 text-sm sm:grid-cols-4">
           <div>
             <div className="text-xs text-muted-foreground">Đã học</div>
@@ -516,8 +623,10 @@ function PackageDetailModal({
           <div>
             <div className="text-xs text-muted-foreground">Giá sau ưu đãi</div>
             <div className="font-bold">{fmtVND(pkg.final_price)}</div>
-            {Number(pkg.discount) > 0 && (
-              <div className="text-xs text-muted-foreground">ưu đãi {fmtVND(pkg.discount)}</div>
+            {Number(pkg.discount_total) > 0 && (
+              <div className="text-xs text-muted-foreground">
+                {fmtVND(pkg.price)} · ưu đãi {discountLabel(pkg)}
+              </div>
             )}
           </div>
           <div>

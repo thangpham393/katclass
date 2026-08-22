@@ -24,6 +24,7 @@ export interface PackageBalanceRow {
   name: string;
   total_sessions: number;
   price: number;
+  /** Ưu đãi tiền mặt (VND) — trừ SAU phần %. */
   discount: number;
   final_price: number;
   start_date: string;
@@ -33,6 +34,33 @@ export interface PackageBalanceRow {
   remaining_sessions: number;
   paid_amount: number;
   debt: number;
+  /* --- 0023: khóa học + ưu đãi kép --- */
+  course_id: string | null;
+  course_name: string | null;
+  course_level: string | null;
+  /** Ưu đãi theo % trên giá gốc. */
+  discount_percent: number;
+  /** Số tiền quy đổi từ `discount_percent`. */
+  discount_amount: number;
+  /** Tổng ưu đãi = discount_amount + discount. */
+  discount_total: number;
+}
+
+/* ---- Ưu đãi kép: % tính trên giá gốc, rồi trừ tiếp ưu đãi tiền mặt ---- */
+
+/** Số tiền quy đổi từ ưu đãi %. Làm tròn giống `round()` của Postgres. */
+export function discountAmountOf(price: number, percent: number): number {
+  return Math.round(((Number(price) || 0) * (Number(percent) || 0)) / 100);
+}
+
+/** Tổng ưu đãi (VND) từ % + tiền mặt. */
+export function discountTotalOf(price: number, percent: number, cash: number): number {
+  return discountAmountOf(price, percent) + (Number(cash) || 0);
+}
+
+/** Giá phải đóng sau cả hai loại ưu đãi. */
+export function finalPriceOf(price: number, percent: number, cash: number): number {
+  return Math.max(0, (Number(price) || 0) - discountTotalOf(price, percent, cash));
 }
 
 /** Toàn bộ gói active kèm số dư (trang admin). */
@@ -59,9 +87,14 @@ export async function fetchStudentPackages(studentId: string): Promise<PackageBa
 
 export interface CreatePackageInput {
   student_id: string;
+  /** Chương trình bán ra (courses). Null = gói lẻ không gắn khóa. */
+  course_id: string | null;
   name: string;
   total_sessions: number;
   price: number;
+  /** Ưu đãi % trên giá gốc. */
+  discount_percent: number;
+  /** Ưu đãi tiền mặt, trừ sau phần %. */
   discount: number;
   start_date: string;
   note: string | null;
@@ -138,7 +171,16 @@ export async function fetchPackagePayments(packageId: string): Promise<PaymentRo
 export interface ReceiptRow extends PaymentRow {
   student: { id: string; name: string; student_code: string | null; phone: string | null } | null;
   received_by_profile: { id: string; name: string } | null;
-  package: { id: string; name: string; total_sessions: number; price: number; discount: number; start_date: string } | null;
+  package: {
+    id: string;
+    name: string;
+    total_sessions: number;
+    price: number;
+    discount_percent: number;
+    discount: number;
+    start_date: string;
+    course: { id: string; name: string; level: string | null } | null;
+  } | null;
 }
 
 export async function fetchReceipt(paymentId: string): Promise<ReceiptRow | null> {
@@ -148,7 +190,10 @@ export async function fetchReceipt(paymentId: string): Promise<ReceiptRow | null
       id, package_id, student_id, amount, method, receipt_no, note, paid_at,
       student:profiles!payments_student_id_fkey ( id, name, student_code, phone ),
       received_by_profile:profiles!payments_received_by_fkey ( id, name ),
-      package:enrollment_packages ( id, name, total_sessions, price, discount, start_date )
+      package:enrollment_packages (
+        id, name, total_sessions, price, discount_percent, discount, start_date,
+        course:courses ( id, name, level )
+      )
     `)
     .eq("id", paymentId)
     .maybeSingle();
