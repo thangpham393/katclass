@@ -73,6 +73,7 @@ const studentNav: NavEntry[] = [
 const teacherNav: NavEntry[] = [
   { href: "/teacher", label: "Trang chủ", icon: LayoutDashboard },
   { href: "/teacher/classes", label: "Lớp dạy", icon: School },
+  { href: "/teacher/schedule", label: "Lịch dạy", icon: CalendarDays },
   libraryGroup,
   { href: "/teacher/homework", label: "Giao bài tập", icon: ClipboardList },
   { href: "/teacher/requests", label: "Nghỉ / đổi buổi", icon: CalendarOff },
