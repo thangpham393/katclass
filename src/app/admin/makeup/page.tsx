@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarClock, CalendarPlus, Search, Undo2 } from "lucide-react";
+import { CalendarClock, CalendarPlus, Check, Search, Undo2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import {
   scheduleMakeup,
   sessionClassLabel,
   resetMakeup,
+  markMakeupAttended,
   dbErrorMessage,
   todayISO,
   WEEKDAY_LABELS,
@@ -48,6 +49,17 @@ export default function AdminMakeupPage() {
     setError(null);
     try {
       await resetMakeup(credit.id);
+      credits.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    }
+  }
+
+  async function handleAttended(credit: MakeupCreditRow) {
+    if (!confirm(`Xác nhận ${credit.student.name} đã học bù xong? Lượt bù sẽ đóng lại.`)) return;
+    setError(null);
+    try {
+      await markMakeupAttended(credit.id);
       credits.reload();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -134,7 +146,17 @@ export default function AdminMakeupPage() {
                         {fmtSession(c.makeup_session)} ({c.makeup_session?.class?.name ?? "buổi bù riêng"})
                       </span>
                     </div>
+                    {c.makeup_session && c.makeup_session.date < todayISO() && (
+                      <div className="mt-0.5 text-xs text-destructive">
+                        Buổi bù đã qua mà chưa có điểm danh — nhắc giáo viên điểm danh, hoặc đóng tay ở đây.
+                      </div>
+                    )}
                   </div>
+                  {c.makeup_session && c.makeup_session.date < todayISO() && (
+                    <Button size="sm" variant="secondary" onClick={() => handleAttended(c)}>
+                      <Check className="h-3.5 w-3.5" /> Đã học bù
+                    </Button>
+                  )}
                   <Button size="sm" variant="outline" onClick={() => handleReset(c)}>
                     <Undo2 className="h-3.5 w-3.5" /> Bỏ xếp
                   </Button>

@@ -1019,6 +1019,15 @@ export async function scheduleMakeup(creditId: string, sessionId: string) {
   if (error) throw error;
 }
 
+/** Đóng tay quyền học bù (GV quên điểm danh nhưng buổi đã học xong). */
+export async function markMakeupAttended(creditId: string) {
+  const { error } = await getSupabase()
+    .from("makeup_credits")
+    .update({ status: "attended" })
+    .eq("id", creditId);
+  if (error) throw error;
+}
+
 /** Bỏ xếp bù, trả về trạng thái chờ. */
 export async function resetMakeup(creditId: string) {
   const { error } = await getSupabase()
