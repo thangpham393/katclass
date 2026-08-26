@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useBranch } from "@/components/shell/branch-provider";
+import { moveProfileToBranch } from "@/lib/branch";
 import {
   fetchProfile,
   fetchProfilesByRole,
@@ -38,17 +40,36 @@ import {
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Select, Field } from "@/components/ui/select";
-import { dbErrorMessage } from "@/lib/db";
+import { dbErrorMessage, updateProfileRole } from "@/lib/db";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
 import { pct } from "@/lib/utils";
 import type { Role } from "@/lib/types";
+
+/** Vai trò gán được ở trang này + mô tả quyền để admin khỏi phải nhớ. */
+const ROLE_OPTIONS: { value: Role; label: string; hint: string }[] = [
+  { value: "student", label: "Học viên", hint: "Học viên: xem lớp, bài tập, flashcard của mình." },
+  { value: "parent", label: "Phụ huynh", hint: "Phụ huynh: theo dõi con qua cổng phụ huynh." },
+  { value: "teacher", label: "Giáo viên", hint: "Giáo viên: dạy, điểm danh, chấm công ca dạy của mình." },
+  {
+    value: "staff",
+    label: "Quản lý hành chính",
+    hint: "Hành chính: vận hành lớp, học viên, học phí — KHÔNG xem được mức lương GV và bảng công tiền.",
+  },
+  {
+    value: "accountant",
+    label: "Kế toán",
+    hint: "Kế toán: như hành chính, thêm quyền xem/sửa mức lương giáo viên và bảng công tiền.",
+  },
+  { value: "admin", label: "Quản lý (admin)", hint: "Admin: toàn quyền, kể cả phân quyền và lương." },
+];
 
 const ROLE_LABELS: Record<Role, string> = {
   student: "Học viên",
   parent: "Phụ huynh",
   teacher: "Giáo viên",
   staff: "Nhân viên hành chính",
+  accountant: "Kế toán",
   admin: "Quản trị",
 };
 
@@ -77,7 +98,10 @@ export default function AdminMemberDetailPage() {
     [profileId, p?.role],
   );
 
-  const [busy, setBusy] = useState<"provision" | "reset" | "delete" | null>(null);
+  const { branches, branchId, canSwitch } = useBranch();
+  const [busy, setBusy] = useState<"provision" | "reset" | "delete" | "role" | "branch" | null>(null);
+  // Chỉ admin đổi được vai trò (RLS cũng chặn: hành chính không đụng được hồ sơ kế toán/admin)
+  const isAdmin = me?.role === "admin";
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -95,6 +119,45 @@ export default function AdminMemberDetailPage() {
       profile.reload();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Có lỗi xảy ra.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleRoleChange(role: Role) {
+    if (!p || role === p.role) return;
+    if (!confirm(`Đổi vai trò của ${p.name} thành "${ROLE_LABELS[role]}"?`)) return;
+    setBusy("role");
+    setError(null);
+    setNotice(null);
+    try {
+      await updateProfileRole(profileId, role);
+      setNotice(`Đã đổi vai trò thành ${ROLE_LABELS[role]}. ${p.name} cần tải lại trang (F5) hoặc đăng nhập lại để nhận quyền mới.`);
+      profile.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function handleBranchChange(newBranchId: string) {
+    if (!p || newBranchId === p.branch_id) return;
+    const target = branches.find((b) => b.id === newBranchId);
+    if (!confirm(`Chuyển ${p.name} sang chi nhánh "${target?.name}"?`)) return;
+    setBusy("branch");
+    setError(null);
+    setNotice(null);
+    try {
+      await moveProfileToBranch(profileId, newBranchId);
+      setNotice(
+        newBranchId === branchId
+          ? `Đã chuyển ${p.name} về chi nhánh ${target?.name}.`
+          : `Đã chuyển ${p.name} sang chi nhánh ${target?.name} — hồ sơ này không còn hiện trong danh sách của cơ sở đang xem.`,
+      );
+      profile.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
     } finally {
       setBusy(null);
     }
@@ -223,6 +286,56 @@ export default function AdminMemberDetailPage() {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader><CardTitle className="text-base">Vai trò & quyền</CardTitle></CardHeader>
+            <CardContent className="space-y-2 p-6 pt-0">
+              <Select
+                value={p.role}
+                disabled={!isAdmin || busy !== null || p.id === me?.id}
+                onChange={(e) => handleRoleChange(e.target.value as Role)}
+                title={p.id === me?.id ? "Không tự đổi vai trò của chính mình" : undefined}
+              >
+                {ROLE_OPTIONS.map((r) => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {ROLE_OPTIONS.find((r) => r.value === p.role)?.hint}
+              </p>
+              {!isAdmin ? (
+                <p className="text-xs text-gold-700">Chỉ tài khoản Quản lý mới đổi được vai trò.</p>
+              ) : p.id === me?.id ? (
+                <p className="text-xs text-gold-700">Không tự đổi vai trò của chính mình.</p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Mã đăng nhập giữ nguyên khi đổi vai trò; người đó cần F5 hoặc đăng nhập lại.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {branches.length > 1 && (
+            <Card>
+              <CardHeader><CardTitle className="text-base">Chi nhánh</CardTitle></CardHeader>
+              <CardContent className="space-y-2 p-6 pt-0">
+                <Select
+                  value={p.branch_id ?? ""}
+                  disabled={!canSwitch || busy !== null}
+                  onChange={(e) => handleBranchChange(e.target.value)}
+                >
+                  {!p.branch_id && <option value="">— Chưa gán chi nhánh —</option>}
+                  {branches.map((b) => (
+                    <option key={b.id} value={b.id}>{b.name}</option>
+                  ))}
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Lớp, buổi học, học phí và bảng công đều tính theo chi nhánh của hồ sơ.
+                  Kho học liệu dùng chung cả hai cơ sở.
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader><CardTitle className="text-base">Tài khoản đăng nhập</CardTitle></CardHeader>
@@ -367,7 +480,7 @@ export default function AdminMemberDetailPage() {
             </Card>
           )}
 
-          {(p.role === "staff" || p.role === "admin") && (
+          {(p.role === "staff" || p.role === "accountant" || p.role === "admin") && (
             <Card>
               <CardContent className="p-6 text-sm text-muted-foreground">
                 {ROLE_LABELS[p.role]} dùng chung khu quản trị — không có dữ liệu lớp/điểm danh riêng.

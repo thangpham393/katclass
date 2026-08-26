@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "./auth-provider";
 import { homeForRole } from "@/lib/auth";
 import { AppShell } from "@/components/shell/app-shell";
+import { BranchProvider } from "@/components/shell/branch-provider";
 import type { Role } from "@/lib/types";
 
 /**
@@ -50,7 +51,11 @@ export function AuthGuard({
     );
   }
 
-  if (bare) return <>{children}</>;
+  if (bare) return <BranchProvider user={user}>{children}</BranchProvider>;
 
-  return <AppShell user={user}>{children}</AppShell>;
+  return (
+    <BranchProvider user={user}>
+      <AppShell user={user}>{children}</AppShell>
+    </BranchProvider>
+  );
 }

@@ -8,6 +8,7 @@
  */
 
 import { getSupabase } from "./supabase";
+import { branchStamp } from "./branch";
 import { todayISO, type ScheduleRow, type AttendanceStatus } from "./db";
 
 /* ============ Lớp của tôi ============ */
@@ -249,6 +250,7 @@ export async function createParentProfile(input: {
       email: input.email?.trim().toLowerCase() ?? "",
       phone: input.phone?.trim() || null,
       role: "parent",
+      ...branchStamp(),
     })
     .select("id, name, student_code")
     .single();

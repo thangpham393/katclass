@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
     const { data: callerProfile } = await admin
       .from("profiles").select("id, role").eq("user_id", caller.id).maybeSingle();
-    if (!callerProfile || !["staff", "admin"].includes(callerProfile.role)) {
+    if (!callerProfile || !["staff", "accountant", "admin"].includes(callerProfile.role)) {
       return NextResponse.json(
         { error: "Chỉ quản trị / nhân viên hành chính được thao tác." },
         { status: 403 },
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     }
 
     // Staff không được động vào staff/admin khác
-    if (["staff", "admin"].includes(target.role) && callerProfile.role !== "admin") {
+    if (["staff", "accountant", "admin"].includes(target.role) && callerProfile.role !== "admin") {
       return NextResponse.json(
         { error: "Chỉ quản trị viên được thao tác trên hồ sơ nhân viên / quản trị." },
         { status: 403 },

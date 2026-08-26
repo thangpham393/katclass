@@ -15,7 +15,7 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, name, email, role, avatar")
+    .select("id, name, email, role, avatar, branch_id")
     .eq("user_id", sbUser.id)
     .maybeSingle();
   if (error) throw error;
@@ -33,6 +33,7 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
     email: data.email || sbUser.email || "",
     role: data.role ?? "student",
     avatar: data.avatar ?? undefined,
+    branchId: data.branch_id ?? null,
     classIds: [],
   };
 }
@@ -66,6 +67,7 @@ export function homeForRole(role: User["role"]): string {
   switch (role) {
     case "admin":
     case "staff":
+    case "accountant":
       return "/admin";
     case "teacher":
       return "/teacher";

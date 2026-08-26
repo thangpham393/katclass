@@ -100,11 +100,21 @@ const parentNav: NavEntry[] = [
   { href: "/parent", label: "Trang chủ", icon: LayoutDashboard },
 ];
 
+/**
+ * Quản lý hành chính dùng chung khu quản trị nhưng KHÔNG có mục lương /
+ * bảng công tiền của giáo viên — chỉ admin và kế toán mới thấy
+ * (chặn thật ở RLS `can_view_pay` + guard trang /admin/payroll).
+ */
+const staffNav: NavEntry[] = adminNav.filter(
+  (e) => isGroup(e) || e.href !== "/admin/payroll",
+);
+
 const navByRole: Record<Role, NavEntry[]> = {
   student: studentNav,
   teacher: teacherNav,
   admin: adminNav,
-  staff: adminNav,
+  staff: staffNav,
+  accountant: adminNav,
   parent: parentNav,
 };
 

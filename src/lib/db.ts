@@ -1,6 +1,7 @@
 "use client";
 
 import { getSupabase } from "./supabase";
+import { branchFilter, branchStamp } from "./branch";
 import type { Role } from "./types";
 
 /* ============ Kiểu dữ liệu khớp bảng Supabase ============ */
@@ -39,6 +40,7 @@ export interface ProfileRow {
   address: string | null;
   note: string | null;
   invite_code: string | null; // mã kích hoạt tài khoản (null = chưa cấp hoặc đã dùng)
+  branch_id: string | null; // chi nhánh của hồ sơ (0026)
   created_at: string;
 }
 
@@ -127,10 +129,16 @@ export function classTeachers(c: Pick<ClassRow, "teacher" | "class_teachers">): 
 export async function fetchDashboardStats() {
   const supabase = getSupabase();
   const [students, teachers, activeClasses, pendingMakeups] = await Promise.all([
-    supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "student"),
-    supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "teacher"),
-    supabase.from("classes").select("id", { count: "exact", head: true }).eq("status", "active"),
-    supabase.from("makeup_credits").select("id", { count: "exact", head: true }).eq("status", "pending"),
+    branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "student")),
+    branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "teacher")),
+    branchFilter(supabase.from("classes").select("id", { count: "exact", head: true }).eq("status", "active")),
+    branchFilter(
+      supabase
+        .from("makeup_credits")
+        .select("id, student:profiles!makeup_credits_student_id_fkey!inner ( id )", { count: "exact", head: true })
+        .eq("status", "pending"),
+      "student.branch_id",
+    ),
   ]);
   return {
     students: students.count ?? 0,
@@ -167,13 +175,13 @@ export async function deleteCourse(id: string) {
 /* ============ Phòng học & cơ sở ============ */
 
 export async function fetchRooms(): Promise<RoomRow[]> {
-  const { data, error } = await getSupabase().from("rooms").select("*").order("name");
+  const { data, error } = await branchFilter(getSupabase().from("rooms").select("*")).order("name");
   if (error) throw error;
   return data;
 }
 
 export async function createRoom(input: { name: string; capacity?: number | null }) {
-  const { error } = await getSupabase().from("rooms").insert(input);
+  const { error } = await getSupabase().from("rooms").insert({ ...input, ...branchStamp() });
   if (error) throw error;
 }
 
@@ -191,17 +199,18 @@ export async function fetchBranches(): Promise<BranchRow[]> {
 /* ============ Người dùng ============ */
 
 export async function fetchProfilesByRole(role: Role): Promise<ProfileRow[]> {
-  const { data, error } = await getSupabase()
-    .from("profiles").select("*").eq("role", role).order("created_at", { ascending: false });
+  const { data, error } = await branchFilter(
+    getSupabase().from("profiles").select("*").eq("role", role),
+  ).order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 }
 
 /** Chỉ các hồ sơ ĐÃ có tài khoản đăng nhập (để phân quyền). */
 export async function fetchAccountProfiles(): Promise<ProfileRow[]> {
-  const { data, error } = await getSupabase()
-    .from("profiles").select("*").not("user_id", "is", null)
-    .order("created_at", { ascending: false });
+  const { data, error } = await branchFilter(
+    getSupabase().from("profiles").select("*").not("user_id", "is", null),
+  ).order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 }
@@ -225,8 +234,9 @@ const CLASS_SELECT = `
 `;
 
 export async function fetchClasses(): Promise<ClassRow[]> {
-  const { data, error } = await getSupabase()
-    .from("classes").select(CLASS_SELECT).order("created_at", { ascending: false });
+  const { data, error } = await branchFilter(
+    getSupabase().from("classes").select(CLASS_SELECT),
+  ).order("created_at", { ascending: false });
   if (error) throw error;
   return data as unknown as ClassRow[];
 }
@@ -259,7 +269,7 @@ export async function createClass(input: CreateClassInput) {
   const supabase = getSupabase();
   const { schedules, ...classData } = input;
   const { data: cls, error } = await supabase
-    .from("classes").insert(classData).select("id").single();
+    .from("classes").insert({ ...classData, ...branchStamp() }).select("id").single();
   if (error) throw error;
   if (schedules.length) {
     const { error: schedErr } = await supabase
@@ -333,11 +343,12 @@ export interface StudentWithClasses extends ProfileRow {
 }
 
 export async function fetchStudentsWithClassCount(): Promise<StudentWithClasses[]> {
-  const { data, error } = await getSupabase()
-    .from("profiles")
-    .select("*, class_students!class_students_student_id_fkey ( count )")
-    .eq("role", "student")
-    .order("created_at", { ascending: false });
+  const { data, error } = await branchFilter(
+    getSupabase()
+      .from("profiles")
+      .select("*, class_students!class_students_student_id_fkey ( count )")
+      .eq("role", "student"),
+  ).order("created_at", { ascending: false });
   if (error) throw error;
   return data as unknown as StudentWithClasses[];
 }
@@ -353,11 +364,12 @@ export function generateInviteCode(): string {
   return `${s.slice(0, 4)}-${s.slice(4)}`;
 }
 
-export type TeamRole = "teacher" | "staff";
+export type TeamRole = "teacher" | "staff" | "accountant";
 
 export const TEAM_ROLE_LABELS: Record<TeamRole, string> = {
   teacher: "Giáo viên",
   staff: "Nhân viên hành chính",
+  accountant: "Kế toán",
 };
 
 /** Tạo hồ sơ giáo viên/nhân viên — mã GVKAT/NVKAT do trigger DB tự cấp. */
@@ -374,6 +386,7 @@ export async function createTeamProfile(input: {
       email: input.email?.trim().toLowerCase() ?? "",
       phone: input.phone?.trim() || null,
       role: input.role,
+      ...branchStamp(),
     })
     .select("*")
     .single();
@@ -398,6 +411,7 @@ export async function createStudentProfile(input: {
       address: input.address?.trim() || null,
       note: input.note?.trim() || null,
       role: "student",
+      ...branchStamp(),
     })
     .select("*")
     .single();
@@ -950,16 +964,16 @@ export const MAKEUP_STATUS_LABELS: Record<MakeupCreditRow["status"], string> = {
 
 const MAKEUP_SELECT = `
   id, status, note, created_at,
-  student:profiles!makeup_credits_student_id_fkey ( id, name, phone, avatar, student_code ),
+  student:profiles!makeup_credits_student_id_fkey!inner ( id, name, phone, avatar, student_code ),
   missed_session:sessions!makeup_credits_missed_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) ),
   makeup_session:sessions!makeup_credits_makeup_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) )
 `;
 
 export async function fetchMakeupCredits(statuses: MakeupCreditRow["status"][]): Promise<MakeupCreditRow[]> {
-  const { data, error } = await getSupabase()
-    .from("makeup_credits").select(MAKEUP_SELECT)
-    .in("status", statuses)
-    .order("created_at", { ascending: false });
+  const { data, error } = await branchFilter(
+    getSupabase().from("makeup_credits").select(MAKEUP_SELECT).in("status", statuses),
+    "student.branch_id",
+  ).order("created_at", { ascending: false });
   if (error) throw error;
   return data as unknown as MakeupCreditRow[];
 }
@@ -999,6 +1013,7 @@ export async function createStandaloneMakeupSession(input: {
       room_id: input.room_id,
       teacher_id: input.teacher_id,
       note: input.note?.trim() || null,
+      ...branchStamp(),
     })
     .select("id")
     .single();
@@ -1039,9 +1054,9 @@ export async function resetMakeup(creditId: string) {
 
 /** Mọi buổi học trong khoảng ngày (cho thời khóa biểu tổng). */
 export async function fetchSessionsInRange(from: string, to: string): Promise<SessionRow[]> {
-  const { data, error } = await getSupabase()
-    .from("sessions").select(SESSION_SELECT)
-    .gte("date", from).lte("date", to)
+  const { data, error } = await branchFilter(
+    getSupabase().from("sessions").select(SESSION_SELECT).gte("date", from).lte("date", to),
+  )
     .order("date").order("start_time")
     .limit(500);
   if (error) throw error;
@@ -1050,10 +1065,12 @@ export async function fetchSessionsInRange(from: string, to: string): Promise<Se
 
 /** Các buổi sắp tới (mọi lớp) để chọn xếp học bù. */
 export async function fetchUpcomingSessions(): Promise<SessionRow[]> {
-  const { data, error } = await getSupabase()
-    .from("sessions").select(SESSION_SELECT)
-    .eq("status", "scheduled")
-    .gte("date", todayISO())
+  const { data, error } = await branchFilter(
+    getSupabase()
+      .from("sessions").select(SESSION_SELECT)
+      .eq("status", "scheduled")
+      .gte("date", todayISO()),
+  )
     .order("date").order("start_time")
     .limit(300);
   if (error) throw error;
@@ -1075,10 +1092,13 @@ export interface AttendanceStats {
 
 /** Gom điểm danh sinceDays ngày gần nhất, tính tỷ lệ chuyên cần theo lớp. */
 export async function fetchAttendanceStats(sinceDays = 30): Promise<AttendanceStats> {
-  const { data, error } = await getSupabase()
-    .from("attendance")
-    .select("status, session:sessions!inner ( date, class:classes ( id, name ) )")
-    .gte("session.date", todayISO(-sinceDays));
+  const { data, error } = await branchFilter(
+    getSupabase()
+      .from("attendance")
+      .select("status, session:sessions!inner ( date, class:classes ( id, name ) )")
+      .gte("session.date", todayISO(-sinceDays)),
+    "session.branch_id",
+  );
   if (error) throw error;
 
   const rows = data as unknown as {

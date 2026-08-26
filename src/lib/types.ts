@@ -1,4 +1,4 @@
-export type Role = "student" | "parent" | "teacher" | "staff" | "admin";
+export type Role = "student" | "parent" | "teacher" | "staff" | "accountant" | "admin";
 
 export type Level = "HSK1" | "HSK2" | "HSK3" | "HSK4" | "HSK5" | "HSK6";
 
@@ -8,6 +8,8 @@ export interface User {
   email: string;
   role: Role;
   avatar?: string;
+  /** Chi nhánh của hồ sơ (0026) — null với hồ sơ cũ chưa gán. */
+  branchId?: string | null;
   classIds?: string[];
 }
 

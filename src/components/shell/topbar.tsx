@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { KeyRound, LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/shell/notification-bell";
+import { BranchSwitcher } from "@/components/shell/branch-switcher";
 import { signOut } from "@/lib/auth";
 import type { Role, User } from "@/lib/types";
 
@@ -13,6 +14,7 @@ const roleLabel: Record<Role, string> = {
   parent: "Phụ huynh",
   teacher: "Giáo viên",
   staff: "Hành chính",
+  accountant: "Kế toán",
   admin: "Quản lý",
 };
 
@@ -37,6 +39,8 @@ export function TopBar({ user }: { user: User }) {
       </div>
 
       <div className="flex items-center gap-2">
+        <BranchSwitcher />
+
         <NotificationBell profileId={user.id} />
 
         <Link

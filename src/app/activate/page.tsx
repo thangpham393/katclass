@@ -17,6 +17,7 @@ const ROLE_LABELS: Record<Role, string> = {
   parent: "Phụ huynh",
   teacher: "Giáo viên",
   staff: "Nhân viên hành chính",
+  accountant: "Kế toán",
   admin: "Quản trị",
 };
 

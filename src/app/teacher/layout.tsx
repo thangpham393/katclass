@@ -8,5 +8,5 @@ import { AuthGuard } from "@/components/auth/auth-guard";
  * nới thêm gì ở phía cơ sở dữ liệu.
  */
 export default function TeacherLayout({ children }: { children: React.ReactNode }) {
-  return <AuthGuard role={["teacher", "admin", "staff"]}>{children}</AuthGuard>;
+  return <AuthGuard role={["teacher", "admin", "staff", "accountant"]}>{children}</AuthGuard>;
 }

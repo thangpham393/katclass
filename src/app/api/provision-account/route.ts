@@ -52,7 +52,7 @@ export async function POST(req: Request) {
 
     const { data: callerProfile } = await admin
       .from("profiles").select("role").eq("user_id", caller.id).maybeSingle();
-    if (!callerProfile || !["staff", "admin"].includes(callerProfile.role)) {
+    if (!callerProfile || !["staff", "accountant", "admin"].includes(callerProfile.role)) {
       return NextResponse.json(
         { error: "Chỉ quản trị / nhân viên hành chính được cấp tài khoản." },
         { status: 403 },

@@ -22,10 +22,17 @@ import {
   type ProfileRow,
   type TeamRole,
 } from "@/lib/db";
+import { useAuth } from "@/components/auth/auth-provider";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
 
 export default function AdminTeamPage() {
+  const { user } = useAuth();
+  // Chỉ admin mới tạo/xem được nhóm kế toán (RLS 0025 cũng chặn ở DB)
+  const isAdmin = user?.role === "admin";
+  const teamRoles = (Object.keys(TEAM_ROLE_LABELS) as TeamRole[]).filter(
+    (r) => isAdmin || r !== "accountant",
+  );
   const [role, setRole] = useState<TeamRole>("teacher");
   const list = useLoad(() => fetchProfilesByRole(role), [role]);
   const [creating, setCreating] = useState(false);
@@ -73,7 +80,7 @@ export default function AdminTeamPage() {
       </div>
 
       <div className="flex gap-1 rounded-xl border bg-card p-1">
-        {(Object.keys(TEAM_ROLE_LABELS) as TeamRole[]).map((r) => (
+        {teamRoles.map((r) => (
           <button
             key={r}
             onClick={() => setRole(r)}
@@ -163,6 +170,7 @@ export default function AdminTeamPage() {
 
       {creating && (
         <CreateTeamModal
+          roles={teamRoles}
           role={role}
           onClose={() => setCreating(false)}
           onCreated={(result) => {
@@ -188,10 +196,13 @@ export default function AdminTeamPage() {
 
 function CreateTeamModal({
   role: initialRole,
+  roles,
   onClose,
   onCreated,
 }: {
   role: TeamRole;
+  /** Vai trò được phép tạo (kế toán chỉ admin mới có). */
+  roles: TeamRole[];
   onClose: () => void;
   onCreated: (result: { profile: ProfileRow; provisionError?: string }) => void;
 }) {
@@ -230,7 +241,7 @@ function CreateTeamModal({
         {error && <ErrorNote message={error} />}
         <Field label="Vai trò" required>
           <Select value={role} onChange={(e) => setRole(e.target.value as TeamRole)}>
-            {(Object.keys(TEAM_ROLE_LABELS) as TeamRole[]).map((r) => (
+            {roles.map((r) => (
               <option key={r} value={r}>{TEAM_ROLE_LABELS[r]}</option>
             ))}
           </Select>

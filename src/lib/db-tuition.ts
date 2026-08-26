@@ -11,6 +11,7 @@
  */
 
 import { getSupabase } from "./supabase";
+import { branchFilter, branchProfileIds } from "./branch";
 import { todayISO } from "./db";
 
 /* ============ Gói buổi & số dư ============ */
@@ -65,11 +66,12 @@ export function finalPriceOf(price: number, percent: number, cash: number): numb
 
 /** Toàn bộ gói active kèm số dư (trang admin). */
 export async function fetchPackageBalances(): Promise<PackageBalanceRow[]> {
-  const { data, error } = await getSupabase()
-    .from("package_balances")
-    .select("*")
-    .order("student_name")
-    .order("start_date");
+  // View không có cột branch_id (định nghĩa đổi theo từng migration nên
+  // không nên viết lại nó) → lọc theo danh sách học viên của chi nhánh.
+  const studentIds = await branchProfileIds("student");
+  let q = getSupabase().from("package_balances").select("*");
+  if (studentIds) q = q.in("student_id", studentIds);
+  const { data, error } = await q.order("student_name").order("start_date");
   if (error) throw error;
   return data as PackageBalanceRow[];
 }
@@ -203,10 +205,13 @@ export async function fetchReceipt(paymentId: string): Promise<ReceiptRow | null
 
 /** Tổng tiền đã thu từ ngày `from` (thống kê nhanh trên trang học phí). */
 export async function fetchPaymentsTotalSince(from: string): Promise<number> {
-  const { data, error } = await getSupabase()
-    .from("payments")
-    .select("amount")
-    .gte("paid_at", from);
+  const { data, error } = await branchFilter(
+    getSupabase()
+      .from("payments")
+      .select("amount, package:enrollment_packages!inner ( student:profiles!inner ( id ) )")
+      .gte("paid_at", from),
+    "package.student.branch_id",
+  );
   if (error) throw error;
   return (data as { amount: number }[]).reduce((sum, p) => sum + Number(p.amount), 0);
 }
@@ -288,6 +293,7 @@ export async function fetchTeachingSessions(
     .select(TEACHING_SELECT)
     .gte("date", from)
     .lte("date", to);
+  q = branchFilter(q);
   if (opts.teacherId) q = q.eq("teacher_id", opts.teacherId);
   if (opts.completedOnly) q = q.eq("status", "completed");
   else if (!opts.includeCancelled) q = q.neq("status", "cancelled");

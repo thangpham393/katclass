@@ -6,7 +6,7 @@
 
 ```
 branches (cơ sở)
-   └── profiles (user: student/parent/teacher/staff/admin)
+   └── profiles (user: student/parent/teacher/staff/accountant/admin)
    │       └── parent_students (phụ huynh ↔ con, n-n)
    └── courses (khóa học - khuôn mẫu: HSK1-6, số buổi chuẩn)
    └── rooms (phòng học)

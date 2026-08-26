@@ -12,6 +12,7 @@
  */
 
 import { getSupabase } from "./supabase";
+import { branchFilter } from "./branch";
 
 export type ChangeRequestType = "leave" | "reschedule";
 export type ChangeRequestStatus = "pending" | "approved" | "rejected" | "cancelled";
@@ -65,7 +66,7 @@ const REQUEST_SELECT = `
   status, resolution, resolution_note, resolved_at, created_at,
   teacher:profiles!session_change_requests_teacher_id_fkey ( id, name ),
   substitute_teacher:profiles!session_change_requests_substitute_teacher_id_fkey ( id, name ),
-  session:sessions ( id, date, start_time, end_time, status, class:classes ( id, name ) )
+  session:sessions!inner ( id, date, start_time, end_time, status, class:classes ( id, name ) )
 `;
 
 /** Yêu cầu của một GV (trang /teacher/requests). */
@@ -84,10 +85,10 @@ export async function fetchMyChangeRequests(teacherId: string): Promise<ChangeRe
 export async function fetchChangeRequests(
   statuses: ChangeRequestStatus[],
 ): Promise<ChangeRequestRow[]> {
-  const { data, error } = await getSupabase()
-    .from("session_change_requests")
-    .select(REQUEST_SELECT)
-    .in("status", statuses)
+  const { data, error } = await branchFilter(
+    getSupabase().from("session_change_requests").select(REQUEST_SELECT).in("status", statuses),
+    "session.branch_id",
+  )
     .order("created_at", { ascending: false })
     .limit(200);
   if (error) throw error;
@@ -214,10 +215,13 @@ export async function rejectChangeRequest(id: string, note: string | null, resol
 
 /** Số yêu cầu chờ duyệt (badge trên dashboard admin). */
 export async function fetchPendingRequestCount(): Promise<number> {
-  const { count, error } = await getSupabase()
-    .from("session_change_requests")
-    .select("id", { count: "exact", head: true })
-    .eq("status", "pending");
+  const { count, error } = await branchFilter(
+    getSupabase()
+      .from("session_change_requests")
+      .select("id, session:sessions!inner ( id )", { count: "exact", head: true })
+      .eq("status", "pending"),
+    "session.branch_id",
+  );
   if (error) throw error;
   return count ?? 0;
 }
