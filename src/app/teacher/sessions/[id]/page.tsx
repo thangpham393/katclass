@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
+import { homeForRole } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import {
   fetchSession,
@@ -51,6 +52,10 @@ export default function TeacherSessionPage() {
   const params = useParams<{ id: string }>();
   const sessionId = params.id;
   const { user } = useAuth();
+  // Hành chính mở buổi từ thời khóa biểu → đường lui về khu quản trị của họ
+  const staff = user?.role === "admin" || user?.role === "staff";
+  const home = homeForRole(user?.role ?? "teacher");
+  const classHref = (id: string) => (staff ? `/admin/classes/${id}` : `/teacher/classes/${id}`);
 
   const session = useLoad(() => fetchSession(sessionId), [sessionId]);
   const classId = session.data?.class_id ?? "";
@@ -158,7 +163,7 @@ export default function TeacherSessionPage() {
     return (
       <div className="space-y-4">
         <ErrorNote message="Không tìm thấy buổi học này (hoặc bạn không có quyền xem)." />
-        <Link href="/teacher" className="text-sm font-semibold text-brand-600">← Trang chủ</Link>
+        <Link href={home} className="text-sm font-semibold text-brand-600">← Trang chủ</Link>
       </div>
     );
   }
@@ -171,7 +176,7 @@ export default function TeacherSessionPage() {
   return (
     <div className="space-y-6">
       <Link
-        href={s.class ? `/teacher/classes/${s.class.id}` : "/teacher"}
+        href={s.class ? classHref(s.class.id) : home}
         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" /> {s.class?.name ?? "Trang chủ"}

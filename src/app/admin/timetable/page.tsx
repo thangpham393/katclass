@@ -397,7 +397,7 @@ function SessionCard({ s }: { s: SessionRow }) {
   const level = s.class?.course?.level;
   return (
     <Link
-      href={s.class || s.class_id ? `/admin/classes/${s.class?.id ?? s.class_id}` : "/admin/makeup"}
+      href={`/teacher/sessions/${s.id}`}
       className={cn(
         "block rounded-lg border border-l-4 p-2 transition-all hover:-translate-y-px hover:shadow-soft",
         sessionTone(s),
@@ -584,7 +584,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                     return (
                       <Link
                         key={s.id}
-                        href={s.class || s.class_id ? `/admin/classes/${s.class?.id ?? s.class_id}` : "/admin/makeup"}
+                        href={`/teacher/sessions/${s.id}`}
                         className={cn(
                           "absolute overflow-hidden rounded-lg border border-l-4 p-1.5 shadow-sm transition-all hover:z-10 hover:shadow-soft",
                           sessionTone(s),
@@ -595,7 +595,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                           left: `calc(${lane * width}% + 3px)`,
                           width: `calc(${width}% - 6px)`,
                         }}
-                        title={`${sessionClassLabel(s)} · ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}${s.teacher ? ` · ${s.teacher.name}` : ""}`}
+                        title={`${sessionClassLabel(s)} · ${s.start_time.slice(0, 5)}–${s.end_time.slice(0, 5)}${s.teacher ? ` · ${s.teacher.name}` : ""} — bấm để xem chi tiết buổi`}
                       >
                         <div className="flex items-center justify-between gap-1 text-[10px] font-bold text-foreground/70">
                           <span>
