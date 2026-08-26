@@ -61,7 +61,7 @@ export default function LessonLibraryPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Bài học</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Bài học</h1>
           <p className="mt-1 text-muted-foreground">
             Soạn nội dung theo khóa học: từ vựng, ngữ pháp, slide — rồi gán vào buổi học để học viên ôn tập.
           </p>
@@ -77,14 +77,14 @@ export default function LessonLibraryPage() {
       <Card>
         <CardContent className="flex flex-wrap items-center gap-3 p-4">
           <span className="text-sm font-medium text-muted-foreground">Giáo trình:</span>
-          <Select className="w-64" value={textbookFilter} onChange={(e) => setTextbookFilter(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-64" value={textbookFilter} onChange={(e) => setTextbookFilter(e.target.value)}>
             <option value="">Tất cả</option>
             {(textbooks.data ?? []).map((t) => (
               <option key={t.id} value={t.id}>{t.name}</option>
             ))}
           </Select>
           <span className="text-sm font-medium text-muted-foreground">Khóa học:</span>
-          <Select className="w-64" value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-64" value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)}>
             <option value="">Tất cả</option>
             {(courses.data ?? []).map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
@@ -105,7 +105,7 @@ export default function LessonLibraryPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {list.map((l) => (
             <Card key={l.id} className="card-hover flex flex-col">
-              <CardContent className="flex flex-1 flex-col p-5">
+              <CardContent className="flex flex-1 flex-col p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
                     {l.unit != null && <Badge variant="outline">Bài {l.unit}</Badge>}

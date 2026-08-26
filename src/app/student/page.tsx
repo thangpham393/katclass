@@ -143,7 +143,7 @@ export default function StudentHome() {
               Lớp của tôi →
             </Link>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {upcoming.loading || classes.loading ? (
               <LoadingRows rows={4} className="p-0" />
             ) : (upcoming.data?.length ?? 0) === 0 ? (
@@ -193,7 +193,7 @@ export default function StudentHome() {
               Xem tất cả →
             </Link>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {homeworks.loading || classes.loading ? (
               <LoadingRows rows={3} className="p-0" />
             ) : pendingHw.length === 0 ? (
@@ -241,7 +241,7 @@ export default function StudentHome() {
             <MessageSquareText className="h-4 w-4 text-brand-600" /> Nhận xét gần đây từ giáo viên
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {comments.loading ? (
             <LoadingRows rows={2} className="p-0" />
           ) : (comments.data?.length ?? 0) === 0 ? (

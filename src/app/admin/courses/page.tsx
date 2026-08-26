@@ -40,7 +40,7 @@ export default function AdminCoursesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Khóa học</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Khóa học</h1>
           <p className="mt-1 text-muted-foreground">
             Chương trình chuẩn của trung tâm — lớp học được mở ra từ đây.
           </p>

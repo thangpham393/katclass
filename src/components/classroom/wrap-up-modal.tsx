@@ -224,9 +224,9 @@ export function WrapUpModal({
   const idx = STEPS.findIndex((s) => s.key === step);
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-ink-950/70 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[92vh] w-full max-w-3xl flex-col rounded-2xl border bg-card shadow-soft">
-        <div className="border-b px-6 py-4">
+    <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-ink-950/70 backdrop-blur-sm sm:items-center sm:p-4">
+      <div className="flex max-h-[95dvh] w-full max-w-3xl flex-col rounded-t-2xl border bg-card shadow-soft sm:max-h-[92vh] sm:rounded-2xl">
+        <div className="border-b px-4 py-3.5 sm:px-6 sm:py-4">
           <h2 className="text-lg font-extrabold">Kết thúc buổi học</h2>
           <div className="mt-3 flex items-center gap-1">
             {STEPS.map((s, i) => (
@@ -250,7 +250,7 @@ export function WrapUpModal({
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-6">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
           {step === "attendance" && (
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
@@ -260,7 +260,7 @@ export function WrapUpModal({
                 <div key={s.id} className="flex items-center gap-3 rounded-xl border p-2">
                   <Avatar name={s.name} src={s.avatar ?? undefined} size={32} />
                   <div className="min-w-0 flex-1 truncate text-sm font-semibold">{s.name}</div>
-                  <div className="flex gap-1">
+                  <div className="flex flex-wrap justify-end gap-1">
                     {STATUSES.map((st) => (
                       <button
                         key={st}

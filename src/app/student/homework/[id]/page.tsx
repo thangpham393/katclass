@@ -177,7 +177,7 @@ export default function StudentHomeworkPlayerPage() {
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Bài tập
         </Link>
-        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-10 text-center shadow-soft">
+        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-6 text-center shadow-soft sm:p-10">
           <div className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-brand text-white shadow-soft">
             <Trophy className="h-9 w-9" />
           </div>
@@ -227,7 +227,7 @@ export default function StudentHomeworkPlayerPage() {
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Bài tập
         </Link>
-        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-8 text-center shadow-soft">
+        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-5 text-center shadow-soft sm:p-8">
           <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-brand text-white shadow-soft">
             <Timer className="h-7 w-7" />
           </div>
@@ -332,7 +332,7 @@ export default function StudentHomeworkPlayerPage() {
         <div className="space-y-4">
           {questions.map((q, i) => (
             <Card key={q.id}>
-              <CardContent className="p-5 md:p-6">
+              <CardContent className="p-4 sm:p-5 md:p-6">
                 <div className="mb-3 flex items-center gap-2">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-600 text-xs font-bold text-white">
                     {i + 1}
@@ -353,7 +353,7 @@ export default function StudentHomeworkPlayerPage() {
       {error && <ErrorNote message={error} />}
 
       {questions.length > 0 && (
-        <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-2xl border bg-card/95 p-4 shadow-soft backdrop-blur">
+        <div className="sticky bottom-2 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card/95 p-3 shadow-soft backdrop-blur sm:bottom-4 sm:p-4">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             {isTest && remainingMs != null && (
               <span
@@ -371,7 +371,7 @@ export default function StudentHomeworkPlayerPage() {
               Đã trả lời <b className="text-foreground">{answeredCount}</b>/{questions.length} câu
             </span>
           </div>
-          <Button size="lg" disabled={submitting} onClick={handleSubmit}>
+          <Button size="lg" className="ml-auto shrink-0" disabled={submitting} onClick={handleSubmit}>
             <Send className="h-4 w-4" />
             {submitting ? "Đang nộp..." : "Nộp bài"}
           </Button>
@@ -654,8 +654,9 @@ function MatchingInput({
       <p className="text-sm text-muted-foreground">Chọn nghĩa đúng cho từng mục:</p>
       {left.map((l, i) => (
         <div key={i} className="flex items-center gap-3">
-          <div className="zh w-28 shrink-0 text-lg font-bold text-brand-700">{l}</div>
+          <div className="zh w-20 shrink-0 text-base font-bold text-brand-700 sm:w-28 sm:text-lg">{l}</div>
           <Select
+            wrapClassName="flex-1"
             value={value[String(i)] ?? ""}
             onChange={(e) => onChange({ ...value, [String(i)]: e.target.value })}
           >

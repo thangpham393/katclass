@@ -31,12 +31,12 @@ export default function AdminReportsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Báo cáo chuyên cần</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Báo cáo chuyên cần</h1>
           <p className="mt-1 text-muted-foreground">
             Thống kê điểm danh toàn trung tâm. Doanh thu, học phí sẽ có ở Giai đoạn 2.
           </p>
         </div>
-        <Select className="w-40" value={days} onChange={(e) => setDays(Number(e.target.value))}>
+        <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-40" value={days} onChange={(e) => setDays(Number(e.target.value))}>
           {RANGE_OPTIONS.map((o) => (
             <option key={o.days} value={o.days}>{o.label}</option>
           ))}
@@ -45,7 +45,7 @@ export default function AdminReportsPage() {
 
       {stats.error && <ErrorNote message={stats.error} />}
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <StatCard
           label="Lượt điểm danh"
           value={stats.loading ? "…" : s?.total ?? 0}
@@ -77,7 +77,7 @@ export default function AdminReportsPage() {
           <CardHeader>
             <CardTitle>Chuyên cần theo lớp</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 p-6 pt-0">
+          <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
             {stats.loading ? (
               <LoadingRows rows={5} className="p-0" />
             ) : (s?.byClass.length ?? 0) === 0 ? (
@@ -107,7 +107,7 @@ export default function AdminReportsPage() {
           <CardHeader>
             <CardTitle>Cơ cấu điểm danh</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 p-6 pt-0">
+          <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
             {stats.loading ? (
               <LoadingRows rows={4} className="p-0" />
             ) : s && s.total > 0 ? (

@@ -67,12 +67,12 @@ export default function TeacherClassDetailPage() {
         <ArrowLeft className="h-4 w-4" /> Lớp dạy
       </Link>
 
-      <div className="flex items-center gap-4">
-        <div className="zh grid h-14 w-14 place-items-center rounded-xl bg-brand-50 text-base font-bold text-brand-700">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="zh grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-sm font-bold text-brand-700 sm:h-14 sm:w-14 sm:text-base">
           {c.course?.level ? LEVEL_LABELS[c.course.level] ?? c.course.level : "—"}
         </div>
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">{c.name}</h1>
+        <div className="min-w-0">
+          <h1 className="text-xl font-extrabold tracking-tight sm:text-2xl">{c.name}</h1>
           <div className="mt-1 text-sm text-muted-foreground">
             {c.course?.name ?? "Chưa gắn khóa học"} · {formatSchedules(c.class_schedules)}
           </div>
@@ -111,7 +111,7 @@ export default function TeacherClassDetailPage() {
             <CardHeader>
               <CardTitle>Buổi sắp tới <Badge variant="muted" className="ml-1">{upcoming.length}</Badge></CardTitle>
             </CardHeader>
-            <CardContent className="p-5 pt-0">
+            <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
               {sessions.loading ? (
                 <LoadingRows rows={3} className="p-0" />
               ) : upcoming.length === 0 ? (
@@ -130,7 +130,7 @@ export default function TeacherClassDetailPage() {
             <CardHeader>
               <CardTitle>Buổi đã qua <Badge variant="muted" className="ml-1">{past.length}</Badge></CardTitle>
             </CardHeader>
-            <CardContent className="p-5 pt-0">
+            <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
               {past.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
                   Chưa có buổi nào đã diễn ra.
@@ -153,7 +153,7 @@ export default function TeacherClassDetailPage() {
               Mức tham gia 30 ngày qua — ★ và số lần phát biểu trong giờ.
             </p>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {students.loading ? (
               <LoadingRows rows={4} className="p-0" />
             ) : (

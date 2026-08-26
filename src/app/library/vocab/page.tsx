@@ -54,7 +54,7 @@ export default function VocabLibraryPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Kho từ vựng</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Kho từ vựng</h1>
           <p className="mt-1 text-muted-foreground">
             {vocab.loading ? "Đang tải..." : `${vocab.data?.length ?? 0} từ vựng dùng chung toàn trung tâm.`}
           </p>

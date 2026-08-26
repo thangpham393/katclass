@@ -70,13 +70,15 @@ export default function AdminPayrollPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Chấm công giáo viên</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Chấm công giáo viên</h1>
         <p className="mt-1 text-muted-foreground">
           Giáo viên bấm <span className="font-semibold text-foreground">Chấm công</span> ở trang chủ sau mỗi ca dạy —
           hệ thống ghi giờ dạy thực tế, số giờ và nội dung bài học. 1 ca đã chấm = 1 công.
         </p>
       </div>
 
+      {/* Mobile: dải tab tự cuộn ngang thay vì tràn ra ngoài màn hình */}
+      <div className="scroll-x">
       <div className="flex w-fit rounded-lg border bg-secondary/40 p-0.5">
         {([
           { key: "day", label: "Theo dõi theo ngày" },
@@ -87,13 +89,14 @@ export default function AdminPayrollPage() {
             key={t.key}
             onClick={() => setTab(t.key)}
             className={cn(
-              "rounded-md px-4 py-1.5 text-sm font-semibold transition-colors",
+              "whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-semibold transition-colors sm:px-4 sm:py-1.5 sm:text-sm",
               tab === t.key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {t.label}
           </button>
         ))}
+      </div>
       </div>
 
       {tab === "day" ? <DayTracking /> : tab === "month" ? <MonthTally /> : <PayRates />}
@@ -127,7 +130,7 @@ function DayTracking() {
         <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, -1))} aria-label="Ngày trước">
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <div className="w-44">
+        <div className="w-full sm:w-44">
           <Input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} />
         </div>
         <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, 1))} aria-label="Ngày sau">
@@ -159,7 +162,7 @@ function DayTracking() {
         <CardHeader>
           <CardTitle>Danh sách ca dạy</CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {sessions.loading ? (
             <LoadingRows rows={4} className="p-0" />
           ) : rows.length === 0 ? (
@@ -278,7 +281,7 @@ function MonthTally() {
           Giờ dạy lấy theo <span className="font-semibold text-foreground">giờ thực tế đã chấm công</span> (buổi chưa
           chấm tạm tính theo giờ lịch). Tiền công tính lại theo mức lương hiện hành ở tab “Mức lương giáo viên”.
         </p>
-        <div className="w-44">
+        <div className="w-full sm:w-44">
           <Input type="month" value={month} onChange={(e) => e.target.value && setMonth(e.target.value)} />
         </div>
       </div>
@@ -320,7 +323,7 @@ function MonthTally() {
         <CardHeader>
           <CardTitle>Bảng công tháng {month.split("-")[1]}/{month.split("-")[0]}</CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {loading ? (
             <LoadingRows rows={4} className="p-0" />
           ) : rows.length === 0 ? (
@@ -497,7 +500,7 @@ function PayRates() {
         <CardHeader>
           <CardTitle>Mức tiền công từng giáo viên</CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {loading ? (
             <LoadingRows rows={4} className="p-0" />
           ) : (teachers.data?.length ?? 0) === 0 ? (

@@ -46,7 +46,7 @@ export default function TeacherStudentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Học viên của tôi</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Học viên của tôi</h1>
         <p className="mt-1 text-muted-foreground">
           {rows.loading ? "Đang tải..." : `${students.length} học viên trong các lớp bạn phụ trách.`}
         </p>

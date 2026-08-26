@@ -47,6 +47,15 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
   const [quizing, setQuizing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // HanziWriter vẽ SVG theo kích thước cố định lúc khởi tạo → tự tính cạnh ô
+  // theo bề ngang màn hình để không tràn trên điện thoại.
+  const [size, setSize] = useState(340);
+  useEffect(() => {
+    const calc = () => setSize(Math.max(200, Math.min(340, window.innerWidth - 96)));
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, []);
 
   // Chữ gợi ý: các chữ Hán xuất hiện trong từ vựng của bài đang dạy
   const suggestions = Array.from(new Set(vocab.flatMap((v) => hanChars(v.hanzi)))).slice(0, 60);
@@ -73,8 +82,8 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
       .then(({ default: HanziWriter }) => {
         if (cancelled || !target.current) return;
         writer.current = HanziWriter.create(target.current, current, {
-          width: 340,
-          height: 340,
+          width: size,
+          height: size,
           padding: 12,
           showOutline: true,
           strokeAnimationSpeed: speed,
@@ -94,7 +103,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
     return () => {
       cancelled = true;
     };
-  }, [current, speed]);
+  }, [current, speed, size]);
 
   function startQuiz() {
     setResult(null);
@@ -114,10 +123,10 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
   const meaning = vocab.find((v) => v.hanzi.includes(current));
 
   return (
-    <div className="flex h-full min-h-0 gap-4">
+    <div className="flex h-full min-h-0 flex-col gap-4 lg:flex-row">
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-4">
         <div className="rounded-3xl border border-ink-700 bg-white p-2">
-          <div ref={target} className="h-[340px] w-[340px]" />
+          <div ref={target} style={{ width: size, height: size }} />
         </div>
 
         {error ? (
@@ -178,7 +187,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
         </div>
       </div>
 
-      <div className="flex w-64 shrink-0 flex-col gap-2 rounded-2xl border border-ink-800 bg-ink-900 p-3">
+      <div className="flex w-full shrink-0 flex-col gap-2 rounded-2xl border border-ink-800 bg-ink-900 p-3 lg:w-64">
         <input
           value={raw}
           onChange={(e) => applyRaw(e.target.value)}

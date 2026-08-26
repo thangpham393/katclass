@@ -194,18 +194,18 @@ function ChoiceGame({
 
   return (
     <div className="flex h-full flex-col gap-3">
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-6 rounded-2xl border border-ink-800 bg-ink-900 p-6">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4 sm:gap-6 sm:p-6">
         {kind === "quick" ? (
           <div className="text-center">
             <div className="text-xs font-semibold uppercase tracking-wide text-ink-400">
               Chữ Hán nào có nghĩa
             </div>
-            <div className="mt-2 text-4xl font-extrabold text-white">{answer.meaning}</div>
+            <div className="mt-2 text-3xl font-extrabold text-white sm:text-4xl">{answer.meaning}</div>
           </div>
         ) : (
           <button
             onClick={speak}
-            className="flex flex-col items-center gap-2 rounded-2xl bg-ink-800 px-10 py-6 hover:bg-ink-700"
+            className="flex flex-col items-center gap-2 rounded-2xl bg-ink-800 px-8 py-5 hover:bg-ink-700 sm:px-10 sm:py-6"
           >
             <Volume2 className="h-10 w-10 text-brand-300" />
             <span className="text-sm font-semibold text-ink-200">Nghe lại</span>
@@ -221,7 +221,7 @@ function ChoiceGame({
                 key={o.id}
                 onClick={() => choose(o.id)}
                 className={cn(
-                  "zh rounded-2xl border-2 py-6 text-5xl font-bold transition-colors",
+                  "zh rounded-2xl border-2 px-2 py-4 text-4xl font-bold transition-colors sm:py-6 sm:text-5xl",
                   !show
                     ? "border-ink-700 bg-ink-800 text-white hover:border-brand-500"
                     : isAnswer
@@ -361,7 +361,7 @@ function MemoryGame({
             Hoàn thành sau {moves} lượt lật! Thưởng ★ cho đội thắng ở hàng dưới.
           </div>
         )}
-        <div className="grid grid-cols-3 gap-3 md:grid-cols-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:grid-cols-4">
           {cards.map((c) => {
             const isOpen = open.includes(c.key) || matched.includes(c.pairId);
             return (
@@ -369,7 +369,7 @@ function MemoryGame({
                 key={c.key}
                 onClick={() => flip(c)}
                 className={cn(
-                  "flex h-24 items-center justify-center rounded-2xl border-2 p-2 text-center transition-all",
+                  "flex h-20 items-center justify-center rounded-2xl border-2 p-1.5 text-center transition-all sm:h-24 sm:p-2",
                   matched.includes(c.pairId)
                     ? "border-emerald-500 bg-emerald-600/15 text-emerald-200"
                     : isOpen

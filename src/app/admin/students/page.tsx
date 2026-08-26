@@ -81,7 +81,7 @@ export default function AdminStudentsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Học viên</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Học viên</h1>
           <p className="mt-1 text-muted-foreground">
             {loading
               ? "Đang tải..."
@@ -119,7 +119,7 @@ export default function AdminStudentsPage() {
 
       <Card>
         <CardContent className="flex flex-wrap items-center gap-3 p-4">
-          <div className="relative min-w-[220px] flex-1">
+          <div className="relative w-full min-w-0 flex-1 sm:min-w-[220px]">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Tìm theo tên, email, mã học viên..."
@@ -128,7 +128,7 @@ export default function AdminStudentsPage() {
               onChange={(e) => setQ(e.target.value)}
             />
           </div>
-          <Select className="w-48" value={filter} onChange={(e) => setFilter(e.target.value as Filter)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-48" value={filter} onChange={(e) => setFilter(e.target.value as Filter)}>
             <option value="all">Tất cả</option>
             <option value="unassigned">Chờ xếp lớp</option>
             <option value="assigned">Đã có lớp</option>
@@ -152,10 +152,10 @@ export default function AdminStudentsPage() {
       ) : (
         <Card>
           <div className="hidden grid-cols-12 gap-3 border-b bg-muted/40 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground md:grid">
-            <div className="col-span-5">Học viên</div>
-            <div className="col-span-2">Liên hệ</div>
-            <div className="col-span-3">Tài khoản</div>
-            <div className="col-span-2 text-right">Lớp</div>
+            <div className="md:col-span-5">Học viên</div>
+            <div className="md:col-span-2">Liên hệ</div>
+            <div className="md:col-span-3">Tài khoản</div>
+            <div className="md:col-span-2 text-right">Lớp</div>
           </div>
           <div className="divide-y">
             {filtered.map((s) => {
@@ -164,9 +164,9 @@ export default function AdminStudentsPage() {
                 <Link
                   key={s.id}
                   href={`/admin/members/${s.id}`}
-                  className="grid grid-cols-1 items-center gap-3 px-5 py-3 transition-colors hover:bg-brand-50/40 md:grid-cols-12"
+                  className="grid grid-cols-1 items-center gap-2 px-4 py-3 transition-colors hover:bg-brand-50/40 sm:px-5 md:grid-cols-12 md:gap-3"
                 >
-                  <div className="col-span-5 flex items-center gap-3">
+                  <div className="md:col-span-5 flex items-center gap-3">
                     <Avatar name={s.name} src={s.avatar ?? undefined} size={38} />
                     <div className="min-w-0">
                       <div className="truncate text-sm font-semibold">{s.name}</div>
@@ -179,15 +179,15 @@ export default function AdminStudentsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-2 text-sm text-muted-foreground">{s.phone ?? "—"}</div>
-                  <div className="col-span-3">
+                  <div className="md:col-span-2 text-sm text-muted-foreground">{s.phone ?? "—"}</div>
+                  <div className="md:col-span-3">
                     {s.user_id ? (
                       <Badge variant="jade">Đã cấp tài khoản</Badge>
                     ) : (
                       <Badge variant="gold">Chưa có tài khoản</Badge>
                     )}
                   </div>
-                  <div className="col-span-2 md:text-right">
+                  <div className="md:col-span-2 md:text-right">
                     {count === 0 ? (
                       <Badge variant="muted">Chờ xếp lớp</Badge>
                     ) : (

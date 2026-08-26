@@ -38,7 +38,7 @@ export default function StudentHomeworkPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Bài tập về nhà</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Bài tập về nhà</h1>
         <p className="mt-1 text-muted-foreground">
           Bài trắc nghiệm được hệ thống chấm ngay khi nộp.
         </p>
@@ -62,7 +62,7 @@ export default function StudentHomeworkPage() {
               const overdue = h.due_at ? new Date(h.due_at) < new Date() : false;
               return (
                 <Card key={h.id} className="card-hover">
-                  <CardContent className="flex flex-wrap items-center gap-4 p-5">
+                  <CardContent className="flex flex-wrap items-center gap-4 p-4 sm:p-5">
                     <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-gold-50 text-brand-600">
                       <ClipboardList className="h-5 w-5" />
                     </div>
@@ -114,7 +114,7 @@ export default function StudentHomeworkPage() {
           <Card><LoadingRows rows={2} /></Card>
         ) : done.length === 0 ? (
           <Card>
-            <CardContent className="p-6 text-center text-sm text-muted-foreground">
+            <CardContent className="p-4 sm:p-6 text-center text-sm text-muted-foreground">
               Chưa có bài nào được nộp.
             </CardContent>
           </Card>
@@ -125,7 +125,7 @@ export default function StudentHomeworkPage() {
               return (
                 <Link key={h.id} href={`/student/homework/${h.id}`}>
                   <Card className="card-hover h-full bg-muted/30">
-                    <CardContent className="flex items-center justify-between gap-3 p-5">
+                    <CardContent className="flex items-center justify-between gap-3 p-4 sm:p-5">
                       <div className="min-w-0">
                         <div className="truncate font-semibold">{h.title}</div>
                         <div className="mt-1 text-xs text-muted-foreground">

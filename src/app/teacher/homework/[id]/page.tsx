@@ -144,7 +144,7 @@ export default function TeacherHomeworkDetailPage() {
               Bài nộp <Badge variant="muted" className="ml-1">{subs.length}</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {submissions.loading ? (
               <LoadingRows rows={3} className="p-0" />
             ) : subs.length === 0 ? (
@@ -218,7 +218,7 @@ export default function TeacherHomeworkDetailPage() {
               Câu hỏi <Badge variant="muted" className="ml-1">{hw.questions.length}</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             <div className="divide-y">
               {hw.questions.map((q, i) => (
                 <div key={q.id} className="flex items-center gap-3 py-2.5">

@@ -142,16 +142,16 @@ export default function AdminClassDetailPage() {
       </Link>
 
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="zh grid h-14 w-14 place-items-center rounded-xl bg-brand-50 text-base font-bold text-brand-700">
+        <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+          <div className="zh grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-50 text-sm font-bold text-brand-700 sm:h-14 sm:w-14 sm:text-base">
             {c.course?.level ? LEVEL_LABELS[c.course.level] ?? c.course.level : "—"}
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             {renaming ? (
               <div className="flex flex-wrap items-center gap-2">
                 <Input
                   autoFocus
-                  className="h-9 w-64 text-lg font-bold"
+                  className="h-10 w-full text-base font-bold sm:w-64 sm:text-lg"
                   value={nameDraft}
                   onChange={(e) => setNameDraft(e.target.value)}
                   onKeyDown={(e) => {
@@ -168,7 +168,7 @@ export default function AdminClassDetailPage() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-extrabold tracking-tight">{c.name}</h1>
+                <h1 className="min-w-0 text-xl font-extrabold tracking-tight sm:text-2xl">{c.name}</h1>
                 <button
                   onClick={() => {
                     setNameDraft(c.name);
@@ -200,7 +200,8 @@ export default function AdminClassDetailPage() {
             <div className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
               <span>Giáo trình:</span>
               <Select
-                className="h-8 w-56 text-xs"
+                wrapClassName="w-full sm:w-auto"
+                className="h-9 w-full text-xs sm:h-8 sm:w-56"
                 value={c.textbook?.id ?? ""}
                 onChange={(e) => handleTextbookChange(e.target.value || null)}
               >
@@ -212,9 +213,10 @@ export default function AdminClassDetailPage() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex w-full items-center gap-2 sm:w-auto">
           <Select
-            className="w-40"
+            wrapClassName="w-full sm:w-auto"
+            className="w-full sm:w-40"
             value={c.status}
             onChange={(e) => handleStatusChange(e.target.value as ClassRow["status"])}
           >
@@ -252,7 +254,7 @@ export default function AdminClassDetailPage() {
         {students.loading ? (
           <LoadingRows rows={3} />
         ) : (
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {(students.data?.length ?? 0) === 0 ? (
               <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
                 Chưa có học viên. Bấm &ldquo;Thêm học viên&rdquo; để xếp lớp.
@@ -463,7 +465,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
       <CardHeader>
         <CardTitle>Giáo viên & lịch tuần</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-5 p-6 pt-0">
+      <CardContent className="space-y-5 p-4 pt-0 sm:p-6 sm:pt-0">
         {error && <ErrorNote message={error} />}
         {notice && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
@@ -526,7 +528,8 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
               </span>
             ))}
             <Select
-              className="h-9 w-52 text-xs"
+              wrapClassName="w-full sm:w-auto"
+              className="h-9 w-full text-xs sm:w-52"
               value={addTeacherId}
               disabled={busyTeam || others.length === 0}
               onChange={(e) => {
@@ -579,9 +582,14 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
           ) : (
             <div className="space-y-2">
               {drafts.map((s, i) => (
-                <div key={i} className="flex flex-wrap items-center gap-2 rounded-lg border p-2.5">
+                <div
+                  key={i}
+                  className="grid grid-cols-2 items-center gap-2 rounded-lg border p-2.5 sm:flex sm:flex-wrap"
+                >
+                  {/* Mobile: lưới 2 cột (thứ / giờ / GV / phòng) — desktop: một hàng ngang */}
                   <Select
-                    className="w-24"
+                    wrapClassName="col-span-2 sm:col-auto"
+                    className="w-full sm:w-24"
                     value={s.weekday}
                     onChange={(e) => updateDraft(i, { weekday: Number(e.target.value) })}
                   >
@@ -591,21 +599,22 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
                   </Select>
                   <Input
                     type="time"
-                    className="w-28"
+                    className="w-full sm:w-28"
                     value={s.start_time}
                     onChange={(e) => updateDraft(i, { start_time: e.target.value })}
                     required
                   />
-                  <span className="text-muted-foreground">→</span>
+                  <span className="hidden text-muted-foreground sm:inline">→</span>
                   <Input
                     type="time"
-                    className="w-28"
+                    className="w-full sm:w-28"
                     value={s.end_time}
                     onChange={(e) => updateDraft(i, { end_time: e.target.value })}
                     required
                   />
                   <Select
-                    className="w-44"
+                    wrapClassName="col-span-2 sm:col-auto"
+                    className="w-full sm:w-44"
                     value={s.teacher_id}
                     onChange={(e) => updateDraft(i, { teacher_id: e.target.value })}
                     title="Giáo viên dạy buổi này"
@@ -623,7 +632,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
                     )}
                   </Select>
                   <Select
-                    className="w-36 flex-1"
+                    className="w-full sm:w-36 sm:flex-1"
                     value={s.room_id}
                     onChange={(e) => updateDraft(i, { room_id: e.target.value })}
                   >
@@ -635,7 +644,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
                   <button
                     type="button"
                     onClick={() => setDrafts((prev) => prev.filter((_, idx) => idx !== i))}
-                    className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-gold-50 hover:text-gold-700"
+                    className="grid h-9 w-9 shrink-0 place-items-center justify-self-end rounded-lg text-muted-foreground hover:bg-gold-50 hover:text-gold-700 sm:h-8 sm:w-8"
                     title="Xóa buổi"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -717,7 +726,7 @@ function SessionsCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && <ErrorNote message={error} />}
         {result && (
           <div className="mb-3 rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-800">

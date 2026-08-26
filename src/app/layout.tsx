@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, Noto_Serif_SC } from "next/font/google";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import "./globals.css";
@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   title: "KAT CLASS · Học tiếng Trung thông minh",
   description:
     "Nền tảng học và quản lý trung tâm tiếng Trung của KAT Education — lớp học, điểm danh, từ vựng, flashcard, bài tập về nhà.",
+};
+
+/** `viewportFit: cover` để `env(safe-area-inset-*)` có giá trị trên iPhone tai thỏ. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

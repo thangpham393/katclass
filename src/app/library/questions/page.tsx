@@ -70,7 +70,7 @@ export default function QuestionBankPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Ngân hàng câu hỏi</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Ngân hàng câu hỏi</h1>
           <p className="mt-1 text-muted-foreground">
             Câu hỏi tự chấm dùng chung — chọn từ đây khi giao bài tập. Học viên không bao giờ thấy đáp án.
           </p>
@@ -86,7 +86,8 @@ export default function QuestionBankPage() {
       <Card>
         <CardContent className="flex flex-wrap items-center gap-3 p-4">
           <Select
-            className="w-44"
+            wrapClassName="w-full sm:w-auto"
+            className="w-full sm:w-44"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as QuestionType | "")}
           >
@@ -95,7 +96,7 @@ export default function QuestionBankPage() {
               <option key={t} value={t}>{QUESTION_TYPE_LABELS[t]}</option>
             ))}
           </Select>
-          <Select className="w-64" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-64" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
             <option value="">Mọi bài học</option>
             {(lessons.data ?? []).map((l) => (
               <option key={l.id} value={l.id}>

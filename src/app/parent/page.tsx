@@ -115,7 +115,7 @@ export default function ParentHome() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Cổng phụ huynh</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Cổng phụ huynh</h1>
         <p className="mt-1 text-muted-foreground">
           Theo dõi lịch học, chuyên cần, nhận xét và bài tập của con tại KAT Education.
         </p>
@@ -208,7 +208,7 @@ export default function ParentHome() {
                   <CalendarClock className="h-4 w-4 text-brand-600" /> Lịch học sắp tới
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-5 pt-0">
+              <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
                 {upcoming.loading || classes.loading ? (
                   <LoadingRows rows={3} className="p-0" />
                 ) : (upcoming.data?.length ?? 0) === 0 ? (
@@ -251,7 +251,7 @@ export default function ParentHome() {
                   <CheckCircle2 className="h-4 w-4 text-brand-600" /> Điểm danh gần đây
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-5 pt-0">
+              <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
                 {attendance.loading ? (
                   <LoadingRows rows={3} className="p-0" />
                 ) : (attendance.data?.length ?? 0) === 0 ? (
@@ -284,7 +284,7 @@ export default function ParentHome() {
                 <MessageSquareText className="h-4 w-4 text-brand-600" /> Nhận xét của giáo viên sau buổi học
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-5 pt-0">
+            <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
               {comments.loading ? (
                 <LoadingRows rows={2} className="p-0" />
               ) : (comments.data?.length ?? 0) === 0 ? (
@@ -330,7 +330,7 @@ export default function ParentHome() {
                 <Badge variant="muted">{homeworks.data?.length ?? 0}</Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-5 pt-0">
+            <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
               {homeworks.loading || classes.loading ? (
                 <LoadingRows rows={2} className="p-0" />
               ) : (homeworks.data?.length ?? 0) === 0 ? (

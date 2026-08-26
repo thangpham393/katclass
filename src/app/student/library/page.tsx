@@ -32,7 +32,7 @@ export default function LibraryPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Thư viện</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Thư viện</h1>
         <p className="mt-1 text-muted-foreground">
           Bài học theo giáo trình các lớp bạn tham gia + kho từ vựng để tra cứu.
         </p>
@@ -54,7 +54,7 @@ export default function LibraryPage() {
             {lessons.data!.map((l) => (
               <Link key={l.id} href={`/student/lessons/${l.id}`}>
                 <Card className="card-hover h-full">
-                  <CardContent className="flex items-center gap-4 p-5">
+                  <CardContent className="flex items-center gap-4 p-4 sm:p-5">
                     <div className="zh grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-100 to-gold-100 text-2xl font-bold text-brand-700">
                       {(l.title_zh ?? l.title).slice(0, 1)}
                     </div>

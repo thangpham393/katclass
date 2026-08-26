@@ -109,7 +109,7 @@ const staffNav: NavEntry[] = adminNav.filter(
   (e) => isGroup(e) || e.href !== "/admin/payroll",
 );
 
-const navByRole: Record<Role, NavEntry[]> = {
+export const navByRole: Record<Role, NavEntry[]> = {
   student: studentNav,
   teacher: teacherNav,
   admin: adminNav,
@@ -126,9 +126,6 @@ function isActive(pathname: string, href: string) {
 }
 
 export function Sidebar({ role }: { role: Role }) {
-  const pathname = usePathname();
-  const nav = navByRole[role];
-
   return (
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-ink-950 text-ink-200 print:!hidden lg:flex">
       <div className="px-5 py-5">
@@ -136,21 +133,7 @@ export function Sidebar({ role }: { role: Role }) {
           <Logo inverted />
         </Link>
       </div>
-
-      <div className="px-5 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-500">
-        Menu chính
-      </div>
-
-      <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
-        {nav.map((entry) =>
-          isGroup(entry) ? (
-            <NavGroupItem key={entry.label} group={entry} pathname={pathname} />
-          ) : (
-            <NavLinkItem key={entry.href} item={entry} active={isActive(pathname, entry.href)} />
-          ),
-        )}
-      </nav>
-
+      <SidebarNav role={role} />
       <div className="m-4 rounded-xl bg-gradient-brand p-4 text-white shadow-soft">
         <div className="zh text-2xl font-semibold">学而时习之</div>
         <div className="mt-1 text-xs leading-relaxed text-white/80">
@@ -161,19 +144,64 @@ export function Sidebar({ role }: { role: Role }) {
   );
 }
 
+/**
+ * Danh sách menu — dùng chung cho sidebar desktop và ngăn kéo (drawer) mobile.
+ * `onNavigate` để drawer tự đóng sau khi bấm vào một mục.
+ */
+export function SidebarNav({
+  role,
+  onNavigate,
+}: {
+  role: Role;
+  onNavigate?: () => void;
+}) {
+  const pathname = usePathname();
+  const nav = navByRole[role];
+
+  return (
+    <>
+      <div className="px-5 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-500">
+        Menu chính
+      </div>
+      <nav className="flex-1 space-y-0.5 overflow-y-auto overscroll-contain px-3 pb-4">
+        {nav.map((entry) =>
+          isGroup(entry) ? (
+            <NavGroupItem
+              key={entry.label}
+              group={entry}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ) : (
+            <NavLinkItem
+              key={entry.href}
+              item={entry}
+              active={isActive(pathname, entry.href)}
+              onNavigate={onNavigate}
+            />
+          ),
+        )}
+      </nav>
+    </>
+  );
+}
+
 function NavLinkItem({
   item,
   active,
   nested,
+  onNavigate,
 }: {
   item: NavLink;
   active: boolean;
   nested?: boolean;
+  onNavigate?: () => void;
 }) {
   const Icon = item.icon;
   return (
     <Link
       href={item.href}
+      onClick={onNavigate}
       className={cn(
         "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
         nested && "py-2 pl-9 text-[13px]",
@@ -203,7 +231,15 @@ function NavLinkItem({
 }
 
 /** Menu cha: bấm để mở / thu, tự mở sẵn khi đang ở một trang con. */
-function NavGroupItem({ group, pathname }: { group: NavGroup; pathname: string }) {
+function NavGroupItem({
+  group,
+  pathname,
+  onNavigate,
+}: {
+  group: NavGroup;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
   const hasActiveChild = group.children.some((c) => isActive(pathname, c.href));
   const [open, setOpen] = useState(hasActiveChild);
   const expanded = open || hasActiveChild;
@@ -238,7 +274,13 @@ function NavGroupItem({ group, pathname }: { group: NavGroup; pathname: string }
         <div className="relative mt-0.5 space-y-0.5">
           <span className="absolute bottom-1 left-[21px] top-1 w-px bg-ink-800" />
           {group.children.map((c) => (
-            <NavLinkItem key={c.href} item={c} active={isActive(pathname, c.href)} nested />
+            <NavLinkItem
+              key={c.href}
+              item={c}
+              active={isActive(pathname, c.href)}
+              nested
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       )}

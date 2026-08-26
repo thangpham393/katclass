@@ -2,12 +2,16 @@ import * as React from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Select native, style đồng bộ với Input. */
+/**
+ * Select native, style đồng bộ với Input.
+ * `wrapClassName` đặt lên khung bọc — cần khi Select là ô trong lưới
+ * (col-span, w-full…) vì `className` chỉ áp cho thẻ <select> bên trong.
+ */
 export const Select = React.forwardRef<
   HTMLSelectElement,
-  React.SelectHTMLAttributes<HTMLSelectElement>
->(({ className, children, ...props }, ref) => (
-  <div className="relative">
+  React.SelectHTMLAttributes<HTMLSelectElement> & { wrapClassName?: string }
+>(({ className, wrapClassName, children, ...props }, ref) => (
+  <div className={cn("relative min-w-0", wrapClassName)}>
     <select
       ref={ref}
       className={cn(

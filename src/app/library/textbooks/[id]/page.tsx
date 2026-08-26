@@ -96,7 +96,7 @@ export default function TextbookDetailPage() {
           {list.map((l) => (
             <button key={l.id} type="button" onClick={() => setPreviewing(l)} className="text-left">
               <Card className="card-hover h-full">
-                <CardContent className="p-5">
+                <CardContent className="p-4 sm:p-5">
                   <Badge variant="outline">Bài {String(l.unit ?? "?").padStart(2, "0")}</Badge>
                   {l.title_zh && <div className="zh mt-3 text-2xl font-bold text-brand-700">{l.title_zh}</div>}
                   <div className="mt-1 font-semibold">{l.title}</div>

@@ -164,7 +164,7 @@ export default function StudentClassDetailPage() {
             <ClipboardList className="h-4 w-4 text-brand-600" /> Bài tập của lớp
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {homeworks.loading ? (
             <LoadingRows rows={2} className="p-0" />
           ) : (homeworks.data?.length ?? 0) === 0 ? (
@@ -209,7 +209,7 @@ export default function StudentClassDetailPage() {
             <Badge variant="muted">{upcoming.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {sessions.loading ? (
             <LoadingRows rows={3} className="p-0" />
           ) : upcoming.length === 0 ? (
@@ -247,7 +247,7 @@ export default function StudentClassDetailPage() {
             <Badge variant="muted">{past.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {sessions.loading || attendance.loading ? (
             <LoadingRows rows={3} className="p-0" />
           ) : past.length === 0 ? (

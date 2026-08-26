@@ -17,7 +17,7 @@ export default function TeacherHomeworkPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Bài tập đã giao</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Bài tập đã giao</h1>
           <p className="mt-1 text-muted-foreground">
             Hệ thống tự chấm khi học viên nộp — theo dõi tỷ lệ nộp và điểm tại đây.
           </p>
@@ -50,7 +50,7 @@ export default function TeacherHomeworkPage() {
             return (
               <Link key={h.id} href={`/teacher/homework/${h.id}`}>
                 <Card className="card-hover">
-                  <CardContent className="flex flex-wrap items-center gap-4 p-5">
+                  <CardContent className="flex flex-wrap items-center gap-4 p-4 sm:p-5">
                     <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-gold-50 text-brand-600">
                       <ClipboardList className="h-5 w-5" />
                     </div>

@@ -264,7 +264,7 @@ export default function AdminMemberDetailPage() {
         <div className="space-y-4">
           <Card>
             <CardHeader><CardTitle className="text-base">Thông tin liên hệ</CardTitle></CardHeader>
-            <CardContent className="space-y-2.5 p-6 pt-0 text-sm text-muted-foreground">
+            <CardContent className="space-y-2.5 p-4 pt-0 sm:p-6 sm:pt-0 text-sm text-muted-foreground">
               <div className="flex items-center gap-2 truncate">
                 <Mail className="h-3.5 w-3.5 shrink-0" /> {p.email || "Chưa có email"}
               </div>
@@ -289,7 +289,7 @@ export default function AdminMemberDetailPage() {
 
           <Card>
             <CardHeader><CardTitle className="text-base">Vai trò & quyền</CardTitle></CardHeader>
-            <CardContent className="space-y-2 p-6 pt-0">
+            <CardContent className="space-y-2 p-4 pt-0 sm:p-6 sm:pt-0">
               <Select
                 value={p.role}
                 disabled={!isAdmin || busy !== null || p.id === me?.id}
@@ -318,7 +318,7 @@ export default function AdminMemberDetailPage() {
           {branches.length > 1 && (
             <Card>
               <CardHeader><CardTitle className="text-base">Chi nhánh</CardTitle></CardHeader>
-              <CardContent className="space-y-2 p-6 pt-0">
+              <CardContent className="space-y-2 p-4 pt-0 sm:p-6 sm:pt-0">
                 <Select
                   value={p.branch_id ?? ""}
                   disabled={!canSwitch || busy !== null}
@@ -339,7 +339,7 @@ export default function AdminMemberDetailPage() {
 
           <Card>
             <CardHeader><CardTitle className="text-base">Tài khoản đăng nhập</CardTitle></CardHeader>
-            <CardContent className="space-y-2.5 p-6 pt-0">
+            <CardContent className="space-y-2.5 p-4 pt-0 sm:p-6 sm:pt-0">
               {!p.user_id ? (
                 <Button className="w-full" disabled={busy !== null} onClick={handleProvision}>
                   <KeyRound className="h-4 w-4" />
@@ -378,7 +378,7 @@ export default function AdminMemberDetailPage() {
                     <Badge variant="muted" className="ml-2">{studentClasses.data?.length ?? 0}</Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-5 pt-0">
+                <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
                   {studentClasses.loading ? (
                     <LoadingRows rows={2} className="p-0" />
                   ) : (studentClasses.data?.length ?? 0) === 0 ? (
@@ -418,7 +418,7 @@ export default function AdminMemberDetailPage() {
                     )}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 pt-0">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
                   {attendanceSummary.loading ? (
                     <LoadingRows rows={2} className="p-0" />
                   ) : summary && summary.total > 0 ? (
@@ -452,7 +452,7 @@ export default function AdminMemberDetailPage() {
                   <Badge variant="muted" className="ml-2">{teacherClasses.data?.length ?? 0}</Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-5 pt-0">
+              <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
                 {teacherClasses.loading ? (
                   <LoadingRows rows={2} className="p-0" />
                 ) : (teacherClasses.data?.length ?? 0) === 0 ? (
@@ -482,7 +482,7 @@ export default function AdminMemberDetailPage() {
 
           {(p.role === "staff" || p.role === "accountant" || p.role === "admin") && (
             <Card>
-              <CardContent className="p-6 text-sm text-muted-foreground">
+              <CardContent className="p-4 sm:p-6 text-sm text-muted-foreground">
                 {ROLE_LABELS[p.role]} dùng chung khu quản trị — không có dữ liệu lớp/điểm danh riêng.
               </CardContent>
             </Card>
@@ -524,7 +524,7 @@ function ParentsCard({ studentId, studentName }: { studentId: string; studentNam
           <Plus className="h-3.5 w-3.5" /> Liên kết phụ huynh
         </Button>
       </CardHeader>
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && <ErrorNote message={error} />}
         {notice && (
           <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800">
@@ -747,7 +747,7 @@ function ChildrenCard({ parentId }: { parentId: string }) {
           <Badge variant="muted" className="ml-2">{children.data?.length ?? 0}</Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && <ErrorNote message={error} />}
         {children.loading ? (
           <LoadingRows rows={1} className="p-0" />

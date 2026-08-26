@@ -26,7 +26,7 @@ export default function TeacherClassesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Lớp dạy</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Lớp dạy</h1>
         <p className="mt-1 text-muted-foreground">
           {classes.loading ? "Đang tải..." : `Bạn phụ trách ${classes.data?.length ?? 0} lớp.`}
         </p>

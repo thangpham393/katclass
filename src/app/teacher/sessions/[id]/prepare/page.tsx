@@ -178,7 +178,7 @@ export default function PrepareSessionPage() {
             <ListChecks className="h-4 w-4 text-brand-600" /> Đã chuẩn bị tới đâu
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           <div className="grid gap-2 sm:grid-cols-2">
             {checklist.map((c) => (
               <div
@@ -214,7 +214,7 @@ export default function PrepareSessionPage() {
             {saving ? "Đang lưu…" : saved ? "Đã lưu ✓" : "Lưu chuẩn bị"}
           </Button>
         </CardHeader>
-        <CardContent className="space-y-3 p-5 pt-0">
+        <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
           {error && <ErrorNote message={error} />}
           <div className="flex flex-wrap items-center gap-2">
             <Input
@@ -287,7 +287,7 @@ export default function PrepareSessionPage() {
             <Badge variant="muted">{vocab.length} từ</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {loadingContent ? (
             <LoadingRows rows={2} className="p-0" />
           ) : vocab.length === 0 ? (
@@ -328,7 +328,7 @@ export default function PrepareSessionPage() {
             <ClipboardList className="h-4 w-4 text-gold-600" /> Bài tập về nhà
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0 text-sm text-muted-foreground">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0 text-sm text-muted-foreground">
           {(questionCount.data ?? 0) > 0 ? (
             <>
               Ngân hàng có <b className="text-foreground">{questionCount.data} câu</b> theo bài đã

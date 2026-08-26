@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Undo2, Users } from "lucide-react";
+import { Star, Undo2, Users, X } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { AttendanceStatus } from "@/lib/db";
@@ -23,6 +23,7 @@ export function RosterRail({
   canUndo,
   answeringId,
   pendingCount,
+  onClose,
 }: {
   students: ClassroomStudent[];
   attendance: Record<string, AttendanceStatus | undefined>;
@@ -35,11 +36,13 @@ export function RosterRail({
   /** Học viên vừa được gọi, đang trả lời trước lớp. */
   answeringId?: string | null;
   pendingCount: number;
+  /** Nút đóng — chỉ hiện khi cột này mở dạng ngăn kéo trên màn hình nhỏ. */
+  onClose?: () => void;
 }) {
   const def = POINT_REASONS.find((r) => r.value === reason)!;
 
   return (
-    <aside className="flex w-72 shrink-0 flex-col border-l border-ink-800 bg-ink-900 text-white">
+    <aside className="flex h-full w-full shrink-0 flex-col border-l border-ink-800 bg-ink-900 text-white lg:w-72">
       <div className="border-b border-ink-800 px-4 py-3">
         <div className="flex items-center gap-2 text-sm font-bold">
           <Users className="h-4 w-4" /> Học viên
@@ -47,6 +50,15 @@ export function RosterRail({
             {students.filter((s) => attendance[s.id] && !ABSENT.includes(attendance[s.id]!)).length}/
             {students.length} có mặt
           </span>
+          {onClose && (
+            <button
+              onClick={onClose}
+              aria-label="Đóng danh sách học viên"
+              className="-mr-1 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink-800 text-ink-200 hover:bg-ink-700 lg:hidden"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
         <div className="mt-2 flex flex-wrap gap-1">
           {POINT_REASONS.map((r) => (

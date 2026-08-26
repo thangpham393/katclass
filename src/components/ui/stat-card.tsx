@@ -27,14 +27,14 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "rounded-xl border bg-card p-5 shadow-sm card-hover",
+        "card-hover rounded-xl border bg-card p-4 shadow-sm sm:p-5",
         className,
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-[13px] font-medium text-muted-foreground">{label}</div>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight">{value}</div>
+          <div className="text-xs font-medium text-muted-foreground sm:text-[13px]">{label}</div>
+          <div className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{value}</div>
           {typeof delta === "number" && (
             <div
               className={cn(

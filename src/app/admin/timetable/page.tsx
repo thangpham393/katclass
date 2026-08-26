@@ -153,7 +153,7 @@ export default function AdminTimetablePage() {
       {/* ===== Tiêu đề + điều hướng ===== */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Thời khóa biểu</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Thời khóa biểu</h1>
           <p className="mt-1 text-muted-foreground">
             {sessions.loading ? (
               "Đang tải..."
@@ -169,7 +169,7 @@ export default function AdminTimetablePage() {
             )}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
           {/* Đổi chế độ xem */}
           <div className="flex rounded-lg border bg-card p-0.5">
             {(["week", "day"] as const).map((v) => (
@@ -250,19 +250,19 @@ export default function AdminTimetablePage() {
       {/* ===== Bộ lọc + chú giải ===== */}
       <Card className="p-3.5">
         <div className="flex flex-wrap items-center gap-3">
-          <Select className="w-44" value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-44" value={roomId} onChange={(e) => setRoomId(e.target.value)}>
             <option value="">Mọi phòng</option>
             {rooms.map(([id, name]) => (
               <option key={id} value={id}>Phòng {name}</option>
             ))}
           </Select>
-          <Select className="w-52" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-52" value={teacherId} onChange={(e) => setTeacherId(e.target.value)}>
             <option value="">Mọi giáo viên</option>
             {teachers.map(([id, name]) => (
               <option key={id} value={id}>{name}</option>
             ))}
           </Select>
-          <Select className="w-52" value={classId} onChange={(e) => setClassId(e.target.value)}>
+          <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-52" value={classId} onChange={(e) => setClassId(e.target.value)}>
             <option value="">Mọi lớp</option>
             {classOptions.map(([id, name]) => (
               <option key={id} value={id}>{name}</option>

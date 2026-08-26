@@ -35,30 +35,31 @@ export function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-ink-950/50 p-4 backdrop-blur-[2px]"
+      className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto overscroll-contain bg-ink-950/50 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
         className={cn(
-          "w-full max-w-lg animate-fade-in rounded-xl border bg-card shadow-soft",
+          // Mobile: bám đáy màn hình như bottom sheet, cao tối đa 92% và tự cuộn
+          "my-auto max-h-[92dvh] w-full max-w-lg animate-fade-in overflow-y-auto rounded-t-2xl border bg-card shadow-soft sm:max-h-[88vh] sm:rounded-xl",
           className,
         )}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between border-b px-5 py-4">
-          <h3 className="text-base font-bold">{title}</h3>
+        <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b bg-card px-4 py-3.5 sm:px-5 sm:py-4">
+          <h3 className="min-w-0 text-base font-bold">{title}</h3>
           <button
             onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="Đóng"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="p-5">{children}</div>
+        <div className="p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:p-5">{children}</div>
       </div>
     </div>
   );

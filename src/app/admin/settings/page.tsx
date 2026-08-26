@@ -38,7 +38,7 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Cài đặt</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Cài đặt</h1>
         <p className="mt-1 text-muted-foreground">Chi nhánh, phân quyền tài khoản và phòng học.</p>
       </div>
 
@@ -63,7 +63,7 @@ function BranchManager({ isAdmin }: { isAdmin: boolean }) {
           Kho học liệu (giáo trình, bài học, từ vựng, ngân hàng câu hỏi) dùng chung cả hai.
         </p>
       </CardHeader>
-      <CardContent className="grid gap-3 p-5 pt-0 md:grid-cols-2">
+      <CardContent className="grid gap-3 p-4 pt-0 sm:p-5 sm:pt-0 md:grid-cols-2">
         {branches.map((b) => (
           <BranchCard
             key={b.id}
@@ -194,7 +194,7 @@ function RoleManager({ isAdmin, currentUserId }: { isAdmin: boolean; currentUser
       {loading ? (
         <LoadingRows rows={4} />
       ) : (
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           <div className="divide-y">
             {(profiles ?? []).map((p) => (
               <div key={p.id} className="flex items-center gap-3 py-3">
@@ -209,7 +209,8 @@ function RoleManager({ isAdmin, currentUserId }: { isAdmin: boolean; currentUser
                   <div className="truncate text-xs text-muted-foreground">{p.email}</div>
                 </div>
                 <Select
-                  className="w-36"
+                  wrapClassName="w-32 shrink-0 sm:w-auto"
+                  className="w-full sm:w-36"
                   value={p.role}
                   disabled={!isAdmin || busy === p.id || p.id === currentUserId}
                   onChange={(e) => handleRoleChange(p.id, e.target.value as Role)}
@@ -271,16 +272,16 @@ function RoomManager() {
       </CardHeader>
       {error && <ErrorNote message={error} />}
       {actionError && <ErrorNote message={actionError} />}
-      <CardContent className="p-5 pt-0">
-        <form onSubmit={handleCreate} className="mb-4 flex flex-wrap gap-2">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+        <form onSubmit={handleCreate} className="mb-4 grid gap-2 sm:flex sm:flex-wrap">
           <Input
-            className="w-48"
+            className="w-full sm:w-48"
             placeholder="Tên phòng (P.101...)"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <Input
-            className="w-32"
+            className="w-full sm:w-32"
             type="number"
             min={1}
             placeholder="Sức chứa"

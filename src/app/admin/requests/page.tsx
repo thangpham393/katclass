@@ -99,7 +99,7 @@ export default function AdminRequestsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Duyệt nghỉ / đổi buổi</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Duyệt nghỉ / đổi buổi</h1>
         <p className="mt-1 text-muted-foreground">
           Giáo viên xin nghỉ hoặc đề xuất đổi buổi — duyệt và xếp dạy thay tại đây.
           Học viên, phụ huynh được thông báo tự động khi lịch thay đổi.
@@ -115,7 +115,7 @@ export default function AdminRequestsPage() {
             Chờ duyệt <Badge variant="gold" className="ml-1">{pending.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {requests.loading ? (
             <LoadingRows rows={3} className="p-0" />
           ) : pending.length === 0 ? (
@@ -193,7 +193,7 @@ export default function AdminRequestsPage() {
             Đã xử lý gần đây <Badge variant="muted" className="ml-1">{resolved.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {requests.loading ? (
             <LoadingRows rows={2} className="p-0" />
           ) : resolved.length === 0 ? (

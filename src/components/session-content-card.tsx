@@ -158,7 +158,7 @@ export function SessionContentCard({
           {saving ? "Đang lưu…" : error ? "" : dirty ? "Chưa lưu" : notice ? "Đã lưu ✓" : "Tự lưu khi chọn"}
         </span>
       </CardHeader>
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && (
           <div className="mb-3 space-y-2">
             <ErrorNote message={error} />

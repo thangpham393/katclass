@@ -109,7 +109,7 @@ export default function AdminTuitionPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Học phí gói buổi</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Học phí gói buổi</h1>
           <p className="mt-1 text-muted-foreground">
             Bán gói N buổi, thu tiền, xuất biên lai. Mỗi điểm danh (kể cả vắng) trừ 1 buổi — buổi học bù không trừ.
           </p>
@@ -147,7 +147,7 @@ export default function AdminTuitionPage() {
                 </button>
               ))}
             </div>
-            <div className="relative w-full max-w-xs">
+            <div className="relative w-full sm:max-w-xs">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={q}
@@ -158,7 +158,7 @@ export default function AdminTuitionPage() {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {balances.loading ? (
             <LoadingRows rows={5} className="p-0" />
           ) : visible.length === 0 ? (
@@ -186,13 +186,13 @@ export default function AdminTuitionPage() {
                       {r.name} · kích hoạt {fmtDate(r.start_date)}
                     </div>
                   </div>
-                  <div className="w-32 shrink-0 text-sm">
+                  <div className="w-28 shrink-0 text-sm sm:w-32">
                     <div className="font-semibold">
                       {r.used_sessions}/{r.total_sessions} buổi
                     </div>
                     <RemainingBadge remaining={r.remaining_sessions} />
                   </div>
-                  <div className="w-40 shrink-0 text-sm">
+                  <div className="min-w-0 flex-1 basis-32 text-sm sm:w-40 sm:flex-none sm:basis-auto">
                     <div className="font-semibold">{fmtVND(r.final_price)}</div>
                     {r.debt > 0 ? (
                       <span className="text-xs font-semibold text-rose-600">Còn nợ {fmtVND(r.debt)}</span>
@@ -200,7 +200,7 @@ export default function AdminTuitionPage() {
                       <span className="text-xs text-emerald-600">Đã đóng đủ</span>
                     )}
                   </div>
-                  <Button size="sm" variant="outline" onClick={() => setDetail(r)}>
+                  <Button size="sm" variant="outline" className="ml-auto shrink-0" onClick={() => setDetail(r)}>
                     <Receipt className="h-3.5 w-3.5" /> Chi tiết
                   </Button>
                 </div>

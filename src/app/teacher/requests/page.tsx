@@ -72,7 +72,7 @@ export default function TeacherRequestsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Nghỉ / đổi buổi dạy</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Nghỉ / đổi buổi dạy</h1>
           <p className="mt-1 text-muted-foreground">
             Gửi yêu cầu xin nghỉ hoặc đề xuất đổi buổi — trung tâm duyệt và xếp dạy thay nếu cần.
           </p>
@@ -89,7 +89,7 @@ export default function TeacherRequestsPage() {
         <CardHeader>
           <CardTitle>Yêu cầu của tôi</CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {requests.loading ? (
             <LoadingRows rows={3} className="p-0" />
           ) : list.length === 0 ? (

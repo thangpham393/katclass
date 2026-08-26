@@ -69,7 +69,7 @@ export default function AdminMakeupPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Học bù</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Học bù</h1>
         <p className="mt-1 text-muted-foreground">
           Học viên vắng có phép tự động vào danh sách chờ — xếp vào buổi phù hợp để học bù.
         </p>
@@ -84,7 +84,7 @@ export default function AdminMakeupPage() {
             Chờ xếp bù <Badge variant="gold" className="ml-1">{pending.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {credits.loading ? (
             <LoadingRows rows={3} className="p-0" />
           ) : pending.length === 0 ? (
@@ -126,7 +126,7 @@ export default function AdminMakeupPage() {
             Đã xếp, chờ học <Badge variant="muted" className="ml-1">{scheduled.length}</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {credits.loading ? (
             <LoadingRows rows={2} className="p-0" />
           ) : scheduled.length === 0 ? (

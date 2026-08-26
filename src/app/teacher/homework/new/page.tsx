@@ -129,7 +129,7 @@ export default function NewHomeworkPage() {
         <ArrowLeft className="h-3.5 w-3.5" /> Bài tập
       </Link>
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Giao bài tập mới</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Giao bài tập mới</h1>
         <p className="mt-1 text-muted-foreground">
           Chọn câu hỏi từ ngân hàng — học viên nộp là hệ thống chấm ngay.
         </p>
@@ -141,7 +141,7 @@ export default function NewHomeworkPage() {
         <div className="space-y-6 lg:col-span-2">
           <Card>
             <CardHeader><CardTitle>1. Thông tin bài tập</CardTitle></CardHeader>
-            <CardContent className="space-y-4 p-6 pt-0">
+            <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
               <Field label="Loại" required>
                 <div className="grid grid-cols-2 gap-2">
                   {(Object.keys(HOMEWORK_KIND_LABELS) as HomeworkKind[]).map((k) => (
@@ -215,10 +215,11 @@ export default function NewHomeworkPage() {
             <CardHeader>
               <CardTitle>2. Chọn câu hỏi ({selected.length})</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 p-6 pt-0">
+            <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
               <div className="flex flex-wrap items-center gap-2">
                 <Select
-                  className="w-44"
+                  wrapClassName="w-full sm:w-auto"
+                  className="w-full sm:w-44"
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value as QuestionType | "")}
                 >
@@ -227,7 +228,7 @@ export default function NewHomeworkPage() {
                     <option key={t} value={t}>{QUESTION_TYPE_LABELS[t]}</option>
                   ))}
                 </Select>
-                <Select className="w-56" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
+                <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-56" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
                   <option value="">Mọi bài học</option>
                   {lessonOptions.map((l) => (
                     <option key={l.id} value={l.id}>
@@ -325,7 +326,7 @@ export default function NewHomeworkPage() {
         <aside className="h-fit space-y-4 lg:sticky lg:top-20">
           <Card>
             <CardHeader><CardTitle className="text-base">Tóm tắt</CardTitle></CardHeader>
-            <CardContent className="space-y-2 p-6 pt-0 text-sm">
+            <CardContent className="space-y-2 p-4 pt-0 sm:p-6 sm:pt-0 text-sm">
               <SummaryRow label="Loại" value={HOMEWORK_KIND_LABELS[kind]} />
               <SummaryRow label="Lớp" value={activeClasses.find((c) => c.id === classId)?.name ?? "—"} />
               <SummaryRow label="Số câu hỏi" value={selected.length || "—"} />

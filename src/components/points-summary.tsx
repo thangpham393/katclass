@@ -38,7 +38,7 @@ export function PointsSummaryCard({
           <Star className="h-4 w-4 fill-gold-500 text-gold-500" /> Sao tích luỹ
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         <div className="grid grid-cols-3 gap-3 text-center">
           <div className="rounded-xl bg-gold-50 p-3">
             <div className="text-2xl font-extrabold text-gold-700">{s.total}</div>

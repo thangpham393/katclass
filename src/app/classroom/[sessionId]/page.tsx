@@ -19,6 +19,7 @@ import {
   Presentation,
   Timer as TimerIcon,
   Trophy,
+  Users,
   WifiOff,
   X,
 } from "lucide-react";
@@ -129,6 +130,8 @@ export default function ClassroomPage() {
   const [fullscreen, setFullscreen] = useState(false);
   /** Ẩn khung chiếu khi giáo viên trình chiếu bằng PowerPoint/cửa sổ riêng ra máy chiếu. */
   const [slideOff, setSlideOff] = useState(false);
+  /** Màn hẹp: cột học viên mở dạng ngăn kéo thay vì chiếm chỗ cố định. */
+  const [rosterOpen, setRosterOpen] = useState(false);
   const [timer, setTimer] = useState<{ left: number; running: boolean }>({ left: 0, running: false });
   /** Học viên vừa được gọi và đang trả lời — chốt lượt bằng cách cho điểm hoặc bỏ qua. */
   const [answering, setAnswering] = useState<ClassroomStudent | null>(null);
@@ -408,7 +411,7 @@ export default function ClassroomPage() {
           >
             <ArrowLeft className="h-4 w-4" /> Thoát
           </Link>
-          <h1 className="mt-4 text-3xl font-extrabold tracking-tight">
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">
             {sessionClassLabel(s)} — điểm danh đầu giờ
           </h1>
           <p className="mt-1 text-ink-300">
@@ -485,12 +488,12 @@ export default function ClassroomPage() {
 
   /* ---------- Màn dạy ---------- */
   return (
-    <div ref={rootRef} className="flex h-screen flex-col overflow-hidden bg-ink-950 text-white">
-      <header className="flex items-center gap-3 border-b border-ink-800 bg-ink-900 px-4 py-2">
+    <div ref={rootRef} className="flex h-[100dvh] flex-col overflow-hidden bg-ink-950 text-white">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-ink-800 bg-ink-900 px-3 py-2 sm:px-4">
         <Link href={home} className="text-ink-300 hover:text-white" title="Thoát lớp">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-bold">{sessionClassLabel(s)}</div>
           <div className="truncate text-[11px] text-ink-300">
             {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")} · {s.start_time.slice(0, 5)}–
@@ -498,7 +501,7 @@ export default function ClassroomPage() {
             {s.session_no ? ` · Buổi ${s.session_no}` : ""}
           </div>
         </div>
-        <div className="ml-4 rounded-lg bg-ink-800 px-3 py-1 font-mono text-sm tabular-nums text-brand-200">
+        <div className="hidden rounded-lg bg-ink-800 px-3 py-1 font-mono text-sm tabular-nums text-brand-200 sm:ml-4 sm:block">
           {clock}
         </div>
         {timer.running && overlay !== "timer" && (
@@ -516,27 +519,37 @@ export default function ClassroomPage() {
             <WifiOff className="h-3.5 w-3.5" /> {pendingCount} chờ đồng bộ
           </span>
         )}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          {/* Mở cột học viên dạng ngăn kéo — màn hẹp không đủ chỗ để nó nằm cố định */}
+          <button
+            onClick={() => setRosterOpen(true)}
+            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700 lg:hidden"
+            title="Danh sách học viên"
+            aria-label="Danh sách học viên"
+          >
+            <Users className="h-4 w-4" />
+          </button>
           <button
             onClick={() => setSlideOff((v) => !v)}
             className={cn(
-              "inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold",
+              "inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold sm:px-3",
               slideOff ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
             )}
             title="Chiếu bằng PowerPoint / cửa sổ riêng ra máy chiếu, màn này chỉ để điều khiển lớp"
           >
             {slideOff ? <Monitor className="h-4 w-4" /> : <MonitorOff className="h-4 w-4" />}
-            {slideOff ? "Hiện khung chiếu" : "Chiếu ngoài"}
+            <span className="hidden sm:inline">{slideOff ? "Hiện khung chiếu" : "Chiếu ngoài"}</span>
           </button>
           <button
             onClick={toggleFullscreen}
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700"
+            className="hidden h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700 sm:grid"
             title="Toàn màn hình"
           >
             {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
-          <Button variant="gold" onClick={() => setWrapOpen(true)}>
-            <Flag className="h-4 w-4" /> Kết thúc buổi
+          <Button variant="gold" size="sm" className="sm:h-10 sm:px-5 sm:text-sm" onClick={() => setWrapOpen(true)}>
+            <Flag className="h-4 w-4" /> <span className="hidden sm:inline">Kết thúc buổi</span>
+            <span className="sm:hidden">Kết thúc</span>
           </Button>
         </div>
       </header>
@@ -549,7 +562,7 @@ export default function ClassroomPage() {
             được mount sẵn — ẩn bằng CSS để iframe không tải lại và đồng hồ
             đang chạy không bị reset.
           */}
-          <div className="relative min-h-0 flex-1 p-4">
+          <div className="relative min-h-0 flex-1 p-2 sm:p-4">
             {slideOff ? (
               <ExternalPresentPanel
                 students={students}
@@ -638,13 +651,13 @@ export default function ClassroomPage() {
             </ToolOverlay>
           </div>
 
-          <nav className="flex items-center gap-2 border-t border-ink-800 bg-ink-900 px-4 py-2">
+          <nav className="flex items-center gap-2 overflow-x-auto border-t border-ink-800 bg-ink-900 px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-4">
             {TOOLS.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setOverlay((cur) => (t.key === "slide" ? null : cur === t.key ? null : t.key))}
                 className={cn(
-                  "flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
+                  "flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors sm:px-4 sm:text-sm",
                   (t.key === "slide" ? overlay === null : overlay === t.key)
                     ? "bg-brand-600 text-white"
                     : "bg-ink-800 text-ink-200 hover:bg-ink-700",
@@ -654,25 +667,54 @@ export default function ClassroomPage() {
                 <t.icon className="h-4 w-4" /> {t.label}
               </button>
             ))}
-            <span className="ml-auto text-xs text-ink-400">
+            <span className="ml-auto hidden whitespace-nowrap text-xs text-ink-400 xl:inline">
               Phím 1–8 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
             </span>
           </nav>
         </div>
 
-        <RosterRail
-          students={students}
-          attendance={attendance}
-          points={totals}
-          reason={reason}
-          onReasonChange={setReason}
-          onGive={give}
-          onUndo={undo}
-          answeringId={answering?.id ?? null}
-          canUndo={points.length > 0}
-          pendingCount={pendingCount}
-        />
+        {/* Desktop: cột cố định bên phải */}
+        <div className="hidden shrink-0 lg:flex">
+          <RosterRail
+            students={students}
+            attendance={attendance}
+            points={totals}
+            reason={reason}
+            onReasonChange={setReason}
+            onGive={give}
+            onUndo={undo}
+            answeringId={answering?.id ?? null}
+            canUndo={points.length > 0}
+            pendingCount={pendingCount}
+          />
+        </div>
       </div>
+
+      {/* Mobile / tablet: mở đè từ phải, đóng lại là quay về khung chiếu */}
+      {rosterOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <button
+            aria-label="Đóng danh sách học viên"
+            onClick={() => setRosterOpen(false)}
+            className="absolute inset-0 h-full w-full bg-ink-950/60"
+          />
+          <div className="absolute inset-y-0 right-0 w-[86vw] max-w-sm">
+            <RosterRail
+              students={students}
+              attendance={attendance}
+              points={totals}
+              reason={reason}
+              onReasonChange={setReason}
+              onGive={give}
+              onUndo={undo}
+              answeringId={answering?.id ?? null}
+              canUndo={points.length > 0}
+              pendingCount={pendingCount}
+              onClose={() => setRosterOpen(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {wrapOpen && (
         <WrapUpModal
@@ -724,7 +766,7 @@ function ToolOverlay({
   return (
     <div
       className={cn(
-        "absolute inset-0 z-20 flex flex-col p-4 backdrop-blur-sm",
+        "absolute inset-0 z-20 flex flex-col p-2 backdrop-blur-sm sm:p-4",
         "bg-ink-950/80",
         !open && "hidden",
       )}
@@ -745,7 +787,7 @@ function ToolOverlay({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="min-h-0 flex-1 p-4">{mounted ? children : null}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4">{mounted ? children : null}</div>
       </div>
     </div>
   );
@@ -821,7 +863,7 @@ function ExternalPresentPanel({
     .slice(0, 5);
 
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl border border-ink-800 bg-ink-900 p-6">
+    <div className="flex h-full flex-col gap-4 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4 sm:p-6">
       <div>
         <div className="flex items-center gap-2 text-lg font-bold text-white">
           <MonitorOff className="h-5 w-5 text-brand-300" /> Đang chiếu bằng phần mềm ngoài

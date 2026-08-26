@@ -73,7 +73,7 @@ export function FlashcardPlayer({ vocab }: { vocab: FlashVocab[] }) {
     const pct = Math.round((score / max) * 100);
     return (
       <div className="mx-auto max-w-xl">
-        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-10 text-center shadow-soft">
+        <div className="rounded-3xl border bg-gradient-to-br from-brand-50 to-gold-50 p-6 text-center shadow-soft sm:p-10">
           <div className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-brand text-white shadow-soft">
             <Trophy className="h-9 w-9" />
           </div>
@@ -125,14 +125,14 @@ export function FlashcardPlayer({ vocab }: { vocab: FlashVocab[] }) {
             exit={{ rotateY: flipped ? 90 : -90, opacity: 0 }}
             transition={{ duration: 0.35 }}
             onClick={() => setFlipped((f) => !f)}
-            className="cursor-pointer select-none rounded-3xl border bg-white shadow-soft min-h-[360px] flex flex-col items-center justify-center p-10 text-center"
+            className="flex min-h-[300px] cursor-pointer select-none flex-col items-center justify-center rounded-3xl border bg-white p-5 text-center shadow-soft sm:min-h-[360px] sm:p-10"
           >
             {!flipped ? (
               <>
                 <div className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">
                   Nhấn để lật thẻ
                 </div>
-                <div className="zh text-8xl font-bold text-brand-600">
+                <div className="zh break-all text-6xl font-bold text-brand-600 sm:text-8xl">
                   {card.hanzi}
                 </div>
                 <button
@@ -150,7 +150,7 @@ export function FlashcardPlayer({ vocab }: { vocab: FlashVocab[] }) {
                 <div className="text-xs uppercase tracking-widest text-muted-foreground">
                   Pinyin
                 </div>
-                <div className="mt-1 text-3xl font-bold text-foreground">{card.pinyin}</div>
+                <div className="mt-1 text-2xl font-bold text-foreground sm:text-3xl">{card.pinyin}</div>
                 <div className="my-4 h-px w-16 bg-border" />
                 <div className="text-xs uppercase tracking-widest text-muted-foreground">
                   Nghĩa
@@ -169,17 +169,17 @@ export function FlashcardPlayer({ vocab }: { vocab: FlashVocab[] }) {
         </AnimatePresence>
       </div>
 
-      <div className="mt-6 grid grid-cols-4 gap-2">
-        <Button variant="outline" onClick={() => next("again")} className="border-rose-200 text-rose-600 hover:bg-rose-50">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <Button variant="outline" onClick={() => next("again")} className="border-rose-200 px-2 text-rose-600 hover:bg-rose-50">
           😵 Quên
         </Button>
-        <Button variant="outline" onClick={() => next("hard")} className="border-amber-200 text-amber-700 hover:bg-amber-50">
+        <Button variant="outline" onClick={() => next("hard")} className="border-amber-200 px-2 text-amber-700 hover:bg-amber-50">
           😅 Khó
         </Button>
-        <Button variant="outline" onClick={() => next("good")} className="border-sky-200 text-sky-700 hover:bg-sky-50">
+        <Button variant="outline" onClick={() => next("good")} className="border-sky-200 px-2 text-sky-700 hover:bg-sky-50">
           🙂 OK
         </Button>
-        <Button onClick={() => next("easy")} variant="gold">
+        <Button onClick={() => next("easy")} variant="gold" className="px-2">
           😎 Dễ
         </Button>
       </div>

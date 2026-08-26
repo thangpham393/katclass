@@ -18,31 +18,41 @@ import { Logo } from "@/components/brand/logo";
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
-      <header className="container flex h-16 items-center justify-between">
-        <Link href="/"><Logo /></Link>
+      <header className="container flex h-16 items-center justify-between gap-2">
+        {/* Mobile: chỉ hiện lettermark, nhường chỗ cho nút hành động */}
+        <Link href="/" className="min-w-0 shrink">
+          <Logo showText={false} className="sm:hidden" />
+          <Logo className="hidden sm:flex" />
+        </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
           <a href="#features" className="text-muted-foreground hover:text-foreground">Tính năng</a>
           <a href="#audience" className="text-muted-foreground hover:text-foreground">Đối tượng</a>
           <a href="#how" className="text-muted-foreground hover:text-foreground">Cách hoạt động</a>
         </nav>
-        <div className="flex items-center gap-2">
-          <Link href="/login"><Button variant="ghost" size="sm">Đăng nhập</Button></Link>
-          <Link href="/login"><Button size="sm">Bắt đầu học <ArrowRight className="h-3.5 w-3.5" /></Button></Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <Link href="/login" className="hidden sm:block">
+            <Button variant="ghost" size="sm">Đăng nhập</Button>
+          </Link>
+          <Link href="/login">
+            <Button size="sm">
+              Bắt đầu học <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="container relative grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
+      <section className="container relative grid items-center gap-10 py-10 sm:py-16 md:grid-cols-2 md:py-24">
         <div>
           <Badge variant="gold" className="mb-4">
             <Sparkles className="h-3 w-3" /> KAT Education · Tiếng Trung
           </Badge>
-          <h1 className="text-4xl font-extrabold tracking-tight md:text-6xl">
+          <h1 className="text-[32px] font-extrabold leading-[1.15] tracking-tight sm:text-4xl md:text-6xl">
             Học tiếng Trung{" "}
             <span className="text-gradient-brand">vui hơn</span>,<br />
             ôn tập <span className="zh text-brand-700">高效</span> hơn.
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+          <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
             <strong className="text-foreground">KAT CLASS</strong> giúp giáo viên giao bài, quản lý lớp;
             học viên ôn lại bài qua slide, flashcard và quiz đa dạng — trắc nghiệm, điền từ,
             gõ pinyin, nghe hiểu, sắp xếp câu.
@@ -51,7 +61,7 @@ export default function LandingPage() {
             <Link href="/login"><Button size="lg">Vào học ngay <ArrowRight className="h-4 w-4" /></Button></Link>
             <Link href="/login"><Button size="lg" variant="outline">Dành cho Giáo viên</Button></Link>
           </div>
-          <div className="mt-8 flex items-center gap-6 text-sm text-muted-foreground">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
             <div className="flex items-center -space-x-2">
               {["1", "2", "3", "4"].map((s) => (
                 <img
@@ -84,9 +94,9 @@ export default function LandingPage() {
               </div>
               <Badge variant="default">3 / 12</Badge>
             </div>
-            <div className="my-6 grid place-items-center rounded-2xl bg-gradient-to-br from-brand-50 to-gold-50 p-10">
+            <div className="my-6 grid place-items-center rounded-2xl bg-gradient-to-br from-brand-50 to-gold-50 p-6 sm:p-10">
               <div className="text-xs font-medium text-muted-foreground">xué xí</div>
-              <div className="zh mt-2 text-7xl font-bold text-brand-700">学习</div>
+              <div className="zh mt-2 text-6xl font-bold text-brand-700 sm:text-7xl">学习</div>
               <div className="mt-2 text-sm text-muted-foreground">Học tập</div>
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -114,10 +124,10 @@ export default function LandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="container py-16">
+      <section id="features" className="container py-12 sm:py-16">
         <div className="text-center mb-12">
           <Badge>Tính năng</Badge>
-          <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+          <h2 className="mt-3 text-2xl font-bold sm:text-3xl md:text-4xl">
             Mọi thứ KAT cần — <span className="text-gradient-brand">trong một nơi</span>
           </h2>
         </div>
@@ -135,10 +145,10 @@ export default function LandingPage() {
       </section>
 
       {/* AUDIENCE */}
-      <section id="audience" className="container py-16">
+      <section id="audience" className="container py-12 sm:py-16">
         <div className="grid gap-6 md:grid-cols-3">
           {audiences.map((a) => (
-            <Link href={a.href} key={a.title} className="group relative overflow-hidden rounded-3xl border bg-white p-8 card-hover">
+            <Link href={a.href} key={a.title} className="card-hover group relative overflow-hidden rounded-3xl border bg-white p-6 sm:p-8">
               <div className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br ${a.gradient} opacity-40 transition-transform group-hover:scale-110`} />
               <a.icon className="relative h-7 w-7 text-brand-700" />
               <h3 className="relative mt-3 text-xl font-bold">{a.title}</h3>

@@ -53,7 +53,7 @@ export default function ActivatePage() {
         </div>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="mb-1 flex items-center gap-2">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-brand-50 text-brand-600">
                 <KeyRound className="h-5 w-5" />

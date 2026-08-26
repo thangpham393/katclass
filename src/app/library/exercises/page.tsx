@@ -124,7 +124,7 @@ export default function ExerciseLibraryPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Thư viện bài tập</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Thư viện bài tập</h1>
           <p className="mt-1 text-muted-foreground">
             Kho bài tập về nhà soạn sẵn theo từng bài của giáo trình — giáo viên chọn bài rồi giao thẳng cho lớp.
           </p>
@@ -174,7 +174,8 @@ export default function ExerciseLibraryPage() {
             <CardContent className="flex flex-wrap items-center gap-3 p-4">
               <span className="text-sm font-medium text-muted-foreground">Giáo trình:</span>
               <Select
-                className="w-72"
+                wrapClassName="w-full sm:w-auto"
+                className="w-full sm:w-72"
                 value={current?.id ?? ""}
                 onChange={(e) => setTextbookId(e.target.value)}
               >
@@ -182,7 +183,7 @@ export default function ExerciseLibraryPage() {
                   <option key={tb.id} value={tb.id}>{tb.name}</option>
                 ))}
               </Select>
-              <div className="relative min-w-52 flex-1">
+              <div className="relative w-full min-w-0 flex-1 sm:min-w-52">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   placeholder="Tìm bài theo tên hoặc số bài..."
@@ -240,7 +241,7 @@ export default function ExerciseLibraryPage() {
                 const count = l.questions[0]?.count ?? 0;
                 return (
                   <Card key={l.id} className={count ? "card-hover flex flex-col" : "flex flex-col opacity-70"}>
-                    <CardContent className="flex flex-1 flex-col p-5">
+                    <CardContent className="flex flex-1 flex-col p-4 sm:p-5">
                       <div className="flex items-start justify-between gap-2">
                         <Badge variant="outline">Bài {String(l.unit ?? "?").padStart(2, "0")}</Badge>
                         <Badge variant={count ? "jade" : "muted"}>
@@ -283,7 +284,7 @@ export default function ExerciseLibraryPage() {
 
       {canManage && (
         <Card>
-          <CardContent className="p-5 text-sm leading-relaxed text-muted-foreground">
+          <CardContent className="p-4 sm:p-5 text-sm leading-relaxed text-muted-foreground">
             <div className="font-semibold text-foreground">Cách nạp bài tập về nhà</div>
             <ol className="mt-1.5 list-decimal space-y-1 pl-5">
               <li>Dùng đúng cấu trúc JSON của giáo trình: <code className="rounded bg-muted px-1">textbook.code</code> khớp giáo trình đã có, mỗi bài khớp theo <code className="rounded bg-muted px-1">unit</code>, bài tập nằm trong mảng <code className="rounded bg-muted px-1">questions</code> của bài.</li>

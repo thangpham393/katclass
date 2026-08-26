@@ -106,7 +106,7 @@ export default function TextbookLibraryPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Thư viện giáo trình</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Thư viện giáo trình</h1>
           <p className="mt-1 text-muted-foreground">
             Kho giáo trình nạp sẵn từ vựng, ngữ pháp, bài tập theo từng bài — giáo viên chỉ việc chọn và gán vào buổi học.
           </p>
@@ -252,7 +252,7 @@ export default function TextbookLibraryPage() {
 
       {canManage && (
       <Card>
-        <CardContent className="p-5 text-sm leading-relaxed text-muted-foreground">
+        <CardContent className="p-4 sm:p-5 text-sm leading-relaxed text-muted-foreground">
           <div className="font-semibold text-foreground">Cách import giáo trình</div>
           <ol className="mt-1.5 list-decimal space-y-1 pl-5">
             <li>Chuẩn bị file JSON theo mẫu trong <code className="rounded bg-muted px-1">supabase/library/</code> (đã có sẵn bộ <code className="rounded bg-muted px-1">hsk1–3-standard.json</code>, <code className="rounded bg-muted px-1">yct1–4-standard.json</code>, <code className="rounded bg-muted px-1">msutong-4.json</code>).</li>

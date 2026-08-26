@@ -17,7 +17,7 @@ export default function FlashcardList() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Flashcard</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Flashcard</h1>
         <p className="mt-1 text-muted-foreground">
           Ôn từ vựng theo từng bài học — nhấn vào bộ thẻ để bắt đầu.
         </p>
@@ -44,7 +44,7 @@ export default function FlashcardList() {
                   </Badge>
                   {l.title_zh && <div className="zh mt-3 text-3xl font-bold">{l.title_zh}</div>}
                 </div>
-                <CardContent className="p-5">
+                <CardContent className="p-4 sm:p-5">
                   <div className="text-sm font-bold">
                     {l.unit != null ? `Bài ${l.unit} — ` : ""}
                     {l.title}

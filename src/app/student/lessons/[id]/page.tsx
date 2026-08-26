@@ -95,7 +95,7 @@ export default function StudentLessonPage() {
             <Languages className="h-5 w-5 text-brand-600" /> Ngữ pháp & ghi chú
           </h2>
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="whitespace-pre-wrap text-sm leading-relaxed">{l.grammar}</div>
             </CardContent>
           </Card>
@@ -109,7 +109,7 @@ export default function StudentLessonPage() {
         </h2>
         {l.vocab.length === 0 ? (
           <Card>
-            <CardContent className="p-6 text-center text-sm text-muted-foreground">
+            <CardContent className="p-4 sm:p-6 text-center text-sm text-muted-foreground">
               Bài học chưa có từ vựng.
             </CardContent>
           </Card>
@@ -117,7 +117,7 @@ export default function StudentLessonPage() {
           <div className="grid gap-3 md:grid-cols-2">
             {l.vocab.map((v) => (
               <Card key={v.id} className="card-hover">
-                <CardContent className="flex items-start gap-4 p-5">
+                <CardContent className="flex items-start gap-4 p-4 sm:p-5">
                   <div className="zh text-4xl font-bold text-brand-700">{v.hanzi}</div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">

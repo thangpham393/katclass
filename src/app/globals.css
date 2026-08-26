@@ -74,12 +74,35 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* iOS Safari không tự phóng chữ khi xoay ngang */
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Không để chữ/số dài (mã lớp, email, link) đẩy rộng khung trên màn hình hẹp */
+  h1, h2, h3, h4, p, span, div, td, li, a {
+    overflow-wrap: anywhere;
+  }
+  /* iOS tự phóng to trang khi focus ô nhập có cỡ chữ < 16px → ép 16px ở mobile */
+  @media (max-width: 767px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
+  /* Bấm trên mobile không nháy ô xám mặc định */
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
   }
   body {
+    /* Lưới chống tràn ngang: `clip` (khác `hidden`) không tạo vùng cuộn mới
+       nên topbar sticky vẫn hoạt động bình thường. */
+    overflow-x: clip;
     background-image:
       radial-gradient(1200px 600px at 0% -10%, rgba(29, 78, 216, 0.06) 0%, transparent 60%),
       radial-gradient(900px 500px at 100% 0%, rgba(220, 38, 38, 0.05) 0%, transparent 60%);
     background-attachment: fixed;
+  }
+  /* `background-attachment: fixed` khiến Safari iOS vẽ lại nền mỗi lần cuộn */
+  @media (max-width: 767px) {
+    body { background-attachment: scroll; }
   }
   ::selection {
     background: hsl(var(--primary) / 0.16);
@@ -99,6 +122,22 @@
   }
   .card-hover {
     @apply transition-all duration-200 hover:border-brand-300 hover:shadow-soft;
+  }
+  /* Khối rộng (bảng, lưới nhiều cột) tự cuộn ngang trong khung của nó,
+     thay vì đẩy tràn cả trang trên mobile. */
+  .scroll-x {
+    @apply -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-x::-webkit-scrollbar { height: 6px; }
+  .scroll-x::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+  /* Hàng nút / bộ lọc: mobile xếp dọc full-width, từ sm trở lên nằm ngang */
+  .toolbar {
+    @apply flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center;
   }
   .scrollbar-thin::-webkit-scrollbar { height: 8px; width: 8px; }
   .scrollbar-thin::-webkit-scrollbar-thumb {

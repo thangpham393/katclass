@@ -81,7 +81,7 @@ export function SessionReportView({
               <BookOpen className="h-4 w-4 text-brand-600" /> Hôm nay học gì
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 pt-0 text-sm">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0 text-sm">
             <p className="whitespace-pre-line">{r.lessonContent}</p>
             {r.lessons.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-2">
@@ -108,7 +108,7 @@ export function SessionReportView({
               <Sparkles className="h-4 w-4 text-gold-600" /> {who} đã tham gia thế nào
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 p-5 pt-0">
+          <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
             {r.points.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {Object.entries(byReason).map(([reason, count]) => (
@@ -143,7 +143,7 @@ export function SessionReportView({
               <MessageSquareText className="h-4 w-4 text-brand-600" /> Nhận xét của giáo viên
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             <div className="flex items-start gap-3">
               {r.session.teacher && (
                 <Avatar name={r.session.teacher.name} src={r.session.teacher.avatar ?? undefined} size={36} />
@@ -175,7 +175,7 @@ export function SessionReportView({
             <ClipboardList className="h-4 w-4 text-gold-600" /> Bài tập về nhà
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {r.homeworks.length === 0 ? (
             <p className="text-sm text-muted-foreground">Buổi này không giao bài tập.</p>
           ) : (

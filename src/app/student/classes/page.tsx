@@ -24,7 +24,7 @@ export default function MyClassesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Lớp của tôi</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Lớp của tôi</h1>
         <p className="mt-1 text-muted-foreground">
           {classes.loading ? "Đang tải..." : `${list.length} lớp đang theo học tại KAT Education.`}
         </p>
@@ -62,7 +62,7 @@ export default function MyClassesPage() {
                     <div className="mt-3 text-lg font-bold">{c.name}</div>
                     {c.course && <div className="text-xs text-white/80">{c.course.name}</div>}
                   </div>
-                  <CardContent className="space-y-2.5 p-5">
+                  <CardContent className="space-y-2.5 p-4 sm:p-5">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <CalendarDays className="h-4 w-4 shrink-0 text-brand-600" />
                       {formatSchedules(c.class_schedules)}

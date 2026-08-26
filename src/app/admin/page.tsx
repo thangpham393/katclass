@@ -71,14 +71,14 @@ export default function AdminHome() {
     <div className="space-y-8">
       <section className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Tổng quan trung tâm</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Tổng quan trung tâm</h1>
           <p className="mt-1 text-muted-foreground">
             Theo dõi vận hành — học viên, lớp học, lịch dạy và học bù.
           </p>
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
         <StatCard
           label="Ca dạy hôm nay"
           value={todaySessions.loading ? "…" : (todaySessions.data ?? []).length}
@@ -127,9 +127,10 @@ export default function AdminHome() {
           <div className="flex items-center gap-2">
             {teacherOptions.length > 1 && (
               <Select
+                wrapClassName="w-full sm:w-auto"
                 value={teacherFilter}
                 onChange={(e) => setTeacherFilter(e.target.value)}
-                className="h-9 w-48 text-xs"
+                className="h-9 w-full text-xs sm:w-48"
               >
                 <option value="">Tất cả giáo viên</option>
                 {teacherOptions.map(([id, name]) => (
@@ -144,7 +145,7 @@ export default function AdminHome() {
             </Link>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3 p-5 pt-0">
+        <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
           <p className="text-xs text-muted-foreground">
             Bấm vào một ca để dùng đầy đủ chức năng của giáo viên: chuẩn bị bài, vào lớp dạy
             (chiếu máy chiếu), điểm danh học viên và chấm công hộ.
@@ -178,7 +179,7 @@ export default function AdminHome() {
           {classes.loading ? (
             <LoadingRows rows={4} />
           ) : (
-            <CardContent className="space-y-2 p-5 pt-0">
+            <CardContent className="space-y-2 p-4 pt-0 sm:p-5 sm:pt-0">
               {(classes.data ?? []).slice(0, 6).map((c) => (
                 <Link
                   key={c.id}
@@ -217,7 +218,7 @@ export default function AdminHome() {
           <CardHeader>
             <CardTitle>Thao tác nhanh</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 p-5 pt-0">
+          <CardContent className="space-y-2 p-4 pt-0 sm:p-5 sm:pt-0">
             {[
               { href: "/admin/courses", icon: BookMarked, label: "Tạo khóa học", desc: "Định nghĩa chương trình HSK, giao tiếp..." },
               { href: "/admin/classes", icon: School, label: "Mở lớp mới", desc: "Chọn khóa, giáo viên, lịch tuần" },
@@ -263,7 +264,7 @@ function OnboardingChecklist({ hasClasses }: { hasClasses: boolean }) {
   ];
   return (
     <Card className="border-brand-200 bg-brand-50/50">
-      <CardContent className="p-5">
+      <CardContent className="p-4 sm:p-5">
         <div className="text-sm font-bold text-brand-800">Bắt đầu vận hành trung tâm</div>
         <div className="mt-3 space-y-2">
           {steps.map((s) => (

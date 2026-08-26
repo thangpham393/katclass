@@ -86,7 +86,7 @@ export default function AdminClassesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Lớp & Lịch học</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Lớp & Lịch học</h1>
           <p className="mt-1 text-muted-foreground">
             {loading ? "Đang tải..." : `${classes?.length ?? 0} lớp trong hệ thống.`}
           </p>
@@ -101,7 +101,7 @@ export default function AdminClassesPage() {
       <Card>
         <CardContent className="space-y-3 p-4">
           <div className="flex flex-wrap items-center gap-3">
-            <div className="relative min-w-[240px] flex-1">
+            <div className="relative w-full min-w-0 flex-1 sm:min-w-[240px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Tìm theo tên lớp, giáo viên, khóa học..."
@@ -186,20 +186,20 @@ export default function AdminClassesPage() {
       ) : (
         <Card>
           <div className="hidden grid-cols-12 gap-3 border-b bg-muted/40 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground md:grid">
-            <div className="col-span-4">Lớp</div>
-            <div className="col-span-3">Lịch tuần</div>
-            <div className="col-span-2">Giáo viên</div>
-            <div className="col-span-1">Sĩ số</div>
-            <div className="col-span-2 text-right">Trạng thái</div>
+            <div className="md:col-span-4">Lớp</div>
+            <div className="md:col-span-3">Lịch tuần</div>
+            <div className="md:col-span-2">Giáo viên</div>
+            <div className="md:col-span-1">Sĩ số</div>
+            <div className="md:col-span-2 text-right">Trạng thái</div>
           </div>
           <div className="divide-y">
             {filtered.map((c) => (
               <Link
                 key={c.id}
                 href={`/admin/classes/${c.id}`}
-                className="grid grid-cols-1 items-center gap-3 px-5 py-3.5 transition-colors hover:bg-brand-50/40 md:grid-cols-12"
+                className="grid grid-cols-1 items-center gap-2 px-4 py-3.5 transition-colors hover:bg-brand-50/40 sm:px-5 md:grid-cols-12 md:gap-3"
               >
-                <div className="col-span-4 flex items-center gap-3">
+                <div className="md:col-span-4 flex items-center gap-3">
                   <div className="zh grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-xs font-bold text-brand-700">
                     {c.course?.level ? (LEVEL_LABELS[c.course.level] ?? c.course.level) : "—"}
                   </div>
@@ -208,10 +208,10 @@ export default function AdminClassesPage() {
                     <div className="truncate text-xs text-muted-foreground">{c.course?.name ?? "Chưa gắn khóa"}</div>
                   </div>
                 </div>
-                <div className="col-span-3 text-xs text-muted-foreground">{formatSchedules(c.class_schedules)}</div>
-                <div className="col-span-2 text-sm">{c.teacher?.name ?? <span className="text-muted-foreground">Chưa có</span>}</div>
-                <div className="col-span-1 text-sm font-semibold">{c.class_students?.[0]?.count ?? 0}</div>
-                <div className="col-span-2 md:text-right">
+                <div className="md:col-span-3 text-xs text-muted-foreground">{formatSchedules(c.class_schedules)}</div>
+                <div className="md:col-span-2 text-sm">{c.teacher?.name ?? <span className="text-muted-foreground">Chưa có</span>}</div>
+                <div className="md:col-span-1 text-sm font-semibold">{c.class_students?.[0]?.count ?? 0}</div>
+                <div className="md:col-span-2 md:text-right">
                   <Badge variant={c.status === "active" ? "jade" : c.status === "planned" ? "gold" : "muted"}>
                     {CLASS_STATUS_LABELS[c.status]}
                   </Badge>

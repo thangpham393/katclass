@@ -90,7 +90,7 @@ export default function TeacherHome() {
   return (
     <div className="space-y-8">
       <section>
-        <h1 className="text-3xl font-extrabold tracking-tight">
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
           Xin chào <span className="text-gradient-brand">{user?.name?.split(" ").pop() ?? "cô/thầy"}</span> 👋
         </h1>
         <p className="mt-1 text-muted-foreground">
@@ -151,7 +151,7 @@ export default function TeacherHome() {
                 })}
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 p-6 pt-0">
+            <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
               {sessions.loading ? (
                 <LoadingRows rows={2} className="p-0" />
               ) : sessions.error ? (
@@ -188,7 +188,7 @@ export default function TeacherHome() {
                 Xem tất cả
               </Link>
             </CardHeader>
-            <CardContent className="space-y-2 p-6 pt-0">
+            <CardContent className="space-y-2 p-4 pt-0 sm:p-6 sm:pt-0">
               {classes.loading ? (
                 <LoadingRows rows={3} className="p-0" />
               ) : classes.error ? (
@@ -228,7 +228,7 @@ export default function TeacherHome() {
                 <GraduationCap className="h-4 w-4 text-brand-600" /> Học viên các lớp
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center gap-3 p-6 pt-0 text-sm text-muted-foreground">
+            <CardContent className="flex items-center gap-3 p-4 pt-0 sm:p-6 sm:pt-0 text-sm text-muted-foreground">
               <Users className="h-4 w-4" />
               {classes.loading ? "…" : `${totalStudents} học viên đang theo học`}
             </CardContent>

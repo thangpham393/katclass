@@ -104,7 +104,7 @@ export default function TeacherSchedulePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Lịch dạy của tôi</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Lịch dạy của tôi</h1>
         <p className="mt-1 text-muted-foreground">
           Xem lại mọi buổi đã dạy theo ngày — buổi nào còn thiếu điểm danh hay chưa chấm công đều hiện rõ ở đây.
         </p>
@@ -137,35 +137,35 @@ export default function TeacherSchedulePage() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3 p-5 pt-0">
+        <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
           <div className="flex flex-wrap items-end gap-3">
-            <label className="text-xs font-semibold text-muted-foreground">
+            <label className="min-w-0 flex-1 text-xs font-semibold text-muted-foreground sm:flex-none">
               Từ ngày
               <Input
                 type="date"
                 value={from}
                 max={to}
                 onChange={(e) => setFrom(e.target.value)}
-                className="mt-1 w-44"
+                className="mt-1 w-full sm:w-44"
               />
             </label>
-            <label className="text-xs font-semibold text-muted-foreground">
+            <label className="min-w-0 flex-1 text-xs font-semibold text-muted-foreground sm:flex-none">
               Đến ngày
               <Input
                 type="date"
                 value={to}
                 min={from}
                 onChange={(e) => setTo(e.target.value)}
-                className="mt-1 w-44"
+                className="mt-1 w-full sm:w-44"
               />
             </label>
-            <div className="flex rounded-lg border bg-secondary/40 p-0.5">
+            <div className="flex w-full overflow-x-auto rounded-lg border bg-secondary/40 p-0.5 sm:w-auto">
               {FILTERS.map((f) => (
                 <button
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   className={cn(
-                    "whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
+                    "shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-semibold transition-colors",
                     filter === f.key
                       ? "bg-card text-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground",

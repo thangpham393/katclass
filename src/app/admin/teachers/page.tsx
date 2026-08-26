@@ -67,7 +67,7 @@ export default function AdminTeamPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Đội ngũ</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Đội ngũ</h1>
           <p className="mt-1 text-muted-foreground">
             {list.loading
               ? "Đang tải..."
@@ -85,7 +85,7 @@ export default function AdminTeamPage() {
             key={r}
             onClick={() => setRole(r)}
             className={cn(
-              "flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors",
+              "flex flex-1 items-center justify-center gap-2 rounded-lg px-2 py-2 text-[13px] font-semibold transition-colors sm:px-4 sm:text-sm",
               role === r ? "bg-brand-600 text-white shadow-soft" : "text-muted-foreground hover:bg-secondary",
             )}
           >
@@ -136,7 +136,7 @@ export default function AdminTeamPage() {
           {list.data!.map((p) => (
             <Link key={p.id} href={`/admin/members/${p.id}`}>
             <Card className="card-hover h-full">
-              <CardContent className="p-5">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex items-start gap-4">
                   <Avatar name={p.name} src={p.avatar ?? undefined} size={52} />
                   <div className="min-w-0 flex-1">

@@ -251,7 +251,7 @@ export default function TeacherSessionPage() {
             <Badge variant="muted" className="ml-2">{markedCount}/{totalCount} đã điểm danh</Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           {students.loading || attendance.loading ? (
             <LoadingRows rows={5} className="p-0" />
           ) : (students.data?.length ?? 0) === 0 ? (
@@ -287,7 +287,7 @@ export default function TeacherSessionPage() {
               <Badge variant="muted" className="ml-2">{makeupStudents.length}</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-5 pt-0">
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             <div className="divide-y">
               {makeupStudents.map((m) => (
                 <StudentRow
