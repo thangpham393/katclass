@@ -1,20 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BookOpen } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { BookOpen, Search, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 import { dbErrorMessage } from "@/lib/db";
-import { fetchLessons, fetchSessionLessons, setSessionLessons } from "@/lib/db-content";
+import { fetchLessons, fetchSessionLessons, setSessionLessons, type LessonRow } from "@/lib/db-content";
 import { useLoad } from "@/lib/use-load";
+
+/** Bài chưa gắn giáo trình nào gom chung một nhóm. */
+const NO_TEXTBOOK = "none";
+/** Số bài hiện tối đa trước khi bấm "Xem thêm" (chỉ chạm tới khi xem "Tất cả"). */
+const PAGE = 30;
+
+const groupKey = (l: LessonRow) => l.textbook_id ?? NO_TEXTBOOK;
 
 /**
  * Nội dung ôn tập của buổi: chọn bài học để học viên xem lại từ vựng /
- * ngữ pháp / slide sau buổi học. Lớp đã gán giáo trình thì mặc định chỉ
- * hiện bài của giáo trình đó (bật "Tất cả bài học" để chọn ngoài).
+ * ngữ pháp / slide sau buổi học.
+ *
+ * Thư viện có hàng trăm bài nên KHÔNG đổ hết ra: lọc theo từng giáo trình
+ * (mặc định là giáo trình của lớp, lớp chưa gắn thì lấy giáo trình đầu
+ * danh sách) kèm ô tìm bài chạy trên toàn thư viện.
  */
 export function SessionContentCard({
   sessionId,
@@ -31,7 +43,9 @@ export function SessionContentCard({
   const assigned = useLoad(() => fetchSessionLessons(sessionId), [sessionId]);
   const lessons = useLoad(() => fetchLessons(), []);
   const [selected, setSelected] = useState<string[] | null>(null);
-  const [showAll, setShowAll] = useState(false);
+  const [tab, setTab] = useState<string | null>(null); // null = chưa chọn → lấy mặc định
+  const [q, setQ] = useState("");
+  const [limit, setLimit] = useState(PAGE);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -45,19 +59,63 @@ export function SessionContentCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assigned.data, selected]);
 
-  const all = lessons.data ?? [];
+  const all = useMemo(() => lessons.data ?? [], [lessons.data]);
   const current = selected ?? [];
-  // Lớp có giáo trình: mặc định chỉ bài của giáo trình đó (+ bài đã gán sẵn)
-  const visible =
-    textbook && !showAll
-      ? all.filter((l) => l.textbook_id === textbook.id || current.includes(l.id))
-      : all;
-  // Bài của giáo trình lớp / khóa của lớp lên trước
-  const sorted = [...visible].sort((a, b) => {
-    const rank = (l: (typeof all)[number]) =>
-      textbook && l.textbook_id === textbook.id ? 0 : l.course_id === courseId ? 1 : 2;
-    return rank(a) - rank(b) || (a.unit ?? 0) - (b.unit ?? 0);
-  });
+
+  // Danh sách giáo trình rút từ chính các bài học (giáo trình của lớp lên đầu)
+  const groups = useMemo(() => {
+    const map = new Map<string, { id: string; name: string; count: number }>();
+    for (const l of all) {
+      const id = groupKey(l);
+      const g = map.get(id) ?? {
+        id,
+        name: l.textbook?.name ?? (id === NO_TEXTBOOK ? "Chưa gắn giáo trình" : "Giáo trình"),
+        count: 0,
+      };
+      g.count += 1;
+      map.set(id, g);
+    }
+    return [...map.values()].sort((a, b) => {
+      if (textbook) {
+        if (a.id === textbook.id) return -1;
+        if (b.id === textbook.id) return 1;
+      }
+      if (a.id === NO_TEXTBOOK) return 1;
+      if (b.id === NO_TEXTBOOK) return -1;
+      return a.name.localeCompare(b.name, "vi");
+    });
+  }, [all, textbook]);
+
+  // Tab đang xem: lựa chọn của người dùng → giáo trình lớp → giáo trình đầu tiên
+  const activeTab =
+    tab ??
+    (textbook && groups.some((g) => g.id === textbook.id) ? textbook.id : groups[0]?.id ?? "all");
+  const search = q.trim().toLowerCase();
+
+  // Có tìm kiếm thì chạy trên cả thư viện (bỏ qua tab) cho khỏi phải đoán bài nằm ở giáo trình nào
+  const shown = useMemo(() => {
+    const list = search
+      ? all.filter((l) =>
+          `bài ${l.unit ?? ""} ${l.title} ${l.title_zh ?? ""} ${l.textbook?.name ?? l.course?.name ?? ""}`
+            .toLowerCase()
+            .includes(search),
+        )
+      : all.filter((l) => activeTab === "all" || groupKey(l) === activeTab);
+    return [...list].sort(
+      (a, b) =>
+        (a.textbook?.name ?? "").localeCompare(b.textbook?.name ?? "", "vi") ||
+        (a.unit ?? 0) - (b.unit ?? 0) ||
+        a.title.localeCompare(b.title, "vi"),
+    );
+  }, [all, activeTab, search]);
+
+  const visible = shown.slice(0, limit);
+  // Bài đã chọn nhưng nằm ngoài bộ lọc hiện tại → vẫn cho bỏ chọn nhanh
+  const offscreen = current
+    .filter((id) => !visible.some((l) => l.id === id))
+    .map((id) => all.find((l) => l.id === id))
+    .filter((l): l is LessonRow => !!l);
+
   const dirty =
     selected !== null &&
     assigned.data !== null &&
@@ -109,63 +167,129 @@ export function SessionContentCard({
             </Button>
           </div>
         )}
-        {textbook && (
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span>
-              Giáo trình của lớp: <span className="font-semibold text-foreground">{textbook.name}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => setShowAll((v) => !v)}
-              className="font-semibold text-brand-600 hover:underline"
-            >
-              {showAll ? "← Chỉ hiện bài của giáo trình lớp" : "Hiện tất cả bài học →"}
-            </button>
-          </div>
-        )}
+
         {assigned.loading || lessons.loading ? (
           <LoadingRows rows={2} className="p-0" />
-        ) : sorted.length === 0 ? (
+        ) : all.length === 0 ? (
           <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            {all.length === 0
-              ? "Chưa có bài học nào trong thư viện — soạn bài ở mục “Bài học” hoặc nhờ admin import giáo trình."
-              : "Giáo trình của lớp chưa có bài học nào — bấm “Hiện tất cả bài học” để chọn ngoài giáo trình."}
+            Chưa có bài học nào trong thư viện — soạn bài ở mục “Bài học” hoặc nhờ admin import giáo trình.
           </div>
         ) : (
-          <div className="grid gap-2 sm:grid-cols-2">
-            {sorted.map((l) => {
-              const picked = current.includes(l.id);
-              const inTextbook = textbook != null && l.textbook_id === textbook.id;
-              const inCourse = l.course_id === courseId;
-              return (
-                <button
-                  key={l.id}
-                  type="button"
-                  onClick={() => toggle(l.id)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl border bg-card p-3 text-left transition-all",
-                    picked ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-200" : "hover:border-brand-300",
-                  )}
+          <>
+            {/* Lọc theo giáo trình + tìm bài */}
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <div className="w-full sm:w-72">
+                <Select
+                  value={activeTab}
+                  onChange={(e) => {
+                    setTab(e.target.value);
+                    setLimit(PAGE);
+                  }}
+                  className="h-9 text-sm"
                 >
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold">
-                      {l.unit != null ? `Bài ${l.unit}: ` : ""}
-                      {l.title}
-                    </div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} · {l.lesson_vocab[0]?.count ?? 0} từ vựng
-                    </div>
+                  {groups.map((g) => (
+                    <option key={g.id} value={g.id}>
+                      {g.name}
+                      {textbook?.id === g.id ? " (giáo trình của lớp)" : ""} — {g.count} bài
+                    </option>
+                  ))}
+                  {groups.length > 1 && (
+                    <option value="all">Tất cả giáo trình — {all.length} bài</option>
+                  )}
+                </Select>
+              </div>
+              <div className="relative w-full flex-1 sm:max-w-xs">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={q}
+                  onChange={(e) => {
+                    setQ(e.target.value);
+                    setLimit(PAGE);
+                  }}
+                  placeholder="Tìm bài trong cả thư viện…"
+                  className="h-9 pl-8 text-sm"
+                />
+              </div>
+              {search && (
+                <span className="text-xs text-muted-foreground">
+                  Đang tìm trong cả thư viện · {shown.length} bài
+                </span>
+              )}
+            </div>
+
+            {/* Bài đã chọn nhưng không nằm trong bộ lọc đang xem */}
+            {offscreen.length > 0 && (
+              <div className="mb-3 flex flex-wrap items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50/50 p-2">
+                <span className="text-xs font-semibold text-brand-700">Đã chọn ở giáo trình khác:</span>
+                {offscreen.map((l) => (
+                  <button
+                    key={l.id}
+                    type="button"
+                    onClick={() => toggle(l.id)}
+                    title="Bỏ chọn bài này"
+                    className="inline-flex items-center gap-1 rounded-full border border-brand-300 bg-card px-2 py-0.5 text-xs font-medium hover:border-destructive hover:text-destructive"
+                  >
+                    {l.unit != null ? `Bài ${l.unit}: ` : ""}
+                    {l.title}
+                    <X className="h-3 w-3" />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {shown.length === 0 ? (
+              <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+                {search
+                  ? `Không tìm thấy bài nào khớp “${q.trim()}”.`
+                  : "Giáo trình này chưa có bài học nào — chọn giáo trình khác ở trên."}
+              </div>
+            ) : (
+              <>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {visible.map((l) => {
+                    const picked = current.includes(l.id);
+                    const inTextbook = textbook != null && l.textbook_id === textbook.id;
+                    const inCourse = l.course_id === courseId;
+                    return (
+                      <button
+                        key={l.id}
+                        type="button"
+                        onClick={() => toggle(l.id)}
+                        className={cn(
+                          "flex items-center gap-3 rounded-xl border bg-card p-3 text-left transition-all",
+                          picked ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-200" : "hover:border-brand-300",
+                        )}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-sm font-semibold">
+                            {l.unit != null ? `Bài ${l.unit}: ` : ""}
+                            {l.title}
+                          </div>
+                          <div className="truncate text-xs text-muted-foreground">
+                            {l.textbook?.name ?? l.course?.name ?? "Chưa gắn khóa"} ·{" "}
+                            {l.lesson_vocab[0]?.count ?? 0} từ vựng
+                          </div>
+                        </div>
+                        {inTextbook ? (
+                          <Badge variant="gold">GT lớp</Badge>
+                        ) : inCourse ? (
+                          <Badge variant="gold">Khóa này</Badge>
+                        ) : null}
+                        {picked && <Badge variant="jade">✓</Badge>}
+                      </button>
+                    );
+                  })}
+                </div>
+                {shown.length > visible.length && (
+                  <div className="mt-3 text-center">
+                    <Button variant="outline" size="sm" onClick={() => setLimit((n) => n + PAGE)}>
+                      Xem thêm ({shown.length - visible.length} bài)
+                    </Button>
                   </div>
-                  {inTextbook ? (
-                    <Badge variant="gold">GT lớp</Badge>
-                  ) : inCourse ? (
-                    <Badge variant="gold">Khóa này</Badge>
-                  ) : null}
-                  {picked && <Badge variant="jade">✓</Badge>}
-                </button>
-              );
-            })}
-          </div>
+                )}
+              </>
+            )}
+          </>
         )}
       </CardContent>
     </Card>
