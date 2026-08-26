@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   CalendarClock,
@@ -7,7 +8,9 @@ import {
   ClipboardCheck,
   ListChecks,
   Presentation,
+  Radio,
   Timer,
+  User,
   UserX,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,28 +24,50 @@ import {
   type TeachingSessionRow,
 } from "@/lib/db-tuition";
 
+/** Ca dạy có đang diễn ra ngay lúc này không (chỉ tính sau khi mount, tránh lệch SSR). */
+function useIsLive(s: Pick<TeachingSessionRow, "date" | "start_time" | "end_time">): boolean {
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      const now = new Date();
+      setLive(
+        now >= new Date(`${s.date}T${s.start_time}`) && now <= new Date(`${s.date}T${s.end_time}`),
+      );
+    };
+    check();
+    const timer = setInterval(check, 30_000);
+    return () => clearInterval(timer);
+  }, [s.date, s.start_time, s.end_time]);
+  return live;
+}
+
 /**
- * Thẻ một ca dạy của giáo viên — dùng chung cho trang chủ GV và trang
- * "Lịch dạy" (xem lại theo ngày bất kỳ).
+ * Thẻ một ca dạy — dùng chung cho trang chủ GV, trang "Lịch dạy" (xem lại
+ * theo ngày bất kỳ) và trang tổng quan của hành chính (`showTeacher`: thêm
+ * tên giáo viên đứng lớp vì đang xem ca của cả trung tâm).
  */
 export function TeachingCard({
   session: s,
   future,
+  showTeacher,
   onLog,
 }: {
   session: TeachingSessionRow;
   future?: boolean;
+  showTeacher?: boolean;
   onLog: () => void;
 }) {
   const log = pickLog(s);
   const d = new Date(s.date + "T00:00:00");
   const marked = attendanceCount(s);
+  const live = useIsLive(s);
 
   return (
     <div
       className={cn(
         "rounded-xl border bg-card p-3.5",
         log && "border-emerald-200 bg-emerald-50/40",
+        live && !log && "border-brand-300 bg-brand-50/40",
       )}
     >
       {/* Hàng thông tin: ô ngày + tên lớp/giờ (co giãn) + trạng thái chấm công */}
@@ -57,6 +82,11 @@ export function TeachingCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="min-w-0 truncate text-sm font-semibold">{sessionClassLabel(s)}</span>
+            {live && (
+              <Badge variant="destructive" className="shrink-0">
+                <Radio className="h-3 w-3 animate-pulse" /> Đang diễn ra
+              </Badge>
+            )}
             {log ? (
               <Badge variant="jade" className="shrink-0">
                 <CheckCircle2 className="h-3 w-3" /> Đã chấm công
@@ -83,6 +113,11 @@ export function TeachingCard({
             {s.type === "makeup" ? " · Buổi bù" : ""}
             {marked > 0 ? ` · điểm danh ${marked} HV` : ""}
           </div>
+          {showTeacher && (
+            <div className="mt-0.5 flex items-center gap-1 text-xs font-medium text-brand-700">
+              <User className="h-3 w-3" /> {s.teacher?.name ?? "Chưa phân công giáo viên"}
+            </div>
+          )}
           {log && (
             <div className="mt-1 text-xs text-emerald-700">
               Thực dạy {log.actual_start.slice(0, 5)}–{log.actual_end.slice(0, 5)} ·{" "}

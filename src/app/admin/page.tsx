@@ -1,11 +1,14 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
   BookMarked,
   CalendarClock,
+  CalendarDays,
   GraduationCap,
+  Presentation,
   School,
   Users,
   CheckCircle2,
@@ -23,10 +26,40 @@ import {
   LEVEL_LABELS,
 } from "@/lib/db";
 import { useLoad } from "@/lib/use-load";
+import { useAuth } from "@/components/auth/auth-provider";
+import { TeachingCard } from "@/components/teaching-card";
+import { TeachingLogModal } from "@/components/teaching-log-modal";
+import { Select } from "@/components/ui/select";
+import {
+  fetchTeachingSessions,
+  pickLog,
+  type TeachingSessionRow,
+} from "@/lib/db-tuition";
+import { todayISO } from "@/lib/db";
 
 export default function AdminHome() {
+  const { user } = useAuth();
   const stats = useLoad(fetchDashboardStats);
   const classes = useLoad(fetchClasses);
+
+  // Toàn bộ ca dạy hôm nay của mọi giáo viên — hành chính vào hỗ trợ được
+  const today = todayISO();
+  const todaySessions = useLoad(() => fetchTeachingSessions(today, today), [today]);
+  const [teacherFilter, setTeacherFilter] = useState("");
+  const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
+
+  const teacherOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const s of todaySessions.data ?? []) if (s.teacher) map.set(s.teacher.id, s.teacher.name);
+    return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1], "vi"));
+  }, [todaySessions.data]);
+
+  const sessionsToday = useMemo(
+    () =>
+      (todaySessions.data ?? []).filter((s) => !teacherFilter || s.teacher?.id === teacherFilter),
+    [todaySessions.data, teacherFilter],
+  );
+  const unloggedToday = sessionsToday.filter((s) => !pickLog(s)).length;
 
   const isEmpty =
     !stats.loading &&
@@ -45,7 +78,13 @@ export default function AdminHome() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard
+          label="Ca dạy hôm nay"
+          value={todaySessions.loading ? "…" : (todaySessions.data ?? []).length}
+          icon={CalendarDays}
+          accent="brand"
+        />
         <StatCard
           label="Học viên"
           value={stats.loading ? "…" : stats.data?.students ?? 0}
@@ -73,6 +112,59 @@ export default function AdminHome() {
       </section>
 
       {isEmpty && <OnboardingChecklist hasClasses={(classes.data?.length ?? 0) > 0} />}
+
+      <Card>
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
+          <CardTitle className="flex items-center gap-2">
+            <Presentation className="h-4 w-4 text-brand-600" /> Lớp học hôm nay
+            {!todaySessions.loading && (
+              <span className="text-xs font-normal text-muted-foreground">
+                {sessionsToday.length} ca
+                {unloggedToday > 0 ? ` · ${unloggedToday} chưa chấm công` : " · đã chấm công đủ ✓"}
+              </span>
+            )}
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            {teacherOptions.length > 1 && (
+              <Select
+                value={teacherFilter}
+                onChange={(e) => setTeacherFilter(e.target.value)}
+                className="h-9 w-48 text-xs"
+              >
+                <option value="">Tất cả giáo viên</option>
+                {teacherOptions.map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </Select>
+            )}
+            <Link href="/admin/timetable" className="text-xs font-semibold text-brand-600 hover:underline">
+              Thời khóa biểu <ArrowRight className="inline h-3 w-3" />
+            </Link>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3 p-5 pt-0">
+          <p className="text-xs text-muted-foreground">
+            Bấm vào một ca để dùng đầy đủ chức năng của giáo viên: chuẩn bị bài, vào lớp dạy
+            (chiếu máy chiếu), điểm danh học viên và chấm công hộ.
+          </p>
+          {todaySessions.error && <ErrorNote message={todaySessions.error} />}
+          {todaySessions.loading ? (
+            <LoadingRows rows={3} className="p-0" />
+          ) : sessionsToday.length === 0 ? (
+            <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
+              {teacherFilter
+                ? "Giáo viên này hôm nay không có ca dạy nào."
+                : "Hôm nay trung tâm không có ca dạy nào."}
+            </div>
+          ) : (
+            sessionsToday.map((s) => (
+              <TeachingCard key={s.id} session={s} showTeacher onLog={() => setLogFor(s)} />
+            ))
+          )}
+        </CardContent>
+      </Card>
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -149,6 +241,16 @@ export default function AdminHome() {
           </CardContent>
         </Card>
       </section>
+
+      <TeachingLogModal
+        session={logFor}
+        currentUserId={user?.id ?? ""}
+        onClose={() => setLogFor(null)}
+        onSaved={() => {
+          setLogFor(null);
+          todaySessions.reload();
+        }}
+      />
     </div>
   );
 }

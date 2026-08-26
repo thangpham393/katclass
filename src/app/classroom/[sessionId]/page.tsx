@@ -26,6 +26,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
+import { homeForRole } from "@/lib/auth";
 import { RosterRail } from "@/components/classroom/roster-rail";
 import { RandomStage, SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
 import { GameStage, LeaderboardStage } from "@/components/classroom/game-stage";
@@ -92,6 +93,8 @@ export default function ClassroomPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
   const { user } = useAuth();
+  // Hành chính cũng vào lớp hỗ trợ được → nút "Thoát" trả về đúng khu của họ
+  const home = homeForRole(user?.role ?? "teacher");
   const router = useRouter();
 
   const session = useLoad(() => fetchSession(sessionId), [sessionId]);
@@ -374,8 +377,8 @@ export default function ClassroomPage() {
       <div className="grid min-h-screen place-items-center bg-ink-950 p-6 text-center text-ink-200">
         <div>
           <p>Không mở được buổi học này (hoặc bạn không phụ trách buổi).</p>
-          <Link href="/teacher" className="mt-3 inline-block font-semibold text-brand-300">
-            ← Về trang chủ giáo viên
+          <Link href={home} className="mt-3 inline-block font-semibold text-brand-300">
+            ← Về trang chủ
           </Link>
         </div>
       </div>
@@ -400,7 +403,7 @@ export default function ClassroomPage() {
       <div className="min-h-screen bg-ink-950 px-6 py-8 text-white">
         <div className="mx-auto max-w-5xl">
           <Link
-            href={s.class ? `/teacher/classes/${s.class.id}` : "/teacher"}
+            href={s.class ? `/teacher/classes/${s.class.id}` : home}
             className="inline-flex items-center gap-1.5 text-sm text-ink-300 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" /> Thoát
@@ -484,7 +487,7 @@ export default function ClassroomPage() {
   return (
     <div ref={rootRef} className="flex h-screen flex-col overflow-hidden bg-ink-950 text-white">
       <header className="flex items-center gap-3 border-b border-ink-800 bg-ink-900 px-4 py-2">
-        <Link href="/teacher" className="text-ink-300 hover:text-white" title="Thoát lớp">
+        <Link href={home} className="text-ink-300 hover:text-white" title="Thoát lớp">
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="min-w-0">
