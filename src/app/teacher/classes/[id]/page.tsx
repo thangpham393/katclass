@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ClipboardCheck, ListChecks, Presentation } from "lucide-react";
+import { ArrowLeft, ClipboardCheck, ListChecks } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import {
 } from "@/lib/db";
 import { fetchParticipation } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
+import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 
 export default function TeacherClassDetailPage() {
   const params = useParams<{ id: string }>();
@@ -96,11 +97,11 @@ export default function TeacherClassDetailPage() {
                 <ListChecks className="h-5 w-5" /> Chuẩn bị bài
               </Button>
             </Link>
-            <Link href={`/classroom/${todaySession.id}`}>
-              <Button size="lg">
-                <Presentation className="h-5 w-5" /> Vào lớp dạy
-              </Button>
-            </Link>
+            <EnterClassroomButton
+              sessionId={todaySession.id}
+              size="lg"
+              iconClassName="h-5 w-5"
+            />
           </div>
         </div>
       )}

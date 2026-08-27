@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, BookOpen, CheckCheck, ListChecks, MessageSquarePlus, MessageSquareText, Presentation, Star, Timer } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCheck, ListChecks, MessageSquarePlus, MessageSquareText, Star, Timer } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { SessionContentCard } from "@/components/session-content-card";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { fetchTeachingLog, sessionHours } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
+import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 
 const STATUS_ORDER: AttendanceStatus[] = ["present", "absent_excused", "absent_unexcused", "makeup"];
 
@@ -212,11 +213,7 @@ export default function TeacherSessionPage() {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link href={`/classroom/${sessionId}`}>
-            <Button>
-              <Presentation className="h-4 w-4" /> Vào lớp dạy
-            </Button>
-          </Link>
+          <EnterClassroomButton sessionId={sessionId} />
           <Link href={`/teacher/sessions/${sessionId}/prepare`}>
             <Button variant="outline">
               <ListChecks className="h-4 w-4" /> Chuẩn bị bài

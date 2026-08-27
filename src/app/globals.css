@@ -166,3 +166,104 @@
   }
   .ring-glow { box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.14); }
 }
+
+/* ===== Hiệu ứng "xuyên không" khi vào lớp dạy =====
+   Bấm "Vào lớp dạy" → một đường hầm ánh sáng bung ra từ chính nút vừa bấm,
+   phủ kín màn hình rồi mới chuyển sang phòng học. Lớp phủ nằm ở root layout
+   nên nó sống xuyên qua lần chuyển trang, giấu luôn khoảnh khắc trang lớp
+   học đang tải. */
+@keyframes warp-veil {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes warp-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+/* Đường hầm: quầng sáng nở ra từ điểm bấm cho tới khi nuốt trọn màn hình */
+@keyframes warp-tunnel {
+  0% {
+    transform: scale(0.05);
+    opacity: 0.35;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 1;
+  }
+}
+
+/* Tia sáng lao ra bốn phía — cảm giác vượt tốc độ ánh sáng */
+@keyframes warp-ray {
+  0% {
+    transform: rotate(var(--a)) translateY(0) scaleY(0.15);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: rotate(var(--a)) translateY(80vmax) scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* Vòng xung kích toả ra từ điểm bấm */
+@keyframes warp-ring {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(9);
+    opacity: 0;
+  }
+}
+
+@keyframes warp-label {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.warp-ray {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 16vmax;
+  margin-left: -1px;
+  transform-origin: 50% 0;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(37, 73, 236, 0));
+  animation: warp-ray 900ms cubic-bezier(0.4, 0, 0.7, 1) infinite;
+}
+
+/* Máy yếu / người dùng tắt hiệu ứng: chỉ còn một lớp mờ đơn giản */
+@media (prefers-reduced-motion: reduce) {
+  .warp-ray,
+  .warp-ring,
+  .warp-tunnel {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}

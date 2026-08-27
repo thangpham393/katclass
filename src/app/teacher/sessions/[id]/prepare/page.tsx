@@ -30,6 +30,7 @@ import {
 import { fetchLesson, fetchQuestions, type LessonDetail } from "@/lib/db-content";
 import { saveSessionPrep, speakZh, toEmbedUrl } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
+import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 
 /**
  * Chuẩn bị trước buổi dạy: chọn bài theo giáo trình của lớp, xem lại bộ từ vựng
@@ -164,11 +165,7 @@ export default function PrepareSessionPage() {
             {s.class?.textbook && <Badge variant="gold">{s.class.textbook.name}</Badge>}
           </div>
         </div>
-        <Link href={`/classroom/${sessionId}`}>
-          <Button>
-            <Presentation className="h-4 w-4" /> Vào lớp dạy
-          </Button>
-        </Link>
+        <EnterClassroomButton sessionId={sessionId} />
       </div>
 
       {/* Checklist chuẩn bị */}

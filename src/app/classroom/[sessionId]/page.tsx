@@ -8,6 +8,7 @@ import {
   BookMarked,
   Brush,
   CheckCheck,
+  ChevronDown,
   Dices,
   Flag,
   Gamepad2,
@@ -15,10 +16,12 @@ import {
   Minimize2,
   Monitor,
   MonitorOff,
+  MoreHorizontal,
   PenLine,
   Presentation,
   Timer as TimerIcon,
   Trophy,
+  Undo2,
   Users,
   WifiOff,
   X,
@@ -28,7 +31,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { homeForRole } from "@/lib/auth";
-import { RosterRail } from "@/components/classroom/roster-rail";
+import { RosterPanel, presentCount } from "@/components/classroom/roster-panel";
 import { RandomStage, SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
 import { GameStage, LeaderboardStage } from "@/components/classroom/game-stage";
 import { StrokeStage } from "@/components/classroom/stroke-stage";
@@ -130,8 +133,15 @@ export default function ClassroomPage() {
   const [fullscreen, setFullscreen] = useState(false);
   /** Ẩn khung chiếu khi giáo viên trình chiếu bằng PowerPoint/cửa sổ riêng ra máy chiếu. */
   const [slideOff, setSlideOff] = useState(false);
-  /** Màn hẹp: cột học viên mở dạng ngăn kéo thay vì chiếm chỗ cố định. */
+  /** Danh sách học viên: popover thả xuống từ nút trên topbar. */
   const [rosterOpen, setRosterOpen] = useState(false);
+  /** Ghim popover học viên để nó không tự đóng khi bấm ra ngoài. */
+  const [rosterPinned, setRosterPinned] = useState(false);
+  /** Chế độ trình chiếu: ẩn topbar + thanh công cụ, slide chiếm trọn màn hình. */
+  const [presenting, setPresenting] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  /** Ô trên topbar để SlideStage cắm thanh điều khiển của nó vào. */
+  const [controlsHost, setControlsHost] = useState<HTMLDivElement | null>(null);
   const [timer, setTimer] = useState<{ left: number; running: boolean }>({ left: 0, running: false });
   /** Học viên vừa được gọi và đang trả lời — chốt lượt bằng cách cho điểm hoặc bỏ qua. */
   const [answering, setAnswering] = useState<ClassroomStudent | null>(null);
@@ -282,6 +292,39 @@ export default function ClassroomPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  /* --- Trình chiếu: Esc thoát (khi không có công cụ nào đang mở) --- */
+  useEffect(() => {
+    if (!presenting) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape" && !overlay) setPresenting(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [presenting, overlay]);
+
+  /* --- Thoát toàn màn hình bằng Esc của trình duyệt cũng thoát trình chiếu --- */
+  useEffect(() => {
+    function onChange() {
+      const on = Boolean(document.fullscreenElement);
+      setFullscreen(on);
+      if (!on) setPresenting(false);
+    }
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  /* --- Đóng menu "…" khi bấm ra ngoài --- */
+  useEffect(() => {
+    if (!moreOpen) return;
+    function onDown(e: MouseEvent) {
+      const t = e.target as HTMLElement;
+      if (t.closest?.("[data-more-toggle]") || t.closest?.("[data-more-menu]")) return;
+      setMoreOpen(false);
+    }
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [moreOpen]);
+
   /* --- Cộng điểm: hiện ngay trên màn, lưu nền, rớt mạng thì xếp hàng chờ --- */
   function give(studentId: string, pts?: number, why?: PointReason) {
     if (!user) return;
@@ -323,12 +366,44 @@ export default function ClassroomPage() {
   }
 
   function undo() {
-    const last = points[points.length - 1];
-    if (!last) return;
-    setPoints((prev) => prev.slice(0, -1));
-    if (last.id) deleteClassPoint(last.id).catch(() => pointRows.reload());
-    else if (last.tmp_id) unqueuePoint(sessionId, last.tmp_id);
+    removePoint(points[points.length - 1]);
   }
+
+  /**
+   * Gỡ lần cộng gần nhất của đúng một học viên (nút − cạnh ngôi sao trong
+   * danh sách). Xoá hẳn dòng đã ghi chứ không cộng bù điểm âm, nên lịch sử
+   * buổi và nhận xét cuối buổi không bị lẫn lần cộng nhầm.
+   */
+  function undoFor(studentId: string) {
+    for (let i = points.length - 1; i >= 0; i--) {
+      if (points[i].student_id === studentId) {
+        removePoint(points[i]);
+        return;
+      }
+    }
+  }
+
+  /** Bỏ một lần cộng khỏi màn hình rồi xoá ở server (hoặc rút khỏi hàng chờ offline). */
+  function removePoint(target?: LocalPoint) {
+    if (!target) return;
+    setPoints((prev) => prev.filter((p) => p.key !== target.key));
+    if (target.id) deleteClassPoint(target.id).catch(() => pointRows.reload());
+    else if (target.tmp_id) unqueuePoint(sessionId, target.tmp_id);
+  }
+
+  /** Lần cộng gần nhất của một học viên — nút − dùng để hiện nó sắp gỡ cái gì. */
+  const lastPointFor = useCallback(
+    (studentId: string) => {
+      for (let i = points.length - 1; i >= 0; i--) {
+        const p = points[i];
+        if (p.student_id !== studentId) continue;
+        const def = POINT_REASONS.find((r) => r.value === p.reason);
+        return { points: p.points, label: def?.label ?? "Cộng ★", emoji: def?.emoji ?? "★" };
+      }
+      return null;
+    },
+    [points],
+  );
 
   const totals = useMemo(() => {
     const map: Record<string, number> = {};
@@ -358,6 +433,25 @@ export default function ClassroomPage() {
       setError(dbErrorMessage(e));
     } finally {
       setSaving(false);
+    }
+  }
+
+  /**
+   * Chế độ trình chiếu: giấu topbar + thanh công cụ nổi và bật luôn toàn màn
+   * hình để học sinh chỉ thấy slide. Esc hoặc nút mờ ở góc để quay lại.
+   */
+  function togglePresenting() {
+    const next = !presenting;
+    setPresenting(next);
+    setMoreOpen(false);
+    if (next) {
+      setOverlay(null);
+      setRosterOpen(false);
+      if (!document.fullscreenElement) {
+        rootRef.current?.requestFullscreen?.().then(() => setFullscreen(true)).catch(() => {});
+      }
+    } else if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
     }
   }
 
@@ -403,7 +497,7 @@ export default function ClassroomPage() {
   /* ---------- Màn điểm danh đầu giờ ---------- */
   if (phase === "checkin") {
     return (
-      <div className="min-h-screen bg-ink-950 px-6 py-8 text-white">
+      <div className="min-h-screen animate-fade-in bg-ink-950 px-6 py-8 text-white">
         <div className="mx-auto max-w-5xl">
           <Link
             href={s.class ? `/teacher/classes/${s.class.id}` : home}
@@ -488,233 +582,296 @@ export default function ClassroomPage() {
 
   /* ---------- Màn dạy ---------- */
   return (
-    <div ref={rootRef} className="flex h-[100dvh] flex-col overflow-hidden bg-ink-950 text-white">
-      <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-ink-800 bg-ink-900 px-3 py-2 sm:px-4">
-        <Link href={home} className="text-ink-300 hover:text-white" title="Thoát lớp">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-bold">{sessionClassLabel(s)}</div>
-          <div className="truncate text-[11px] text-ink-300">
-            {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")} · {s.start_time.slice(0, 5)}–
-            {s.end_time.slice(0, 5)}
-            {s.session_no ? ` · Buổi ${s.session_no}` : ""}
-          </div>
-        </div>
-        <div className="hidden rounded-lg bg-ink-800 px-3 py-1 font-mono text-sm tabular-nums text-brand-200 sm:ml-4 sm:block">
-          {clock}
-        </div>
-        {timer.running && overlay !== "timer" && (
-          <button
-            onClick={() => setOverlay("timer")}
-            className="rounded-lg bg-gold-600/20 px-3 py-1 font-mono text-sm font-bold tabular-nums text-gold-300 hover:bg-gold-600/30"
-            title="Đồng hồ đang chạy — bấm để mở lại"
-          >
-            ⏱ {String(Math.floor(timer.left / 60)).padStart(2, "0")}:
-            {String(timer.left % 60).padStart(2, "0")}
-          </button>
-        )}
-        {pendingCount > 0 && (
-          <span className="flex items-center gap-1 text-xs text-gold-300">
-            <WifiOff className="h-3.5 w-3.5" /> {pendingCount} chờ đồng bộ
-          </span>
-        )}
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          {/* Mở cột học viên dạng ngăn kéo — màn hẹp không đủ chỗ để nó nằm cố định */}
-          <button
-            onClick={() => setRosterOpen(true)}
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700 lg:hidden"
-            title="Danh sách học viên"
-            aria-label="Danh sách học viên"
-          >
-            <Users className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => setSlideOff((v) => !v)}
-            className={cn(
-              "inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold sm:px-3",
-              slideOff ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
-            )}
-            title="Chiếu bằng PowerPoint / cửa sổ riêng ra máy chiếu, màn này chỉ để điều khiển lớp"
-          >
-            {slideOff ? <Monitor className="h-4 w-4" /> : <MonitorOff className="h-4 w-4" />}
-            <span className="hidden sm:inline">{slideOff ? "Hiện khung chiếu" : "Chiếu ngoài"}</span>
-          </button>
-          <button
-            onClick={toggleFullscreen}
-            className="hidden h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700 sm:grid"
-            title="Toàn màn hình"
-          >
-            {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-          </button>
-          <Button variant="gold" size="sm" className="sm:h-10 sm:px-5 sm:text-sm" onClick={() => setWrapOpen(true)}>
-            <Flag className="h-4 w-4" /> <span className="hidden sm:inline">Kết thúc buổi</span>
-            <span className="sm:hidden">Kết thúc</span>
-          </Button>
-        </div>
-      </header>
-
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-1 flex-col">
-          {/*
-            Slide luôn nằm dưới; các công cụ khác mở đè lên dạng lớp phủ (không
-            đổi tab) nên giáo viên không mất trang slide đang chiếu. Tất cả đều
-            được mount sẵn — ẩn bằng CSS để iframe không tải lại và đồng hồ
-            đang chạy không bị reset.
-          */}
-          <div className="relative min-h-0 flex-1 p-2 sm:p-4">
-            {slideOff ? (
-              <ExternalPresentPanel
-                students={students}
-                totals={totals}
-                onShowSlide={() => setSlideOff(false)}
-              />
-            ) : (
-            <SlideStage
-              sessionSlide={s.slide_url}
-              lessons={lessons.data ?? []}
-              onOpen={(l) =>
-                user &&
-                logActivity({
-                  session_id: sessionId,
-                  kind: "slide",
-                  title: l.unit != null ? `Bài ${l.unit}: ${l.title}` : l.title,
-                  ref_id: l.id,
-                  created_by: user.id,
-                })
-              }
-            />
-            )}
-
-            <ToolOverlay
-              title="Từ vựng bài học"
-              open={overlay === "vocab"}
-              onClose={() => setOverlay(null)}
-              wide
-            >
-              <VocabStage vocab={vocab} />
-            </ToolOverlay>
-
-            <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)}>
-              <RandomStage students={presentStudents} onPicked={handlePicked} />
-            </ToolOverlay>
-
-            {answering && (
-              <AnsweringBar
-                student={answering}
-                onAward={(pts, why) => {
-                  give(answering.id, pts, why);
-                  setAnswering(null);
-                }}
-                onSkip={() => setAnswering(null)}
-                onAgain={() => {
-                  setAnswering(null);
-                  setOverlay("random");
-                }}
-              />
-            )}
-
-            <ToolOverlay title="Trò chơi từ vựng" open={overlay === "game"} onClose={() => setOverlay(null)} wide>
-              <GameStage
-                vocab={vocab}
-                students={presentStudents}
-                onAward={(id, pts, why) => give(id, pts, why)}
-              />
-            </ToolOverlay>
-
-            <ToolOverlay title="Bảng ★ của buổi" open={overlay === "rank"} onClose={() => setOverlay(null)} wide>
-              <LeaderboardStage students={students} totals={totals} />
-            </ToolOverlay>
-
-            <ToolOverlay title="Bảng viết" open={overlay === "board"} onClose={() => setOverlay(null)} wide>
-              <WhiteboardStage />
-            </ToolOverlay>
-
-            <ToolOverlay title="Luyện nét chữ Hán" open={overlay === "stroke"} onClose={() => setOverlay(null)} wide>
-              <StrokeStage vocab={vocab} />
-            </ToolOverlay>
-
-            <ToolOverlay title="Bấm giờ" open={overlay === "timer"} onClose={() => setOverlay(null)}>
-              <TimerStage
-                onTick={(left, running) => setTimer({ left, running })}
-                onFinish={(sec) =>
-                  user &&
-                  logActivity({
-                    session_id: sessionId,
-                    kind: "timer",
-                    title: `Bấm giờ ${sec}s`,
-                    payload: { seconds: sec },
-                    created_by: user.id,
-                  })
-                }
-              />
-            </ToolOverlay>
+    <div ref={rootRef} className="relative flex h-[100dvh] animate-fade-in flex-col overflow-hidden bg-black text-white">
+      {/*
+        Topbar gom hết điều khiển: thông tin buổi, các nút nguồn slide (do
+        SlideStage cắm vào qua portal), đồng hồ và danh sách học viên. Ở chế độ
+        trình chiếu, cả topbar lẫn thanh công cụ dưới đều biến mất để slide
+        chiếm trọn màn hình.
+      */}
+      {!presenting && (
+        <header className="relative z-30 flex shrink-0 items-center gap-2 border-b border-ink-800 bg-ink-900 px-2 py-2 sm:gap-3 sm:px-3">
+          <Link href={home} className="shrink-0 text-ink-300 hover:text-white" title="Thoát lớp">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div className="hidden min-w-0 max-w-[16rem] shrink md:block">
+            <div className="truncate text-sm font-bold">{sessionClassLabel(s)}</div>
+            <div className="truncate text-[11px] text-ink-400">
+              {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")} · {s.start_time.slice(0, 5)}–
+              {s.end_time.slice(0, 5)}
+              {s.session_no ? ` · Buổi ${s.session_no}` : ""}
+            </div>
           </div>
 
-          <nav className="flex items-center gap-2 overflow-x-auto border-t border-ink-800 bg-ink-900 px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-4">
-            {TOOLS.map((t) => (
+          {/* Ô cắm thanh điều khiển slide (dán link, chiếu ra màn hình, file từ máy, nhận màn hình) */}
+          <div ref={setControlsHost} className="flex min-w-0 items-center gap-2" />
+
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            {timer.running && overlay !== "timer" && (
               <button
-                key={t.key}
-                onClick={() => setOverlay((cur) => (t.key === "slide" ? null : cur === t.key ? null : t.key))}
-                className={cn(
-                  "flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors sm:px-4 sm:text-sm",
-                  (t.key === "slide" ? overlay === null : overlay === t.key)
-                    ? "bg-brand-600 text-white"
-                    : "bg-ink-800 text-ink-200 hover:bg-ink-700",
-                )}
-                title={`Phím tắt ${t.hotkey}`}
+                onClick={() => setOverlay("timer")}
+                className="rounded-lg bg-gold-600/20 px-2.5 py-1 font-mono text-sm font-bold tabular-nums text-gold-300 hover:bg-gold-600/30"
+                title="Đồng hồ đang chạy — bấm để mở lại"
               >
-                <t.icon className="h-4 w-4" /> {t.label}
+                ⏱ {String(Math.floor(timer.left / 60)).padStart(2, "0")}:
+                {String(timer.left % 60).padStart(2, "0")}
               </button>
-            ))}
-            <span className="ml-auto hidden whitespace-nowrap text-xs text-ink-400 xl:inline">
-              Phím 1–8 mở công cụ · Esc đóng · chạm học viên bên phải để cộng điểm
-            </span>
-          </nav>
-        </div>
+            )}
+            {pendingCount > 0 && (
+              <span className="hidden items-center gap-1 text-xs text-gold-300 sm:flex">
+                <WifiOff className="h-3.5 w-3.5" /> {pendingCount} chờ đồng bộ
+              </span>
+            )}
+            <div className="hidden rounded-lg bg-ink-800 px-3 py-1.5 font-mono text-sm tabular-nums text-brand-200 sm:block">
+              {clock}
+            </div>
 
-        {/* Desktop: cột cố định bên phải */}
-        <div className="hidden shrink-0 lg:flex">
-          <RosterRail
-            students={students}
-            attendance={attendance}
-            points={totals}
-            reason={reason}
-            onReasonChange={setReason}
-            onGive={give}
-            onUndo={undo}
-            answeringId={answering?.id ?? null}
-            canUndo={points.length > 0}
-            pendingCount={pendingCount}
-          />
-        </div>
-      </div>
+            {/* Học viên: popover thả xuống, nổi đè lên slide nên không làm slide co lại */}
+            <div className="relative">
+              <button
+                data-roster-toggle
+                onClick={() => setRosterOpen((v) => !v)}
+                className={cn(
+                  "inline-flex h-9 items-center gap-1.5 rounded-lg border px-2.5 text-[13px] font-semibold transition-colors",
+                  rosterOpen
+                    ? "border-brand-500 bg-brand-600/20 text-white"
+                    : "border-ink-700 bg-ink-900 text-ink-100 hover:bg-ink-800",
+                )}
+                title="Danh sách học viên · cộng ★"
+              >
+                <Users className="h-4 w-4" />
+                <span className="tabular-nums">
+                  <span className="hidden sm:inline">Học viên </span>({presentCount(students, attendance)}/
+                  {students.length})
+                </span>
+                <ChevronDown className={cn("h-3.5 w-3.5 opacity-70 transition-transform", rosterOpen && "rotate-180")} />
+              </button>
+              {rosterOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2">
+                  <RosterPanel
+                    students={students}
+                    attendance={attendance}
+                    points={totals}
+                    reason={reason}
+                    onReasonChange={setReason}
+                    onGive={give}
+                    onUndo={undo}
+                    onUndoStudent={undoFor}
+                    lastFor={lastPointFor}
+                    answeringId={answering?.id ?? null}
+                    canUndo={points.length > 0}
+                    pendingCount={pendingCount}
+                    pinned={rosterPinned}
+                    onTogglePin={() => setRosterPinned((v) => !v)}
+                    onClose={() => setRosterOpen(false)}
+                  />
+                </div>
+              )}
+            </div>
 
-      {/* Mobile / tablet: mở đè từ phải, đóng lại là quay về khung chiếu */}
-      {rosterOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            aria-label="Đóng danh sách học viên"
-            onClick={() => setRosterOpen(false)}
-            className="absolute inset-0 h-full w-full bg-ink-950/60"
-          />
-          <div className="absolute inset-y-0 right-0 w-[86vw] max-w-sm">
-            <RosterRail
+            <Button variant="gold" size="sm" onClick={() => setWrapOpen(true)}>
+              <Flag className="h-4 w-4" /> <span className="hidden sm:inline">Kết thúc buổi</span>
+              <span className="sm:hidden">Kết thúc</span>
+            </Button>
+          </div>
+        </header>
+      )}
+
+      {/*
+        Vùng nội dung: slide trải full 100% chiều ngang. Các công cụ khác mở đè
+        lên trên dạng lớp phủ (không đổi tab) nên giáo viên không mất trang
+        slide đang chiếu. Tất cả đều được mount sẵn — ẩn bằng CSS để iframe
+        không tải lại và đồng hồ đang chạy không bị reset.
+      */}
+      <div className="relative min-h-0 flex-1">
+        {slideOff ? (
+          <div className="h-full w-full p-3 sm:p-4">
+            <ExternalPresentPanel
               students={students}
-              attendance={attendance}
-              points={totals}
-              reason={reason}
-              onReasonChange={setReason}
-              onGive={give}
-              onUndo={undo}
-              answeringId={answering?.id ?? null}
-              canUndo={points.length > 0}
-              pendingCount={pendingCount}
-              onClose={() => setRosterOpen(false)}
+              totals={totals}
+              onShowSlide={() => setSlideOff(false)}
             />
           </div>
-        </div>
-      )}
+        ) : (
+          <SlideStage
+            sessionSlide={s.slide_url}
+            lessons={lessons.data ?? []}
+            controlsHost={presenting ? null : controlsHost}
+            onOpen={(l) =>
+              user &&
+              logActivity({
+                session_id: sessionId,
+                kind: "slide",
+                title: l.unit != null ? `Bài ${l.unit}: ${l.title}` : l.title,
+                ref_id: l.id,
+                created_by: user.id,
+              })
+            }
+          />
+        )}
+
+        <ToolOverlay
+          title="Từ vựng bài học"
+          open={overlay === "vocab"}
+          onClose={() => setOverlay(null)}
+          wide
+        >
+          <VocabStage vocab={vocab} />
+        </ToolOverlay>
+
+        <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)}>
+          <RandomStage students={presentStudents} onPicked={handlePicked} />
+        </ToolOverlay>
+
+        {answering && (
+          <AnsweringBar
+            student={answering}
+            onAward={(pts, why) => {
+              give(answering.id, pts, why);
+              setAnswering(null);
+            }}
+            onSkip={() => setAnswering(null)}
+            onAgain={() => {
+              setAnswering(null);
+              setOverlay("random");
+            }}
+          />
+        )}
+
+        <ToolOverlay title="Trò chơi từ vựng" open={overlay === "game"} onClose={() => setOverlay(null)} wide>
+          <GameStage
+            vocab={vocab}
+            students={presentStudents}
+            onAward={(id, pts, why) => give(id, pts, why)}
+          />
+        </ToolOverlay>
+
+        <ToolOverlay title="Bảng ★ của buổi" open={overlay === "rank"} onClose={() => setOverlay(null)} wide>
+          <LeaderboardStage students={students} totals={totals} />
+        </ToolOverlay>
+
+        <ToolOverlay title="Bảng viết" open={overlay === "board"} onClose={() => setOverlay(null)} wide>
+          <WhiteboardStage />
+        </ToolOverlay>
+
+        <ToolOverlay title="Luyện nét chữ Hán" open={overlay === "stroke"} onClose={() => setOverlay(null)} wide>
+          <StrokeStage vocab={vocab} />
+        </ToolOverlay>
+
+        <ToolOverlay title="Bấm giờ" open={overlay === "timer"} onClose={() => setOverlay(null)}>
+          <TimerStage
+            onTick={(left, running) => setTimer({ left, running })}
+            onFinish={(sec) =>
+              user &&
+              logActivity({
+                session_id: sessionId,
+                kind: "timer",
+                title: `Bấm giờ ${sec}s`,
+                payload: { seconds: sec },
+                created_by: user.id,
+              })
+            }
+          />
+        </ToolOverlay>
+
+        {/* Thanh công cụ nổi: đặt đè lên slide, không chia cột/chia hàng với khung chiếu */}
+        {!presenting && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-1 rounded-2xl border border-ink-700 bg-ink-900/90 p-1.5 shadow-soft backdrop-blur">
+              {TOOLS.map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => setOverlay((cur) => (t.key === "slide" ? null : cur === t.key ? null : t.key))}
+                  className={cn(
+                    "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-2.5 py-2 text-[13px] font-semibold transition-colors",
+                    (t.key === "slide" ? overlay === null : overlay === t.key)
+                      ? "bg-brand-600 text-white"
+                      : "text-ink-200 hover:bg-ink-800",
+                  )}
+                  title={`${t.label} · phím tắt ${t.hotkey}`}
+                >
+                  <t.icon className="h-4 w-4" />
+                  <span className="hidden sm:inline">{t.label}</span>
+                </button>
+              ))}
+
+              <span className="mx-1 hidden h-6 w-px bg-ink-700 sm:block" />
+
+              <button
+                onClick={undo}
+                disabled={points.length === 0}
+                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-ink-200 hover:bg-ink-800 disabled:opacity-40"
+                title="Hoàn tác lần cộng điểm gần nhất"
+              >
+                <Undo2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Hoàn tác</span>
+              </button>
+
+              <button
+                onClick={togglePresenting}
+                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-ink-200 hover:bg-ink-800"
+                title="Chế độ trình chiếu — ẩn hết thanh công cụ, slide full màn hình (Esc để thoát)"
+              >
+                <Maximize2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Trình chiếu</span>
+              </button>
+
+              <div className="relative shrink-0">
+                <button
+                  data-more-toggle
+                  onClick={() => setMoreOpen((v) => !v)}
+                  className={cn(
+                    "grid h-9 w-9 place-items-center rounded-xl text-ink-200 hover:bg-ink-800",
+                    moreOpen && "bg-ink-800 text-white",
+                  )}
+                  title="Thêm"
+                  aria-label="Thêm tuỳ chọn"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </button>
+                {moreOpen && (
+                  <div
+                    data-more-menu
+                    className="absolute bottom-full right-0 z-50 mb-2 w-64 rounded-xl border border-ink-700 bg-ink-900 p-1 shadow-soft"
+                  >
+                    <MoreItem
+                      icon={fullscreen ? Minimize2 : Maximize2}
+                      label={fullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
+                      onClick={() => {
+                        toggleFullscreen();
+                        setMoreOpen(false);
+                      }}
+                    />
+                    <MoreItem
+                      icon={slideOff ? Monitor : MonitorOff}
+                      label={slideOff ? "Hiện khung chiếu trong app" : "Chiếu ngoài (PowerPoint máy chiếu)"}
+                      onClick={() => {
+                        setSlideOff((v) => !v);
+                        setMoreOpen(false);
+                      }}
+                    />
+                    <div className="px-3 py-2 text-[11px] leading-relaxed text-ink-400">
+                      Phím 1–8 mở công cụ · Esc đóng công cụ / thoát trình chiếu · mở
+                      <b className="text-ink-200"> Học viên</b> trên thanh trên để cộng ★.
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Chế độ trình chiếu: chỉ còn một nút mờ ở góc để quay lại (hoặc Esc) */}
+        {presenting && (
+          <button
+            onClick={togglePresenting}
+            className="absolute bottom-4 right-4 z-30 inline-flex items-center gap-1.5 rounded-xl border border-ink-700 bg-ink-900/70 px-3 py-2 text-xs font-semibold text-ink-200 opacity-25 backdrop-blur transition-opacity hover:opacity-100"
+            title="Thoát chế độ trình chiếu (Esc)"
+          >
+            <Minimize2 className="h-4 w-4" /> Thoát trình chiếu
+          </button>
+        )}
+      </div>
 
       {wrapOpen && (
         <WrapUpModal
@@ -738,10 +895,29 @@ export default function ClassroomPage() {
   );
 }
 
+/** Một dòng trong menu "…" của thanh công cụ nổi. */
+function MoreItem({
+  icon: Icon,
+  label,
+  onClick,
+}: {
+  icon: typeof Presentation;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-ink-100 hover:bg-ink-800"
+    >
+      <Icon className="h-4 w-4 shrink-0 text-ink-300" /> {label}
+    </button>
+  );
+}
 /**
  * Lớp phủ công cụ: mở đè lên slide đang chiếu thay vì đổi tab, đóng bằng nút X
- * hoặc phím Esc. Chỉ phủ vùng trình chiếu — cột học viên bên phải vẫn bấm cộng
- * điểm được trong lúc đang chơi/gọi tên.
+ * hoặc phím Esc. Chừa đáy màn cho thanh công cụ nổi, còn danh sách học viên vẫn
+ * mở được từ topbar để cộng điểm trong lúc đang chơi/gọi tên.
  */
 function ToolOverlay({
   title,
@@ -766,7 +942,7 @@ function ToolOverlay({
   return (
     <div
       className={cn(
-        "absolute inset-0 z-20 flex flex-col p-2 backdrop-blur-sm sm:p-4",
+        "absolute inset-0 z-20 flex flex-col p-2 pb-20 backdrop-blur-sm sm:p-4 sm:pb-20",
         "bg-ink-950/80",
         !open && "hidden",
       )}
@@ -809,7 +985,7 @@ function AnsweringBar({
   onAgain: () => void;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-4 z-30 flex justify-center px-4">
+    <div className="pointer-events-none absolute inset-x-0 bottom-20 z-40 flex justify-center px-4">
       <div className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-2xl border border-gold-500/60 bg-ink-900/95 px-4 py-2.5 shadow-soft backdrop-blur">
         <Avatar name={student.name} src={student.avatar ?? undefined} size={34} className="ring-gold-500" />
         <div className="mr-2">
@@ -881,7 +1057,7 @@ function ExternalPresentPanel({
         </div>
         {top.length === 0 ? (
           <p className="mt-3 text-sm text-ink-400">
-            Chưa cộng điểm cho ai — chạm học viên ở cột bên phải là cộng.
+            Chưa cộng điểm cho ai — mở nút “Học viên” trên thanh trên rồi chạm tên là cộng.
           </p>
         ) : (
           <div className="mt-3 space-y-2">

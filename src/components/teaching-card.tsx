@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   ClipboardCheck,
   ListChecks,
-  Presentation,
   Radio,
   Timer,
   User,
@@ -17,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { sessionClassLabel, WEEKDAY_LABELS } from "@/lib/db";
+import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import {
   attendanceCount,
   pickLog,
@@ -136,11 +136,12 @@ export function TeachingCard({
           </Button>
         </Link>
         {!future && (
-          <Link href={`/classroom/${s.id}`} className="w-full sm:w-auto">
-            <Button size="sm" className="w-full sm:w-auto">
-              <Presentation className="h-3.5 w-3.5" /> Vào lớp dạy
-            </Button>
-          </Link>
+          <EnterClassroomButton
+            sessionId={s.id}
+            size="sm"
+            className="w-full sm:w-auto"
+            iconClassName="h-3.5 w-3.5"
+          />
         )}
         <Link href={`/teacher/sessions/${s.id}`} className="w-full sm:w-auto">
           <Button size="sm" variant="outline" className="w-full sm:w-auto">

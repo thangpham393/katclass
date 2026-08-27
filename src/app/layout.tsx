@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, Noto_Serif_SC } from "next/font/google";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { WarpProvider } from "@/components/classroom/warp-transition";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
@@ -33,7 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" className={`${beVietnam.variable} ${notoSerifSC.variable}`}>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {/* Hiệu ứng "xuyên không" khi vào lớp dạy — đặt ở root để nó sống xuyên qua lần chuyển trang */}
+          <WarpProvider>{children}</WarpProvider>
+        </AuthProvider>
       </body>
     </html>
   );
