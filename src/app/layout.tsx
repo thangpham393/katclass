@@ -21,6 +21,15 @@ export const metadata: Metadata = {
   title: "KAT CLASS · Học tiếng Trung thông minh",
   description:
     "Nền tảng học và quản lý trung tâm tiếng Trung của KAT Education — lớp học, điểm danh, từ vựng, flashcard, bài tập về nhà.",
+  applicationName: "KAT CLASS",
+  manifest: "/manifest.webmanifest",
+  // iOS bỏ qua manifest: muốn mở toàn màn hình từ màn hình chính thì phải khai
+  // riêng ở đây (icon lấy từ src/app/apple-icon.png).
+  appleWebApp: {
+    capable: true,
+    title: "KAT CLASS",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 /** `viewportFit: cover` để `env(safe-area-inset-*)` có giá trị trên iPhone tai thỏ. */
@@ -28,6 +37,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#2549ec",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
