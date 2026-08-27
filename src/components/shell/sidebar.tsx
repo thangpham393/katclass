@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -25,6 +25,8 @@ import {
   CalendarOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { permissionForPath } from "@/lib/permissions";
+import { useAuth } from "@/components/auth/auth-provider";
 import type { Role } from "@/lib/types";
 import { Logo } from "@/components/brand/logo";
 
@@ -101,19 +103,15 @@ const parentNav: NavEntry[] = [
 ];
 
 /**
- * Quản lý hành chính dùng chung khu quản trị nhưng KHÔNG có mục lương /
- * bảng công tiền của giáo viên — chỉ admin và kế toán mới thấy
- * (chặn thật ở RLS `can_view_pay` + guard trang /admin/payroll).
+ * Hành chính và kế toán dùng chung menu khu quản trị với admin — mục nào hiện
+ * là do bảng quyền quyết định (lọc trong `SidebarNav`), không cắt cứng ở đây
+ * nữa. Nhờ vậy bật quyền cho một vai trò là menu tự mọc ra.
  */
-const staffNav: NavEntry[] = adminNav.filter(
-  (e) => isGroup(e) || e.href !== "/admin/payroll",
-);
-
 export const navByRole: Record<Role, NavEntry[]> = {
   student: studentNav,
   teacher: teacherNav,
   admin: adminNav,
-  staff: staffNav,
+  staff: adminNav,
   accountant: adminNav,
   parent: parentNav,
 };
@@ -156,7 +154,21 @@ export function SidebarNav({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
-  const nav = navByRole[role];
+  const { can } = useAuth();
+
+  // Ẩn mục không có quyền — dùng đúng bảng tra của AuthGuard nên menu và
+  // chặn truy cập không bao giờ lệch nhau.
+  const nav = useMemo(() => {
+    const visible = (l: NavLink) => {
+      const perm = permissionForPath(l.href);
+      return perm === null || can(perm);
+    };
+    return navByRole[role]
+      .map((e) =>
+        isGroup(e) ? { ...e, children: e.children.filter(visible) } : e,
+      )
+      .filter((e) => (isGroup(e) ? e.children.length > 0 : visible(e)));
+  }, [role, can]);
 
   return (
     <>

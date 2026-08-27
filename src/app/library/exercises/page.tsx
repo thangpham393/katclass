@@ -53,8 +53,8 @@ function answerPreview(q: QuestionRow, a: QuestionAnswer | undefined): string {
  * Chọn giáo trình → xem bộ đề của từng bài → giao thẳng cho lớp.
  */
 export default function ExerciseLibraryPage() {
-  const { user } = useAuth();
-  const canManage = user?.role === "admin" || user?.role === "staff";
+  const { user, can } = useAuth();
+  const canManage = can("textbooks.manage");
   const canAssign = user?.role === "teacher";
 
   const textbooks = useLoad(fetchTextbooks);

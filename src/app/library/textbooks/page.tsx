@@ -37,9 +37,9 @@ const SERIES_ICONS: Record<TextbookSeries, typeof BookOpen> = {
 };
 
 export default function TextbookLibraryPage() {
-  const { user } = useAuth();
-  // Giáo viên xem chung kho này nhưng không được nhập / xóa giáo trình.
-  const canManage = user?.role === "admin" || user?.role === "staff";
+  const { user, can } = useAuth();
+  // Xem chung kho, nhưng nhập / xóa giáo trình theo quyền được bật.
+  const canManage = can("textbooks.manage");
   const textbooks = useLoad(fetchTextbooks);
   const fileRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);

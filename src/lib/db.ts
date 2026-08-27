@@ -206,15 +206,6 @@ export async function fetchProfilesByRole(role: Role): Promise<ProfileRow[]> {
   return data;
 }
 
-/** Chỉ các hồ sơ ĐÃ có tài khoản đăng nhập (để phân quyền). */
-export async function fetchAccountProfiles(): Promise<ProfileRow[]> {
-  const { data, error } = await branchFilter(
-    getSupabase().from("profiles").select("*").not("user_id", "is", null),
-  ).order("created_at", { ascending: false });
-  if (error) throw error;
-  return data;
-}
-
 /** Chỉ admin có quyền (RLS chặn các role khác). */
 export async function updateProfileRole(userId: string, role: Role) {
   const { error } = await getSupabase().from("profiles").update({ role }).eq("id", userId);
