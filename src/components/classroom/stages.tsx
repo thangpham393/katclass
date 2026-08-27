@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Dices,
@@ -9,6 +11,8 @@ import {
   Eye,
   EyeOff,
   FolderOpen,
+  Link as LinkIcon,
+  MonitorOff,
   MonitorUp,
   Pause,
   Play,
@@ -30,6 +34,8 @@ import {
   type EmbedMode,
 } from "@/lib/db-classroom";
 import { fetchVocabItems, type LessonDetail, type VocabRow } from "@/lib/db-content";
+import { fetchLessonDecks, type LessonDeck } from "@/lib/db-decks";
+import { DeckStage } from "./deck-stage";
 
 /* ===================== Trình chiếu slide ===================== */
 
@@ -44,16 +50,24 @@ interface LocalDeck {
  * Chiếu slide của bài học đã gán cho buổi (Canva/Google Slides nhúng iframe),
  * link dán tạm, HOẶC file PDF/ảnh mở thẳng từ máy giáo viên — đường lui khi
  * slide quá nặng, Google từ chối xem trước hoặc phòng học mất mạng.
+ *
+ * Slide là nhân vật chính: khung chiếu chiếm trọn vùng nội dung, còn mọi nút
+ * điều khiển (chọn nguồn, dán link, nhận màn hình, file từ máy) được bắn lên
+ * topbar qua `controlsHost`. Ở chế độ trình chiếu, cha truyền `controlsHost`
+ * null → không có nút nào được dựng, màn hình sạch hoàn toàn.
  */
 export function SlideStage({
   sessionSlide,
   lessons,
   onOpen,
+  controlsHost,
 }: {
   /** Link slide giáo viên chuẩn bị sẵn cho buổi (ưu tiên hơn slide của bài học). */
   sessionSlide?: string | null;
   lessons: LessonDetail[];
   onOpen: (lesson: LessonDetail) => void;
+  /** Ô trên topbar để cắm thanh điều khiển vào; null = ẩn (chế độ trình chiếu). */
+  controlsHost?: HTMLElement | null;
 }) {
   const withSlide = lessons.filter((l) => l.slide_embed_url);
   const [current, setCurrent] = useState<string>(sessionSlide ? "__session" : withSlide[0]?.id ?? "");
@@ -62,12 +76,34 @@ export function SlideStage({
   const [mode, setMode] = useState<EmbedMode>("auto");
   const [reloadKey, setReloadKey] = useState(0);
   const [local, setLocal] = useState<LocalDeck | null>(null);
+  /** Bộ slide có tiếng đã nạp sẵn trong thư viện cho các bài của buổi này. */
+  const [decks, setDecks] = useState<LessonDeck[]>([]);
+  const [deck, setDeck] = useState<LessonDeck | null>(null);
   const [page, setPage] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
   const [sharing, setSharing] = useState(false);
   const [shareError, setShareError] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  /** Menu đang mở trên topbar: chọn nguồn slide hoặc ô dán link. */
+  const [menu, setMenu] = useState<"deck" | "link" | null>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  // Bộ slide của các bài đã gán cho buổi — ưu tiên chiếu vì có sẵn nút tiếng
+  useEffect(() => {
+    const ids = lessons.map((l) => l.id);
+    if (!ids.length) return;
+    let dead = false;
+    fetchLessonDecks(ids)
+      .then((rows) => {
+        if (!dead) setDecks(rows);
+      })
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessons.map((l) => l.id).join(",")]);
 
   // Thu hồi blob URL khi đổi/đóng file để không rò bộ nhớ trong buổi dài
   useEffect(() => {
@@ -96,8 +132,17 @@ export function SlideStage({
 
   function openLocal(files: FileList | null) {
     if (!files?.length) return;
+    setShareError(null);
+    setDeck(null);
     local?.urls.forEach((u) => URL.revokeObjectURL(u));
     const list = Array.from(files);
+    const deck = list.find((f) => /\.pptx?$/i.test(f.name));
+    if (deck) {
+      // Vẽ lại .pptx ngay trong trình duyệt cho ra bố cục vỡ (chữ bị bẻ dọc),
+      // nên slide PowerPoint đi đường thư viện: nạp sẵn PDF + tiếng một lần.
+      setShareError("File PowerPoint chiếu qua Thư viện: vào Thư viện › Bài học › Bộ slide có tiếng để nạp .pptx + bản PDF một lần, sau đó chọn ngay trên thanh này.");
+      return;
+    }
     const pdf = list.find((f) => f.type === "application/pdf" || /\.pdf$/i.test(f.name));
     if (pdf) {
       setLocal({ name: pdf.name, kind: "pdf", urls: [URL.createObjectURL(pdf)] });
@@ -138,6 +183,7 @@ export function SlideStage({
       streamRef.current = stream;
       setSharing(true);
       closeLocal();
+      setDeck(null);
       stream.getVideoTracks()[0]?.addEventListener("ended", () => {
         streamRef.current = null;
         setSharing(false);
@@ -175,6 +221,17 @@ export function SlideStage({
     setLocal(null);
   }
 
+  /** Chiếu một bộ slide của thư viện: tắt file máy / màn hình đang soi. */
+  function openDeck(d: LessonDeck) {
+    closeLocal();
+    stopShare();
+    setAdhocUrl("");
+    setDeck(d);
+    setMenu(null);
+    const owner = lessons.find((l) => l.id === d.lesson_id);
+    if (owner) onOpen(owner);
+  }
+
   useEffect(() => {
     if (!current && sessionSlide) {
       setCurrent("__session");
@@ -194,245 +251,370 @@ export function SlideStage({
   // Nguồn biết chắc bị chặn nhúng (OneDrive/SharePoint) → chỉ dẫn thay vì iframe lỗi
   const blocked = embedBlockReason(url);
 
-  return (
-    <div className="flex h-full flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-2">
-        {sessionSlide && (
-          <button
-            onClick={() => {
-              setCurrent("__session");
-              setAdhocUrl("");
-            }}
-            className={cn(
-              "rounded-lg px-3 py-1.5 text-sm font-semibold",
-              current === "__session" && !adhocUrl
-                ? "bg-brand-600 text-white"
-                : "bg-ink-800 text-ink-100 hover:bg-ink-700",
-            )}
-            title="Slide bạn đã chuẩn bị trước cho buổi này"
-          >
-            ★ Slide của buổi
-          </button>
-        )}
-        {withSlide.map((l) => (
-          <button
-            key={l.id}
-            onClick={() => {
-              setCurrent(l.id);
-              setAdhocUrl("");
-              onOpen(l);
-            }}
-            className={cn(
-              "rounded-lg px-3 py-1.5 text-sm font-semibold",
-              l.id === current && !adhocUrl
-                ? "bg-brand-600 text-white"
-                : "bg-ink-800 text-ink-100 hover:bg-ink-700",
-            )}
-          >
-            {l.unit ? `Bài ${l.unit}` : ""} {l.title}
-          </button>
-        ))}
-        <div className="ml-auto flex items-center gap-2">
-          <input
-            value={adhoc}
-            onChange={(e) => setAdhoc(e.target.value)}
-            placeholder="Dán link Google Slides / Drive / Canva / YouTube…"
-            className="h-9 w-56 rounded-lg border border-ink-700 bg-ink-900 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-          />
-          <Button size="sm" variant="secondary" onClick={() => setAdhocUrl(adhoc.trim())} disabled={!adhoc.trim()}>
-            Chiếu
-          </Button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept="application/pdf,image/*"
-            multiple
-            className="hidden"
-            onChange={(e) => {
-              openLocal(e.target.files);
-              e.target.value = "";
-            }}
-          />
-          <button
-            onClick={sharing ? stopShare : startShare}
-            className={cn(
-              "inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold",
-              sharing ? "bg-gold-600 text-white hover:bg-gold-700" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
-            )}
-            title="Chiếu bằng PowerPoint trên máy rồi soi cửa sổ đó vào đây — giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên"
-          >
-            <MonitorUp className="h-4 w-4" /> {sharing ? "Dừng nhận màn hình" : "Nhận màn hình"}
-          </button>
-          <button
-            onClick={() => fileInput.current?.click()}
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-800 px-3 text-sm font-semibold text-ink-100 hover:bg-ink-700"
-            title="Chiếu file PDF hoặc ảnh slide ngay từ máy — không cần mạng, không giới hạn dung lượng"
-          >
-            <FolderOpen className="h-4 w-4" /> File từ máy
-          </button>
-          {url && (
-            <button
-              onClick={() =>
-                window.open(
-                  presentUrl(url),
-                  "kat-present",
-                  "noopener,noreferrer,width=1280,height=760",
-                )
-              }
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ink-800 px-3 text-sm font-semibold text-ink-100 hover:bg-ink-700"
-              title="Mở cửa sổ trình chiếu riêng (kéo sang màn hình máy chiếu) — dùng khi slide không nhúng được"
-            >
-              <ExternalLink className="h-4 w-4" /> Cửa sổ trình chiếu
-            </button>
-          )}
-        </div>
-      </div>
+  const deckLabel = deck
+    ? deck.name
+    : adhocUrl
+    ? "Link vừa dán"
+    : current === "__session"
+      ? "Slide của buổi"
+      : lesson
+        ? `${lesson.unit ? `Bài ${lesson.unit}: ` : ""}${lesson.title}`
+        : "Chọn slide";
+  const hasDecks = Boolean(sessionSlide) || withSlide.length > 0 || decks.length > 0;
 
-      {shareError && <div className="-mb-1 text-[11px] font-semibold text-gold-300">{shareError}</div>}
+  const btn =
+    "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-ink-700 bg-ink-900 px-2.5 text-[13px] font-semibold text-ink-100 transition-colors hover:bg-ink-800";
 
-      {isGoogle && !local && !sharing && (
-        <div className="-mb-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-400">
-          <span className="font-semibold text-ink-300">Không hiện được slide?</span>
-          {(["auto", "slides", "drive", "office"] as EmbedMode[]).map((m) => (
-            <button
-              key={m}
-              onClick={() => {
-                setMode(m);
-                setReloadKey((k) => k + 1);
-              }}
-              className={cn(
-                "rounded-md px-2 py-1 font-semibold",
-                mode === m ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+  const controls = (
+    <div className="flex items-center gap-2">
+      {hasDecks && (
+        <div className="relative">
+          <button
+            onClick={() => setMenu((m) => (m === "deck" ? null : "deck"))}
+            className={cn(btn, "max-w-[16rem]")}
+            title="Chọn slide đang chiếu"
+          >
+            <Presentation className="h-4 w-4 shrink-0 text-brand-300" />
+            <span className="truncate">{deckLabel}</span>
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
+          </button>
+          {menu === "deck" && (
+            <div className="absolute left-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-ink-700 bg-ink-900 p-1 shadow-soft">
+              {decks.map((d) => (
+                <DeckItem
+                  key={d.id}
+                  label={`♪ ${d.name}`}
+                  active={deck?.id === d.id}
+                  onClick={() => openDeck(d)}
+                />
+              ))}
+              {sessionSlide && (
+                <DeckItem
+                  label="★ Slide của buổi"
+                  active={current === "__session" && !adhocUrl}
+                  onClick={() => {
+                    setCurrent("__session");
+                    setAdhocUrl("");
+                    setDeck(null);
+                    setMenu(null);
+                  }}
+                />
               )}
-              title={
-                m === "drive"
-                  ? "Dùng cho file PowerPoint gốc hoặc slide nặng mà Google Slides báo không xem trước được"
-                  : m === "slides"
-                    ? "Trình xem Google Slides"
-                    : m === "office"
-                      ? "Trình xem Office Online đọc thẳng file .pptx trên Drive — thử khi Google báo tệp quá lớn"
-                      : "Tự chọn theo loại file"
-              }
-            >
-              {EMBED_MODE_LABELS[m]}
-            </button>
-          ))}
-          <button
-            onClick={() => setReloadKey((k) => k + 1)}
-            className="inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold text-ink-200 hover:bg-ink-700"
-          >
-            <RotateCcw className="h-3 w-3" /> Tải lại
-          </button>
-          <span>
-            · Slide phải chia sẻ “Bất kỳ ai có đường liên kết”. Google báo “tệp quá lớn không
-            xem trước được” thì thử kiểu “Office (.pptx)”, hoặc chiếu thẳng bằng nút “File từ
-            máy” (PDF/ảnh — không giới hạn dung lượng, không cần mạng).
-          </span>
+              {withSlide.map((l) => (
+                <DeckItem
+                  key={l.id}
+                  label={`${l.unit ? `Bài ${l.unit}: ` : ""}${l.title}`}
+                  active={l.id === current && !adhocUrl}
+                  onClick={() => {
+                    setCurrent(l.id);
+                    setAdhocUrl("");
+                    setDeck(null);
+                    setMenu(null);
+                    onOpen(l);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-800 bg-black">
-        {sharing ? (
-          <>
-            <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-contain" />
-            <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-ink-950/80 px-3 py-2 text-xs text-ink-200 backdrop-blur">
-              <span className="font-semibold text-gold-300">● Đang soi màn hình máy tính</span>
-              <span className="text-ink-400">
-                Bấm chuyển slide ngay trên PowerPoint (hoặc bút trình chiếu) — hình ở đây tự cập nhật.
-              </span>
-              <button
-                onClick={stopShare}
-                className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+      <div className="relative">
+        <button
+          onClick={() => setMenu((m) => (m === "link" ? null : "link"))}
+          className={cn(btn, menu === "link" && "bg-ink-800")}
+          title="Dán link Google Slides / Drive / Canva / YouTube để chiếu ngay"
+        >
+          <LinkIcon className="h-4 w-4" />
+          <span className="hidden lg:inline">Dán link Google Slides / Drive</span>
+          <span className="lg:hidden">Dán link</span>
+        </button>
+        {menu === "link" && (
+          <div className="absolute left-0 top-full z-50 mt-2 w-80 rounded-xl border border-ink-700 bg-ink-900 p-3 shadow-soft">
+            <input
+              autoFocus
+              value={adhoc}
+              onChange={(e) => setAdhoc(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && adhoc.trim()) {
+                  setAdhocUrl(adhoc.trim());
+                  setDeck(null);
+                  setMenu(null);
+                }
+              }}
+              placeholder="Dán link Google Slides / Drive / Canva / YouTube…"
+              className="h-9 w-full rounded-lg border border-ink-700 bg-ink-950 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            />
+            <div className="mt-2 flex items-center gap-2">
+              <Button
+                size="sm"
+                onClick={() => {
+                  setAdhocUrl(adhoc.trim());
+                  setDeck(null);
+                  setMenu(null);
+                }}
+                disabled={!adhoc.trim()}
               >
-                <X className="h-3.5 w-3.5" /> Dừng
-              </button>
-            </div>
-          </>
-        ) : local ? (
-          <>
-            {local.kind === "pdf" ? (
-              <iframe src={`${local.urls[0]}#toolbar=1&view=FitH`} className="h-full w-full" title={local.name} />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={local.urls[page]} alt={`Slide ${page + 1}`} className="h-full w-full object-contain" />
-            )}
-            <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-ink-950/80 px-3 py-2 text-xs text-ink-200 backdrop-blur">
-              <span className="truncate font-semibold text-white">{local.name}</span>
-              {local.kind === "images" && (
-                <span className="flex items-center gap-1">
-                  <button
-                    onClick={() => setPage((p) => Math.max(0, p - 1))}
-                    disabled={page === 0}
-                    className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <span className="tabular-nums">
-                    {page + 1}/{local.urls.length}
-                  </span>
-                  <button
-                    onClick={() => setPage((p) => Math.min(local.urls.length - 1, p + 1))}
-                    disabled={page >= local.urls.length - 1}
-                    className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                  <span className="text-ink-400">· phím ← →</span>
-                </span>
-              )}
-              <button
-                onClick={closeLocal}
-                className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
-              >
-                <X className="h-3.5 w-3.5" /> Đóng file
-              </button>
-            </div>
-          </>
-        ) : url && blocked ? (
-          <div className="grid h-full place-items-center p-8 text-center text-ink-300">
-            <div className="max-w-lg">
-              <div className="mb-2 text-lg font-bold text-white">Nguồn này chặn nhúng</div>
-              <p className="text-sm leading-relaxed">{blocked}</p>
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <Button
-                  onClick={() =>
-                    window.open(url, "kat-present", "noopener,noreferrer,width=1280,height=760")
-                  }
+                Chiếu link này
+              </Button>
+              {adhocUrl && (
+                <button
+                  onClick={() => {
+                    setAdhocUrl("");
+                    setAdhoc("");
+                  }}
+                  className="rounded-lg bg-ink-800 px-2.5 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
                 >
-                  <ExternalLink className="h-4 w-4" /> Mở cửa sổ trình chiếu
-                </Button>
-                <Button variant="secondary" onClick={() => fileInput.current?.click()}>
-                  <FolderOpen className="h-4 w-4" /> Chiếu file từ máy
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : url ? (
-          <iframe
-            key={`${embed}-${reloadKey}`}
-            src={embed}
-            className="h-full w-full"
-            allow="fullscreen; autoplay"
-            allowFullScreen
-            title="Slide bài học"
-          />
-        ) : (
-          <div className="grid h-full place-items-center p-8 text-center text-ink-300">
-            <div>
-              <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
-              <div className="font-semibold text-white">Buổi này chưa có slide</div>
-              <p className="mx-auto mt-1 max-w-md text-sm">
-                Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
-                Slides / Drive / Canva / YouTube vào ô trên (hệ thống tự đổi sang dạng nhúng),
-                bấm <b className="text-white">Nhận màn hình</b> để soi cửa sổ PowerPoint đang
-                chạy trên máy (giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên), hoặc{" "}
-                <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
-              </p>
+                  Bỏ link
+                </button>
+              )}
             </div>
           </div>
         )}
       </div>
+
+      <button
+        onClick={() =>
+          url && window.open(presentUrl(url), "kat-present", "noopener,noreferrer,width=1280,height=760")
+        }
+        disabled={!url}
+        className={cn(btn, "disabled:opacity-40")}
+        title="Mở cửa sổ trình chiếu riêng để kéo sang màn hình máy chiếu"
+      >
+        <MonitorOff className="h-4 w-4" />
+        <span className="hidden lg:inline">Chiếu ra màn hình</span>
+      </button>
+
+      <button
+        onClick={() => fileInput.current?.click()}
+        className={btn}
+        title="Chiếu file PDF hoặc ảnh slide ngay từ máy — không cần mạng, không giới hạn dung lượng"
+      >
+        <FolderOpen className="h-4 w-4" />
+        <span className="hidden lg:inline">File từ máy</span>
+      </button>
+
+      <button
+        onClick={sharing ? stopShare : startShare}
+        className={cn(btn, sharing && "border-gold-500/60 bg-gold-600/20 text-gold-200")}
+        title="Chiếu bằng PowerPoint trên máy rồi soi cửa sổ đó vào đây — giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên"
+      >
+        <MonitorUp className="h-4 w-4" />
+        <span className="hidden xl:inline">{sharing ? "Dừng nhận màn hình" : "Nhận màn hình"}</span>
+      </button>
     </div>
+  );
+
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      {/* Ô chọn file dùng chung cho nút trên topbar và nút gợi ý giữa khung */}
+      <input
+        ref={fileInput}
+        type="file"
+        accept=".pptx,.ppt,application/pdf,image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => {
+          openLocal(e.target.files);
+          e.target.value = "";
+        }}
+      />
+      {controlsHost ? createPortal(controls, controlsHost) : null}
+
+      {deck ? (
+        <DeckStage deck={deck} onClose={() => setDeck(null)} />
+      ) : sharing ? (
+        <>
+          <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-contain" />
+          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-ink-950/70 px-3 py-1.5 text-xs text-ink-200 backdrop-blur">
+            <span className="font-semibold text-gold-300">● Đang soi màn hình máy tính</span>
+            <span className="hidden text-ink-400 sm:inline">
+              Bấm chuyển slide ngay trên PowerPoint (hoặc bút trình chiếu) — hình ở đây tự cập nhật.
+            </span>
+            <button
+              onClick={stopShare}
+              className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+            >
+              <X className="h-3.5 w-3.5" /> Dừng
+            </button>
+          </div>
+        </>
+      ) : local ? (
+        <>
+          {local.kind === "pdf" ? (
+            <iframe src={`${local.urls[0]}#toolbar=1&view=FitH`} className="h-full w-full" title={local.name} />
+          ) : (
+            // Bấm lên ảnh để lật trang như trình chiếu: mép trái lùi, còn lại tiến
+            <div
+              onClick={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                const back = e.clientX - r.left < r.width * 0.2;
+                setPage((p) => Math.max(0, Math.min(back ? p - 1 : p + 1, local.urls.length - 1)));
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                setPage((p) => Math.max(0, p - 1));
+              }}
+              className="h-full w-full cursor-pointer"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={local.urls[page]} alt={`Slide ${page + 1}`} className="h-full w-full object-contain" />
+            </div>
+          )}
+          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-ink-950/70 px-3 py-1.5 text-xs text-ink-200 backdrop-blur">
+            <span className="truncate font-semibold text-white">{local.name}</span>
+            {local.kind === "images" && (
+              <span className="flex items-center gap-1">
+                <button
+                  onClick={() => setPage((p) => Math.max(0, p - 1))}
+                  disabled={page === 0}
+                  className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <span className="tabular-nums">
+                  {page + 1}/{local.urls.length}
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(local.urls.length - 1, p + 1))}
+                  disabled={page >= local.urls.length - 1}
+                  className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+                <span className="hidden text-ink-400 sm:inline">· phím ← →</span>
+              </span>
+            )}
+            <button
+              onClick={closeLocal}
+              className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+            >
+              <X className="h-3.5 w-3.5" /> Đóng file
+            </button>
+          </div>
+        </>
+      ) : url && blocked ? (
+        <div className="grid h-full place-items-center p-8 text-center text-ink-300">
+          <div className="max-w-lg">
+            <div className="mb-2 text-lg font-bold text-white">Nguồn này chặn nhúng</div>
+            <p className="text-sm leading-relaxed">{blocked}</p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <Button
+                onClick={() =>
+                  window.open(url, "kat-present", "noopener,noreferrer,width=1280,height=760")
+                }
+              >
+                <ExternalLink className="h-4 w-4" /> Mở cửa sổ trình chiếu
+              </Button>
+              <Button variant="secondary" onClick={() => fileInput.current?.click()}>
+                <FolderOpen className="h-4 w-4" /> Chiếu file từ máy
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : url ? (
+        <iframe
+          key={`${embed}-${reloadKey}`}
+          src={embed}
+          className="h-full w-full"
+          allow="fullscreen; autoplay"
+          allowFullScreen
+          title="Slide bài học"
+        />
+      ) : (
+        <div className="grid h-full place-items-center p-8 text-center text-ink-300">
+          <div>
+            <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
+            <div className="font-semibold text-white">Buổi này chưa có slide</div>
+            <p className="mx-auto mt-1 max-w-md text-sm">
+              Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
+              Slides / Drive / Canva / YouTube bằng nút <b className="text-white">Dán link</b> trên
+              thanh trên, bấm <b className="text-white">Nhận màn hình</b> để soi cửa sổ PowerPoint
+              đang chạy trên máy (giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên), hoặc{" "}
+              <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {shareError && (
+        <div className="absolute inset-x-0 top-0 bg-gold-600/90 px-3 py-1.5 text-center text-xs font-semibold text-white">
+          {shareError}
+        </div>
+      )}
+
+      {/*
+        Mẹo gỡ lỗi nhúng Google: thu về một chip nhỏ nổi trên slide thay vì một
+        hàng chữ chiếm chiều cao — slide vẫn full khung.
+      */}
+      {isGoogle && !local && !deck && !sharing && controlsHost && (
+        <div className="absolute bottom-3 left-3 z-10 max-w-[min(30rem,90vw)]">
+          {helpOpen ? (
+            <div className="rounded-xl border border-ink-700 bg-ink-950/95 p-3 text-[11px] text-ink-300 shadow-soft backdrop-blur">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-ink-100">Không hiện được slide?</span>
+                <button
+                  onClick={() => setHelpOpen(false)}
+                  className="ml-auto grid h-6 w-6 place-items-center rounded-md bg-ink-800 hover:bg-ink-700"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {(["auto", "slides", "drive", "office"] as EmbedMode[]).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => {
+                      setMode(m);
+                      setReloadKey((k) => k + 1);
+                    }}
+                    className={cn(
+                      "rounded-md px-2 py-1 font-semibold",
+                      mode === m ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+                    )}
+                  >
+                    {EMBED_MODE_LABELS[m]}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setReloadKey((k) => k + 1)}
+                  className="inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold text-ink-200 hover:bg-ink-700"
+                >
+                  <RotateCcw className="h-3 w-3" /> Tải lại
+                </button>
+              </div>
+              <p className="mt-2 leading-relaxed">
+                Slide phải chia sẻ “Bất kỳ ai có đường liên kết”. Google báo “tệp quá lớn không xem
+                trước được” thì thử kiểu “Office (.pptx)”, hoặc chiếu thẳng bằng nút “File từ máy”
+                (PDF/ảnh — không giới hạn dung lượng, không cần mạng).
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={() => setHelpOpen(true)}
+              className="rounded-lg border border-ink-700 bg-ink-950/80 px-2.5 py-1.5 text-[11px] font-semibold text-ink-300 backdrop-blur hover:text-white"
+            >
+              Không hiện được slide?
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Một dòng trong menu chọn nguồn slide trên topbar. */
+function DeckItem({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold",
+        active ? "bg-brand-600 text-white" : "text-ink-100 hover:bg-ink-800",
+      )}
+    >
+      <span className="truncate">{label}</span>
+    </button>
   );
 }
 

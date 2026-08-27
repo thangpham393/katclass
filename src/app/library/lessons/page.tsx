@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BookOpen, Layers, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { BookOpen, Layers, Pencil, Plus, Presentation, Search, Trash2 } from "lucide-react";
+import { LessonDeckModal } from "@/components/library/lesson-deck-modal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,6 +36,7 @@ export default function LessonLibraryPage() {
   const [courseFilter, setCourseFilter] = useState("");
   const [textbookFilter, setTextbookFilter] = useState("");
   const [editing, setEditing] = useState<LessonRow | "new" | null>(null);
+  const [pickingDeck, setPickingDeck] = useState<LessonRow | null>(null);
   const [pickingVocab, setPickingVocab] = useState<LessonRow | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -145,6 +147,14 @@ export default function LessonLibraryPage() {
                   <Button
                     variant="outline"
                     size="sm"
+                    title="Nạp bộ slide có tiếng (PDF + .pptx) để chiếu trong lớp"
+                    onClick={() => setPickingDeck(l)}
+                  >
+                    <Presentation className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     className="text-rose-600 hover:bg-rose-50"
                     onClick={() => handleDelete(l)}
                   >
@@ -166,6 +176,14 @@ export default function LessonLibraryPage() {
             setEditing(null);
             lessons.reload();
           }}
+        />
+      )}
+
+      {pickingDeck && (
+        <LessonDeckModal
+          lesson={pickingDeck}
+          onClose={() => setPickingDeck(null)}
+          onChanged={() => lessons.reload()}
         />
       )}
 
