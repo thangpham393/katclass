@@ -106,10 +106,10 @@ export default function LoginPage() {
         </div>
 
         <div className="relative flex items-center gap-3 text-xs text-white/50">
-          <div className="h-8 w-8 overflow-hidden rounded-md">
+          <div className="h-8 w-8 overflow-hidden rounded-md bg-white p-0.5">
             <LogoMark />
           </div>
-          KAT Education · Tiếng Trung · Du học · Kỹ năng
+          KAT Education · Tiếng Trung · Du học
         </div>
       </div>
 

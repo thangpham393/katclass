@@ -163,7 +163,7 @@ export default function LandingPage() {
 
       <footer className="container border-t py-8 text-sm text-muted-foreground">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>© 2026 KAT Education — Tiếng Trung · Du học · Kỹ năng.</div>
+          <div>© 2026 KAT Education — Tiếng Trung · Du học.</div>
           <div className="flex items-center gap-4">
             <a href="#" className="hover:text-foreground">Điều khoản</a>
             <a href="#" className="hover:text-foreground">Bảo mật</a>
