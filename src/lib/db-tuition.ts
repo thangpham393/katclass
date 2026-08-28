@@ -169,6 +169,18 @@ export async function fetchPackagePayments(packageId: string): Promise<PaymentRo
   return data as PaymentRow[];
 }
 
+/** Toàn bộ lần đóng tiền của một học viên (trang học phí của học viên/PH). */
+export async function fetchStudentPayments(studentId: string): Promise<PaymentRow[]> {
+  const { data, error } = await getSupabase()
+    .from("payments")
+    .select("id, package_id, student_id, amount, method, receipt_no, note, paid_at")
+    .eq("student_id", studentId)
+    .order("paid_at", { ascending: false })
+    .limit(200);
+  if (error) throw error;
+  return data as PaymentRow[];
+}
+
 /** Biên lai đầy đủ để in: thanh toán + gói + học viên + người thu. */
 export interface ReceiptRow extends PaymentRow {
   student: { id: string; name: string; student_code: string | null; phone: string | null } | null;

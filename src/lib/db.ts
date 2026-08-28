@@ -126,25 +126,32 @@ export function classTeachers(c: Pick<ClassRow, "teacher" | "class_teachers">): 
 
 /* ============ Dashboard ============ */
 
+/** Số học viên đang chờ xếp buổi bù — dùng cho thẻ dashboard và badge menu. */
+export async function fetchPendingMakeupCount(): Promise<number> {
+  const { count, error } = await branchFilter(
+    getSupabase()
+      .from("makeup_credits")
+      .select("id, student:profiles!makeup_credits_student_id_fkey!inner ( id )", { count: "exact", head: true })
+      .eq("status", "pending"),
+    "student.branch_id",
+  );
+  if (error) throw error;
+  return count ?? 0;
+}
+
 export async function fetchDashboardStats() {
   const supabase = getSupabase();
   const [students, teachers, activeClasses, pendingMakeups] = await Promise.all([
     branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "student")),
     branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "teacher")),
     branchFilter(supabase.from("classes").select("id", { count: "exact", head: true }).eq("status", "active")),
-    branchFilter(
-      supabase
-        .from("makeup_credits")
-        .select("id, student:profiles!makeup_credits_student_id_fkey!inner ( id )", { count: "exact", head: true })
-        .eq("status", "pending"),
-      "student.branch_id",
-    ),
+    fetchPendingMakeupCount(),
   ]);
   return {
     students: students.count ?? 0,
     teachers: teachers.count ?? 0,
     activeClasses: activeClasses.count ?? 0,
-    pendingMakeups: pendingMakeups.count ?? 0,
+    pendingMakeups,
   };
 }
 
@@ -943,6 +950,11 @@ export interface MakeupCreditRow {
     id: string; date: string; start_time: string; end_time: string;
     class: { id: string; name: string } | null;
   } | null;
+  /** Ca bù học viên tự chọn khi đăng ký (0029) — mới là nguyện vọng. */
+  preferred_session: {
+    id: string; date: string; start_time: string; end_time: string;
+    class: { id: string; name: string } | null;
+  } | null;
 }
 
 export const MAKEUP_STATUS_LABELS: Record<MakeupCreditRow["status"], string> = {
@@ -957,7 +969,8 @@ const MAKEUP_SELECT = `
   id, status, note, created_at,
   student:profiles!makeup_credits_student_id_fkey!inner ( id, name, phone, avatar, student_code ),
   missed_session:sessions!makeup_credits_missed_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) ),
-  makeup_session:sessions!makeup_credits_makeup_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) )
+  makeup_session:sessions!makeup_credits_makeup_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) ),
+  preferred_session:sessions!makeup_credits_preferred_session_id_fkey ( id, date, start_time, end_time, class:classes ( id, name ) )
 `;
 
 export async function fetchMakeupCredits(statuses: MakeupCreditRow["status"][]): Promise<MakeupCreditRow[]> {

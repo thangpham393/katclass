@@ -213,6 +213,17 @@ export async function rejectChangeRequest(id: string, note: string | null, resol
   await resolveRequest(id, { status: "rejected", resolution_note: note, resolved_by: resolvedBy });
 }
 
+/** Số đơn của chính GV còn chờ duyệt (badge menu "Xin đổi lịch"). */
+export async function fetchMyPendingRequestCount(teacherId: string): Promise<number> {
+  const { count, error } = await getSupabase()
+    .from("session_change_requests")
+    .select("id", { count: "exact", head: true })
+    .eq("teacher_id", teacherId)
+    .eq("status", "pending");
+  if (error) throw error;
+  return count ?? 0;
+}
+
 /** Số yêu cầu chờ duyệt (badge trên dashboard admin). */
 export async function fetchPendingRequestCount(): Promise<number> {
   const { count, error } = await branchFilter(

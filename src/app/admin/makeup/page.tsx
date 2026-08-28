@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarClock, CalendarPlus, Check, Search, Undo2 } from "lucide-react";
+import { CalendarClock, CalendarOff, CalendarPlus, Check, Search, ThumbsDown, Undo2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,12 @@ import {
   type SessionRow,
 } from "@/lib/db";
 import { useLoad } from "@/lib/use-load";
+import { useAuth } from "@/components/auth/auth-provider";
+import {
+  fetchAbsenceRequests,
+  resolveAbsenceRequest,
+  type AbsenceRequestRow,
+} from "@/lib/db-absence";
 
 function fmtSession(s: { date: string; start_time: string; end_time: string } | null): string {
   if (!s) return "?";
@@ -37,12 +43,41 @@ function fmtSession(s: { date: string; start_time: string; end_time: string } | 
 }
 
 export default function AdminMakeupPage() {
+  const { user } = useAuth();
   const credits = useLoad(() => fetchMakeupCredits(["pending", "scheduled"]));
+  const absences = useLoad(() => fetchAbsenceRequests(["pending"]));
   const [assigning, setAssigning] = useState<MakeupCreditRow | null>(null);
+  const [busyRequest, setBusyRequest] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const pending = (credits.data ?? []).filter((c) => c.status === "pending");
   const scheduled = (credits.data ?? []).filter((c) => c.status === "scheduled");
+
+  /**
+   * Duyệt đơn xin nghỉ của học viên: trigger DB tự điểm danh "vắng có phép"
+   * cho buổi đó, rồi trigger cũ sinh lượt học bù → nạp lại cả hai danh sách.
+   */
+  async function handleResolveAbsence(req: AbsenceRequestRow, approve: boolean) {
+    if (!user) return;
+    const note = window.prompt(
+      approve
+        ? `Duyệt đơn xin nghỉ của ${req.student?.name ?? "học viên"}. Ghi chú gửi kèm (bỏ trống cũng được):`
+        : `Từ chối đơn của ${req.student?.name ?? "học viên"}. Lý do gửi cho học viên:`,
+      "",
+    );
+    if (note === null) return; // bấm Cancel
+    setBusyRequest(req.id);
+    setError(null);
+    try {
+      await resolveAbsenceRequest(req.id, approve ? "approved" : "rejected", note, user.id);
+      absences.reload();
+      credits.reload();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setBusyRequest(null);
+    }
+  }
 
   async function handleReset(credit: MakeupCreditRow) {
     if (!confirm(`Bỏ xếp bù cho ${credit.student.name}? Học viên quay lại danh sách chờ.`)) return;
@@ -77,6 +112,71 @@ export default function AdminMakeupPage() {
 
       {error && <ErrorNote message={error} />}
       {credits.error && <ErrorNote message={credits.error} />}
+      {absences.error && <ErrorNote message={absences.error} />}
+
+      {/* Đơn học viên tự gửi (0029) — duyệt xong mới thành lượt học bù */}
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            Đơn xin nghỉ của học viên{" "}
+            <Badge variant={(absences.data ?? []).length ? "gold" : "muted"} className="ml-1">
+              {(absences.data ?? []).length}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+          {absences.loading ? (
+            <LoadingRows rows={2} className="p-0" />
+          ) : (absences.data ?? []).length === 0 ? (
+            <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+              Không có đơn nào chờ duyệt. Học viên báo nghỉ trước ở mục “Đăng ký học bù” sẽ hiện tại đây.
+            </div>
+          ) : (
+            <div className="divide-y">
+              {(absences.data ?? []).map((r) => (
+                <div key={r.id} className="flex flex-wrap items-center gap-3 py-3">
+                  <Avatar name={r.student?.name ?? "?"} src={r.student?.avatar ?? undefined} size={38} />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-semibold">
+                      {r.student?.name ?? "?"}
+                      {r.student?.student_code && (
+                        <span className="ml-1.5 text-xs font-normal text-muted-foreground">
+                          {r.student.student_code}
+                        </span>
+                      )}
+                    </div>
+                    <div className="truncate text-xs text-muted-foreground">
+                      Xin nghỉ {fmtSession(r.session)} · {r.session?.class?.name ?? "?"}
+                      {r.reason ? ` — ${r.reason}` : ""}
+                    </div>
+                    {r.preferred_session && (
+                      <div className="truncate text-xs text-brand-700">
+                        Muốn học bù vào {fmtSession(r.preferred_session)} ·{" "}
+                        {r.preferred_session.class?.name ?? "buổi bù riêng"}
+                      </div>
+                    )}
+                  </div>
+                  <Button
+                    size="sm"
+                    disabled={busyRequest === r.id}
+                    onClick={() => handleResolveAbsence(r, true)}
+                  >
+                    <Check className="h-3.5 w-3.5" /> Duyệt nghỉ
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={busyRequest === r.id}
+                    onClick={() => handleResolveAbsence(r, false)}
+                  >
+                    <ThumbsDown className="h-3.5 w-3.5" /> Từ chối
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -109,6 +209,13 @@ export default function AdminMakeupPage() {
                     <div className="truncate text-xs text-muted-foreground">
                       Vắng buổi {fmtSession(c.missed_session)} · {c.missed_session?.class?.name ?? "?"}
                     </div>
+                    {c.preferred_session && (
+                      <div className="truncate text-xs text-brand-700">
+                        <CalendarOff className="mr-1 inline h-3 w-3" />
+                        Học viên chọn ca bù {fmtSession(c.preferred_session)} ·{" "}
+                        {c.preferred_session.class?.name ?? "buổi bù riêng"}
+                      </div>
+                    )}
                   </div>
                   <Button size="sm" onClick={() => setAssigning(c)}>
                     <CalendarClock className="h-3.5 w-3.5" /> Xếp bù
@@ -244,15 +351,16 @@ function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onS
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const preferredId = credit.preferred_session?.id ?? null;
+
   const candidates = useMemo(() => {
     // Không xếp bù vào chính buổi đã vắng
-    const list = (sessions.data ?? []).filter((s) => s.id !== credit.missed_session?.id);
-    if (!q.trim()) return list.slice(0, 50);
+    let list = (sessions.data ?? []).filter((s) => s.id !== credit.missed_session?.id);
     const needle = q.trim().toLowerCase();
-    return list
-      .filter((s) => sessionClassLabel(s).toLowerCase().includes(needle))
-      .slice(0, 50);
-  }, [sessions.data, q, credit.missed_session?.id]);
+    if (needle) list = list.filter((s) => sessionClassLabel(s).toLowerCase().includes(needle));
+    // Ca học viên tự chọn đưa lên đầu để khỏi phải dò trong danh sách dài
+    return [...list].sort((a, b) => Number(b.id === preferredId) - Number(a.id === preferredId)).slice(0, 50);
+  }, [sessions.data, q, credit.missed_session?.id, preferredId]);
 
   async function handlePick(s: SessionRow) {
     setBusy(s.id);
@@ -294,9 +402,10 @@ function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onS
           {candidates.map((s) => (
             <div key={s.id} className="flex items-center gap-3 rounded-lg border p-2.5">
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 truncate text-sm font-semibold">
+                <div className="flex flex-wrap items-center gap-1.5 truncate text-sm font-semibold">
                   {sessionClassLabel(s)}
                   {!s.class && <Badge variant="gold">Buổi bù riêng</Badge>}
+                  {s.id === preferredId && <Badge variant="jade">Học viên chọn</Badge>}
                 </div>
                 <div className="text-xs text-muted-foreground">
                   {fmtSession(s)}
