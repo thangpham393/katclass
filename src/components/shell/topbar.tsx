@@ -2,22 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { KeyRound, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/shell/notification-bell";
 import { BranchSwitcher } from "@/components/shell/branch-switcher";
 import { MobileNav } from "@/components/shell/mobile-nav";
 import { signOut } from "@/lib/auth";
-import type { Role, User } from "@/lib/types";
-
-const roleLabel: Record<Role, string> = {
-  student: "Học viên",
-  parent: "Phụ huynh",
-  teacher: "Giáo viên",
-  staff: "Hành chính",
-  accountant: "Kế toán",
-  admin: "Quản lý",
-};
+import { ROLE_LABELS } from "@/lib/roles";
+import type { User } from "@/lib/types";
 
 export function TopBar({ user }: { user: User }) {
   const router = useRouter();
@@ -38,7 +30,7 @@ export function TopBar({ user }: { user: User }) {
           Xin chào, <span className="font-semibold text-foreground">{user.name}</span>
           <span className="mx-2 text-border">·</span>
           <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-xs font-semibold text-brand-700">
-            {roleLabel[user.role]}
+            {ROLE_LABELS[user.role]}
           </span>
         </div>
         <BranchSwitcher className="max-w-[13.5rem] md:hidden" />
@@ -49,15 +41,10 @@ export function TopBar({ user }: { user: User }) {
 
         <NotificationBell profileId={user.id} />
 
-        <Link
-          href="/account/password"
-          title="Đổi mật khẩu"
-          className="hidden h-9 w-9 place-items-center rounded-lg border bg-card text-muted-foreground transition-colors hover:text-foreground lg:grid"
-        >
-          <KeyRound className="h-4 w-4" />
+        {/* Avatar = cửa vào hồ sơ cá nhân (đổi mật khẩu, đăng xuất nằm trong đó) */}
+        <Link href="/account" title="Hồ sơ cá nhân" className="shrink-0">
+          <Avatar name={user.name} src={user.avatar} size={34} />
         </Link>
-
-        <Avatar name={user.name} src={user.avatar} size={34} />
 
         <button
           onClick={handleSignOut}

@@ -22,11 +22,15 @@ import {
   Languages,
   Wallet,
   CalendarCheck,
+  CalendarCog,
+  Receipt,
   CalendarOff,
+  Presentation,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { permissionForPath } from "@/lib/permissions";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useNavBadges } from "./use-nav-badges";
 import type { Role } from "@/lib/types";
 import { Logo } from "@/components/brand/logo";
 
@@ -49,15 +53,32 @@ type NavEntry = NavLink | NavGroup;
 const isGroup = (e: NavEntry): e is NavGroup => "children" in e;
 
 /**
+ * MENU THEO VAI TRÒ, GOM THEO CỤM CHỨC NĂNG.
+ *
+ * Quản lý có tới 13-15 chức năng — bày phẳng hết ra một cấp thì trên điện
+ * thoại phải cuộn mãi mới thấy mục cần. Nên chia thành các cụm thu/mở được
+ * (accordion): mỗi cụm là một "việc" của trung tâm (dạy & học, đổi lịch,
+ * con người, tiền, cài đặt), mặc định thu gọn và tự bung ra khi đang ở
+ * trang con.
+ *
+ * Giáo viên và học viên thì ngược lại — ít mục nên để phẳng, bấm một lần là
+ * tới nơi; chỉ kho học liệu (5 mục con) mới cần gom lại.
+ *
+ * Tên mục đặt theo góc nhìn người dùng: cùng một tính năng nhưng admin thấy
+ * "Duyệt đổi lịch" (việc phải làm) còn giáo viên thấy "Xin đổi lịch" (việc
+ * mình gửi đi).
+ */
+
+/**
  * Kho học liệu trung tâm — một bộ menu duy nhất dùng chung cho giáo viên và
  * ban quản lý (các trang nằm ở /library, quyền nhập/xóa vẫn khóa theo vai trò).
  */
 const libraryGroup: NavGroup = {
-  label: "Kho học liệu trung tâm",
+  label: "Thư viện học liệu",
   icon: Library,
   children: [
-    { href: "/library/textbooks", label: "Thư viện giáo trình", icon: BookMarked },
-    { href: "/library/exercises", label: "Thư viện bài tập", icon: ClipboardList },
+    { href: "/library/textbooks", label: "Giáo trình", icon: BookMarked },
+    { href: "/library/exercises", label: "Bộ bài tập", icon: ClipboardList },
     { href: "/library/lessons", label: "Bài học", icon: BookOpen },
     { href: "/library/vocab", label: "Kho từ vựng", icon: Languages },
     { href: "/library/questions", label: "Ngân hàng câu hỏi", icon: ListChecks },
@@ -67,35 +88,62 @@ const libraryGroup: NavGroup = {
 const studentNav: NavEntry[] = [
   { href: "/student", label: "Trang chủ", icon: LayoutDashboard },
   { href: "/student/classes", label: "Lớp của tôi", icon: School },
-  { href: "/student/homework", label: "Bài tập về nhà", icon: ClipboardList },
+  { href: "/student/homework", label: "Bài tập & kiểm tra", icon: ClipboardList },
   { href: "/student/flashcard", label: "Flashcard", icon: Sparkles },
-  { href: "/student/library", label: "Thư viện", icon: Library },
+  { href: "/student/library", label: "Kho tài liệu", icon: Library },
+  { href: "/student/makeup", label: "Đăng ký học bù", icon: CalendarClock },
+  { href: "/student/tuition", label: "Học phí & hóa đơn", icon: Receipt },
 ];
 
 const teacherNav: NavEntry[] = [
-  { href: "/teacher", label: "Trang chủ", icon: LayoutDashboard },
+  { href: "/teacher", label: "Tổng quan", icon: LayoutDashboard },
+  { href: "/teacher/schedule", label: "Lịch dạy của tôi", icon: CalendarDays },
   { href: "/teacher/classes", label: "Lớp dạy", icon: School },
-  { href: "/teacher/schedule", label: "Lịch dạy", icon: CalendarDays },
-  libraryGroup,
+  { href: "/teacher/requests", label: "Xin đổi lịch", icon: CalendarOff },
   { href: "/teacher/homework", label: "Giao bài tập", icon: ClipboardList },
-  { href: "/teacher/requests", label: "Nghỉ / đổi buổi", icon: CalendarOff },
-  { href: "/teacher/students", label: "Học viên", icon: Users },
+  { href: "/teacher/students", label: "Học viên của tôi", icon: Users },
+  { href: "/teacher/payroll", label: "Chấm công của tôi", icon: CalendarCheck },
+  libraryGroup,
 ];
 
 const adminNav: NavEntry[] = [
   { href: "/admin", label: "Tổng quan", icon: LayoutDashboard },
-  { href: "/admin/courses", label: "Khóa học", icon: BookMarked },
+  {
+    label: "Dạy & học",
+    icon: Presentation,
+    children: [
+      { href: "/admin/courses", label: "Khóa học", icon: BookMarked },
+      { href: "/admin/classes", label: "Lớp học", icon: School },
+      { href: "/admin/timetable", label: "Thời khóa biểu", icon: CalendarDays },
+    ],
+  },
   libraryGroup,
-  { href: "/admin/classes", label: "Lớp & lịch", icon: School },
-  { href: "/admin/timetable", label: "Thời khóa biểu", icon: CalendarDays },
-  { href: "/admin/students", label: "Học viên", icon: Users },
-  { href: "/admin/teachers", label: "Đội ngũ", icon: GraduationCap },
-  { href: "/admin/makeup", label: "Học bù", icon: CalendarClock },
-  { href: "/admin/requests", label: "Nghỉ / đổi buổi GV", icon: CalendarOff },
-  { href: "/admin/tuition", label: "Học phí", icon: Wallet },
-  { href: "/admin/payroll", label: "Chấm công GV", icon: CalendarCheck },
-  { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
-  { href: "/admin/settings", label: "Cài đặt", icon: Settings },
+  {
+    label: "Đổi lịch & học bù",
+    icon: CalendarCog,
+    children: [
+      { href: "/admin/requests", label: "Duyệt đổi lịch", icon: CalendarOff },
+      { href: "/admin/makeup", label: "Quản lý học bù", icon: CalendarClock },
+    ],
+  },
+  {
+    label: "Con người",
+    icon: Users,
+    children: [
+      { href: "/admin/students", label: "Học viên", icon: Users },
+      { href: "/admin/teachers", label: "Đội ngũ", icon: GraduationCap },
+      { href: "/admin/payroll", label: "Chấm công GV", icon: CalendarCheck },
+    ],
+  },
+  {
+    label: "Tài chính & báo cáo",
+    icon: Wallet,
+    children: [
+      { href: "/admin/tuition", label: "Học phí", icon: Wallet },
+      { href: "/admin/reports", label: "Báo cáo & thống kê", icon: BarChart3 },
+    ],
+  },
+  { href: "/admin/settings", label: "Cài đặt hệ thống", icon: Settings },
 ];
 
 const parentNav: NavEntry[] = [
@@ -155,6 +203,7 @@ export function SidebarNav({
 }) {
   const pathname = usePathname();
   const { can } = useAuth();
+  const badges = useNavBadges();
 
   // Ẩn mục không có quyền — dùng đúng bảng tra của AuthGuard nên menu và
   // chặn truy cập không bao giờ lệch nhau.
@@ -182,6 +231,7 @@ export function SidebarNav({
               key={entry.label}
               group={entry}
               pathname={pathname}
+              badges={badges}
               onNavigate={onNavigate}
             />
           ) : (
@@ -189,6 +239,7 @@ export function SidebarNav({
               key={entry.href}
               item={entry}
               active={isActive(pathname, entry.href)}
+              badge={badges[entry.href]}
               onNavigate={onNavigate}
             />
           ),
@@ -198,15 +249,26 @@ export function SidebarNav({
   );
 }
 
+/** Chấm đỏ đếm việc chờ xử lý — quá 99 thì rút gọn cho khỏi vỡ hàng. */
+function NavBadge({ count }: { count: number }) {
+  return (
+    <span className="ml-auto min-w-[1.25rem] shrink-0 rounded-full bg-gold-500 px-1.5 py-0.5 text-center text-[11px] font-bold leading-none text-white">
+      {count > 99 ? "99+" : count}
+    </span>
+  );
+}
+
 function NavLinkItem({
   item,
   active,
   nested,
+  badge,
   onNavigate,
 }: {
   item: NavLink;
   active: boolean;
   nested?: boolean;
+  badge?: number;
   onNavigate?: () => void;
 }) {
   const Icon = item.icon;
@@ -237,7 +299,8 @@ function NavLinkItem({
           active ? "text-brand-400" : "text-ink-500 group-hover:text-ink-300",
         )}
       />
-      {item.label}
+      <span className="min-w-0 truncate">{item.label}</span>
+      {badge ? <NavBadge count={badge} /> : null}
     </Link>
   );
 }
@@ -246,16 +309,20 @@ function NavLinkItem({
 function NavGroupItem({
   group,
   pathname,
+  badges,
   onNavigate,
 }: {
   group: NavGroup;
   pathname: string;
+  badges: Record<string, number>;
   onNavigate?: () => void;
 }) {
   const hasActiveChild = group.children.some((c) => isActive(pathname, c.href));
   const [open, setOpen] = useState(hasActiveChild);
   const expanded = open || hasActiveChild;
   const Icon = group.icon;
+  // Cụm đang thu gọn vẫn phải báo có việc: cộng dồn badge của các mục con.
+  const groupBadge = group.children.reduce((n, c) => n + (badges[c.href] ?? 0), 0);
 
   return (
     <div>
@@ -276,7 +343,8 @@ function NavGroupItem({
             hasActiveChild ? "text-brand-400" : "text-ink-500 group-hover:text-ink-300",
           )}
         />
-        <span className="flex-1 text-left">{group.label}</span>
+        <span className="min-w-0 flex-1 truncate text-left">{group.label}</span>
+        {!expanded && groupBadge > 0 ? <NavBadge count={groupBadge} /> : null}
         <ChevronDown
           className={cn("h-3.5 w-3.5 shrink-0 transition-transform", expanded && "rotate-180")}
         />
@@ -290,6 +358,7 @@ function NavGroupItem({
               key={c.href}
               item={c}
               active={isActive(pathname, c.href)}
+              badge={badges[c.href]}
               nested
               onNavigate={onNavigate}
             />

@@ -3,22 +3,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { KeyRound, LogOut, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ChevronRight, Menu, X } from "lucide-react";
 import { SidebarNav } from "./sidebar";
 import { Avatar } from "@/components/ui/avatar";
 import { Logo } from "@/components/brand/logo";
-import { signOut } from "@/lib/auth";
-import type { Role, User } from "@/lib/types";
-
-const ROLE_LABELS: Record<Role, string> = {
-  student: "Học viên",
-  parent: "Phụ huynh",
-  teacher: "Giáo viên",
-  staff: "Hành chính",
-  accountant: "Kế toán",
-  admin: "Quản lý",
-};
+import { ROLE_LABELS } from "@/lib/roles";
+import type { User } from "@/lib/types";
 
 /**
  * Điều hướng cho màn hình nhỏ (< lg): nút hamburger mở ngăn kéo trượt từ trái,
@@ -32,7 +23,6 @@ export function MobileNav({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => setMounted(true), []);
 
@@ -78,35 +68,22 @@ export function MobileNav({ user }: { user: User }) {
 
         <SidebarNav role={user.role} onNavigate={() => setOpen(false)} />
 
-        {/* Tài khoản — trên desktop nằm ở topbar, mobile gom vào chân ngăn kéo */}
-        <div className="shrink-0 space-y-2 border-t border-ink-800 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-          <div className="flex items-center gap-2.5 px-1">
+        {/* Tài khoản — một dòng duy nhất, bấm vào mở trang hồ sơ cá nhân
+            (đổi mật khẩu, đăng xuất nằm trong đó). Trước đây hai nút to chiếm
+            gần hết đáy ngăn kéo trên điện thoại. */}
+        <div className="shrink-0 border-t border-ink-800 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <Link
+            href="/account"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 rounded-lg px-1.5 py-2 transition-colors hover:bg-ink-900"
+          >
             <Avatar name={user.name} src={user.avatar} size={34} />
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-semibold text-white">{user.name}</div>
               <div className="text-[11px] text-ink-400">{ROLE_LABELS[user.role]}</div>
             </div>
-          </div>
-          <div className="flex gap-2">
-            <Link
-              href="/account/password"
-              onClick={() => setOpen(false)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-ink-900 px-3 py-2.5 text-[13px] font-semibold text-ink-200 hover:bg-ink-800"
-            >
-              <KeyRound className="h-4 w-4" /> Đổi mật khẩu
-            </Link>
-            <button
-              type="button"
-              onClick={async () => {
-                setOpen(false);
-                await signOut();
-                router.replace("/login");
-              }}
-              className="flex items-center justify-center gap-2 rounded-lg bg-ink-900 px-3 py-2.5 text-[13px] font-semibold text-gold-300 hover:bg-ink-800"
-            >
-              <LogOut className="h-4 w-4" /> Thoát
-            </button>
-          </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-ink-500" />
+          </Link>
         </div>
       </aside>
     </div>
