@@ -28,6 +28,15 @@ export interface RoomRow {
   capacity: number | null;
 }
 
+/** Trạng thái học của học viên (cột `profiles.study_status`, migration 0030). */
+export type StudyStatus = "studying" | "reserved" | "left";
+
+export const STUDY_STATUS_LABELS: Record<StudyStatus, string> = {
+  studying: "Đang học",
+  reserved: "Bảo lưu",
+  left: "Đã nghỉ",
+};
+
 export interface ProfileRow {
   id: string;
   user_id: string | null; // null = chưa có tài khoản đăng nhập
@@ -39,6 +48,11 @@ export interface ProfileRow {
   student_code: string | null;
   address: string | null;
   note: string | null;
+  /* --- 0030: hồ sơ học viên đầy đủ --- */
+  dob: string | null; // ngày sinh
+  enrolled_at: string | null; // ngày nhập học
+  study_status: StudyStatus; // đang học / bảo lưu / đã nghỉ
+  owner_id: string | null; // nhân viên phụ trách
   invite_code: string | null; // mã kích hoạt tài khoản (null = chưa cấp hoặc đã dùng)
   branch_id: string | null; // chi nhánh của hồ sơ (0026)
   created_at: string;
@@ -399,6 +413,11 @@ export async function createStudentProfile(input: {
   phone?: string;
   address?: string;
   note?: string;
+  dob?: string | null;
+  enrolled_at?: string | null;
+  study_status?: StudyStatus;
+  owner_id?: string | null;
+  branch_id?: string | null;
 }): Promise<ProfileRow> {
   const { data, error } = await getSupabase()
     .from("profiles")
@@ -408,8 +427,14 @@ export async function createStudentProfile(input: {
       phone: input.phone?.trim() || null,
       address: input.address?.trim() || null,
       note: input.note?.trim() || null,
+      dob: input.dob || null,
+      enrolled_at: input.enrolled_at || null,
+      study_status: input.study_status ?? "studying",
+      owner_id: input.owner_id || null,
       role: "student",
       ...branchStamp(),
+      // Chọn tay ở form thì ưu tiên hơn chi nhánh đang xem
+      ...(input.branch_id ? { branch_id: input.branch_id } : {}),
     })
     .select("*")
     .single();

@@ -154,6 +154,15 @@ export const ALL_PERMISSIONS: Permission[] = PERMISSION_GROUPS.flatMap((g) =>
  */
 export const ROUTE_PERMISSION: { prefix: string; perm: Permission }[] = [
   { prefix: "/admin/courses", perm: "courses.manage" },
+  { prefix: "/admin/attendance", perm: "attendance.manage" },
+  { prefix: "/admin/absences", perm: "students.manage" },
+  { prefix: "/admin/leads", perm: "students.manage" },
+  { prefix: "/admin/birthdays", perm: "students.manage" },
+  { prefix: "/admin/alumni", perm: "students.manage" },
+  { prefix: "/admin/revenue", perm: "tuition.manage" },
+  { prefix: "/admin/supplies", perm: "tuition.manage" },
+  { prefix: "/admin/centers", perm: "settings.manage" },
+  { prefix: "/admin/data", perm: "settings.manage" },
   { prefix: "/admin/classes", perm: "classes.manage" },
   { prefix: "/admin/students", perm: "students.manage" },
   { prefix: "/admin/teachers", perm: "team.manage" },

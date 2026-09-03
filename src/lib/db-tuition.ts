@@ -220,7 +220,9 @@ export async function fetchPaymentsTotalSince(from: string): Promise<number> {
   const { data, error } = await branchFilter(
     getSupabase()
       .from("payments")
-      .select("amount, package:enrollment_packages!inner ( student:profiles!inner ( id ) )")
+      // `!student_id`: enrollment_packages có hai khóa ngoại sang profiles
+      // (student_id, created_by) → phải chỉ rõ nối theo đường nào.
+      .select("amount, package:enrollment_packages!inner ( student:profiles!student_id!inner ( id ) )")
       .gte("paid_at", from),
     "package.student.branch_id",
   );

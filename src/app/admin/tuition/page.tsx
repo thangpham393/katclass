@@ -9,6 +9,7 @@ import {
   Plus,
   Printer,
   Receipt,
+  ScrollText,
   Search,
   Wallet,
   XCircle,
@@ -19,32 +20,34 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
-import { Select, Field } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Empty } from "@/components/ui/empty";
 import { StatCard } from "@/components/ui/stat-card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
+import { InvoiceFormModal } from "@/components/invoice-form";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
 import {
   dbErrorMessage,
-  fetchCourses,
-  fetchProfilesByRole,
-  todayISO,
   LEVEL_LABELS,
-  type ProfileRow,
 } from "@/lib/db";
+import {
+  fetchInvoices,
+  invoiceDebt,
+  invoiceStatus,
+  invoiceTotal,
+  INVOICE_STATUS_LABELS,
+  type InvoiceRow,
+} from "@/lib/db-invoices";
 import {
   addPayment,
   cancelPackage,
-  createPackage,
   fetchPackageBalances,
   fetchPackagePayments,
   fetchPaymentsTotalSince,
-  finalPriceOf,
   firstOfMonthISO,
   fmtVND,
-  discountAmountOf,
   PAYMENT_METHOD_LABELS,
   type PackageBalanceRow,
   type PaymentMethod,
@@ -78,6 +81,8 @@ export default function AdminTuitionPage() {
   const [tab, setTab] = useState<FilterTab>("all");
   const [q, setQ] = useState("");
   const [selling, setSelling] = useState(false);
+  // Danh sách hoá đơn tự nạp trong khối con — đổi key là nạp lại sau khi lập tờ mới.
+  const [invoiceKey, setInvoiceKey] = useState(0);
   const [detail, setDetail] = useState<PackageBalanceRow | null>(null);
 
   const rows = balances.data ?? [];
@@ -109,13 +114,14 @@ export default function AdminTuitionPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Học phí gói buổi</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Hoá đơn & học phí</h1>
           <p className="mt-1 text-muted-foreground">
-            Bán gói N buổi, thu tiền, xuất biên lai. Mỗi điểm danh (kể cả vắng) trừ 1 buổi — buổi học bù không trừ.
+            Một tờ hoá đơn lo cả ba việc: báo giá cho phụ huynh, mở gói buổi cho học viên và ghi
+            biên lai tiền đã thu. Mỗi điểm danh (kể cả vắng) trừ 1 buổi — buổi học bù không trừ.
           </p>
         </div>
         <Button onClick={() => setSelling(true)}>
-          <Plus className="h-4 w-4" /> Bán gói buổi
+          <Plus className="h-4 w-4" /> Tạo hoá đơn
         </Button>
       </div>
 
@@ -127,6 +133,8 @@ export default function AdminTuitionPage() {
       </section>
 
       {balances.error && <ErrorNote message={balances.error} />}
+
+      <InvoicesCard key={invoiceKey} />
 
       <Card>
         <CardHeader className="gap-3">
@@ -164,10 +172,10 @@ export default function AdminTuitionPage() {
           ) : visible.length === 0 ? (
             <Empty
               icon={Wallet}
-              title={rows.length === 0 ? "Chưa bán gói buổi nào" : "Không có gói nào khớp bộ lọc"}
+              title={rows.length === 0 ? "Chưa có gói buổi nào" : "Không có gói nào khớp bộ lọc"}
               description={
                 rows.length === 0
-                  ? "Bấm “Bán gói buổi” để tạo gói đầu tiên — số buổi còn lại sẽ tự trừ theo điểm danh."
+                  ? "Bấm “Tạo hoá đơn” và điền tổng số buổi — gói sẽ tự mở, số buổi còn lại trừ theo điểm danh."
                   : undefined
               }
               className="p-10"
@@ -211,10 +219,12 @@ export default function AdminTuitionPage() {
       </Card>
 
       {selling && (
-        <SellPackageModal
+        <InvoiceFormModal
+          target={{ kind: "student" }}
           onClose={() => setSelling(false)}
-          onSaved={() => {
+          onCreated={() => {
             setSelling(false);
+            setInvoiceKey((k) => k + 1);
             balances.reload();
             monthTotal.reload();
           }}
@@ -235,299 +245,110 @@ export default function AdminTuitionPage() {
   );
 }
 
-/* ============ Bán gói mới (+ thu tiền ngay) ============ */
+/* ============ Hoá đơn đã lập ============ */
 
-function SellPackageModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const { user } = useAuth();
-  const students = useLoad(() => fetchProfilesByRole("student"));
-  const courses = useLoad(fetchCourses);
-  const [student, setStudent] = useState<ProfileRow | null>(null);
+/**
+ * Hoá đơn (bảng `invoices`, migration 0033) là tờ giấy báo gửi trước —
+ * lập được cho cả khách hàng tiềm năng CHƯA phải học viên, nên không gộp
+ * chung danh sách với gói buổi ở trên mà đứng riêng một khối.
+ */
+function InvoicesCard() {
+  const invoices = useLoad(() => fetchInvoices());
   const [q, setQ] = useState("");
-  const [courseId, setCourseId] = useState("");
-  const [sessions, setSessions] = useState("12");
-  const [price, setPrice] = useState("");
-  const [discountPct, setDiscountPct] = useState("0");
-  const [discount, setDiscount] = useState("0");
-  const [startDate, setStartDate] = useState(todayISO());
-  const [note, setNote] = useState("");
-  const [collectNow, setCollectNow] = useState(true);
-  const [amount, setAmount] = useState("");
-  const [method, setMethod] = useState<PaymentMethod>("cash");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [receiptId, setReceiptId] = useState<string | null>(null);
 
-  const candidates = useMemo(() => {
+  const rows: InvoiceRow[] = invoices.data ?? [];
+  const visible = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    const list = students.data ?? [];
-    if (!needle) return list.slice(0, 8);
-    return list
-      .filter(
-        (s) =>
-          s.name.toLowerCase().includes(needle) ||
-          (s.student_code ?? "").toLowerCase().includes(needle) ||
-          (s.phone ?? "").includes(needle),
-      )
-      .slice(0, 8);
-  }, [students.data, q]);
-
-  const course = (courses.data ?? []).find((c) => c.id === courseId) ?? null;
-  const priceNum = Number(price) || 0;
-  const pctAmount = discountAmountOf(priceNum, Number(discountPct) || 0);
-  const cashAmount = Number(discount) || 0;
-  const finalPrice = finalPriceOf(priceNum, Number(discountPct) || 0, cashAmount);
-  const packageName = course
-    ? `${course.name} — ${Number(sessions) || 0} buổi`
-    : `Gói ${Number(sessions) || 0} buổi`;
-
-  /** Chọn khóa → điền sẵn số buổi chuẩn của khóa (vẫn sửa tay được). */
-  function pickCourse(id: string) {
-    setCourseId(id);
-    const c = (courses.data ?? []).find((x) => x.id === id);
-    if (c && c.total_sessions > 0) setSessions(String(c.total_sessions));
-  }
-
-  async function handleSubmit() {
-    if (!user) return;
-    if (!student) return setError("Chọn học viên mua gói.");
-    const n = Number(sessions);
-    if (!Number.isInteger(n) || n <= 0) return setError("Số buổi phải là số nguyên dương.");
-    if (!price || priceNum < 0) return setError("Nhập giá gói.");
-    const pct = Number(discountPct) || 0;
-    if (pct < 0 || pct > 100) return setError("Ưu đãi % phải trong khoảng 0–100.");
-    if (pctAmount + cashAmount > priceNum)
-      return setError("Tổng ưu đãi (% + tiền mặt) không được lớn hơn giá gói.");
-    const collect = collectNow ? Number(amount || finalPrice) : 0;
-    if (collectNow && (collect <= 0 || collect > finalPrice))
-      return setError("Số tiền thu phải lớn hơn 0 và không vượt quá giá sau ưu đãi.");
-
-    setBusy(true);
-    setError(null);
-    try {
-      const packageId = await createPackage({
-        student_id: student.id,
-        course_id: courseId || null,
-        name: packageName,
-        total_sessions: n,
-        price: priceNum,
-        discount_percent: pct,
-        discount: cashAmount,
-        start_date: startDate,
-        note: note.trim() || null,
-        created_by: user.id,
-      });
-      if (collectNow && collect > 0) {
-        const payment = await addPayment({
-          package_id: packageId,
-          student_id: student.id,
-          amount: collect,
-          method,
-          note: null,
-          received_by: user.id,
-        });
-        setReceiptId(payment.id);
-      } else {
-        onSaved();
-      }
-    } catch (e) {
-      setError(dbErrorMessage(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  // Đã thu tiền xong → mời in biên lai
-  if (receiptId) {
-    return (
-      <Modal open onClose={onSaved} title="Đã bán gói & thu tiền">
-        <div className="space-y-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            Gói buổi của <span className="font-semibold text-foreground">{student?.name}</span> đã được tạo
-            và ghi nhận thanh toán. In biên lai cho phụ huynh/học viên?
-          </p>
-          <div className="flex justify-center gap-2">
-            <Link href={`/admin/tuition/receipt/${receiptId}`}>
-              <Button>
-                <Printer className="h-4 w-4" /> In biên lai
-              </Button>
-            </Link>
-            <Button variant="outline" onClick={onSaved}>Đóng</Button>
-          </div>
-        </div>
-      </Modal>
+    if (!needle) return rows;
+    return rows.filter((r) =>
+      `${r.invoice_no} ${r.customer_name} ${r.student_name ?? ""} ${r.phone ?? ""}`
+        .toLowerCase()
+        .includes(needle),
     );
-  }
+  }, [rows, q]);
+
+  const totalDebt = rows.reduce((s, r) => s + Math.max(0, invoiceDebt(r)), 0);
 
   return (
-    <Modal open onClose={onClose} title="Bán gói buổi" className="max-w-2xl">
-      <div className="space-y-4">
-        {error && <ErrorNote message={error} />}
-
-        {student ? (
-          <div className="flex items-center gap-3 rounded-lg border bg-brand-50/50 p-3">
-            <Avatar name={student.name} size={36} />
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold">{student.name}</div>
-              <div className="text-xs text-muted-foreground">
-                {student.student_code} {student.phone && `· ${student.phone}`}
-              </div>
-            </div>
-            <Button size="sm" variant="outline" onClick={() => setStudent(null)}>Đổi</Button>
+    <Card>
+      <CardHeader className="gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <CardTitle>Hoá đơn</CardTitle>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              Hoá đơn lập cho khách hàng tiềm năng và học viên — tổng công nợ {fmtVND(totalDebt)}.
+            </p>
           </div>
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Tìm số hoá đơn, tên khách..."
+              className="pl-9"
+            />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+        {invoices.error && <ErrorNote message={invoices.error} />}
+        {invoices.loading ? (
+          <LoadingRows rows={3} className="p-0" />
+        ) : visible.length === 0 ? (
+          <Empty
+            icon={ScrollText}
+            title={rows.length === 0 ? "Chưa lập hoá đơn nào" : "Không có hoá đơn nào khớp"}
+            description={
+              rows.length === 0
+                ? "Bấm “Tạo hoá đơn” ở trên, hoặc lập từ thẻ khách hàng ở trang Khách hàng tiềm năng."
+                : undefined
+            }
+            className="p-10"
+          />
         ) : (
-          <div className="space-y-2">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Tìm học viên theo tên, mã HV, SĐT..."
-                className="pl-9"
-                autoFocus
-              />
-            </div>
-            {students.loading ? (
-              <LoadingRows rows={3} className="p-0" />
-            ) : (
-              <div className="max-h-48 space-y-1 overflow-y-auto scrollbar-thin">
-                {candidates.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setStudent(s)}
-                    className="flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-colors hover:border-brand-300 hover:bg-brand-50/40"
-                  >
-                    <Avatar name={s.name} size={30} />
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-semibold">{s.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {s.student_code} {s.phone && `· ${s.phone}`}
-                      </div>
+          <div className="divide-y">
+            {visible.map((inv) => {
+              const status = invoiceStatus(inv);
+              const debt = invoiceDebt(inv);
+              return (
+                <div key={inv.id} className="flex flex-wrap items-center gap-3 py-3">
+                  <div className="min-w-0 flex-1 basis-52">
+                    <div className="truncate text-sm font-semibold">
+                      <span className="font-mono">{inv.invoice_no}</span> · {inv.customer_name}
+                      {inv.student_name ? ` — ${inv.student_name}` : ""}
                     </div>
-                  </button>
-                ))}
-              </div>
-            )}
+                    <div className="truncate text-xs text-muted-foreground">
+                      {fmtDate(inv.issued_on)}
+                      {inv.due_on ? ` · hạn ${fmtDate(inv.due_on)}` : ""}
+                      {` · ${PAYMENT_METHOD_LABELS[inv.method]}`}
+                      {inv.phone ? ` · ${inv.phone}` : ""}
+                    </div>
+                  </div>
+                  <div className="w-40 shrink-0 text-sm">
+                    <div className="font-semibold">
+                      {fmtVND(invoiceTotal(inv.items, Number(inv.discount)))}
+                    </div>
+                    {debt > 0 ? (
+                      <span className="text-xs font-semibold text-rose-600">
+                        Còn nợ {fmtVND(debt)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-emerald-600">Đã đóng đủ</span>
+                    )}
+                  </div>
+                  <Badge
+                    className="ml-auto shrink-0"
+                    variant={status === "paid" ? "jade" : status === "partial" ? "gold" : "muted"}
+                  >
+                    {INVOICE_STATUS_LABELS[status]}
+                  </Badge>
+                </div>
+              );
+            })}
           </div>
         )}
-
-        <Field
-          label="Khóa học"
-          hint={
-            courses.data?.length === 0
-              ? "Chưa có khóa nào — tạo ở mục Khóa học trước, hoặc để trống để bán gói lẻ."
-              : "Chương trình bán ra. Chọn khóa sẽ tự điền số buổi chuẩn."
-          }
-        >
-          <Select value={courseId} onChange={(e) => pickCourse(e.target.value)}>
-            <option value="">Không gắn khóa (gói lẻ)</option>
-            {(courses.data ?? []).map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-                {c.level ? ` · ${LEVEL_LABELS[c.level] ?? c.level}` : ""} ({c.total_sessions} buổi)
-              </option>
-            ))}
-          </Select>
-        </Field>
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Số buổi" required>
-            <Input type="number" min={1} value={sessions} onChange={(e) => setSessions(e.target.value)} />
-          </Field>
-          <Field label="Giá gói (VND)" required>
-            <Input type="number" min={0} step={1000} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="vd: 3600000" />
-          </Field>
-        </div>
-
-        <div className="rounded-lg border bg-secondary/40 p-3">
-          <div className="mb-2 text-sm font-bold">Ưu đãi</div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Theo phần trăm (%)" hint="Tính trên giá gói.">
-              <Input
-                type="number"
-                min={0}
-                max={100}
-                step={1}
-                value={discountPct}
-                onChange={(e) => setDiscountPct(e.target.value)}
-              />
-            </Field>
-            <Field label="Giảm thẳng tiền (VND)" hint="Trừ tiếp sau phần %.">
-              <Input type="number" min={0} step={1000} value={discount} onChange={(e) => setDiscount(e.target.value)} />
-            </Field>
-          </div>
-          <dl className="mt-3 space-y-1 border-t pt-3 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-muted-foreground">Giá gói</dt>
-              <dd>{fmtVND(priceNum)}</dd>
-            </div>
-            {pctAmount > 0 && (
-              <div className="flex justify-between text-emerald-700">
-                <dt>Ưu đãi {Number(discountPct)}%</dt>
-                <dd>− {fmtVND(pctAmount)}</dd>
-              </div>
-            )}
-            {cashAmount > 0 && (
-              <div className="flex justify-between text-emerald-700">
-                <dt>Giảm thẳng</dt>
-                <dd>− {fmtVND(cashAmount)}</dd>
-              </div>
-            )}
-            <div className="flex justify-between border-t pt-1 font-bold">
-              <dt>Phải đóng</dt>
-              <dd>{fmtVND(finalPrice)}</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Ngày kích hoạt" required hint="Điểm danh từ ngày này bắt đầu trừ buổi vào gói.">
-            <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-          </Field>
-          <Field label="Ghi chú">
-            <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="vd: ưu đãi hè, học viên cũ..." />
-          </Field>
-        </div>
-
-        <div className="rounded-lg border bg-secondary/40 p-3">
-          <label className="flex items-center gap-2 text-sm font-semibold">
-            <input
-              type="checkbox"
-              checked={collectNow}
-              onChange={(e) => setCollectNow(e.target.checked)}
-              className="h-4 w-4 rounded border-input accent-brand-600"
-            />
-            Thu tiền ngay
-          </label>
-          {collectNow && (
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <Field label="Số tiền thu (VND)" hint={`Giá sau ưu đãi: ${fmtVND(finalPrice)}`}>
-                <Input
-                  type="number"
-                  min={0}
-                  step={1000}
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder={String(finalPrice || "")}
-                />
-              </Field>
-              <Field label="Hình thức">
-                <Select value={method} onChange={(e) => setMethod(e.target.value as PaymentMethod)}>
-                  <option value="cash">Tiền mặt</option>
-                  <option value="transfer">Chuyển khoản</option>
-                </Select>
-              </Field>
-            </div>
-          )}
-        </div>
-
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose}>Hủy</Button>
-          <Button onClick={handleSubmit} disabled={busy}>
-            {busy ? "Đang lưu..." : collectNow ? "Bán gói & thu tiền" : "Bán gói (chưa thu)"}
-          </Button>
-        </div>
-      </div>
-    </Modal>
+      </CardContent>
+    </Card>
   );
 }
 

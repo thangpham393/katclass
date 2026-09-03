@@ -5,7 +5,8 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, Menu, X } from "lucide-react";
-import { SidebarNav } from "./sidebar";
+import { SidebarNav, SignOutButton } from "./sidebar";
+import { BranchSwitcher } from "./branch-switcher";
 import { Avatar } from "@/components/ui/avatar";
 import { Logo } from "@/components/brand/logo";
 import { ROLE_LABELS } from "@/lib/roles";
@@ -49,18 +50,18 @@ export function MobileNav({ user }: { user: User }) {
         type="button"
         aria-label="Đóng menu"
         onClick={() => setOpen(false)}
-        className="absolute inset-0 h-full w-full bg-ink-950/60"
+        className="absolute inset-0 h-full w-full bg-ink-950/50"
       />
-      <aside className="absolute inset-y-0 left-0 flex w-[84vw] max-w-[19rem] flex-col bg-ink-950 text-ink-200 shadow-2xl">
+      <aside className="absolute inset-y-0 left-0 flex w-[84vw] max-w-[19rem] flex-col bg-card text-foreground shadow-2xl">
         <div className="flex shrink-0 items-center justify-between gap-2 px-4 py-3.5">
           <Link href="/" onClick={() => setOpen(false)}>
-            <Logo inverted />
+            <Logo className="h-8" />
           </Link>
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Đóng menu"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-ink-400 hover:bg-ink-900 hover:text-white"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             <X className="h-5 w-5" />
           </button>
@@ -69,22 +70,25 @@ export function MobileNav({ user }: { user: User }) {
         <SidebarNav role={user.role} onNavigate={() => setOpen(false)} />
 
         {/* Tài khoản — một dòng duy nhất, bấm vào mở trang hồ sơ cá nhân
-            (đổi mật khẩu, đăng xuất nằm trong đó). Trước đây hai nút to chiếm
-            gần hết đáy ngăn kéo trên điện thoại. */}
-        <div className="shrink-0 border-t border-ink-800 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            (đổi mật khẩu nằm trong đó). Trước đây hai nút to chiếm gần hết
+            đáy ngăn kéo trên điện thoại. Chi nhánh để ngay trên vì thanh trên
+            cùng ở khổ hẹp chỉ còn chỗ cho tên trang. */}
+        <div className="shrink-0 space-y-2 border-t p-3">
+          <BranchSwitcher className="w-full" />
           <Link
             href="/account"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-1.5 py-2 transition-colors hover:bg-ink-900"
+            className="flex items-center gap-2.5 rounded-lg px-1.5 py-2 transition-colors hover:bg-secondary"
           >
             <Avatar name={user.name} src={user.avatar} size={34} />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold text-white">{user.name}</div>
-              <div className="text-[11px] text-ink-400">{ROLE_LABELS[user.role]}</div>
+              <div className="truncate text-sm font-semibold">{user.name}</div>
+              <div className="text-[11px] text-muted-foreground">{ROLE_LABELS[user.role]}</div>
             </div>
-            <ChevronRight className="h-4 w-4 shrink-0 text-ink-500" />
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
           </Link>
         </div>
+        <SignOutButton onNavigate={() => setOpen(false)} />
       </aside>
     </div>
   );
