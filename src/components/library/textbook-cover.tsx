@@ -11,15 +11,17 @@
 import { cn } from "@/lib/utils";
 import { LEVEL_LABELS } from "@/lib/db";
 
-export type TextbookSeries = "HSK" | "YCT" | "OTHER";
+export type TextbookSeries = "HSK30" | "HSK" | "YCT" | "OTHER";
 
 export const SERIES_LABELS: Record<TextbookSeries, string> = {
-  HSK: "Giáo trình HSK",
+  HSK30: "Giáo trình HSK 3.0 (新HSK教程)",
+  HSK: "Giáo trình HSK (bộ chuẩn cũ)",
   YCT: "Giáo trình YCT (thiếu nhi)",
   OTHER: "Giáo trình khác",
 };
 
 export const SERIES_DESCRIPTIONS: Record<TextbookSeries, string> = {
+  HSK30: "Bộ 新HSK教程 theo đại cương HSK 3.0 (ba bậc chín cấp) — giáo trình chính thức mới, dùng cho lớp luyện thi HSK từ 2026.",
   HSK: "Bộ chuẩn 标准教程 HSK — dùng cho lớp người lớn, luyện thi HSK.",
   YCT: "Bộ chuẩn 标准教程 YCT — dùng cho lớp tiểu học và THCS.",
   OTHER: "Các bộ riêng của trung tâm (MSutong, giáo trình chuyên đề...) — cấp độ ghi trên bìa chỉ là trình độ tương đương.",
@@ -29,11 +31,14 @@ export const SERIES_DESCRIPTIONS: Record<TextbookSeries, string> = {
  * Xếp giáo trình vào bộ theo MÃ giáo trình, không theo cấp độ: một bộ riêng
  * như MSutong vẫn ghi level HSK3 để chỉ trình độ tương đương, nhưng nó không
  * thuộc bộ 标准教程 HSK nên phải nằm ở mục "Giáo trình khác".
+ * Mã kết thúc bằng "-new30" là bộ 新HSK教程 (đại cương HSK 3.0) — tách riêng
+ * khỏi bộ chuẩn cũ để giáo viên không chọn nhầm quyển.
  * Chỉ khi giáo trình chưa có mã mới đoán theo level.
  */
 export function textbookSeries(tb: { level?: string | null; code?: string | null }): TextbookSeries {
   const code = (tb.code ?? "").trim().toUpperCase();
   if (code) {
+    if (code.endsWith("-NEW30")) return "HSK30";
     if (code.startsWith("YCT")) return "YCT";
     if (code.startsWith("HSK")) return "HSK";
     return "OTHER";
@@ -64,6 +69,7 @@ const LEVEL_GRADIENTS: Record<string, string> = {
 };
 
 const SERIES_GRADIENTS: Record<TextbookSeries, string> = {
+  HSK30: "from-brand-500 via-brand-700 to-brand-900",
   HSK: "from-brand-500 via-brand-700 to-brand-900",
   YCT: "from-gold-400 via-gold-600 to-gold-800",
   OTHER: "from-ink-500 via-ink-700 to-ink-900",
@@ -91,6 +97,8 @@ export function TextbookCover({
     (series !== "OTHER" && level && LEVEL_GRADIENTS[level.trim().toUpperCase()]) ||
     SERIES_GRADIENTS[series];
   const watermark = (name_zh ?? name).trim().slice(0, 1);
+  // Nhãn nhỏ góc trên bìa: bộ 3.0 ghi rõ phiên bản để phân biệt với bộ cũ.
+  const seriesLabel = series === "OTHER" ? "KAT" : series === "HSK30" ? "HSK 3.0" : series;
   const levelLabel = level ? (LEVEL_LABELS[level] ?? level) : null;
 
   return (
@@ -114,7 +122,7 @@ export function TextbookCover({
           </div>
           <div className="relative flex h-full flex-col justify-between p-2.5 pl-4 text-white">
             <div className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/70">
-              {series === "OTHER" ? "KAT" : series}
+              {seriesLabel}
             </div>
             <div className="min-w-0">
               {levelLabel && (

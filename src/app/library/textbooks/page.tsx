@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen, GraduationCap, Library, Search, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowRight, BookMarked, BookOpen, GraduationCap, Library, Search, Sparkles, Trash2, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,8 +29,9 @@ import {
 } from "@/lib/db-library";
 
 /** Thứ tự các mục trên trang + icon của mục. */
-const SERIES_ORDER: TextbookSeries[] = ["HSK", "YCT", "OTHER"];
+const SERIES_ORDER: TextbookSeries[] = ["HSK30", "HSK", "YCT", "OTHER"];
 const SERIES_ICONS: Record<TextbookSeries, typeof BookOpen> = {
+  HSK30: BookMarked,
   HSK: GraduationCap,
   YCT: Sparkles,
   OTHER: Library,
