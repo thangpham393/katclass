@@ -29,6 +29,7 @@ import {
   UserMinus,
   UserPlus,
   Users,
+  Wallet,
 } from "lucide-react";
 import type { Role } from "@/lib/types";
 
@@ -146,7 +147,7 @@ const adminNav: NavSection[] = [
       { href: "/admin", label: "Bảng điều khiển", icon: LayoutDashboard },
       { href: "/admin/students", label: "Học viên", icon: Users },
       { href: "/admin/attendance", label: "Điểm danh", icon: ClipboardCheck },
-      { href: "/admin/payroll", label: "Check-in ca dạy", icon: Clock },
+      { href: "/admin/checkin", label: "Check-in ca dạy", icon: Clock },
       { href: "/admin/absences", label: "Vắng liên tiếp", icon: CalendarX2 },
       { href: "/admin/classes", label: "Lớp học", icon: School },
       { href: "/admin/timetable", label: "Thời khóa biểu", icon: CalendarDays },
@@ -172,6 +173,7 @@ const adminNav: NavSection[] = [
       { href: "/admin/courses", label: "Khóa học", icon: BookMarked },
       { href: "/admin/centers", label: "Trung tâm", icon: Building2 },
       { href: "/admin/teachers", label: "Nhân sự", icon: ShieldCheck },
+      { href: "/admin/payroll", label: "Bảng công & lương", icon: Wallet },
       { href: "/admin/settings", label: "Cài đặt", icon: Settings },
       { href: "/admin/data", label: "Dữ liệu", icon: Download },
       { href: "/admin/reports", label: "Báo cáo", icon: BarChart3 },
