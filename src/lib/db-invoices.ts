@@ -122,6 +122,35 @@ export async function fetchLeadInvoices(leadId: string): Promise<InvoiceRow[]> {
   return (data ?? []) as InvoiceRow[];
 }
 
+/**
+ * Tên phụ huynh đứng tên trên hoá đơn của một học viên, lấy từ liên kết
+ * gia đình (`parent_students`). Trả về null khi em chưa gắn phụ huynh —
+ * lúc đó tờ hoá đơn đứng tên chính học viên.
+ *
+ * `profiles!parent_id`: bảng nối trỏ sang profiles bằng hai khoá ngoại
+ * (parent_id, student_id) nên phải chỉ rõ đi theo đường nào.
+ */
+export async function fetchStudentParentName(studentId: string): Promise<string | null> {
+  const { data, error } = await getSupabase()
+    .from("parent_students")
+    .select("parent:profiles!parent_id ( name )")
+    .eq("student_id", studentId)
+    .limit(1);
+  if (error) throw error;
+  const row = (data ?? [])[0] as unknown as { parent: { name: string } | null } | undefined;
+  return row?.parent?.name ?? null;
+}
+
+export async function fetchInvoice(id: string): Promise<InvoiceRow | null> {
+  const { data, error } = await getSupabase()
+    .from("invoices")
+    .select(SELECT)
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return (data ?? null) as InvoiceRow | null;
+}
+
 export async function fetchStudentInvoices(studentId: string): Promise<InvoiceRow[]> {
   const { data, error } = await getSupabase()
     .from("invoices")
@@ -184,13 +213,79 @@ export async function createInvoice(input: InvoiceInput, createdBy?: string | nu
   return (data as { id: string }).id;
 }
 
-/** Sửa số tiền đã thu (thu thêm ở quầy) — phần còn lại giữ nguyên. */
-export async function setInvoicePaid(id: string, paid: number) {
-  const { error } = await getSupabase()
+/**
+ * Sửa số tiền ĐÃ THU của một hoá đơn — GHI ĐÈ, không cộng dồn.
+ *
+ * "Đã thu" là tổng số tiền của tờ này, nên sửa 2tr thành 2.5tr nghĩa là
+ * tổng đã thu bằng 2.5tr. Hoá đơn của học viên có gói buổi thì con số đó
+ * còn phải đi vào doanh thu: mỗi hoá đơn giữ ĐÚNG MỘT dòng `payments`
+ * (0036) — sửa thì update dòng đó, hạ về 0 thì xoá luôn. Nhờ vậy trang
+ * Doanh thu (cộng từ `payments`) không bao giờ đếm hai lần.
+ *
+ * Hoá đơn của khách chưa ghi danh (chưa có gói) chỉ đổi con số trên giấy.
+ */
+export async function setInvoicePaid(
+  inv: Pick<InvoiceRow, "id" | "package_id" | "student_id">,
+  paid: number,
+  method: PaymentMethod,
+  receivedBy?: string | null,
+) {
+  const db = getSupabase();
+  const amount = Math.max(0, Math.round(Number(paid) || 0));
+
+  const { error } = await db
     .from("invoices")
-    .update({ paid_amount: Number(paid) || 0, updated_at: new Date().toISOString() })
-    .eq("id", id);
+    .update({ paid_amount: amount, method, updated_at: new Date().toISOString() })
+    .eq("id", inv.id);
   if (error) throw error;
+
+  if (!inv.package_id || !inv.student_id) return;
+
+  const { data: existing, error: findErr } = await db
+    .from("payments")
+    .select("id")
+    .eq("invoice_id", inv.id)
+    .maybeSingle();
+  if (findErr) throw findErr;
+  const paymentId = (existing as { id: string } | null)?.id ?? null;
+
+  if (amount <= 0) {
+    if (!paymentId) return;
+    const { error: delErr } = await db.from("payments").delete().eq("id", paymentId);
+    if (delErr) throw delErr;
+    return;
+  }
+
+  if (paymentId) {
+    const { error: upErr } = await db
+      .from("payments")
+      .update({ amount, method })
+      .eq("id", paymentId);
+    if (upErr) throw upErr;
+    return;
+  }
+
+  const { error: insErr } = await db.from("payments").insert({
+    package_id: inv.package_id,
+    student_id: inv.student_id,
+    invoice_id: inv.id,
+    amount,
+    method,
+    note: "Hoá đơn",
+    received_by: receivedBy || null,
+  });
+  if (insErr) throw insErr;
+}
+
+/** Biên lai đi kèm hoá đơn (để mở trang in). */
+export async function invoiceReceiptId(invoiceId: string): Promise<string | null> {
+  const { data, error } = await getSupabase()
+    .from("payments")
+    .select("id")
+    .eq("invoice_id", invoiceId)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as { id: string } | null)?.id ?? null;
 }
 
 export async function deleteInvoice(id: string) {

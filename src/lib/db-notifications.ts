@@ -29,6 +29,28 @@ export interface NotificationRow {
   created_at: string;
 }
 
+/**
+ * Gửi một thông báo in-app do người dùng bấm tay (nhắc đóng học phí…).
+ * Phần lớn thông báo do trigger DB tự sinh; hàm này dành cho những nhắc
+ * nhở mà chỉ con người mới biết lúc nào nên gửi.
+ */
+export async function sendNotification(input: {
+  recipient_id: string;
+  type: NotificationType;
+  title: string;
+  body?: string | null;
+  link?: string | null;
+}) {
+  const { error } = await getSupabase().from("notifications").insert({
+    recipient_id: input.recipient_id,
+    type: input.type,
+    title: input.title,
+    body: input.body ?? null,
+    link: input.link ?? null,
+  });
+  if (error) throw error;
+}
+
 export async function fetchNotifications(profileId: string, limit = 30): Promise<NotificationRow[]> {
   const { data, error } = await getSupabase()
     .from("notifications")

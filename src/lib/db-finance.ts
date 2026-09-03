@@ -3,11 +3,14 @@
 /**
  * SỔ THU CHI (migration 0034) + gộp doanh thu học phí.
  *
- * Doanh thu của trung tâm đến từ HAI nguồn và cố ý không nhập chung một
- * bảng: học phí là `payments` (đã có biên lai, đã trừ vào gói buổi), còn
- * bán sách / học cụ / phí thi là `finance_entries`. Ở đây hai nguồn được
- * quy về cùng một kiểu `MoneyRow` để trang Doanh thu chỉ phải hiển thị
- * một loại dòng, và tiền học phí thì không bao giờ phải gõ tay lần nữa.
+ * Doanh thu của trung tâm đến từ BA nguồn và cố ý không nhập chung một
+ * bảng:
+ *   • `payments` — học phí đã thu, có biên lai, trừ vào gói buổi;
+ *   • `invoices` chưa gắn gói — khách đóng trước khi ghi danh;
+ *   • `finance_entries` — bán sách, học cụ, lệ phí thi, thu khác.
+ *
+ * Cả ba quy về một kiểu `MoneyRow` để trang Doanh thu chỉ hiển thị một
+ * loại dòng, và tiền học phí thì không bao giờ phải gõ tay lần nữa.
  */
 
 import { getSupabase } from "./supabase";
@@ -57,8 +60,11 @@ export function categoryOptions(kind: FinanceKind): { key: string; label: string
 export interface MoneyRow {
   id: string;
   kind: FinanceKind;
-  /** `payment` = học phí lấy từ biên lai, `entry` = dòng nhập tay. */
-  source: "payment" | "entry";
+  /**
+   * `payment` = biên lai học phí, `entry` = dòng nhập tay,
+   * `invoice` = tiền thu trên hoá đơn chưa gắn gói buổi.
+   */
+  source: "payment" | "entry" | "invoice";
   /** YYYY-MM-DD. */
   date: string;
   category: string;
@@ -224,13 +230,60 @@ function entryToRow(e: FinanceEntryRow): MoneyRow {
   };
 }
 
-/** Toàn bộ tiền vào (học phí + khoản thu khác) trong khoảng ngày. */
+/**
+ * Tiền đã thu trên những hoá đơn KHÔNG gắn gói buổi — khách hàng tiềm
+ * năng đóng trước khi ghi danh, hoặc tờ bán học cụ lẻ.
+ *
+ * Hoá đơn CÓ gói buổi cố ý bị loại: tiền của nó đã thành một dòng
+ * `payments` (0036) và được đếm ở `fetchTuitionRevenue`. Hai nhánh loại
+ * trừ nhau theo `package_id` nên không có đồng nào bị đếm hai lần.
+ */
+export async function fetchInvoiceRevenue(from: string, to: string): Promise<MoneyRow[]> {
+  const { data, error } = await branchFilter(
+    getSupabase()
+      .from("invoices")
+      .select("id, invoice_no, customer_name, student_name, issued_on, method, paid_amount")
+      .is("package_id", null)
+      .gt("paid_amount", 0)
+      .gte("issued_on", from)
+      .lte("issued_on", to)
+      .order("issued_on", { ascending: false })
+      .limit(2000),
+  );
+  if (error) throw error;
+  type Row = {
+    id: string;
+    invoice_no: string;
+    customer_name: string;
+    student_name: string | null;
+    issued_on: string;
+    method: PaymentMethod;
+    paid_amount: number;
+  };
+  return ((data ?? []) as Row[]).map((r) => ({
+    id: r.id,
+    kind: "revenue" as const,
+    source: "invoice" as const,
+    date: r.issued_on,
+    category: "tuition",
+    title: r.student_name || r.customer_name,
+    subtitle: `Hoá đơn ${r.invoice_no}`,
+    amount: Number(r.paid_amount) || 0,
+    method: r.method,
+    note: null,
+  }));
+}
+
+/** Toàn bộ tiền vào (học phí + hoá đơn lẻ + khoản thu khác). */
 export async function fetchRevenueRows(from: string, to: string): Promise<MoneyRow[]> {
-  const [tuition, entries] = await Promise.all([
+  const [tuition, invoices, entries] = await Promise.all([
     fetchTuitionRevenue(from, to),
+    fetchInvoiceRevenue(from, to),
     fetchFinanceEntries("revenue", from, to),
   ]);
-  return [...tuition, ...entries.map(entryToRow)].sort((a, b) => b.date.localeCompare(a.date));
+  return [...tuition, ...invoices, ...entries.map(entryToRow)].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
 }
 
 /** Toàn bộ tiền ra trong khoảng ngày. */

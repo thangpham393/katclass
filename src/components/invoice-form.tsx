@@ -36,6 +36,7 @@ import {
 } from "@/lib/db";
 import {
   createInvoice,
+  fetchStudentParentName,
   invoiceTotal,
   lastBankInfo,
   lineTotal,
@@ -96,6 +97,8 @@ export function InvoiceFormModal({
     target.kind === "student" ? (target.student ?? null) : null,
   );
   const [students, setStudents] = useState<ProfileRow[]>([]);
+  /** Người đứng tên tờ hoá đơn — điền sẵn từ liên kết gia đình, sửa được. */
+  const [parentName, setParentName] = useState("");
   const [courses, setCourses] = useState<CourseRow[]>([]);
   const [method, setMethod] = useState<PaymentMethod>("transfer");
   const [issuedOn, setIssuedOn] = useState(todayISO());
@@ -142,6 +145,18 @@ export function InvoiceFormModal({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* Chọn học viên → điền sẵn tên phụ huynh từ liên kết gia đình. */
+  useEffect(() => {
+    if (target.kind !== "student" || !student) return;
+    let cancelled = false;
+    fetchStudentParentName(student.id)
+      .then((name) => !cancelled && name && setParentName((cur) => cur || name))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [student, target.kind]);
 
   /* Thông tin chuyển khoản của tờ gần nhất — chỉ điền khi người dùng chưa gõ. */
   useEffect(() => {
@@ -232,8 +247,10 @@ export function InvoiceFormModal({
 
       /* 2. Tờ hoá đơn */
       const customerName =
-        target.kind === "lead" ? target.customerName : (student?.name ?? "Khách hàng");
-      await createInvoice(
+        target.kind === "lead"
+          ? target.customerName
+          : parentName.trim() || student?.name || "Khách hàng";
+      const invoiceId = await createInvoice(
         {
           invoice_no: invoiceNo,
           branch_id: branchId,
@@ -265,6 +282,7 @@ export function InvoiceFormModal({
         const payment = await addPayment({
           package_id: packageId,
           student_id: studentId,
+          invoice_id: invoiceId,
           amount: paidNum,
           method,
           note: `Hoá đơn ${invoiceNo}`,
@@ -356,6 +374,15 @@ export function InvoiceFormModal({
                   )}
                 </div>
               </div>
+            </Field>
+          )}
+          {target.kind === "student" && (
+            <Field label="Phụ huynh (người đứng tên)" hint="Để trống thì tờ hoá đơn đứng tên học viên.">
+              <Input
+                value={parentName}
+                onChange={(e) => setParentName(e.target.value)}
+                placeholder="Họ tên phụ huynh"
+              />
             </Field>
           )}
           <Field label="Hình thức thanh toán">
@@ -575,8 +602,8 @@ export function InvoiceFormModal({
             ) : (
               paidNum > 0 && (
                 <p className="mt-3 text-xs text-muted-foreground">
-                  Chưa có “Tổng số buổi” nên tiền đã thu chỉ ghi trên tờ hoá đơn, không sinh biên
-                  lai và không vào doanh thu học phí.
+                  Chưa có “Tổng số buổi” nên tờ này không mở gói buổi và không có biên lai in — tiền
+                  đã thu vẫn được tính vào doanh thu theo ngày ghi trên hoá đơn.
                 </p>
               )
             )}

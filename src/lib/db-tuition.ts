@@ -148,6 +148,8 @@ export async function addPayment(input: {
   amount: number;
   method: PaymentMethod;
   note: string | null;
+  /** Gắn với hoá đơn (0036) — mỗi hoá đơn tối đa một dòng thu. */
+  invoice_id?: string | null;
   received_by: string;
 }): Promise<PaymentRow> {
   const { data, error } = await getSupabase()
