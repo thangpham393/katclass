@@ -1,0 +1,3447 @@
+{
+ "textbook": {
+  "code": "hsk1-new30",
+  "name": "HSK 1 — Tân giáo trình 3.0",
+  "name_zh": "新HSK教程 1",
+  "level": "HSK1",
+  "description": "《新HSK教程 1》(New HSK Course 1, NXB Ngoại ngữ Giáo dục & Nghiên cứu 2026) — giáo trình chính thức theo HSK 3.0, 15 bài, khoảng 300 từ theo đại cương mới. Nội dung trích từ sách gốc: mục tiêu bài học, toàn bộ từ mới (生词) của các bài khoá, và các điểm ngữ pháp 小语讲堂 kèm ví dụ. Nghĩa tiếng Việt do KAT biên dịch.",
+  "sort": 21
+ },
+ "lessons": [
+  {
+   "unit": 1,
+   "title": "AI Tiểu Ngữ, chào bạn!",
+   "title_zh": "AI小语，你好！",
+   "summary": "Nghe hiểu và dùng các mẫu câu lịch sự để chào hỏi, cảm ơn, tạm biệt; hiểu nghi thức giao tiếp của người Trung Quốc và biết dùng đại từ nhân xưng ngôi thứ hai kính trọng 您.",
+   "grammar": "1) CHÀO HỎI — dùng 好 sau đại từ nhân xưng:\n• 你好！ — Chào bạn!\n• 大家好！ — Chào cả nhà!\n• 老师，您好！ — Thưa cô, em chào cô ạ! (您 là cách xưng hô kính trọng, dùng với người lớn tuổi hoặc người đáng kính)\n• 你们好！ — Chào các bạn!\n\n2) CẢM ƠN VÀ ĐÁP LẠI:\n• 谢谢！ — Cảm ơn!\n• 不客气！ — Không có gì!\n\n3) TẠM BIỆT:\n• 同学们，再见！ — Chào các em!\n• 老师，再见！ — Chúng em chào cô ạ!",
+   "vocab": [
+    {
+     "hanzi": "你好",
+     "pinyin": "nǐ hǎo",
+     "meaning": "xin chào",
+     "example": {
+      "zh": "AI小语，你好！",
+      "pinyin": "AI Xiǎoyǔ, nǐ hǎo!",
+      "vi": "AI Tiểu Ngữ, chào bạn!"
+     }
+    },
+    {
+     "hanzi": "大家",
+     "pinyin": "dàjiā",
+     "meaning": "mọi người, cả nhà",
+     "example": {
+      "zh": "大家好！",
+      "pinyin": "Dàjiā hǎo!",
+      "vi": "Chào cả lớp!"
+     }
+    },
+    {
+     "hanzi": "好",
+     "pinyin": "hǎo",
+     "meaning": "tốt, khoẻ",
+     "example": {
+      "zh": "你好！",
+      "pinyin": "Nǐ hǎo!",
+      "vi": "Chào bạn!"
+     }
+    },
+    {
+     "hanzi": "学生",
+     "pinyin": "xuésheng",
+     "meaning": "học sinh, sinh viên",
+     "example": {
+      "zh": "学生们好！",
+      "pinyin": "Xuéshengmen hǎo!",
+      "vi": "Chào các em học sinh!"
+     }
+    },
+    {
+     "hanzi": "们",
+     "pinyin": "men",
+     "meaning": "hậu tố chỉ số nhiều (dùng sau đại từ nhân xưng hoặc danh từ chỉ người)",
+     "example": {
+      "zh": "同学们，再见！",
+      "pinyin": "Tóngxuémen, zàijiàn!",
+      "vi": "Chào các em nhé!"
+     }
+    },
+    {
+     "hanzi": "老师",
+     "pinyin": "lǎoshī",
+     "meaning": "thầy giáo, cô giáo",
+     "example": {
+      "zh": "老师，您好！",
+      "pinyin": "Lǎoshī, nín hǎo!",
+      "vi": "Thưa cô, em chào cô ạ!"
+     }
+    },
+    {
+     "hanzi": "您",
+     "pinyin": "nín",
+     "meaning": "ngài, ông/bà, thầy/cô (cách xưng hô kính trọng)",
+     "example": {
+      "zh": "老师，您好！",
+      "pinyin": "Lǎoshī, nín hǎo!",
+      "vi": "Thưa cô, em chào cô ạ!"
+     }
+    },
+    {
+     "hanzi": "你们",
+     "pinyin": "nǐmen",
+     "meaning": "các bạn, các em",
+     "example": {
+      "zh": "你们好！",
+      "pinyin": "Nǐmen hǎo!",
+      "vi": "Chào các em!"
+     }
+    },
+    {
+     "hanzi": "谢谢",
+     "pinyin": "xièxie",
+     "meaning": "cảm ơn",
+     "example": {
+      "zh": "谢谢！",
+      "pinyin": "Xièxie!",
+      "vi": "Cảm ơn!"
+     }
+    },
+    {
+     "hanzi": "不客气",
+     "pinyin": "bú kèqi",
+     "meaning": "không có gì, đừng khách sáo",
+     "example": {
+      "zh": "不客气！",
+      "pinyin": "Bú kèqi!",
+      "vi": "Không có gì!"
+     }
+    },
+    {
+     "hanzi": "同学",
+     "pinyin": "tóngxué",
+     "meaning": "bạn học",
+     "example": {
+      "zh": "同学们，再见！",
+      "pinyin": "Tóngxuémen, zàijiàn!",
+      "vi": "Chào các em nhé!"
+     }
+    },
+    {
+     "hanzi": "再见",
+     "pinyin": "zàijiàn",
+     "meaning": "tạm biệt",
+     "example": {
+      "zh": "老师，再见！",
+      "pinyin": "Lǎoshī, zàijiàn!",
+      "vi": "Chúng em chào cô ạ!"
+     }
+    },
+    {
+     "hanzi": "王老师",
+     "pinyin": "Wáng lǎoshī",
+     "meaning": "cô Vương (danh từ riêng)",
+     "example": {
+      "zh": "王老师，你好！",
+      "pinyin": "Wáng lǎoshī, nǐ hǎo!",
+      "vi": "Cô Vương, chào cô ạ!"
+     }
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "title": "Mình tên là Lý Văn",
+   "title_zh": "我叫李文",
+   "summary": "Nghe hiểu và tự giới thiệu bằng tên tiếng Trung; dùng 对不起 để xin lỗi và 没关系 để đáp lại; nắm trật tự từ cơ bản của tiếng Trung; hiểu cấu tạo họ tên của người Trung Quốc.",
+   "grammar": "1) TRẬT TỰ TỪ CƠ BẢN TRONG TIẾNG TRUNG — Chủ ngữ + Vị ngữ + Tân ngữ:\n• 我(CN) 叫(VN) 陈天中(TN)。 — Tôi tên là Trần Thiên Trung.\n• 你叫什么名字？ — Bạn tên là gì?\n• 我是学生。 — Tôi là học sinh.\n\n2) XIN LỖI VÀ ĐÁP LẠI:\n• 对不起！ — Xin lỗi!\n• 没关系！/ 没事！ — Không sao đâu! (khẩu ngữ còn nói 没事没事)\n\n3) HỌ TÊN NGƯỜI TRUNG QUỐC — cấu tạo: HỌ + TÊN (姓 + 名), ví dụ 陈天中 (họ 陈, tên 天中), 白家月 (họ 白, tên 家月).",
+   "vocab": [
+    {
+     "hanzi": "请问",
+     "pinyin": "qǐngwèn",
+     "meaning": "cho hỏi, xin hỏi",
+     "example": {
+      "zh": "请问，你叫什么名字？",
+      "pinyin": "Qǐngwèn, nǐ jiào shénme míngzi?",
+      "vi": "Cho cô hỏi, em tên là gì?"
+     }
+    },
+    {
+     "hanzi": "你",
+     "pinyin": "nǐ",
+     "meaning": "bạn, em, anh/chị (số ít)",
+     "example": {
+      "zh": "你叫什么名字？",
+      "pinyin": "Nǐ jiào shénme míngzi?",
+      "vi": "Bạn tên là gì?"
+     }
+    },
+    {
+     "hanzi": "叫",
+     "pinyin": "jiào",
+     "meaning": "tên là, gọi là",
+     "example": {
+      "zh": "我叫陈天中。",
+      "pinyin": "Wǒ jiào Chén Tiānzhōng.",
+      "vi": "Em tên là Trần Thiên Trung."
+     }
+    },
+    {
+     "hanzi": "什么",
+     "pinyin": "shénme",
+     "meaning": "gì, cái gì",
+     "example": {
+      "zh": "你叫什么名字？",
+      "pinyin": "Nǐ jiào shénme míngzi?",
+      "vi": "Bạn tên là gì?"
+     }
+    },
+    {
+     "hanzi": "名字",
+     "pinyin": "míngzi",
+     "meaning": "tên",
+     "example": {
+      "zh": "你叫什么名字？",
+      "pinyin": "Nǐ jiào shénme míngzi?",
+      "vi": "Bạn tên là gì?"
+     }
+    },
+    {
+     "hanzi": "我",
+     "pinyin": "wǒ",
+     "meaning": "tôi, mình, em",
+     "example": {
+      "zh": "我叫李文。",
+      "pinyin": "Wǒ jiào Lǐ Wén.",
+      "vi": "Mình tên là Lý Văn."
+     }
+    },
+    {
+     "hanzi": "不",
+     "pinyin": "bù",
+     "meaning": "không",
+     "example": {
+      "zh": "我不是安妮。",
+      "pinyin": "Wǒ bú shì Ānnī.",
+      "vi": "Mình không phải Annie."
+     }
+    },
+    {
+     "hanzi": "是",
+     "pinyin": "shì",
+     "meaning": "là",
+     "example": {
+      "zh": "我是白家月。",
+      "pinyin": "Wǒ shì Bái Jiāyuè.",
+      "vi": "Mình là Bạch Gia Nguyệt."
+     }
+    },
+    {
+     "hanzi": "对不起",
+     "pinyin": "duìbuqǐ",
+     "meaning": "xin lỗi",
+     "example": {
+      "zh": "对不起！",
+      "pinyin": "Duìbuqǐ!",
+      "vi": "Xin lỗi nhé!"
+     }
+    },
+    {
+     "hanzi": "没关系",
+     "pinyin": "méi guānxi",
+     "meaning": "không sao đâu",
+     "example": {
+      "zh": "没关系！",
+      "pinyin": "Méi guānxi!",
+      "vi": "Không sao đâu!"
+     }
+    },
+    {
+     "hanzi": "没事",
+     "pinyin": "méishì",
+     "meaning": "không sao, không có gì (khẩu ngữ)",
+     "example": {
+      "zh": "没事没事！",
+      "pinyin": "Méishì méishì!",
+      "vi": "Không sao không sao!"
+     }
+    },
+    {
+     "hanzi": "很",
+     "pinyin": "hěn",
+     "meaning": "rất",
+     "example": {
+      "zh": "很高兴认识你。",
+      "pinyin": "Hěn gāoxìng rènshi nǐ.",
+      "vi": "Rất vui được làm quen với bạn."
+     }
+    },
+    {
+     "hanzi": "高兴",
+     "pinyin": "gāoxìng",
+     "meaning": "vui, vui mừng",
+     "example": {
+      "zh": "很高兴认识你。",
+      "pinyin": "Hěn gāoxìng rènshi nǐ.",
+      "vi": "Rất vui được làm quen với bạn."
+     }
+    },
+    {
+     "hanzi": "认识",
+     "pinyin": "rènshi",
+     "meaning": "quen biết, làm quen",
+     "example": {
+      "zh": "认识你我也很高兴。",
+      "pinyin": "Rènshi nǐ wǒ yě hěn gāoxìng.",
+      "vi": "Mình cũng rất vui được quen bạn."
+     }
+    },
+    {
+     "hanzi": "也",
+     "pinyin": "yě",
+     "meaning": "cũng",
+     "example": {
+      "zh": "认识你我也很高兴。",
+      "pinyin": "Rènshi nǐ wǒ yě hěn gāoxìng.",
+      "vi": "Mình cũng rất vui được quen bạn."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "title": "Mình là người Trung Quốc",
+   "title_zh": "我是中国人",
+   "summary": "Nghe hiểu và dùng câu chữ 是 để nói về sự đồng nhất hoặc thuộc loại; nắm cách dùng trợ từ kết cấu 的; nắm câu hỏi đúng-sai với 吗.",
+   "grammar": "1) CÂU CHỮ “是” — nói người/vật là ai, thuộc loại nào; phủ định là 不是:\n• 我是法国人。 — Mình là người Pháp.\n• 她是中文老师。 — Cô ấy là giáo viên tiếng Trung.\n• 我老师不是法国人。 — Cô giáo mình không phải người Pháp.\n\n2) TRỢ TỪ KẾT CẤU “的” — đặt giữa định ngữ và trung tâm ngữ, biểu thị quan hệ sở hữu:\n• 白家月的中文老师 — cô giáo tiếng Trung của Bạch Gia Nguyệt\n• 你的名字 — tên của bạn\nNếu trước 的 là đại từ nhân xưng, sau 的 là từ chỉ quan hệ thân thuộc hoặc danh từ chỉ người thì có thể LƯỢC BỎ 的: 我老师、我学生、你同学、我妈妈.\n\n3) CÂU HỎI ĐÚNG-SAI VỚI “吗” — thêm 吗 vào cuối câu trần thuật:\n• 你也很忙吗？ — Chị cũng bận lắm à?\n• 你是他的中文老师吗？ — Cô là cô giáo tiếng Trung của cậu ấy phải không?\n• 你有姐姐吗？ — Bạn có chị gái không?",
+   "vocab": [
+    {
+     "hanzi": "人",
+     "pinyin": "rén",
+     "meaning": "người",
+     "example": {
+      "zh": "我是中国人。",
+      "pinyin": "Wǒ shì Zhōngguó rén.",
+      "vi": "Mình là người Trung Quốc."
+     }
+    },
+    {
+     "hanzi": "的",
+     "pinyin": "de",
+     "meaning": "trợ từ kết cấu, đứng sau định ngữ",
+     "example": {
+      "zh": "我的中文老师也是中国人。",
+      "pinyin": "Wǒ de Zhōngwén lǎoshī yě shì Zhōngguó rén.",
+      "vi": "Cô giáo tiếng Trung của mình cũng là người Trung Quốc."
+     }
+    },
+    {
+     "hanzi": "这",
+     "pinyin": "zhè",
+     "meaning": "này, đây",
+     "example": {
+      "zh": "这是谁？",
+      "pinyin": "Zhè shì shéi?",
+      "vi": "Đây là ai vậy?"
+     }
+    },
+    {
+     "hanzi": "谁",
+     "pinyin": "shéi",
+     "meaning": "ai",
+     "example": {
+      "zh": "她是谁？",
+      "pinyin": "Tā shì shéi?",
+      "vi": "Cô ấy là ai?"
+     }
+    },
+    {
+     "hanzi": "女朋友",
+     "pinyin": "nǚpéngyou",
+     "meaning": "bạn gái",
+     "example": {
+      "zh": "这是我女朋友。",
+      "pinyin": "Zhè shì wǒ nǚpéngyou.",
+      "vi": "Đây là bạn gái mình."
+     }
+    },
+    {
+     "hanzi": "哪",
+     "pinyin": "nǎ",
+     "meaning": "nào",
+     "example": {
+      "zh": "你女朋友是哪国人？",
+      "pinyin": "Nǐ nǚpéngyou shì nǎ guó rén?",
+      "vi": "Bạn gái cậu là người nước nào?"
+     }
+    },
+    {
+     "hanzi": "国",
+     "pinyin": "guó",
+     "meaning": "nước, quốc gia",
+     "example": {
+      "zh": "你是哪国人？",
+      "pinyin": "Nǐ shì nǎ guó rén?",
+      "vi": "Bạn là người nước nào?"
+     }
+    },
+    {
+     "hanzi": "她",
+     "pinyin": "tā",
+     "meaning": "cô ấy, chị ấy",
+     "example": {
+      "zh": "她也是泰国人。",
+      "pinyin": "Tā yě shì Tàiguó rén.",
+      "vi": "Cô ấy cũng là người Thái Lan."
+     }
+    },
+    {
+     "hanzi": "喂",
+     "pinyin": "wèi",
+     "meaning": "a lô, này",
+     "example": {
+      "zh": "喂，一飞！",
+      "pinyin": "Wèi, Yīfēi!",
+      "vi": "A lô, Nhất Phi à!"
+     }
+    },
+    {
+     "hanzi": "姐姐",
+     "pinyin": "jiějie",
+     "meaning": "chị gái",
+     "example": {
+      "zh": "姐姐！",
+      "pinyin": "Jiějie!",
+      "vi": "Chị ơi!"
+     }
+    },
+    {
+     "hanzi": "工作",
+     "pinyin": "gōngzuò",
+     "meaning": "công việc; làm việc",
+     "example": {
+      "zh": "你工作还忙吗？",
+      "pinyin": "Nǐ gōngzuò hái máng ma?",
+      "vi": "Công việc của em vẫn bận à?"
+     }
+    },
+    {
+     "hanzi": "还",
+     "pinyin": "hái",
+     "meaning": "vẫn, còn",
+     "example": {
+      "zh": "对，还很忙。",
+      "pinyin": "Duì, hái hěn máng.",
+      "vi": "Vâng, vẫn bận lắm."
+     }
+    },
+    {
+     "hanzi": "忙",
+     "pinyin": "máng",
+     "meaning": "bận",
+     "example": {
+      "zh": "我不太忙。",
+      "pinyin": "Wǒ bú tài máng.",
+      "vi": "Chị không bận lắm."
+     }
+    },
+    {
+     "hanzi": "吗",
+     "pinyin": "ma",
+     "meaning": "trợ từ nghi vấn cuối câu",
+     "example": {
+      "zh": "你也很忙吗？",
+      "pinyin": "Nǐ yě hěn máng ma?",
+      "vi": "Chị cũng bận lắm à?"
+     }
+    },
+    {
+     "hanzi": "对",
+     "pinyin": "duì",
+     "meaning": "đúng, phải",
+     "example": {
+      "zh": "对，还很忙。",
+      "pinyin": "Duì, hái hěn máng.",
+      "vi": "Đúng vậy, vẫn bận lắm."
+     }
+    },
+    {
+     "hanzi": "太",
+     "pinyin": "tài",
+     "meaning": "quá, lắm",
+     "example": {
+      "zh": "我不太忙。",
+      "pinyin": "Wǒ bú tài máng.",
+      "vi": "Chị không bận lắm."
+     }
+    },
+    {
+     "hanzi": "我们",
+     "pinyin": "wǒmen",
+     "meaning": "chúng tôi, chúng ta",
+     "example": {
+      "zh": "我们很想你。",
+      "pinyin": "Wǒmen hěn xiǎng nǐ.",
+      "vi": "Chúng tôi rất nhớ em."
+     }
+    },
+    {
+     "hanzi": "想",
+     "pinyin": "xiǎng",
+     "meaning": "nhớ, nhớ nhung",
+     "example": {
+      "zh": "我也想你们。",
+      "pinyin": "Wǒ yě xiǎng nǐmen.",
+      "vi": "Em cũng nhớ mọi người."
+     }
+    },
+    {
+     "hanzi": "中国",
+     "pinyin": "Zhōngguó",
+     "meaning": "Trung Quốc (danh từ riêng)",
+     "example": {
+      "zh": "我是中国人。",
+      "pinyin": "Wǒ shì Zhōngguó rén.",
+      "vi": "Mình là người Trung Quốc."
+     }
+    },
+    {
+     "hanzi": "法国",
+     "pinyin": "Fǎguó",
+     "meaning": "Pháp (danh từ riêng)",
+     "example": {
+      "zh": "我是法国人。",
+      "pinyin": "Wǒ shì Fǎguó rén.",
+      "vi": "Mình là người Pháp."
+     }
+    },
+    {
+     "hanzi": "中文",
+     "pinyin": "Zhōngwén",
+     "meaning": "tiếng Trung (danh từ riêng)",
+     "example": {
+      "zh": "我的中文老师是中国人。",
+      "pinyin": "Wǒ de Zhōngwén lǎoshī shì Zhōngguó rén.",
+      "vi": "Cô giáo tiếng Trung của mình là người Trung Quốc."
+     }
+    },
+    {
+     "hanzi": "泰国",
+     "pinyin": "Tàiguó",
+     "meaning": "Thái Lan (danh từ riêng)",
+     "example": {
+      "zh": "她也是泰国人。",
+      "pinyin": "Tā yě shì Tàiguó rén.",
+      "vi": "Cô ấy cũng là người Thái Lan."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "title": "Tôi có hai đứa con",
+   "title_zh": "我有两个孩子",
+   "summary": "Nghe hiểu và dùng câu chữ 有 (1) để nói về sở hữu người hoặc đồ vật; nắm mẫu “A…，B呢？”; nắm số từ và lượng từ trong bài; biết cách người Trung Quốc hỏi – đáp về tuổi tác.",
+   "grammar": "1) CÂU CHỮ “有” (1) — biểu thị sở hữu; phủ định dùng 没/没有:\n• 她有二十个学生。 — Cô ấy có hai mươi học sinh.\n• 她有一个姐姐。 — Cô ấy có một chị gái.\n• 我没有姐姐。 — Tôi không có chị gái.\n\n2) CÁCH ĐỌC SỐ — 零 líng 0, 一 yī 1, 二 èr 2, 三 sān 3, 四 sì 4, 五 wǔ 5, 六 liù 6, 七 qī 7, 八 bā 8, 九 jiǔ 9, 十 shí 10; 十一 11, 二十 20, 三十三 33, 九十九 99; 一百 100, 二百零八 208, 一千 1000, 一千五百 1500, 九千九百九十九 9999.\nDùng 二 trong số đếm và số thứ tự (十二、二十二), nhưng dùng 两 trước lượng từ: 两个人、两本书.\n\n3) TRỢ TỪ NGỮ KHÍ “呢” (1) — đặt cuối câu để hỏi lại về tình huống vừa nhắc đến. Cấu trúc: A……，B呢？\n• 我有两个哥哥，你呢？ — Tôi có hai anh trai, còn anh?\n• 我叫白家月，你呢？ — Mình tên Bạch Gia Nguyệt, còn bạn?\n• 我是中国人，你呢？ — Mình là người Trung Quốc, còn bạn?\n\n4) DANH LƯỢNG TỪ VÀ KẾT CẤU [số từ + lượng từ + (danh từ)] — sau số từ tiếng Trung thường phải có lượng từ, ví dụ 口 (dùng cho nhân khẩu trong gia đình), 个 (lượng từ dùng chung):\n• 四口 / 四口人 — bốn người (trong nhà)\n• 两个 / 两个学生 — hai (bạn) học sinh\n\n5) HỎI TUỔI — dưới 10 tuổi hỏi 几岁 (您儿子几岁？); trên 10 tuổi hỏi 多大 (您女儿多大？).",
+   "vocab": [
+    {
+     "hanzi": "有",
+     "pinyin": "yǒu",
+     "meaning": "có",
+     "example": {
+      "zh": "我有两个孩子。",
+      "pinyin": "Wǒ yǒu liǎng ge háizi.",
+      "vi": "Tôi có hai đứa con."
+     }
+    },
+    {
+     "hanzi": "多少",
+     "pinyin": "duōshao",
+     "meaning": "bao nhiêu",
+     "example": {
+      "zh": "她有多少个学生？",
+      "pinyin": "Tā yǒu duōshao ge xuésheng?",
+      "vi": "Cô ấy có bao nhiêu học sinh?"
+     }
+    },
+    {
+     "hanzi": "个",
+     "pinyin": "ge",
+     "meaning": "cái, người (lượng từ dùng chung)",
+     "example": {
+      "zh": "她有二十个学生。",
+      "pinyin": "Tā yǒu èrshí ge xuésheng.",
+      "vi": "Cô ấy có hai mươi học sinh."
+     }
+    },
+    {
+     "hanzi": "哥哥",
+     "pinyin": "gēge",
+     "meaning": "anh trai",
+     "example": {
+      "zh": "我有两个哥哥。",
+      "pinyin": "Wǒ yǒu liǎng ge gēge.",
+      "vi": "Tôi có hai anh trai."
+     }
+    },
+    {
+     "hanzi": "呢",
+     "pinyin": "ne",
+     "meaning": "trợ từ cuối câu hỏi (còn… thì sao?)",
+     "example": {
+      "zh": "我有两个哥哥，你呢？",
+      "pinyin": "Wǒ yǒu liǎng ge gēge, nǐ ne?",
+      "vi": "Tôi có hai anh trai, còn anh?"
+     }
+    },
+    {
+     "hanzi": "没有",
+     "pinyin": "méiyǒu",
+     "meaning": "không có",
+     "example": {
+      "zh": "我没有哥哥。",
+      "pinyin": "Wǒ méiyǒu gēge.",
+      "vi": "Tôi không có anh trai."
+     }
+    },
+    {
+     "hanzi": "家",
+     "pinyin": "jiā",
+     "meaning": "nhà, gia đình",
+     "example": {
+      "zh": "你家有几口人？",
+      "pinyin": "Nǐ jiā yǒu jǐ kǒu rén?",
+      "vi": "Nhà anh có mấy người?"
+     }
+    },
+    {
+     "hanzi": "几",
+     "pinyin": "jǐ",
+     "meaning": "mấy, bao nhiêu (số nhỏ)",
+     "example": {
+      "zh": "你家有几口人？",
+      "pinyin": "Nǐ jiā yǒu jǐ kǒu rén?",
+      "vi": "Nhà anh có mấy người?"
+     }
+    },
+    {
+     "hanzi": "口",
+     "pinyin": "kǒu",
+     "meaning": "người (lượng từ chỉ nhân khẩu trong gia đình)",
+     "example": {
+      "zh": "我家有四口人。",
+      "pinyin": "Wǒ jiā yǒu sì kǒu rén.",
+      "vi": "Nhà tôi có bốn người."
+     }
+    },
+    {
+     "hanzi": "爸爸",
+     "pinyin": "bàba",
+     "meaning": "bố, ba",
+     "example": {
+      "zh": "我家有爸爸、妈妈、妹妹和我。",
+      "pinyin": "Wǒ jiā yǒu bàba, māma, mèimei hé wǒ.",
+      "vi": "Nhà tôi có bố, mẹ, em gái và tôi."
+     }
+    },
+    {
+     "hanzi": "妈妈",
+     "pinyin": "māma",
+     "meaning": "mẹ",
+     "example": {
+      "zh": "这是我妈妈。",
+      "pinyin": "Zhè shì wǒ māma.",
+      "vi": "Đây là mẹ tôi."
+     }
+    },
+    {
+     "hanzi": "妹妹",
+     "pinyin": "mèimei",
+     "meaning": "em gái",
+     "example": {
+      "zh": "我有一个妹妹。",
+      "pinyin": "Wǒ yǒu yí ge mèimei.",
+      "vi": "Tôi có một em gái."
+     }
+    },
+    {
+     "hanzi": "和",
+     "pinyin": "hé",
+     "meaning": "và",
+     "example": {
+      "zh": "爸爸、妈妈、妹妹和我。",
+      "pinyin": "Bàba, māma, mèimei hé wǒ.",
+      "vi": "Bố, mẹ, em gái và tôi."
+     }
+    },
+    {
+     "hanzi": "儿子",
+     "pinyin": "érzi",
+     "meaning": "con trai",
+     "example": {
+      "zh": "这是您儿子吗？",
+      "pinyin": "Zhè shì nín érzi ma?",
+      "vi": "Đây là con trai chị phải không?"
+     }
+    },
+    {
+     "hanzi": "孩子",
+     "pinyin": "háizi",
+     "meaning": "con, đứa trẻ",
+     "example": {
+      "zh": "我有两个孩子。",
+      "pinyin": "Wǒ yǒu liǎng ge háizi.",
+      "vi": "Tôi có hai đứa con."
+     }
+    },
+    {
+     "hanzi": "女儿",
+     "pinyin": "nǚ'ér",
+     "meaning": "con gái",
+     "example": {
+      "zh": "一个儿子，一个女儿。",
+      "pinyin": "Yí ge érzi, yí ge nǚ'ér.",
+      "vi": "Một trai, một gái."
+     }
+    },
+    {
+     "hanzi": "岁",
+     "pinyin": "suì",
+     "meaning": "tuổi",
+     "example": {
+      "zh": "他今年五岁。",
+      "pinyin": "Tā jīnnián wǔ suì.",
+      "vi": "Cháu năm nay năm tuổi."
+     }
+    },
+    {
+     "hanzi": "他",
+     "pinyin": "tā",
+     "meaning": "anh ấy, cậu ấy",
+     "example": {
+      "zh": "他今年五岁。",
+      "pinyin": "Tā jīnnián wǔ suì.",
+      "vi": "Cháu năm nay năm tuổi."
+     }
+    },
+    {
+     "hanzi": "今年",
+     "pinyin": "jīnnián",
+     "meaning": "năm nay",
+     "example": {
+      "zh": "她今年十二。",
+      "pinyin": "Tā jīnnián shí'èr.",
+      "vi": "Cháu năm nay mười hai."
+     }
+    },
+    {
+     "hanzi": "多",
+     "pinyin": "duō",
+     "meaning": "bao nhiêu, đến mức nào",
+     "example": {
+      "zh": "您女儿多大？",
+      "pinyin": "Nín nǚ'ér duō dà?",
+      "vi": "Con gái chị bao nhiêu tuổi?"
+     }
+    },
+    {
+     "hanzi": "大",
+     "pinyin": "dà",
+     "meaning": "lớn (tuổi)",
+     "example": {
+      "zh": "您女儿多大？",
+      "pinyin": "Nín nǚ'ér duō dà?",
+      "vi": "Con gái chị bao nhiêu tuổi?"
+     }
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "title": "Hôm nay tôi được nghỉ",
+   "title_zh": "今天我休息",
+   "summary": "Nghe hiểu và nói ngày tháng theo cách diễn đạt của tiếng Trung; dùng động từ năng nguyện 会 để nói biết làm / có khả năng làm việc gì; nắm câu vị ngữ danh từ.",
+   "grammar": "1) CÁCH NÓI THỜI GIAN (1) — trật tự từ lớn đến nhỏ: năm → tháng → ngày → thứ:\n• 1992年5月16日/号，星期六 — thứ Bảy, ngày 16 tháng 5 năm 1992\n• 2024年10月22日/号，星期二 — thứ Ba, ngày 22 tháng 10 năm 2024\nCác tháng: 一月…十二月. Các thứ: 星期一 (thứ Hai) … 星期六 (thứ Bảy), 星期日/星期天 (Chủ nhật). 号 dùng trong khẩu ngữ, 日 dùng trong văn viết.\n\n2) CÂU VỊ NGỮ DANH TỪ (名词谓语句) — danh từ/cụm danh từ trực tiếp làm vị ngữ, không cần 是, thường dùng nói thời gian, ngày tháng, tuổi tác:\n• 今天9月8号。 — Hôm nay ngày 8 tháng 9.\n• 我妹妹12岁。 — Em gái tôi 12 tuổi.\n\n3) ĐỘNG TỪ NĂNG NGUYỆN “会” — biết làm việc gì đó nhờ học tập; phủ định 不会:\n• 你会做饭吗？ — Anh biết nấu ăn không?\n• 我会做面条儿、饺子。 — Tôi biết làm mì, sủi cảo.\n• 我不会做菜。 — Tôi không biết nấu món ăn.",
+   "vocab": [
+    {
+     "hanzi": "今天",
+     "pinyin": "jīntiān",
+     "meaning": "hôm nay",
+     "example": {
+      "zh": "今天几号？",
+      "pinyin": "Jīntiān jǐ hào?",
+      "vi": "Hôm nay ngày mấy?"
+     }
+    },
+    {
+     "hanzi": "号",
+     "pinyin": "hào",
+     "meaning": "ngày (khẩu ngữ)",
+     "example": {
+      "zh": "今天9月8号。",
+      "pinyin": "Jīntiān jiǔ yuè bā hào.",
+      "vi": "Hôm nay ngày 8 tháng 9."
+     }
+    },
+    {
+     "hanzi": "月",
+     "pinyin": "yuè",
+     "meaning": "tháng",
+     "example": {
+      "zh": "今天9月8号。",
+      "pinyin": "Jīntiān jiǔ yuè bā hào.",
+      "vi": "Hôm nay ngày 8 tháng 9."
+     }
+    },
+    {
+     "hanzi": "日",
+     "pinyin": "rì",
+     "meaning": "ngày (văn viết)",
+     "example": {
+      "zh": "2024年10月22日。",
+      "pinyin": "Èr líng èr sì nián shí yuè èrshí'èr rì.",
+      "vi": "Ngày 22 tháng 10 năm 2024."
+     }
+    },
+    {
+     "hanzi": "星期",
+     "pinyin": "xīngqī",
+     "meaning": "tuần, thứ",
+     "example": {
+      "zh": "今天星期几？",
+      "pinyin": "Jīntiān xīngqī jǐ?",
+      "vi": "Hôm nay thứ mấy?"
+     }
+    },
+    {
+     "hanzi": "星期日",
+     "pinyin": "xīngqīrì",
+     "meaning": "chủ nhật",
+     "example": {
+      "zh": "今天星期日。",
+      "pinyin": "Jīntiān xīngqīrì.",
+      "vi": "Hôm nay chủ nhật."
+     }
+    },
+    {
+     "hanzi": "星期天",
+     "pinyin": "xīngqītiān",
+     "meaning": "chủ nhật (khẩu ngữ)",
+     "example": {
+      "zh": "星期天我也做饭。",
+      "pinyin": "Xīngqītiān wǒ yě zuò fàn.",
+      "vi": "Chủ nhật tôi cũng nấu cơm."
+     }
+    },
+    {
+     "hanzi": "休息",
+     "pinyin": "xiūxi",
+     "meaning": "nghỉ ngơi, được nghỉ",
+     "example": {
+      "zh": "今天我休息。",
+      "pinyin": "Jīntiān wǒ xiūxi.",
+      "vi": "Hôm nay tôi được nghỉ."
+     }
+    },
+    {
+     "hanzi": "会",
+     "pinyin": "huì",
+     "meaning": "biết (làm gì), có thể",
+     "example": {
+      "zh": "你会做饭吗？",
+      "pinyin": "Nǐ huì zuò fàn ma?",
+      "vi": "Anh biết nấu ăn không?"
+     }
+    },
+    {
+     "hanzi": "做饭",
+     "pinyin": "zuò fàn",
+     "meaning": "nấu cơm, nấu ăn",
+     "example": {
+      "zh": "星期天我也做饭。",
+      "pinyin": "Xīngqītiān wǒ yě zuò fàn.",
+      "vi": "Chủ nhật tôi cũng nấu cơm."
+     }
+    },
+    {
+     "hanzi": "做",
+     "pinyin": "zuò",
+     "meaning": "làm",
+     "example": {
+      "zh": "你会做什么？",
+      "pinyin": "Nǐ huì zuò shénme?",
+      "vi": "Anh biết làm món gì?"
+     }
+    },
+    {
+     "hanzi": "面条儿",
+     "pinyin": "miàntiáor",
+     "meaning": "mì sợi",
+     "example": {
+      "zh": "我会做面条儿。",
+      "pinyin": "Wǒ huì zuò miàntiáor.",
+      "vi": "Tôi biết làm mì."
+     }
+    },
+    {
+     "hanzi": "饺子",
+     "pinyin": "jiǎozi",
+     "meaning": "sủi cảo",
+     "example": {
+      "zh": "我会做饺子。",
+      "pinyin": "Wǒ huì zuò jiǎozi.",
+      "vi": "Tôi biết làm sủi cảo."
+     }
+    },
+    {
+     "hanzi": "一些",
+     "pinyin": "yìxiē",
+     "meaning": "một số, vài",
+     "example": {
+      "zh": "也会做一些菜。",
+      "pinyin": "Yě huì zuò yìxiē cài.",
+      "vi": "Cũng biết nấu vài món."
+     }
+    },
+    {
+     "hanzi": "菜",
+     "pinyin": "cài",
+     "meaning": "món ăn, rau",
+     "example": {
+      "zh": "你会做这两个菜吗？",
+      "pinyin": "Nǐ huì zuò zhè liǎng ge cài ma?",
+      "vi": "Anh biết nấu hai món này không?"
+     }
+    },
+    {
+     "hanzi": "下班",
+     "pinyin": "xiàbān",
+     "meaning": "tan làm",
+     "example": {
+      "zh": "同乐，下班吗？",
+      "pinyin": "Tónglè, xiàbān ma?",
+      "vi": "Đồng Lạc, tan làm rồi à?"
+     }
+    },
+    {
+     "hanzi": "新",
+     "pinyin": "xīn",
+     "meaning": "mới",
+     "example": {
+      "zh": "这是你的新电脑吗？",
+      "pinyin": "Zhè shì nǐ de xīn diànnǎo ma?",
+      "vi": "Đây là máy tính mới của cậu à?"
+     }
+    },
+    {
+     "hanzi": "电脑",
+     "pinyin": "diànnǎo",
+     "meaning": "máy tính",
+     "example": {
+      "zh": "是我的新电脑。",
+      "pinyin": "Shì wǒ de xīn diànnǎo.",
+      "vi": "Là máy tính mới của mình."
+     }
+    },
+    {
+     "hanzi": "真",
+     "pinyin": "zhēn",
+     "meaning": "thật, thật là",
+     "example": {
+      "zh": "真好看！",
+      "pinyin": "Zhēn hǎokàn!",
+      "vi": "Đẹp thật đấy!"
+     }
+    },
+    {
+     "hanzi": "好看",
+     "pinyin": "hǎokàn",
+     "meaning": "đẹp, đẹp mắt",
+     "example": {
+      "zh": "你的电脑真好看！",
+      "pinyin": "Nǐ de diànnǎo zhēn hǎokàn!",
+      "vi": "Máy tính của cậu đẹp thật!"
+     }
+    },
+    {
+     "hanzi": "喜欢",
+     "pinyin": "xǐhuan",
+     "meaning": "thích",
+     "example": {
+      "zh": "我也很喜欢它。",
+      "pinyin": "Wǒ yě hěn xǐhuan tā.",
+      "vi": "Mình cũng rất thích nó."
+     }
+    },
+    {
+     "hanzi": "它",
+     "pinyin": "tā",
+     "meaning": "nó (chỉ đồ vật, con vật)",
+     "example": {
+      "zh": "我也很喜欢它。",
+      "pinyin": "Wǒ yě hěn xǐhuan tā.",
+      "vi": "Mình cũng rất thích nó."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "title": "Số điện thoại của bạn là bao nhiêu?",
+   "title_zh": "你的手机号是多少？",
+   "summary": "Nghe hiểu số điện thoại và gọi điện theo số; dùng hai hoặc nhiều cụm động từ để diễn đạt mục đích hay cách thức của hành động; nắm động từ năng nguyện 想 và đại từ nghi vấn 怎么 hỏi cách thức.",
+   "grammar": "1) ĐỘNG TỪ NĂNG NGUYỆN “想” — muốn, định làm gì; phủ định 不想:\n• 我想去超市。 — Mình muốn đi siêu thị.\n• 我哥哥不想休息。 — Anh trai mình không muốn nghỉ.\n\n2) CÂU LIÊN ĐỘNG (1) — hai (hoặc nhiều) cụm động từ nối tiếp cùng một chủ ngữ.\n• Diễn đạt MỤC ĐÍCH: 我想去超市买东西。 — Mình muốn đi siêu thị mua đồ. / 我们去西安饭店吃晚饭。 — Chúng ta đến nhà hàng Tây An ăn tối.\n• Diễn đạt PHƯƠNG TIỆN, CÁCH THỨC: 我们坐出租车去西安饭店。 — Chúng ta đi taxi tới nhà hàng Tây An. / 她坐出租车去超市。 — Cô ấy đi taxi tới siêu thị.\n\n3) ĐẠI TỪ NGHI VẤN “怎么” — đặt trước động từ để hỏi cách thức:\n• 我们怎么去？ — Chúng ta đi bằng cách nào?\n• 她怎么去超市？ — Cô ấy đi siêu thị bằng gì?\n\n4) ĐỌC SỐ ĐIỆN THOẠI — đọc từng chữ số một, chữ số “1” đọc là yāo: 13552721160 → yāo sān wǔ wǔ èr qī èr yāo yāo liù líng.",
+   "vocab": [
+    {
+     "hanzi": "手机",
+     "pinyin": "shǒujī",
+     "meaning": "điện thoại di động",
+     "example": {
+      "zh": "你的手机号是多少？",
+      "pinyin": "Nǐ de shǒujīhào shì duōshao?",
+      "vi": "Số điện thoại của bạn là bao nhiêu?"
+     }
+    },
+    {
+     "hanzi": "电话",
+     "pinyin": "diànhuà",
+     "meaning": "điện thoại, cuộc gọi",
+     "example": {
+      "zh": "我给你打电话。",
+      "pinyin": "Wǒ gěi nǐ dǎ diànhuà.",
+      "vi": "Mình gọi điện cho bạn."
+     }
+    },
+    {
+     "hanzi": "号",
+     "pinyin": "hào",
+     "meaning": "số",
+     "example": {
+      "zh": "我的手机号是13552721160。",
+      "pinyin": "Wǒ de shǒujīhào shì yāo sān wǔ wǔ èr qī èr yāo yāo liù líng.",
+      "vi": "Số điện thoại của mình là 13552721160."
+     }
+    },
+    {
+     "hanzi": "明天",
+     "pinyin": "míngtiān",
+     "meaning": "ngày mai",
+     "example": {
+      "zh": "明天你去哪儿？",
+      "pinyin": "Míngtiān nǐ qù nǎr?",
+      "vi": "Ngày mai bạn đi đâu?"
+     }
+    },
+    {
+     "hanzi": "去",
+     "pinyin": "qù",
+     "meaning": "đi, đến",
+     "example": {
+      "zh": "我想去超市。",
+      "pinyin": "Wǒ xiǎng qù chāoshì.",
+      "vi": "Mình muốn đi siêu thị."
+     }
+    },
+    {
+     "hanzi": "哪儿",
+     "pinyin": "nǎr",
+     "meaning": "đâu, ở đâu",
+     "example": {
+      "zh": "明天你去哪儿？",
+      "pinyin": "Míngtiān nǐ qù nǎr?",
+      "vi": "Ngày mai bạn đi đâu?"
+     }
+    },
+    {
+     "hanzi": "想",
+     "pinyin": "xiǎng",
+     "meaning": "muốn, định",
+     "example": {
+      "zh": "我想买些牛奶。",
+      "pinyin": "Wǒ xiǎng mǎi xiē niúnǎi.",
+      "vi": "Mình muốn mua ít sữa."
+     }
+    },
+    {
+     "hanzi": "超市",
+     "pinyin": "chāoshì",
+     "meaning": "siêu thị",
+     "example": {
+      "zh": "我想去超市买东西。",
+      "pinyin": "Wǒ xiǎng qù chāoshì mǎi dōngxi.",
+      "vi": "Mình muốn đi siêu thị mua đồ."
+     }
+    },
+    {
+     "hanzi": "买",
+     "pinyin": "mǎi",
+     "meaning": "mua",
+     "example": {
+      "zh": "你去超市买什么？",
+      "pinyin": "Nǐ qù chāoshì mǎi shénme?",
+      "vi": "Bạn đi siêu thị mua gì?"
+     }
+    },
+    {
+     "hanzi": "东西",
+     "pinyin": "dōngxi",
+     "meaning": "đồ, đồ đạc",
+     "example": {
+      "zh": "我去超市买东西。",
+      "pinyin": "Wǒ qù chāoshì mǎi dōngxi.",
+      "vi": "Mình đi siêu thị mua đồ."
+     }
+    },
+    {
+     "hanzi": "些",
+     "pinyin": "xiē",
+     "meaning": "một ít, vài",
+     "example": {
+      "zh": "我想买些牛奶。",
+      "pinyin": "Wǒ xiǎng mǎi xiē niúnǎi.",
+      "vi": "Mình muốn mua ít sữa."
+     }
+    },
+    {
+     "hanzi": "牛奶",
+     "pinyin": "niúnǎi",
+     "meaning": "sữa bò",
+     "example": {
+      "zh": "我想买些牛奶。",
+      "pinyin": "Wǒ xiǎng mǎi xiē niúnǎi.",
+      "vi": "Mình muốn mua ít sữa."
+     }
+    },
+    {
+     "hanzi": "吃",
+     "pinyin": "chī",
+     "meaning": "ăn",
+     "example": {
+      "zh": "我想吃包子。",
+      "pinyin": "Wǒ xiǎng chī bāozi.",
+      "vi": "Con muốn ăn bánh bao."
+     }
+    },
+    {
+     "hanzi": "晚饭",
+     "pinyin": "wǎnfàn",
+     "meaning": "bữa tối",
+     "example": {
+      "zh": "星期天我们去哪儿吃晚饭？",
+      "pinyin": "Xīngqītiān wǒmen qù nǎr chī wǎnfàn?",
+      "vi": "Chủ nhật cả nhà đi đâu ăn tối?"
+     }
+    },
+    {
+     "hanzi": "那边",
+     "pinyin": "nàbian",
+     "meaning": "bên kia, đằng kia",
+     "example": {
+      "zh": "那边的包子非常好吃。",
+      "pinyin": "Nàbian de bāozi fēicháng hǎochī.",
+      "vi": "Bánh bao bên đó ngon cực kỳ."
+     }
+    },
+    {
+     "hanzi": "包子",
+     "pinyin": "bāozi",
+     "meaning": "bánh bao",
+     "example": {
+      "zh": "我想吃包子。",
+      "pinyin": "Wǒ xiǎng chī bāozi.",
+      "vi": "Con muốn ăn bánh bao."
+     }
+    },
+    {
+     "hanzi": "非常",
+     "pinyin": "fēicháng",
+     "meaning": "vô cùng, rất",
+     "example": {
+      "zh": "这些包子非常好吃。",
+      "pinyin": "Zhèxiē bāozi fēicháng hǎochī.",
+      "vi": "Mấy cái bánh bao này ngon cực kỳ."
+     }
+    },
+    {
+     "hanzi": "好吃",
+     "pinyin": "hǎochī",
+     "meaning": "ngon",
+     "example": {
+      "zh": "那边的包子非常好吃。",
+      "pinyin": "Nàbian de bāozi fēicháng hǎochī.",
+      "vi": "Bánh bao bên đó ngon cực kỳ."
+     }
+    },
+    {
+     "hanzi": "米饭",
+     "pinyin": "mǐfàn",
+     "meaning": "cơm",
+     "example": {
+      "zh": "我想吃米饭。",
+      "pinyin": "Wǒ xiǎng chī mǐfàn.",
+      "vi": "Con muốn ăn cơm."
+     }
+    },
+    {
+     "hanzi": "怎么",
+     "pinyin": "zěnme",
+     "meaning": "thế nào, làm sao",
+     "example": {
+      "zh": "我们怎么去？",
+      "pinyin": "Wǒmen zěnme qù?",
+      "vi": "Nhà mình đi bằng gì?"
+     }
+    },
+    {
+     "hanzi": "坐",
+     "pinyin": "zuò",
+     "meaning": "đi (bằng phương tiện), ngồi",
+     "example": {
+      "zh": "坐出租车去。",
+      "pinyin": "Zuò chūzūchē qù.",
+      "vi": "Đi taxi đi."
+     }
+    },
+    {
+     "hanzi": "出租车",
+     "pinyin": "chūzūchē",
+     "meaning": "xe taxi",
+     "example": {
+      "zh": "我们坐出租车去西安饭店。",
+      "pinyin": "Wǒmen zuò chūzūchē qù Xī'ān Fàndiàn.",
+      "vi": "Nhà mình đi taxi tới nhà hàng Tây An."
+     }
+    },
+    {
+     "hanzi": "西安饭店",
+     "pinyin": "Xī'ān Fàndiàn",
+     "meaning": "nhà hàng Tây An (danh từ riêng)",
+     "example": {
+      "zh": "我还想去西安饭店。",
+      "pinyin": "Wǒ hái xiǎng qù Xī'ān Fàndiàn.",
+      "vi": "Anh vẫn muốn đến nhà hàng Tây An."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "title": "Tối em tan làm lúc sáu rưỡi",
+   "title_zh": "我晚上六点半下班",
+   "summary": "Nghe hiểu và nói thời gian xảy ra sự việc; nắm trợ từ ngữ khí 吧 (1) để đề nghị, bàn bạc; nắm trợ từ 呢 (2) xác nhận sự thật; nắm vị trí của phó từ và từ chỉ thời gian khi làm trạng ngữ.",
+   "grammar": "1) CÁCH NÓI GIỜ (2)\n• Dùng 点 (giờ) và 分 (phút): giờ tròn dùng 点 (九点 9:00); có phút thì dùng 分, thường lược bỏ chữ 分 (十五点四十 15:40). Riêng “mười phút” KHÔNG lược 分 (二十一点十分 21:10); dưới mười phút phải đọc 零 (二十二点零五 22:05).\n• Dùng danh từ chỉ buổi 上午、中午、下午、晚上 để chỉ khoảng thời gian, đứng trước giờ cụ thể: 上午 / 中午十二点 / 下午两点半 / 晚上九点十分.\n\n2) TRỢ TỪ NGỮ KHÍ “吧” (1) — đọc thanh nhẹ, đặt cuối câu, biểu thị đề nghị, bàn bạc, khuyên nhủ, yêu cầu:\n• 我们下午三点见吧。 — Chiều ba giờ mình gặp nhau nhé.\n• 你去超市买吧。 — Cậu ra siêu thị mua đi.\n\n3) VỊ TRÍ CỦA PHÓ TỪ VÀ TỪ CHỈ THỜI GIAN LÀM TRẠNG NGỮ — đặt TRƯỚC động từ hoặc tính từ:\n• 我不想去。 — Mình không muốn đi.\n• 妹妹很高兴。 — Em gái rất vui.\n• 她上午十点半上课。 — Cô ấy 10 rưỡi sáng vào học.\n\n4) TRỢ TỪ NGỮ KHÍ “呢” (2) — đặt cuối câu trần thuật để xác nhận, nhấn mạnh sự việc. Cấu trúc: ……呢。\n• 我明天下午两点还上课呢。 — Chiều mai hai giờ mình còn phải học nữa cơ.\n• 妹妹会做两个菜呢。 — Em gái biết nấu hai món đấy.\n• 李文晚上还有事呢。 — Tối Lý Văn còn có việc nữa.",
+   "vocab": [
+    {
+     "hanzi": "现在",
+     "pinyin": "xiànzài",
+     "meaning": "bây giờ",
+     "example": {
+      "zh": "现在几点？",
+      "pinyin": "Xiànzài jǐ diǎn?",
+      "vi": "Bây giờ mấy giờ rồi?"
+     }
+    },
+    {
+     "hanzi": "点",
+     "pinyin": "diǎn",
+     "meaning": "giờ",
+     "example": {
+      "zh": "早上八点四十。",
+      "pinyin": "Zǎoshang bā diǎn sìshí.",
+      "vi": "8 giờ 40 sáng."
+     }
+    },
+    {
+     "hanzi": "早上",
+     "pinyin": "zǎoshang",
+     "meaning": "buổi sáng sớm",
+     "example": {
+      "zh": "早上八点四十。",
+      "pinyin": "Zǎoshang bā diǎn sìshí.",
+      "vi": "8 giờ 40 sáng."
+     }
+    },
+    {
+     "hanzi": "上午",
+     "pinyin": "shàngwǔ",
+     "meaning": "buổi sáng",
+     "example": {
+      "zh": "我上午十点十分有课。",
+      "pinyin": "Wǒ shàngwǔ shí diǎn shí fēn yǒu kè.",
+      "vi": "Sáng 10 giờ 10 mình có tiết."
+     }
+    },
+    {
+     "hanzi": "分",
+     "pinyin": "fēn",
+     "meaning": "phút",
+     "example": {
+      "zh": "上午十点十分。",
+      "pinyin": "Shàngwǔ shí diǎn shí fēn.",
+      "vi": "10 giờ 10 phút sáng."
+     }
+    },
+    {
+     "hanzi": "课",
+     "pinyin": "kè",
+     "meaning": "tiết học, bài học",
+     "example": {
+      "zh": "我上午有课。",
+      "pinyin": "Wǒ shàngwǔ yǒu kè.",
+      "vi": "Sáng mình có tiết."
+     }
+    },
+    {
+     "hanzi": "下午",
+     "pinyin": "xiàwǔ",
+     "meaning": "buổi chiều",
+     "example": {
+      "zh": "我们下午两点见吧。",
+      "pinyin": "Wǒmen xiàwǔ liǎng diǎn jiàn ba.",
+      "vi": "Chiều hai giờ mình gặp nhau nhé."
+     }
+    },
+    {
+     "hanzi": "见",
+     "pinyin": "jiàn",
+     "meaning": "gặp",
+     "example": {
+      "zh": "我们下午三点见吧。",
+      "pinyin": "Wǒmen xiàwǔ sān diǎn jiàn ba.",
+      "vi": "Chiều ba giờ mình gặp nhau nhé."
+     }
+    },
+    {
+     "hanzi": "吧",
+     "pinyin": "ba",
+     "meaning": "trợ từ cuối câu biểu thị đề nghị, thương lượng",
+     "example": {
+      "zh": "我们下午两点见吧。",
+      "pinyin": "Wǒmen xiàwǔ liǎng diǎn jiàn ba.",
+      "vi": "Chiều hai giờ mình gặp nhé."
+     }
+    },
+    {
+     "hanzi": "电影院",
+     "pinyin": "diànyǐngyuàn",
+     "meaning": "rạp chiếu phim",
+     "example": {
+      "zh": "我想去电影院看电影。",
+      "pinyin": "Wǒ xiǎng qù diànyǐngyuàn kàn diànyǐng.",
+      "vi": "Chiều mình muốn ra rạp xem phim."
+     }
+    },
+    {
+     "hanzi": "看",
+     "pinyin": "kàn",
+     "meaning": "xem, nhìn, đọc",
+     "example": {
+      "zh": "我想看电影。",
+      "pinyin": "Wǒ xiǎng kàn diànyǐng.",
+      "vi": "Mình muốn xem phim."
+     }
+    },
+    {
+     "hanzi": "电影",
+     "pinyin": "diànyǐng",
+     "meaning": "phim",
+     "example": {
+      "zh": "下午去看电影，你去吗？",
+      "pinyin": "Xiàwǔ qù kàn diànyǐng, nǐ qù ma?",
+      "vi": "Chiều đi xem phim, cậu đi không?"
+     }
+    },
+    {
+     "hanzi": "事",
+     "pinyin": "shì",
+     "meaning": "việc",
+     "example": {
+      "zh": "下午还有事。",
+      "pinyin": "Xiàwǔ hái yǒu shì.",
+      "vi": "Chiều mình còn có việc."
+     }
+    },
+    {
+     "hanzi": "上课",
+     "pinyin": "shàngkè",
+     "meaning": "vào học, lên lớp",
+     "example": {
+      "zh": "我明天下午两点还上课呢。",
+      "pinyin": "Wǒ míngtiān xiàwǔ liǎng diǎn hái shàngkè ne.",
+      "vi": "Chiều mai hai giờ mình còn phải học nữa."
+     }
+    },
+    {
+     "hanzi": "呢",
+     "pinyin": "ne",
+     "meaning": "trợ từ cuối câu trần thuật (nhấn mạnh, xác nhận)",
+     "example": {
+      "zh": "李文晚上还有事呢。",
+      "pinyin": "Lǐ Wén wǎnshang hái yǒu shì ne.",
+      "vi": "Tối Lý Văn còn có việc nữa cơ."
+     }
+    },
+    {
+     "hanzi": "半",
+     "pinyin": "bàn",
+     "meaning": "rưỡi, nửa",
+     "example": {
+      "zh": "四点半下课。",
+      "pinyin": "Sì diǎn bàn xiàkè.",
+      "vi": "Bốn rưỡi tan học."
+     }
+    },
+    {
+     "hanzi": "下课",
+     "pinyin": "xiàkè",
+     "meaning": "tan học, hết tiết",
+     "example": {
+      "zh": "四点半下课。",
+      "pinyin": "Sì diǎn bàn xiàkè.",
+      "vi": "Bốn rưỡi tan học."
+     }
+    },
+    {
+     "hanzi": "在",
+     "pinyin": "zài",
+     "meaning": "ở, tại",
+     "example": {
+      "zh": "我在家里呢。",
+      "pinyin": "Wǒ zài jiā li ne.",
+      "vi": "Anh đang ở nhà."
+     }
+    },
+    {
+     "hanzi": "家",
+     "pinyin": "jiā",
+     "meaning": "nhà",
+     "example": {
+      "zh": "我在家里呢。",
+      "pinyin": "Wǒ zài jiā li ne.",
+      "vi": "Anh đang ở nhà."
+     }
+    },
+    {
+     "hanzi": "里",
+     "pinyin": "li",
+     "meaning": "trong, bên trong",
+     "example": {
+      "zh": "你去店里买些菜吧。",
+      "pinyin": "Nǐ qù diàn li mǎi xiē cài ba.",
+      "vi": "Anh ra cửa hàng mua ít rau đi."
+     }
+    },
+    {
+     "hanzi": "晚上",
+     "pinyin": "wǎnshang",
+     "meaning": "buổi tối",
+     "example": {
+      "zh": "我晚上六点半下班。",
+      "pinyin": "Wǒ wǎnshang liù diǎn bàn xiàbān.",
+      "vi": "Tối em tan làm lúc sáu rưỡi."
+     }
+    },
+    {
+     "hanzi": "医院",
+     "pinyin": "yīyuàn",
+     "meaning": "bệnh viện",
+     "example": {
+      "zh": "我八点去医院上班。",
+      "pinyin": "Wǒ bā diǎn qù yīyuàn shàngbān.",
+      "vi": "Tám giờ anh tới bệnh viện làm việc."
+     }
+    },
+    {
+     "hanzi": "上班",
+     "pinyin": "shàngbān",
+     "meaning": "đi làm",
+     "example": {
+      "zh": "你今天晚上几点去上班？",
+      "pinyin": "Nǐ jīntiān wǎnshang jǐ diǎn qù shàngbān?",
+      "vi": "Tối nay mấy giờ anh đi làm?"
+     }
+    },
+    {
+     "hanzi": "店",
+     "pinyin": "diàn",
+     "meaning": "cửa hàng",
+     "example": {
+      "zh": "你去店里买些菜吧。",
+      "pinyin": "Nǐ qù diàn li mǎi xiē cài ba.",
+      "vi": "Anh ra cửa hàng mua ít rau đi."
+     }
+    },
+    {
+     "hanzi": "菜",
+     "pinyin": "cài",
+     "meaning": "rau, thức ăn",
+     "example": {
+      "zh": "买些菜吧。",
+      "pinyin": "Mǎi xiē cài ba.",
+      "vi": "Mua ít rau nhé."
+     }
+    },
+    {
+     "hanzi": "分钟",
+     "pinyin": "fēnzhōng",
+     "meaning": "phút (chỉ khoảng thời gian)",
+     "example": {
+      "zh": "我十分钟后去。",
+      "pinyin": "Wǒ shí fēnzhōng hòu qù.",
+      "vi": "Mười phút nữa anh đi."
+     }
+    },
+    {
+     "hanzi": "后",
+     "pinyin": "hòu",
+     "meaning": "sau, sau khi",
+     "example": {
+      "zh": "十分钟后去。",
+      "pinyin": "Shí fēnzhōng hòu qù.",
+      "vi": "Mười phút nữa thì đi."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "title": "Bố tôi cũng làm việc ở bệnh viện",
+   "title_zh": "我爸爸也在医院工作",
+   "summary": "Nghe hiểu và miêu tả nơi chốn, vị trí; nắm giới từ 在 chỉ nơi chốn; nắm động từ năng nguyện 能.",
+   "grammar": "1) TỪ CHỈ PHƯƠNG VỊ (方位词) — 上 (trên), 下 (dưới), 里 (trong), 外 (ngoài), 前 (trước), 后 (sau), đặt sau danh từ chỉ nơi chốn:\n• 房间里有一只小猫。 — Trong phòng có một con mèo.\n• 我们去书店外吧。 — Mình ra ngoài hiệu sách đi.\n• 小雪的手机在桌子上呢。 — Điện thoại của Tiểu Tuyết ở trên bàn.\n\n2) GIỚI TỪ “在” — đặt trước danh từ chỉ nơi chốn, tạo trạng ngữ đứng trước động từ, chỉ nơi hành động diễn ra:\n• 我在学校吃午饭。 — Mình ăn trưa ở trường.\n• 他爸爸在医院工作。 — Bố cậu ấy làm việc ở bệnh viện.\n• 你在哪儿买菜？ — Bạn mua rau ở đâu?\n\n3) ĐỘNG TỪ NĂNG NGUYỆN “能” — có thể, có khả năng/điều kiện làm gì; phủ định 不能:\n• 下午两点你能到吗？ — Hai giờ chiều cậu tới được không?\n• 爸爸能去。 — Bố có thể đi.\n• 我不能去学校吃午饭。 — Mình không thể tới trường ăn trưa được.",
+   "vocab": [
+    {
+     "hanzi": "房间",
+     "pinyin": "fángjiān",
+     "meaning": "căn phòng",
+     "example": {
+      "zh": "房间外有一只小猫。",
+      "pinyin": "Fángjiān wài yǒu yì zhī xiǎo māo.",
+      "vi": "Ngoài phòng có một con mèo nhỏ."
+     }
+    },
+    {
+     "hanzi": "外",
+     "pinyin": "wài",
+     "meaning": "ngoài, bên ngoài",
+     "example": {
+      "zh": "我们去书店外吧。",
+      "pinyin": "Wǒmen qù shūdiàn wài ba.",
+      "vi": "Mình ra ngoài hiệu sách đi."
+     }
+    },
+    {
+     "hanzi": "只",
+     "pinyin": "zhī",
+     "meaning": "con (lượng từ cho một số động vật)",
+     "example": {
+      "zh": "有一只小猫。",
+      "pinyin": "Yǒu yì zhī xiǎo māo.",
+      "vi": "Có một con mèo nhỏ."
+     }
+    },
+    {
+     "hanzi": "小",
+     "pinyin": "xiǎo",
+     "meaning": "nhỏ, bé",
+     "example": {
+      "zh": "这只小猫真漂亮！",
+      "pinyin": "Zhè zhī xiǎo māo zhēn piàoliang!",
+      "vi": "Con mèo nhỏ này xinh thật!"
+     }
+    },
+    {
+     "hanzi": "猫",
+     "pinyin": "māo",
+     "meaning": "con mèo",
+     "example": {
+      "zh": "它在桌子下呢。",
+      "pinyin": "Tā zài zhuōzi xià ne.",
+      "vi": "Nó ở dưới gầm bàn đấy."
+     }
+    },
+    {
+     "hanzi": "没",
+     "pinyin": "méi",
+     "meaning": "không, chưa",
+     "example": {
+      "zh": "我没看见。",
+      "pinyin": "Wǒ méi kànjiàn.",
+      "vi": "Mình không thấy."
+     }
+    },
+    {
+     "hanzi": "看见",
+     "pinyin": "kànjiàn",
+     "meaning": "nhìn thấy",
+     "example": {
+      "zh": "我没看见它。",
+      "pinyin": "Wǒ méi kànjiàn tā.",
+      "vi": "Mình không thấy nó."
+     }
+    },
+    {
+     "hanzi": "桌子",
+     "pinyin": "zhuōzi",
+     "meaning": "cái bàn",
+     "example": {
+      "zh": "它在桌子下呢。",
+      "pinyin": "Tā zài zhuōzi xià ne.",
+      "vi": "Nó ở dưới gầm bàn."
+     }
+    },
+    {
+     "hanzi": "下",
+     "pinyin": "xià",
+     "meaning": "dưới, phía dưới",
+     "example": {
+      "zh": "小猫在桌子下。",
+      "pinyin": "Xiǎo māo zài zhuōzi xià.",
+      "vi": "Con mèo ở dưới gầm bàn."
+     }
+    },
+    {
+     "hanzi": "漂亮",
+     "pinyin": "piàoliang",
+     "meaning": "đẹp, xinh",
+     "example": {
+      "zh": "这只小猫真漂亮！",
+      "pinyin": "Zhè zhī xiǎo māo zhēn piàoliang!",
+      "vi": "Con mèo này xinh thật!"
+     }
+    },
+    {
+     "hanzi": "在",
+     "pinyin": "zài",
+     "meaning": "ở (giới từ chỉ nơi chốn)",
+     "example": {
+      "zh": "我在学校吃午饭。",
+      "pinyin": "Wǒ zài xuéxiào chī wǔfàn.",
+      "vi": "Mình ăn trưa ở trường."
+     }
+    },
+    {
+     "hanzi": "学校",
+     "pinyin": "xuéxiào",
+     "meaning": "trường học",
+     "example": {
+      "zh": "在学校书店前见吧。",
+      "pinyin": "Zài xuéxiào shūdiàn qián jiàn ba.",
+      "vi": "Gặp nhau trước hiệu sách của trường nhé."
+     }
+    },
+    {
+     "hanzi": "书店",
+     "pinyin": "shūdiàn",
+     "meaning": "hiệu sách",
+     "example": {
+      "zh": "我们在书店前见。",
+      "pinyin": "Wǒmen zài shūdiàn qián jiàn.",
+      "vi": "Mình gặp nhau trước hiệu sách."
+     }
+    },
+    {
+     "hanzi": "前",
+     "pinyin": "qián",
+     "meaning": "trước, phía trước",
+     "example": {
+      "zh": "在书店前见吧。",
+      "pinyin": "Zài shūdiàn qián jiàn ba.",
+      "vi": "Gặp trước hiệu sách nhé."
+     }
+    },
+    {
+     "hanzi": "能",
+     "pinyin": "néng",
+     "meaning": "có thể",
+     "example": {
+      "zh": "下午两点你能到吗？",
+      "pinyin": "Xiàwǔ liǎng diǎn nǐ néng dào ma?",
+      "vi": "Hai giờ chiều cậu tới được không?"
+     }
+    },
+    {
+     "hanzi": "到",
+     "pinyin": "dào",
+     "meaning": "đến, tới",
+     "example": {
+      "zh": "我能到。",
+      "pinyin": "Wǒ néng dào.",
+      "vi": "Mình tới được."
+     }
+    },
+    {
+     "hanzi": "午饭",
+     "pinyin": "wǔfàn",
+     "meaning": "bữa trưa",
+     "example": {
+      "zh": "我在学校吃午饭。",
+      "pinyin": "Wǒ zài xuéxiào chī wǔfàn.",
+      "vi": "Mình ăn trưa ở trường."
+     }
+    },
+    {
+     "hanzi": "饭",
+     "pinyin": "fàn",
+     "meaning": "cơm, bữa cơm",
+     "example": {
+      "zh": "小胡，还没吃饭呢？",
+      "pinyin": "Xiǎo Hú, hái méi chī fàn ne?",
+      "vi": "Tiểu Hồ, vẫn chưa ăn cơm à?"
+     }
+    },
+    {
+     "hanzi": "大",
+     "pinyin": "dà",
+     "meaning": "lớn, to",
+     "example": {
+      "zh": "大医院病人多。",
+      "pinyin": "Dà yīyuàn bìngrén duō.",
+      "vi": "Bệnh viện lớn thì bệnh nhân đông."
+     }
+    },
+    {
+     "hanzi": "病人",
+     "pinyin": "bìngrén",
+     "meaning": "bệnh nhân",
+     "example": {
+      "zh": "大医院病人多。",
+      "pinyin": "Dà yīyuàn bìngrén duō.",
+      "vi": "Bệnh viện lớn bệnh nhân đông."
+     }
+    },
+    {
+     "hanzi": "多",
+     "pinyin": "duō",
+     "meaning": "nhiều",
+     "example": {
+      "zh": "病人多，医生非常忙。",
+      "pinyin": "Bìngrén duō, yīshēng fēicháng máng.",
+      "vi": "Bệnh nhân đông, bác sĩ rất bận."
+     }
+    },
+    {
+     "hanzi": "医生",
+     "pinyin": "yīshēng",
+     "meaning": "bác sĩ",
+     "example": {
+      "zh": "你家有两个医生？",
+      "pinyin": "Nǐ jiā yǒu liǎng ge yīshēng?",
+      "vi": "Nhà cậu có hai bác sĩ à?"
+     }
+    },
+    {
+     "hanzi": "工作",
+     "pinyin": "gōngzuò",
+     "meaning": "làm việc",
+     "example": {
+      "zh": "我爸爸也在医院工作。",
+      "pinyin": "Wǒ bàba yě zài yīyuàn gōngzuò.",
+      "vi": "Bố tôi cũng làm việc ở bệnh viện."
+     }
+    },
+    {
+     "hanzi": "胡医生",
+     "pinyin": "Hú yīshēng",
+     "meaning": "bác sĩ Hồ (danh từ riêng)",
+     "example": {
+      "zh": "胡医生的爸爸在医院工作。",
+      "pinyin": "Hú yīshēng de bàba zài yīyuàn gōngzuò.",
+      "vi": "Bố bác sĩ Hồ làm việc ở bệnh viện."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "title": "Sáng mai mình học ở trường",
+   "title_zh": "我明天上午在学校学习",
+   "summary": "Nghe hiểu và dùng 有/是 để nói về sự tồn tại; nắm trật tự khi từ chỉ thời gian và từ chỉ nơi chốn cùng làm trạng ngữ; nắm cách dùng 第 chỉ số thứ tự; tìm hiểu hoạt động giải trí của người Trung Quốc hiện nay.",
+   "grammar": "1) CÂU TỒN HIỆN (1) — nói ở một nơi nào đó có người/vật, đánh dấu bằng 有 hoặc 是. Khi phủ định, KHÔNG dùng cụm số lượng trước tân ngữ:\n• 学校前边有一家电影院。 — Phía trước trường có một rạp chiếu phim.\n• 电影院前边是一家超市。 — Trước rạp chiếu phim là một siêu thị.\n• 电影院前边不是超市。 — Trước rạp chiếu phim không phải siêu thị.\n• 桌子上没有小猫。 — Trên bàn không có mèo.\n\n2) TRẬT TỰ TỪ CHỈ THỜI GIAN VÀ NƠI CHỐN LÀM TRẠNG NGỮ — THỜI GIAN đứng TRƯỚC NƠI CHỐN:\n• 我们七点在电影院外边见。 — Bảy giờ mình gặp nhau ở ngoài rạp phim.\n• 安妮下午在家里学中文。 — Chiều Annie học tiếng Trung ở nhà.\n• 陈天中明天中午在学校吃午饭。 — Trưa mai Trần Thiên Trung ăn trưa ở trường.\n\n3) “第” CHỈ SỐ THỨ TỰ — đặt trước số từ. Cấu trúc: (1) 第 + số từ; (2) 第 + số từ + lượng từ + (danh từ):\n• 第一，第二，第三 — thứ nhất, thứ hai, thứ ba\n• 第一个，第二个，第一本 — cái thứ nhất, cái thứ hai, quyển thứ nhất\n• 第一个学生，第一本书 — học sinh thứ nhất, quyển sách thứ nhất",
+   "vocab": [
+    {
+     "hanzi": "前边",
+     "pinyin": "qiánbian",
+     "meaning": "phía trước",
+     "example": {
+      "zh": "学校前边有一家电影院。",
+      "pinyin": "Xuéxiào qiánbian yǒu yì jiā diànyǐngyuàn.",
+      "vi": "Phía trước trường có một rạp chiếu phim."
+     }
+    },
+    {
+     "hanzi": "边",
+     "pinyin": "bian",
+     "meaning": "phía, bên (hậu tố chỉ phương vị)",
+     "example": {
+      "zh": "我们在外边见。",
+      "pinyin": "Wǒmen zài wàibian jiàn.",
+      "vi": "Mình gặp nhau ở bên ngoài."
+     }
+    },
+    {
+     "hanzi": "家",
+     "pinyin": "jiā",
+     "meaning": "lượng từ chỉ cửa hàng, doanh nghiệp",
+     "example": {
+      "zh": "学校外边是一家小店。",
+      "pinyin": "Xuéxiào wàibian shì yì jiā xiǎo diàn.",
+      "vi": "Ngoài trường là một cửa hàng nhỏ."
+     }
+    },
+    {
+     "hanzi": "那个",
+     "pinyin": "nàge",
+     "meaning": "cái đó, cái kia",
+     "example": {
+      "zh": "我们去那个电影院看电影吧。",
+      "pinyin": "Wǒmen qù nàge diànyǐngyuàn kàn diànyǐng ba.",
+      "vi": "Mình tới rạp phim đó xem phim đi."
+     }
+    },
+    {
+     "hanzi": "外边",
+     "pinyin": "wàibian",
+     "meaning": "bên ngoài",
+     "example": {
+      "zh": "我们七点在电影院外边见。",
+      "pinyin": "Wǒmen qī diǎn zài diànyǐngyuàn wàibian jiàn.",
+      "vi": "Bảy giờ mình gặp nhau ngoài rạp phim."
+     }
+    },
+    {
+     "hanzi": "椅子",
+     "pinyin": "yǐzi",
+     "meaning": "cái ghế",
+     "example": {
+      "zh": "椅子上有一本中文书。",
+      "pinyin": "Yǐzi shang yǒu yì běn Zhōngwén shū.",
+      "vi": "Trên ghế có một quyển sách tiếng Trung."
+     }
+    },
+    {
+     "hanzi": "上",
+     "pinyin": "shang",
+     "meaning": "trên, ở trên",
+     "example": {
+      "zh": "桌子上有一只小猫。",
+      "pinyin": "Zhuōzi shang yǒu yì zhī xiǎo māo.",
+      "vi": "Trên bàn có một con mèo."
+     }
+    },
+    {
+     "hanzi": "本",
+     "pinyin": "běn",
+     "meaning": "quyển (lượng từ dùng cho sách vở)",
+     "example": {
+      "zh": "这是我的第二本中文书。",
+      "pinyin": "Zhè shì wǒ de dì-èr běn Zhōngwén shū.",
+      "vi": "Đây là quyển sách tiếng Trung thứ hai của mình."
+     }
+    },
+    {
+     "hanzi": "书",
+     "pinyin": "shū",
+     "meaning": "sách",
+     "example": {
+      "zh": "那是谁的书？",
+      "pinyin": "Nà shì shéi de shū?",
+      "vi": "Kia là sách của ai vậy?"
+     }
+    },
+    {
+     "hanzi": "那",
+     "pinyin": "nà",
+     "meaning": "kia, đó",
+     "example": {
+      "zh": "那是我的书。",
+      "pinyin": "Nà shì wǒ de shū.",
+      "vi": "Kia là sách của mình."
+     }
+    },
+    {
+     "hanzi": "第",
+     "pinyin": "dì",
+     "meaning": "thứ (tiền tố chỉ số thứ tự)",
+     "example": {
+      "zh": "这是我的第二本中文书。",
+      "pinyin": "Zhè shì wǒ de dì-èr běn Zhōngwén shū.",
+      "vi": "Đây là quyển sách tiếng Trung thứ hai của mình."
+     }
+    },
+    {
+     "hanzi": "学习",
+     "pinyin": "xuéxí",
+     "meaning": "học tập",
+     "example": {
+      "zh": "我明天上午在学校学习。",
+      "pinyin": "Wǒ míngtiān shàngwǔ zài xuéxiào xuéxí.",
+      "vi": "Sáng mai mình học ở trường."
+     }
+    },
+    {
+     "hanzi": "做",
+     "pinyin": "zuò",
+     "meaning": "làm",
+     "example": {
+      "zh": "明天星期六，你做什么？",
+      "pinyin": "Míngtiān xīngqīliù, nǐ zuò shénme?",
+      "vi": "Mai thứ Bảy, cậu làm gì?"
+     }
+    },
+    {
+     "hanzi": "白天",
+     "pinyin": "báitiān",
+     "meaning": "ban ngày",
+     "example": {
+      "zh": "我白天在家里读书。",
+      "pinyin": "Wǒ báitiān zài jiā li dúshū.",
+      "vi": "Ban ngày em đọc sách ở nhà."
+     }
+    },
+    {
+     "hanzi": "读书",
+     "pinyin": "dúshū",
+     "meaning": "đọc sách, học",
+     "example": {
+      "zh": "我白天在家里读书。",
+      "pinyin": "Wǒ báitiān zài jiā li dúshū.",
+      "vi": "Ban ngày em đọc sách ở nhà."
+     }
+    },
+    {
+     "hanzi": "和",
+     "pinyin": "hé",
+     "meaning": "với, cùng",
+     "example": {
+      "zh": "和朋友们去外边唱歌。",
+      "pinyin": "Hé péngyoumen qù wàibian chàng gē.",
+      "vi": "Đi hát với bạn bè ở ngoài."
+     }
+    },
+    {
+     "hanzi": "朋友",
+     "pinyin": "péngyou",
+     "meaning": "bạn bè",
+     "example": {
+      "zh": "和朋友们去唱歌。",
+      "pinyin": "Hé péngyoumen qù chàng gē.",
+      "vi": "Đi hát với bạn bè."
+     }
+    },
+    {
+     "hanzi": "唱",
+     "pinyin": "chàng",
+     "meaning": "hát",
+     "example": {
+      "zh": "你唱歌很好听。",
+      "pinyin": "Nǐ chàng gē hěn hǎotīng.",
+      "vi": "Cậu hát hay lắm."
+     }
+    },
+    {
+     "hanzi": "歌",
+     "pinyin": "gē",
+     "meaning": "bài hát",
+     "example": {
+      "zh": "去外边唱歌。",
+      "pinyin": "Qù wàibian chàng gē.",
+      "vi": "Ra ngoài đi hát."
+     }
+    },
+    {
+     "hanzi": "好听",
+     "pinyin": "hǎotīng",
+     "meaning": "hay (nghe hay)",
+     "example": {
+      "zh": "你唱歌很好听。",
+      "pinyin": "Nǐ chàng gē hěn hǎotīng.",
+      "vi": "Cậu hát hay lắm."
+     }
+    },
+    {
+     "hanzi": "电视",
+     "pinyin": "diànshì",
+     "meaning": "ti vi",
+     "example": {
+      "zh": "我在家里做饭、看电视。",
+      "pinyin": "Wǒ zài jiā li zuò fàn, kàn diànshì.",
+      "vi": "Chị ở nhà nấu cơm, xem ti vi."
+     }
+    },
+    {
+     "hanzi": "狗",
+     "pinyin": "gǒu",
+     "meaning": "con chó",
+     "example": {
+      "zh": "我也有一只小狗。",
+      "pinyin": "Wǒ yě yǒu yì zhī xiǎo gǒu.",
+      "vi": "Em cũng có một chú chó nhỏ."
+     }
+    },
+    {
+     "hanzi": "玩",
+     "pinyin": "wán",
+     "meaning": "chơi",
+     "example": {
+      "zh": "和孩子们、小狗玩。",
+      "pinyin": "Hé háizimen, xiǎo gǒu wán.",
+      "vi": "Chơi với bọn trẻ và chú chó nhỏ."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "title": "Táo ở đây rẻ thật!",
+   "title_zh": "这儿的苹果真便宜！",
+   "summary": "Nghe hiểu và nói đơn giản về giá cả hàng hoá; nắm câu vị ngữ tính từ; nắm đại từ nghi vấn 怎么样; làm quen với đồng nhân dân tệ.",
+   "grammar": "1) CÁCH NÓI SỐ TIỀN — tiền Trung Quốc gọi là 人民币 (nhân dân tệ). Đơn vị từ lớn đến nhỏ: 元 – 角 – 分, khẩu ngữ nói là 块 – 毛 – 分. Trật tự: 元/块 → 角/毛 → 分:\n• 0,02元 = 两分 liǎng fēn\n• 0,2元 = 两毛 liǎng máo\n• 3元 = 三块 sān kuài\n• 3,2元 = 三块二 sān kuài èr\n• 6,02元 = 六块零两分 liù kuài líng liǎng fēn\n• 202,2元 = 二百零二块两毛\n\n2) CÂU VỊ NGỮ TÍNH TỪ — tính từ trực tiếp làm vị ngữ (không cần 是), phía trước có thể thêm phó từ mức độ hoặc phó từ phủ định:\n• 这儿的水果真不少！ — Hoa quả ở đây nhiều thật!\n• 我的房间不大。 — Phòng tôi không rộng.\n• 那个苹果好吃。 — Quả táo đó ngon.\n\n3) ĐẠI TỪ NGHI VẤN “怎么样” — hỏi ý kiến, hỏi tình hình. Cấu trúc: ……怎么样？\n• 这个杯子怎么样？ — Cái cốc này thế nào?\n• 这本书怎么样？ — Quyển sách này thế nào?\n• 这个菜怎么样？ — Món này thế nào?",
+   "vocab": [
+    {
+     "hanzi": "杯子",
+     "pinyin": "bēizi",
+     "meaning": "cái cốc, cái ly",
+     "example": {
+      "zh": "请问，有杯子吗？",
+      "pinyin": "Qǐngwèn, yǒu bēizi ma?",
+      "vi": "Cho hỏi, có cốc không ạ?"
+     }
+    },
+    {
+     "hanzi": "售货员",
+     "pinyin": "shòuhuòyuán",
+     "meaning": "nhân viên bán hàng",
+     "example": {
+      "zh": "售货员在那儿。",
+      "pinyin": "Shòuhuòyuán zài nàr.",
+      "vi": "Nhân viên bán hàng ở đằng kia."
+     }
+    },
+    {
+     "hanzi": "这边",
+     "pinyin": "zhèbian",
+     "meaning": "bên này, phía này",
+     "example": {
+      "zh": "杯子在这边。",
+      "pinyin": "Bēizi zài zhèbian.",
+      "vi": "Cốc ở bên này ạ."
+     }
+    },
+    {
+     "hanzi": "钱",
+     "pinyin": "qián",
+     "meaning": "tiền",
+     "example": {
+      "zh": "多少钱一个？",
+      "pinyin": "Duōshao qián yí ge?",
+      "vi": "Bao nhiêu tiền một cái?"
+     }
+    },
+    {
+     "hanzi": "这些",
+     "pinyin": "zhèxiē",
+     "meaning": "những cái này",
+     "example": {
+      "zh": "这些五块钱一个。",
+      "pinyin": "Zhèxiē wǔ kuài qián yí ge.",
+      "vi": "Những cái này năm tệ một cái."
+     }
+    },
+    {
+     "hanzi": "块",
+     "pinyin": "kuài",
+     "meaning": "tệ, đồng (khẩu ngữ chỉ đơn vị tiền)",
+     "example": {
+      "zh": "这些五块钱一个。",
+      "pinyin": "Zhèxiē wǔ kuài qián yí ge.",
+      "vi": "Những cái này năm tệ một cái."
+     }
+    },
+    {
+     "hanzi": "那些",
+     "pinyin": "nàxiē",
+     "meaning": "những cái kia",
+     "example": {
+      "zh": "那些十块钱一个。",
+      "pinyin": "Nàxiē shí kuài qián yí ge.",
+      "vi": "Những cái kia mười tệ một cái."
+     }
+    },
+    {
+     "hanzi": "这儿",
+     "pinyin": "zhèr",
+     "meaning": "ở đây",
+     "example": {
+      "zh": "这儿的水果真不少！",
+      "pinyin": "Zhèr de shuǐguǒ zhēn bù shǎo!",
+      "vi": "Hoa quả ở đây nhiều thật!"
+     }
+    },
+    {
+     "hanzi": "水果",
+     "pinyin": "shuǐguǒ",
+     "meaning": "hoa quả",
+     "example": {
+      "zh": "这儿的水果真不少！",
+      "pinyin": "Zhèr de shuǐguǒ zhēn bù shǎo!",
+      "vi": "Hoa quả ở đây nhiều thật!"
+     }
+    },
+    {
+     "hanzi": "少",
+     "pinyin": "shǎo",
+     "meaning": "ít",
+     "example": {
+      "zh": "这儿的水果真不少。",
+      "pinyin": "Zhèr de shuǐguǒ zhēn bù shǎo.",
+      "vi": "Hoa quả ở đây thật không ít."
+     }
+    },
+    {
+     "hanzi": "斤",
+     "pinyin": "jīn",
+     "meaning": "cân (đơn vị, bằng 0,5 kg)",
+     "example": {
+      "zh": "我想买两斤苹果。",
+      "pinyin": "Wǒ xiǎng mǎi liǎng jīn píngguǒ.",
+      "vi": "Tôi muốn mua hai cân táo."
+     }
+    },
+    {
+     "hanzi": "苹果",
+     "pinyin": "píngguǒ",
+     "meaning": "quả táo",
+     "example": {
+      "zh": "苹果三块五一斤。",
+      "pinyin": "Píngguǒ sān kuài wǔ yì jīn.",
+      "vi": "Táo ba tệ rưỡi một cân."
+     }
+    },
+    {
+     "hanzi": "便宜",
+     "pinyin": "piányi",
+     "meaning": "rẻ",
+     "example": {
+      "zh": "这儿的苹果真便宜！",
+      "pinyin": "Zhèr de píngguǒ zhēn piányi!",
+      "vi": "Táo ở đây rẻ thật!"
+     }
+    },
+    {
+     "hanzi": "商店",
+     "pinyin": "shāngdiàn",
+     "meaning": "cửa hàng",
+     "example": {
+      "zh": "这家商店衣服真多！",
+      "pinyin": "Zhè jiā shāngdiàn yīfu zhēn duō!",
+      "vi": "Cửa hàng này quần áo nhiều thật!"
+     }
+    },
+    {
+     "hanzi": "衣服",
+     "pinyin": "yīfu",
+     "meaning": "quần áo",
+     "example": {
+      "zh": "这件衣服怎么样？",
+      "pinyin": "Zhè jiàn yīfu zěnmeyàng?",
+      "vi": "Bộ đồ này thế nào?"
+     }
+    },
+    {
+     "hanzi": "件",
+     "pinyin": "jiàn",
+     "meaning": "chiếc, bộ (lượng từ cho quần áo, sự việc)",
+     "example": {
+      "zh": "买一件吧。",
+      "pinyin": "Mǎi yí jiàn ba.",
+      "vi": "Mua một chiếc đi."
+     }
+    },
+    {
+     "hanzi": "元",
+     "pinyin": "yuán",
+     "meaning": "tệ, đồng (đơn vị tiền, văn viết)",
+     "example": {
+      "zh": "这件一百元。",
+      "pinyin": "Zhè jiàn yìbǎi yuán.",
+      "vi": "Chiếc này một trăm tệ."
+     }
+    },
+    {
+     "hanzi": "怎么样",
+     "pinyin": "zěnmeyàng",
+     "meaning": "thế nào",
+     "example": {
+      "zh": "这件一百元，怎么样？",
+      "pinyin": "Zhè jiàn yìbǎi yuán, zěnmeyàng?",
+      "vi": "Chiếc này một trăm tệ, thế nào?"
+     }
+    },
+    {
+     "hanzi": "贵",
+     "pinyin": "guì",
+     "meaning": "đắt",
+     "example": {
+      "zh": "好看，也不贵。",
+      "pinyin": "Hǎokàn, yě bú guì.",
+      "vi": "Đẹp mà cũng không đắt."
+     }
+    },
+    {
+     "hanzi": "穿",
+     "pinyin": "chuān",
+     "meaning": "mặc",
+     "example": {
+      "zh": "小雪能穿。",
+      "pinyin": "Xiǎoxuě néng chuān.",
+      "vi": "Tiểu Tuyết mặc được."
+     }
+    },
+    {
+     "hanzi": "女",
+     "pinyin": "nǚ",
+     "meaning": "nữ",
+     "example": {
+      "zh": "这些是女孩子穿的衣服。",
+      "pinyin": "Zhèxiē shì nǚ háizi chuān de yīfu.",
+      "vi": "Đây là quần áo cho bé gái."
+     }
+    },
+    {
+     "hanzi": "男",
+     "pinyin": "nán",
+     "meaning": "nam",
+     "example": {
+      "zh": "男孩子的衣服在那儿。",
+      "pinyin": "Nán háizi de yīfu zài nàr.",
+      "vi": "Quần áo bé trai ở đằng kia."
+     }
+    },
+    {
+     "hanzi": "那儿",
+     "pinyin": "nàr",
+     "meaning": "ở đó, ở kia",
+     "example": {
+      "zh": "男孩子的衣服在那儿。",
+      "pinyin": "Nán háizi de yīfu zài nàr.",
+      "vi": "Quần áo bé trai ở đằng kia."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "title": "Mình đang học đại học",
+   "title_zh": "我读大学呢",
+   "summary": "Nghe hiểu và dùng ba cấu trúc diễn đạt việc đang làm; biết đặt câu hỏi chính phản; nắm động từ năng nguyện 要 diễn đạt ý muốn, dự định.",
+   "grammar": "1) CÂU HỎI CHÍNH PHẢN (正反问) — dạng “X + 不/没 + X”. Động từ dùng 不 hoặc 没; tính từ dùng 不:\n• 它是不是在超市后边？ — Nó có phải ở phía sau siêu thị không?\n• 你去没去学校？ — Cậu đã đi trường chưa?\n• 这件衣服好看不好看？ — Bộ đồ này có đẹp không?\n\n2) PHÓ TỪ THỜI GIAN “在/正在” — đặt trước động từ, chỉ hành động đang diễn ra. Ba cách nói: (1) 在/正在 + động từ; (2) 在/正在 + động từ + 呢; (3) động từ + 呢. Trả lời phủ định dùng 没(有):\n• 你还在读大学吗？ — Cậu vẫn đang học đại học à?\n• 学生们在/正在上课呢。 — Các bạn học sinh đang học.\n• 我们读书呢。 — Bọn mình đang đọc sách.\n• 我没买菜，买水果呢。 — Mình không mua rau, đang mua hoa quả.\n\n3) ĐỘNG TỪ NĂNG NGUYỆN “要” — đặt trước động từ, chỉ ý muốn, dự định:\n• 他今天要和小朋友玩。 — Hôm nay em ấy định đi chơi với các bạn.\n• 妈妈要去超市。 — Mẹ định đi siêu thị.\n• 白家月要在家里学中文。 — Bạch Gia Nguyệt định học tiếng Trung ở nhà.",
+   "vocab": [
+    {
+     "hanzi": "时候",
+     "pinyin": "shíhou",
+     "meaning": "lúc, khi",
+     "example": {
+      "zh": "你什么时候到饭店？",
+      "pinyin": "Nǐ shénme shíhou dào fàndiàn?",
+      "vi": "Khi nào em tới nhà hàng?"
+     }
+    },
+    {
+     "hanzi": "饭店",
+     "pinyin": "fàndiàn",
+     "meaning": "nhà hàng, khách sạn",
+     "example": {
+      "zh": "你什么时候到饭店？",
+      "pinyin": "Nǐ shénme shíhou dào fàndiàn?",
+      "vi": "Khi nào em tới nhà hàng?"
+     }
+    },
+    {
+     "hanzi": "知道",
+     "pinyin": "zhīdào",
+     "meaning": "biết",
+     "example": {
+      "zh": "还不知道，正在找呢。",
+      "pinyin": "Hái bù zhīdào, zhèngzài zhǎo ne.",
+      "vi": "Vẫn chưa biết, em đang tìm."
+     }
+    },
+    {
+     "hanzi": "正在",
+     "pinyin": "zhèngzài",
+     "meaning": "đang (làm gì)",
+     "example": {
+      "zh": "我正在找呢。",
+      "pinyin": "Wǒ zhèngzài zhǎo ne.",
+      "vi": "Em đang tìm đây."
+     }
+    },
+    {
+     "hanzi": "找",
+     "pinyin": "zhǎo",
+     "meaning": "tìm",
+     "example": {
+      "zh": "正在找呢。",
+      "pinyin": "Zhèngzài zhǎo ne.",
+      "vi": "Đang tìm đây."
+     }
+    },
+    {
+     "hanzi": "开车",
+     "pinyin": "kāichē",
+     "meaning": "lái xe",
+     "example": {
+      "zh": "你开车没开车？",
+      "pinyin": "Nǐ kāichē méi kāichē?",
+      "vi": "Em có lái xe không?"
+     }
+    },
+    {
+     "hanzi": "车",
+     "pinyin": "chē",
+     "meaning": "xe",
+     "example": {
+      "zh": "我没开车，坐车呢。",
+      "pinyin": "Wǒ méi kāichē, zuò chē ne.",
+      "vi": "Em không lái xe, đang đi xe."
+     }
+    },
+    {
+     "hanzi": "在",
+     "pinyin": "zài",
+     "meaning": "đang (phó từ chỉ hành động tiếp diễn)",
+     "example": {
+      "zh": "你还在读大学吗？",
+      "pinyin": "Nǐ hái zài dú dàxué ma?",
+      "vi": "Em vẫn đang học đại học à?"
+     }
+    },
+    {
+     "hanzi": "读",
+     "pinyin": "dú",
+     "meaning": "học, đọc",
+     "example": {
+      "zh": "我读大学呢。",
+      "pinyin": "Wǒ dú dàxué ne.",
+      "vi": "Em đang học đại học."
+     }
+    },
+    {
+     "hanzi": "大学",
+     "pinyin": "dàxué",
+     "meaning": "đại học",
+     "example": {
+      "zh": "我还在读大学。",
+      "pinyin": "Wǒ hái zài dú dàxué.",
+      "vi": "Em vẫn đang học đại học."
+     }
+    },
+    {
+     "hanzi": "大学生",
+     "pinyin": "dàxuéshēng",
+     "meaning": "sinh viên đại học",
+     "example": {
+      "zh": "他是大学生。",
+      "pinyin": "Tā shì dàxuéshēng.",
+      "vi": "Cậu ấy là sinh viên đại học."
+     }
+    },
+    {
+     "hanzi": "学",
+     "pinyin": "xué",
+     "meaning": "học",
+     "example": {
+      "zh": "我学医。",
+      "pinyin": "Wǒ xué yī.",
+      "vi": "Em học ngành y."
+     }
+    },
+    {
+     "hanzi": "医",
+     "pinyin": "yī",
+     "meaning": "y học, ngành y",
+     "example": {
+      "zh": "我学医，我们的课很多。",
+      "pinyin": "Wǒ xué yī, wǒmen de kè hěn duō.",
+      "vi": "Em học y, chúng em rất nhiều tiết."
+     }
+    },
+    {
+     "hanzi": "弟弟",
+     "pinyin": "dìdi",
+     "meaning": "em trai",
+     "example": {
+      "zh": "弟弟起床没起床呢？",
+      "pinyin": "Dìdi qǐchuáng méi qǐchuáng ne?",
+      "vi": "Em con dậy chưa?"
+     }
+    },
+    {
+     "hanzi": "起床",
+     "pinyin": "qǐchuáng",
+     "meaning": "ngủ dậy",
+     "example": {
+      "zh": "没起床呢，还在睡觉。",
+      "pinyin": "Méi qǐchuáng ne, hái zài shuìjiào.",
+      "vi": "Chưa dậy ạ, vẫn đang ngủ."
+     }
+    },
+    {
+     "hanzi": "睡觉",
+     "pinyin": "shuìjiào",
+     "meaning": "ngủ",
+     "example": {
+      "zh": "他还在睡觉。",
+      "pinyin": "Tā hái zài shuìjiào.",
+      "vi": "Em ấy vẫn đang ngủ."
+     }
+    },
+    {
+     "hanzi": "睡",
+     "pinyin": "shuì",
+     "meaning": "ngủ",
+     "example": {
+      "zh": "还睡呢？",
+      "pinyin": "Hái shuì ne?",
+      "vi": "Vẫn còn ngủ à?"
+     }
+    },
+    {
+     "hanzi": "那里",
+     "pinyin": "nàli",
+     "meaning": "ở đó, chỗ đó",
+     "example": {
+      "zh": "他今天去不去那里？",
+      "pinyin": "Tā jīntiān qù bu qù nàli?",
+      "vi": "Hôm nay em ấy có đi đằng đó không?"
+     }
+    },
+    {
+     "hanzi": "哪里",
+     "pinyin": "nǎli",
+     "meaning": "ở đâu",
+     "example": {
+      "zh": "去哪里？",
+      "pinyin": "Qù nǎli?",
+      "vi": "Đi đâu ạ?"
+     }
+    },
+    {
+     "hanzi": "昨天",
+     "pinyin": "zuótiān",
+     "meaning": "hôm qua",
+     "example": {
+      "zh": "我昨天问他。",
+      "pinyin": "Wǒ zuótiān wèn tā.",
+      "vi": "Hôm qua con hỏi em rồi."
+     }
+    },
+    {
+     "hanzi": "问",
+     "pinyin": "wèn",
+     "meaning": "hỏi",
+     "example": {
+      "zh": "我昨天问他。",
+      "pinyin": "Wǒ zuótiān wèn tā.",
+      "vi": "Hôm qua con hỏi em rồi."
+     }
+    },
+    {
+     "hanzi": "对",
+     "pinyin": "duì",
+     "meaning": "với, đối với (giới từ)",
+     "example": {
+      "zh": "他对我说，他不去。",
+      "pinyin": "Tā duì wǒ shuō, tā bú qù.",
+      "vi": "Em ấy nói với con là em ấy không đi."
+     }
+    },
+    {
+     "hanzi": "说",
+     "pinyin": "shuō",
+     "meaning": "nói",
+     "example": {
+      "zh": "他对我说，他不去。",
+      "pinyin": "Tā duì wǒ shuō, tā bú qù.",
+      "vi": "Em ấy nói với con là em ấy không đi."
+     }
+    },
+    {
+     "hanzi": "要",
+     "pinyin": "yào",
+     "meaning": "muốn, định",
+     "example": {
+      "zh": "他今天要和小朋友玩。",
+      "pinyin": "Tā jīntiān yào hé xiǎopéngyou wán.",
+      "vi": "Hôm nay em ấy định đi chơi với các bạn."
+     }
+    },
+    {
+     "hanzi": "小朋友",
+     "pinyin": "xiǎopéngyou",
+     "meaning": "bạn nhỏ, trẻ nhỏ",
+     "example": {
+      "zh": "他要和小朋友玩。",
+      "pinyin": "Tā yào hé xiǎopéngyou wán.",
+      "vi": "Em ấy định đi chơi với các bạn nhỏ."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 12,
+   "title": "Hôm qua có tuyết rơi",
+   "title_zh": "昨天下雪了",
+   "summary": "Nghe hiểu và miêu tả thời tiết; miêu tả đơn giản tình trạng bệnh; nắm trợ từ ngữ khí 了 (1); nắm mẫu 太…了; hiểu vì sao người Trung Quốc khuyên uống nước ấm khi ốm.",
+   "grammar": "1) CÂU KHÔNG CHỦ-VỊ (非主谓句) — câu không có chủ ngữ, thường tả hiện tượng tự nhiên hoặc dùng như lời hô đáp:\n• 下雨了。 — Mưa rồi.\n• 下雪了。 — Tuyết rơi rồi.\n• 上课了。 — Vào học rồi.\n• 真漂亮！ / 对不起！ / 没关系！\n\n2) TRỢ TỪ NGỮ KHÍ “了” (1) — đặt cuối câu, biểu thị tình hình/trạng thái đã thay đổi:\n• 下雨了。 — (Trước không mưa) giờ mưa rồi.\n• 十二点了，吃午饭吧。 — Mười hai giờ rồi, ăn trưa thôi.\n• A：弟弟起床了吗？ B：没起床呢。 — Em dậy chưa? / Chưa dậy.\n\n3) MẪU “太……了” — cảm thán mức độ rất cao:\n• 太冷了！ — Lạnh quá!\n• 这个杯子太小了。 — Cái cốc này bé quá.\n• 我们今天太高兴了！ — Hôm nay chúng tôi vui quá!",
+   "vocab": [
+    {
+     "hanzi": "天气",
+     "pinyin": "tiānqì",
+     "meaning": "thời tiết",
+     "example": {
+      "zh": "今天天气怎么样？",
+      "pinyin": "Jīntiān tiānqì zěnmeyàng?",
+      "vi": "Hôm nay thời tiết thế nào?"
+     }
+    },
+    {
+     "hanzi": "这里",
+     "pinyin": "zhèli",
+     "meaning": "ở đây",
+     "example": {
+      "zh": "这里的天不太好。",
+      "pinyin": "Zhèli de tiān bú tài hǎo.",
+      "vi": "Trời ở đây không đẹp lắm."
+     }
+    },
+    {
+     "hanzi": "天",
+     "pinyin": "tiān",
+     "meaning": "trời",
+     "example": {
+      "zh": "这里的天不太好。",
+      "pinyin": "Zhèli de tiān bú tài hǎo.",
+      "vi": "Trời ở đây không đẹp lắm."
+     }
+    },
+    {
+     "hanzi": "下雨",
+     "pinyin": "xià yǔ",
+     "meaning": "mưa",
+     "example": {
+      "zh": "下雨了。",
+      "pinyin": "Xià yǔ le.",
+      "vi": "Mưa rồi."
+     }
+    },
+    {
+     "hanzi": "了",
+     "pinyin": "le",
+     "meaning": "trợ từ cuối câu chỉ sự thay đổi tình huống",
+     "example": {
+      "zh": "昨天下雪了。",
+      "pinyin": "Zuótiān xià xuě le.",
+      "vi": "Hôm qua có tuyết rơi."
+     }
+    },
+    {
+     "hanzi": "雨",
+     "pinyin": "yǔ",
+     "meaning": "mưa",
+     "example": {
+      "zh": "雨大吗？",
+      "pinyin": "Yǔ dà ma?",
+      "vi": "Mưa to không?"
+     }
+    },
+    {
+     "hanzi": "有点儿",
+     "pinyin": "yǒudiǎnr",
+     "meaning": "hơi, một chút",
+     "example": {
+      "zh": "有点儿大。",
+      "pinyin": "Yǒudiǎnr dà.",
+      "vi": "Hơi to."
+     }
+    },
+    {
+     "hanzi": "觉得",
+     "pinyin": "juéde",
+     "meaning": "cảm thấy",
+     "example": {
+      "zh": "我觉得很冷。",
+      "pinyin": "Wǒ juéde hěn lěng.",
+      "vi": "Em thấy rất lạnh."
+     }
+    },
+    {
+     "hanzi": "冷",
+     "pinyin": "lěng",
+     "meaning": "lạnh",
+     "example": {
+      "zh": "太冷了！",
+      "pinyin": "Tài lěng le!",
+      "vi": "Lạnh quá!"
+     }
+    },
+    {
+     "hanzi": "下",
+     "pinyin": "xià",
+     "meaning": "rơi, đổ (mưa, tuyết)",
+     "example": {
+      "zh": "昨天下雪了。",
+      "pinyin": "Zuótiān xià xuě le.",
+      "vi": "Hôm qua có tuyết rơi."
+     }
+    },
+    {
+     "hanzi": "雪",
+     "pinyin": "xuě",
+     "meaning": "tuyết",
+     "example": {
+      "zh": "外边正在下雪。",
+      "pinyin": "Wàibian zhèngzài xià xuě.",
+      "vi": "Bên ngoài đang có tuyết."
+     }
+    },
+    {
+     "hanzi": "来",
+     "pinyin": "lái",
+     "meaning": "đến",
+     "example": {
+      "zh": "你昨天没来公司。",
+      "pinyin": "Nǐ zuótiān méi lái gōngsī.",
+      "vi": "Hôm qua cậu không đến công ty."
+     }
+    },
+    {
+     "hanzi": "公司",
+     "pinyin": "gōngsī",
+     "meaning": "công ty",
+     "example": {
+      "zh": "他去公司工作了。",
+      "pinyin": "Tā qù gōngsī gōngzuò le.",
+      "vi": "Anh ấy đi công ty làm việc rồi."
+     }
+    },
+    {
+     "hanzi": "生病",
+     "pinyin": "shēngbìng",
+     "meaning": "bị ốm, đổ bệnh",
+     "example": {
+      "zh": "你生病了？",
+      "pinyin": "Nǐ shēngbìng le?",
+      "vi": "Cậu bị ốm à?"
+     }
+    },
+    {
+     "hanzi": "看病",
+     "pinyin": "kànbìng",
+     "meaning": "đi khám bệnh",
+     "example": {
+      "zh": "我昨天去医院看病了。",
+      "pinyin": "Wǒ zuótiān qù yīyuàn kànbìng le.",
+      "vi": "Hôm qua tôi đến bệnh viện khám bệnh."
+     }
+    },
+    {
+     "hanzi": "病",
+     "pinyin": "bìng",
+     "meaning": "ốm, bệnh",
+     "example": {
+      "zh": "医生，我病了。",
+      "pinyin": "Yīshēng, wǒ bìng le.",
+      "vi": "Bác sĩ ơi, tôi bị ốm."
+     }
+    },
+    {
+     "hanzi": "一点儿",
+     "pinyin": "yìdiǎnr",
+     "meaning": "một chút, một ít",
+     "example": {
+      "zh": "吃一点儿药。",
+      "pinyin": "Chī yìdiǎnr yào.",
+      "vi": "Uống một chút thuốc."
+     }
+    },
+    {
+     "hanzi": "药",
+     "pinyin": "yào",
+     "meaning": "thuốc",
+     "example": {
+      "zh": "吃一点儿药吧。",
+      "pinyin": "Chī yìdiǎnr yào ba.",
+      "vi": "Uống chút thuốc đi."
+     }
+    },
+    {
+     "hanzi": "天",
+     "pinyin": "tiān",
+     "meaning": "ngày (lượng từ)",
+     "example": {
+      "zh": "今天休息半天吧。",
+      "pinyin": "Jīntiān xiūxi bàn tiān ba.",
+      "vi": "Hôm nay nghỉ nửa ngày đi."
+     }
+    },
+    {
+     "hanzi": "回",
+     "pinyin": "huí",
+     "meaning": "về, trở về",
+     "example": {
+      "zh": "回家后再喝些热水。",
+      "pinyin": "Huí jiā hòu zài hē xiē rè shuǐ.",
+      "vi": "Về nhà rồi uống thêm chút nước ấm."
+     }
+    },
+    {
+     "hanzi": "再",
+     "pinyin": "zài",
+     "meaning": "rồi hãy, lại",
+     "example": {
+      "zh": "回家后再喝些热水。",
+      "pinyin": "Huí jiā hòu zài hē xiē rè shuǐ.",
+      "vi": "Về nhà rồi hãy uống chút nước ấm."
+     }
+    },
+    {
+     "hanzi": "喝",
+     "pinyin": "hē",
+     "meaning": "uống",
+     "example": {
+      "zh": "喝些热水。",
+      "pinyin": "Hē xiē rè shuǐ.",
+      "vi": "Uống chút nước ấm."
+     }
+    },
+    {
+     "hanzi": "热",
+     "pinyin": "rè",
+     "meaning": "nóng, ấm",
+     "example": {
+      "zh": "喝些热水。",
+      "pinyin": "Hē xiē rè shuǐ.",
+      "vi": "Uống chút nước ấm."
+     }
+    },
+    {
+     "hanzi": "水",
+     "pinyin": "shuǐ",
+     "meaning": "nước",
+     "example": {
+      "zh": "回家后再喝些热水。",
+      "pinyin": "Huí jiā hòu zài hē xiē rè shuǐ.",
+      "vi": "Về nhà rồi uống thêm chút nước ấm."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 13,
+   "title": "Cho tôi một cốc trà",
+   "title_zh": "请给我一杯茶",
+   "summary": "Nghe hiểu và dùng câu song tân ngữ (1) để hỏi ai đó hoặc đưa cho ai cái gì; nắm động từ năng nguyện 可以; nắm kết cấu “động từ + 一下”; học các mẫu câu gọi món thường dùng.",
+   "grammar": "1) ĐỘNG TỪ NĂNG NGUYỆN “可以” — có thể, được phép:\n• 我可以再问您一个问题吗？ — Em hỏi cô thêm một câu được không ạ?\n• 你们可以看这本书。 — Các em có thể đọc quyển sách này.\n• A：我可以坐吗？ B：可以，请坐！ — Tôi ngồi được không? / Được, mời ngồi!\n\n2) KẾT CẤU “ĐỘNG TỪ + 一下” — làm gì đó một chút, thử một chút, thời gian ngắn:\n• 你可以打电话问一下。 — Em có thể gọi điện hỏi thử.\n• 请休息一下。 — Mời nghỉ một lát.\n• 你看一下吧。 — Bạn xem thử đi.\n\n3) CÂU SONG TÂN NGỮ (1) — một động từ mang hai tân ngữ: tân ngữ chỉ NGƯỜI đứng trước, tân ngữ chỉ SỰ VẬT đứng sau. Động từ thường gặp: 给, 问:\n• 请给我一杯牛奶。 — Cho tôi một cốc sữa.\n• 请给我一杯茶。 — Cho tôi một cốc trà.\n• 我问老师两个问题。 — Tôi hỏi cô giáo hai câu hỏi.",
+   "vocab": [
+    {
+     "hanzi": "可以",
+     "pinyin": "kěyǐ",
+     "meaning": "có thể, được phép",
+     "example": {
+      "zh": "我可以再问您一个问题吗？",
+      "pinyin": "Wǒ kěyǐ zài wèn nín yí ge wèntí ma?",
+      "vi": "Em hỏi cô thêm một câu được không ạ?"
+     }
+    },
+    {
+     "hanzi": "再",
+     "pinyin": "zài",
+     "meaning": "lại, thêm lần nữa",
+     "example": {
+      "zh": "我可以再问您一个问题吗？",
+      "pinyin": "Wǒ kěyǐ zài wèn nín yí ge wèntí ma?",
+      "vi": "Em hỏi cô thêm một câu nữa được không ạ?"
+     }
+    },
+    {
+     "hanzi": "问题",
+     "pinyin": "wèntí",
+     "meaning": "câu hỏi, vấn đề",
+     "example": {
+      "zh": "你有什么问题？",
+      "pinyin": "Nǐ yǒu shénme wèntí?",
+      "vi": "Em có câu hỏi gì?"
+     }
+    },
+    {
+     "hanzi": "卖",
+     "pinyin": "mài",
+     "meaning": "bán",
+     "example": {
+      "zh": "那个小店卖不卖手机？",
+      "pinyin": "Nàge xiǎo diàn mài bu mài shǒujī?",
+      "vi": "Cửa hàng nhỏ đó có bán điện thoại không ạ?"
+     }
+    },
+    {
+     "hanzi": "打电话",
+     "pinyin": "dǎ diànhuà",
+     "meaning": "gọi điện thoại",
+     "example": {
+      "zh": "你可以打电话问一下。",
+      "pinyin": "Nǐ kěyǐ dǎ diànhuà wèn yíxià.",
+      "vi": "Em có thể gọi điện hỏi thử."
+     }
+    },
+    {
+     "hanzi": "一下",
+     "pinyin": "yíxià",
+     "meaning": "một chút, một lát",
+     "example": {
+      "zh": "你看一下吧。",
+      "pinyin": "Nǐ kàn yíxià ba.",
+      "vi": "Bạn xem thử một chút đi."
+     }
+    },
+    {
+     "hanzi": "服务员",
+     "pinyin": "fúwùyuán",
+     "meaning": "nhân viên phục vụ",
+     "example": {
+      "zh": "服务员，请给我一杯茶。",
+      "pinyin": "Fúwùyuán, qǐng gěi wǒ yì bēi chá.",
+      "vi": "Bạn phục vụ ơi, cho tôi một cốc trà."
+     }
+    },
+    {
+     "hanzi": "女士",
+     "pinyin": "nǚshì",
+     "meaning": "quý bà, chị (cách gọi lịch sự với nữ)",
+     "example": {
+      "zh": "女士，请坐！",
+      "pinyin": "Nǚshì, qǐng zuò!",
+      "vi": "Thưa chị, mời ngồi ạ!"
+     }
+    },
+    {
+     "hanzi": "请",
+     "pinyin": "qǐng",
+     "meaning": "mời, xin",
+     "example": {
+      "zh": "请坐！",
+      "pinyin": "Qǐng zuò!",
+      "vi": "Mời ngồi!"
+     }
+    },
+    {
+     "hanzi": "坐",
+     "pinyin": "zuò",
+     "meaning": "ngồi",
+     "example": {
+      "zh": "我可以坐这儿吗？",
+      "pinyin": "Wǒ kěyǐ zuò zhèr ma?",
+      "vi": "Tôi ngồi đây được không?"
+     }
+    },
+    {
+     "hanzi": "给",
+     "pinyin": "gěi",
+     "meaning": "cho, đưa cho",
+     "example": {
+      "zh": "请给我一杯牛奶。",
+      "pinyin": "Qǐng gěi wǒ yì bēi niúnǎi.",
+      "vi": "Cho tôi một cốc sữa."
+     }
+    },
+    {
+     "hanzi": "杯",
+     "pinyin": "bēi",
+     "meaning": "cốc, ly (lượng từ)",
+     "example": {
+      "zh": "请给我一杯茶。",
+      "pinyin": "Qǐng gěi wǒ yì bēi chá.",
+      "vi": "Cho tôi một cốc trà."
+     }
+    },
+    {
+     "hanzi": "要",
+     "pinyin": "yào",
+     "meaning": "lấy, gọi (món), muốn",
+     "example": {
+      "zh": "您还要什么？",
+      "pinyin": "Nín hái yào shénme?",
+      "vi": "Chị còn muốn dùng gì nữa ạ?"
+     }
+    },
+    {
+     "hanzi": "早饭",
+     "pinyin": "zǎofàn",
+     "meaning": "bữa sáng",
+     "example": {
+      "zh": "我还没吃早饭。",
+      "pinyin": "Wǒ hái méi chī zǎofàn.",
+      "vi": "Tôi vẫn chưa ăn sáng."
+     }
+    },
+    {
+     "hanzi": "这个",
+     "pinyin": "zhège",
+     "meaning": "cái này",
+     "example": {
+      "zh": "再要这个面包和鸡蛋吧。",
+      "pinyin": "Zài yào zhège miànbāo hé jīdàn ba.",
+      "vi": "Lấy thêm bánh mì và trứng này nữa."
+     }
+    },
+    {
+     "hanzi": "面包",
+     "pinyin": "miànbāo",
+     "meaning": "bánh mì",
+     "example": {
+      "zh": "我要面包和鸡蛋。",
+      "pinyin": "Wǒ yào miànbāo hé jīdàn.",
+      "vi": "Tôi lấy bánh mì và trứng."
+     }
+    },
+    {
+     "hanzi": "鸡蛋",
+     "pinyin": "jīdàn",
+     "meaning": "trứng gà",
+     "example": {
+      "zh": "这个面包和鸡蛋。",
+      "pinyin": "Zhège miànbāo hé jīdàn.",
+      "vi": "Bánh mì và trứng này."
+     }
+    },
+    {
+     "hanzi": "先生",
+     "pinyin": "xiānsheng",
+     "meaning": "quý ông, anh (cách gọi lịch sự với nam)",
+     "example": {
+      "zh": "先生，请坐！",
+      "pinyin": "Xiānsheng, qǐng zuò!",
+      "vi": "Thưa anh, mời ngồi ạ!"
+     }
+    },
+    {
+     "hanzi": "一半",
+     "pinyin": "yíbàn",
+     "meaning": "một nửa",
+     "example": {
+      "zh": "我要一半吧。",
+      "pinyin": "Wǒ yào yíbàn ba.",
+      "vi": "Tôi lấy một nửa thôi."
+     }
+    },
+    {
+     "hanzi": "茶",
+     "pinyin": "chá",
+     "meaning": "trà",
+     "example": {
+      "zh": "请给我一杯茶吧。",
+      "pinyin": "Qǐng gěi wǒ yì bēi chá ba.",
+      "vi": "Cho tôi một cốc trà nhé."
+     }
+    }
+   ]
+  },
+  {
+   "unit": 14,
+   "title": "Mình đã xem một bộ phim",
+   "title_zh": "我看了一个电影",
+   "summary": "Nghe hiểu và dùng trợ từ động thái 了 (2) chỉ hành động đã xảy ra/hoàn thành; nắm phó từ phạm vi 都; nắm cách dùng cơ bản của từ ly hợp; miêu tả được tình hình học tập.",
+   "grammar": "1) TRỢ TỪ ĐỘNG THÁI “了” (2) — đặt SAU động từ, chỉ hành động đã xảy ra hoặc hoàn thành. Phủ định dùng 没 và BỎ 了:\n• 我看了一个电影。 — Mình đã xem một bộ phim.\n• 我买了一个新电脑。 — Mình đã mua một cái máy tính mới.\n• 我昨天没去商店买东西。 — Hôm qua mình không đi cửa hàng mua đồ.\n\n2) TỪ LY HỢP (1) — các từ như 上课、下课、上班、下班、说话、读书、睡觉、看病、生病 là kết cấu động từ đặc biệt, có thể tách ra chèn thành phần khác vào giữa:\n• 睡觉 → 睡了觉；睡了一觉\n• 上课 → 上了课；上中文课\n• 下班 → 下了班\n• 生病 → 生了病；生了大病\n• 说话 → 说了话；说了很多话\n\n3) PHÓ TỪ PHẠM VI “都” — nghĩa “đều, tất cả”; đối tượng được khái quát đứng TRƯỚC 都; khi phủ định, từ phủ định đứng SAU 都:\n• 我们都会写了。 — Chúng em đều viết được rồi.\n• 我和我的朋友们都去。 — Mình và các bạn đều đi.\n• 同学们都没听见。 — Các bạn đều không nghe thấy.",
+   "vocab": [
+    {
+     "hanzi": "上",
+     "pinyin": "shàng",
+     "meaning": "lên (xe, tàu)",
+     "example": {
+      "zh": "你们上火车后看见王老师了吗？",
+      "pinyin": "Nǐmen shàng huǒchē hòu kànjiàn Wáng lǎoshī le ma?",
+      "vi": "Lên tàu rồi các cậu có thấy cô Vương không?"
+     }
+    },
+    {
+     "hanzi": "火车",
+     "pinyin": "huǒchē",
+     "meaning": "tàu hoả",
+     "example": {
+      "zh": "我们上火车了。",
+      "pinyin": "Wǒmen shàng huǒchē le.",
+      "vi": "Bọn mình lên tàu rồi."
+     }
+    },
+    {
+     "hanzi": "中午",
+     "pinyin": "zhōngwǔ",
+     "meaning": "buổi trưa",
+     "example": {
+      "zh": "中午车开后……",
+      "pinyin": "Zhōngwǔ chē kāi hòu……",
+      "vi": "Sau khi tàu chạy lúc trưa…"
+     }
+    },
+    {
+     "hanzi": "开",
+     "pinyin": "kāi",
+     "meaning": "chạy, khởi hành (xe cộ)",
+     "example": {
+      "zh": "中午车开后，有些人在看书。",
+      "pinyin": "Zhōngwǔ chē kāi hòu, yǒuxiē rén zài kàn shū.",
+      "vi": "Sau khi tàu chạy lúc trưa, một số người đọc sách."
+     }
+    },
+    {
+     "hanzi": "有些",
+     "pinyin": "yǒuxiē",
+     "meaning": "một số, có những",
+     "example": {
+      "zh": "有些人睡觉了。",
+      "pinyin": "Yǒuxiē rén shuìjiào le.",
+      "vi": "Một số người thì ngủ."
+     }
+    },
+    {
+     "hanzi": "有的",
+     "pinyin": "yǒude",
+     "meaning": "có người, có cái",
+     "example": {
+      "zh": "有的人在睡觉。",
+      "pinyin": "Yǒude rén zài shuìjiào.",
+      "vi": "Có người thì đang ngủ."
+     }
+    },
+    {
+     "hanzi": "了",
+     "pinyin": "le",
+     "meaning": "trợ từ sau động từ chỉ hành động đã hoàn thành",
+     "example": {
+      "zh": "我看了一个电影。",
+      "pinyin": "Wǒ kàn le yí ge diànyǐng.",
+      "vi": "Mình đã xem một bộ phim."
+     }
+    },
+    {
+     "hanzi": "写",
+     "pinyin": "xiě",
+     "meaning": "viết",
+     "example": {
+      "zh": "也会写汉字了吗？",
+      "pinyin": "Yě huì xiě Hànzì le ma?",
+      "vi": "Các em cũng viết được chữ Hán rồi chứ?"
+     }
+    },
+    {
+     "hanzi": "都",
+     "pinyin": "dōu",
+     "meaning": "đều, tất cả",
+     "example": {
+      "zh": "我们都会写了。",
+      "pinyin": "Wǒmen dōu huì xiě le.",
+      "vi": "Chúng em đều viết được rồi."
+     }
+    },
+    {
+     "hanzi": "听见",
+     "pinyin": "tīngjiàn",
+     "meaning": "nghe thấy",
+     "example": {
+      "zh": "老师，我听不见。",
+      "pinyin": "Lǎoshī, wǒ tīng bu jiàn.",
+      "vi": "Thưa cô, em không nghe thấy ạ."
+     }
+    },
+    {
+     "hanzi": "不要",
+     "pinyin": "búyào",
+     "meaning": "đừng",
+     "example": {
+      "zh": "请大家不要说话！",
+      "pinyin": "Qǐng dàjiā búyào shuōhuà!",
+      "vi": "Đề nghị cả lớp đừng nói chuyện!"
+     }
+    },
+    {
+     "hanzi": "说话",
+     "pinyin": "shuōhuà",
+     "meaning": "nói chuyện",
+     "example": {
+      "zh": "请大家不要说话！",
+      "pinyin": "Qǐng dàjiā búyào shuōhuà!",
+      "vi": "Đề nghị cả lớp đừng nói chuyện!"
+     }
+    },
+    {
+     "hanzi": "听",
+     "pinyin": "tīng",
+     "meaning": "nghe",
+     "example": {
+      "zh": "请听老师的问题。",
+      "pinyin": "Qǐng tīng lǎoshī de wèntí.",
+      "vi": "Hãy nghe câu hỏi của cô."
+     }
+    },
+    {
+     "hanzi": "哪些",
+     "pinyin": "nǎxiē",
+     "meaning": "những cái nào",
+     "example": {
+      "zh": "你们都会写哪些汉字了？",
+      "pinyin": "Nǐmen dōu huì xiě nǎxiē Hànzì le?",
+      "vi": "Các em đã viết được những chữ Hán nào rồi?"
+     }
+    },
+    {
+     "hanzi": "字",
+     "pinyin": "zì",
+     "meaning": "chữ",
+     "example": {
+      "zh": "我会写这些字了。",
+      "pinyin": "Wǒ huì xiě zhèxiē zì le.",
+      "vi": "Em viết được mấy chữ này rồi."
+     }
+    },
+    {
+     "hanzi": "明年",
+     "pinyin": "míngnián",
+     "meaning": "năm sau",
+     "example": {
+      "zh": "明年女儿上中学。",
+      "pinyin": "Míngnián nǚ'ér shàng zhōngxué.",
+      "vi": "Sang năm con gái lên cấp hai."
+     }
+    },
+    {
+     "hanzi": "上",
+     "pinyin": "shàng",
+     "meaning": "vào học, bắt đầu (một bậc học)",
+     "example": {
+      "zh": "儿子也上小学了。",
+      "pinyin": "Érzi yě shàng xiǎoxué le.",
+      "vi": "Con trai cũng vào tiểu học rồi."
+     }
+    },
+    {
+     "hanzi": "中学",
+     "pinyin": "zhōngxué",
+     "meaning": "trường trung học",
+     "example": {
+      "zh": "明年女儿上中学。",
+      "pinyin": "Míngnián nǚ'ér shàng zhōngxué.",
+      "vi": "Sang năm con gái lên cấp hai."
+     }
+    },
+    {
+     "hanzi": "小学",
+     "pinyin": "xiǎoxué",
+     "meaning": "trường tiểu học",
+     "example": {
+      "zh": "儿子也上小学了。",
+      "pinyin": "Érzi yě shàng xiǎoxué le.",
+      "vi": "Con trai cũng vào tiểu học rồi."
+     }
+    },
+    {
+     "hanzi": "中学生",
+     "pinyin": "zhōngxuéshēng",
+     "meaning": "học sinh trung học",
+     "example": {
+      "zh": "我们家有了一个中学生。",
+      "pinyin": "Wǒmen jiā yǒu le yí ge zhōngxuéshēng.",
+      "vi": "Nhà mình có một học sinh cấp hai rồi."
+     }
+    },
+    {
+     "hanzi": "小学生",
+     "pinyin": "xiǎoxuéshēng",
+     "meaning": "học sinh tiểu học",
+     "example": {
+      "zh": "还有了一个小学生。",
+      "pinyin": "Hái yǒu le yí ge xiǎoxuéshēng.",
+      "vi": "Còn có thêm một học sinh tiểu học nữa."
+     }
+    },
+    {
+     "hanzi": "上学",
+     "pinyin": "shàngxué",
+     "meaning": "đi học",
+     "example": {
+      "zh": "上学后，他们都忙了。",
+      "pinyin": "Shàngxué hòu, tāmen dōu máng le.",
+      "vi": "Đi học rồi thì chúng nó đều bận cả."
+     }
+    },
+    {
+     "hanzi": "他们",
+     "pinyin": "tāmen",
+     "meaning": "họ, các cậu ấy",
+     "example": {
+      "zh": "上学后，他们都忙了。",
+      "pinyin": "Shàngxué hòu, tāmen dōu máng le.",
+      "vi": "Đi học rồi thì chúng nó đều bận."
+     }
+    },
+    {
+     "hanzi": "她们",
+     "pinyin": "tāmen",
+     "meaning": "họ (chỉ nhóm nữ)",
+     "example": {
+      "zh": "她们都是学生。",
+      "pinyin": "Tāmen dōu shì xuésheng.",
+      "vi": "Các cô ấy đều là học sinh."
+     }
+    },
+    {
+     "hanzi": "它们",
+     "pinyin": "tāmen",
+     "meaning": "chúng (chỉ vật, con vật)",
+     "example": {
+      "zh": "它们都很漂亮。",
+      "pinyin": "Tāmen dōu hěn piàoliang.",
+      "vi": "Chúng đều rất đẹp."
+     }
+    },
+    {
+     "hanzi": "晚",
+     "pinyin": "wǎn",
+     "meaning": "muộn",
+     "example": {
+      "zh": "太晚了，睡觉吧。",
+      "pinyin": "Tài wǎn le, shuìjiào ba.",
+      "vi": "Muộn quá rồi, đi ngủ thôi."
+     }
+    },
+    {
+     "hanzi": "汉语",
+     "pinyin": "Hànyǔ",
+     "meaning": "tiếng Hán, tiếng Trung (danh từ riêng)",
+     "example": {
+      "zh": "你们会说汉语了。",
+      "pinyin": "Nǐmen huì shuō Hànyǔ le.",
+      "vi": "Các em nói được tiếng Hán rồi."
+     }
+    },
+    {
+     "hanzi": "汉字",
+     "pinyin": "Hànzì",
+     "meaning": "chữ Hán (danh từ riêng)",
+     "example": {
+      "zh": "也会写汉字了吗？",
+      "pinyin": "Yě huì xiě Hànzì le ma?",
+      "vi": "Cũng viết được chữ Hán rồi chứ?"
+     }
+    }
+   ]
+  },
+  {
+   "unit": 15,
+   "title": "Hẹn gặp ở sân bay Đại Hưng!",
+   "title_zh": "大兴机场见！",
+   "summary": "Nghe hiểu và dùng từ ngữ liên quan để nói về nguyện vọng, kế hoạch du lịch; nắm câu phức đẳng lập “…，还/也…”; tìm hiểu văn hoá bàn ăn và phép hiếu khách của người Trung Quốc; tìm hiểu về Bắc Kinh — thủ đô Trung Quốc.",
+   "grammar": "1) CÂU PHỨC ĐẲNG LẬP “……，还/也……” — gồm hai (hoặc nhiều) vế câu có quan hệ logic ngang hàng, kết cấu đối xứng:\n• 我喜欢这个，也喜欢那个。 — Mình thích cái này, cũng thích cái kia.\n• 王老师是北京人，李文也是北京人。 — Cô Vương là người Bắc Kinh, Lý Văn cũng là người Bắc Kinh.\n• 我喜欢喝中国茶，还喜欢吃中国菜。 — Mình thích uống trà Trung Quốc, còn thích ăn món Trung Quốc nữa.\n\n2) MỜI ĂN — 大家多吃点儿。 (Mọi người ăn thêm chút nữa đi) là nét văn hoá bàn ăn thể hiện sự hiếu khách của người Trung Quốc.",
+   "vocab": [
+    {
+     "hanzi": "爱",
+     "pinyin": "ài",
+     "meaning": "thích, yêu thích",
+     "example": {
+      "zh": "你们爱吃哪个菜？",
+      "pinyin": "Nǐmen ài chī nǎge cài?",
+      "vi": "Các cậu thích ăn món nào?"
+     }
+    },
+    {
+     "hanzi": "哪个",
+     "pinyin": "nǎge",
+     "meaning": "cái nào",
+     "example": {
+      "zh": "你们爱吃哪个菜？",
+      "pinyin": "Nǐmen ài chī nǎge cài?",
+      "vi": "Các cậu thích ăn món nào?"
+     }
+    },
+    {
+     "hanzi": "去年",
+     "pinyin": "qùnián",
+     "meaning": "năm ngoái",
+     "example": {
+      "zh": "去年我和男朋友去了西安。",
+      "pinyin": "Qùnián wǒ hé nánpéngyou qù le Xī'ān.",
+      "vi": "Năm ngoái mình và bạn trai đi Tây An."
+     }
+    },
+    {
+     "hanzi": "男朋友",
+     "pinyin": "nánpéngyou",
+     "meaning": "bạn trai",
+     "example": {
+      "zh": "我和男朋友去了西安。",
+      "pinyin": "Wǒ hé nánpéngyou qù le Xī'ān.",
+      "vi": "Mình và bạn trai đã đi Tây An."
+     }
+    },
+    {
+     "hanzi": "几",
+     "pinyin": "jǐ",
+     "meaning": "vài, mấy",
+     "example": {
+      "zh": "前几年我去了西安。",
+      "pinyin": "Qián jǐ nián wǒ qù le Xī'ān.",
+      "vi": "Mấy năm trước mình đã đi Tây An."
+     }
+    },
+    {
+     "hanzi": "年",
+     "pinyin": "nián",
+     "meaning": "năm",
+     "example": {
+      "zh": "前几年我去了西安。",
+      "pinyin": "Qián jǐ nián wǒ qù le Xī'ān.",
+      "vi": "Mấy năm trước mình đã đi Tây An."
+     }
+    },
+    {
+     "hanzi": "好玩儿",
+     "pinyin": "hǎowánr",
+     "meaning": "vui, thú vị",
+     "example": {
+      "zh": "西安非常好玩儿。",
+      "pinyin": "Xī'ān fēicháng hǎowánr.",
+      "vi": "Tây An chơi vui cực kỳ."
+     }
+    },
+    {
+     "hanzi": "飞机",
+     "pinyin": "fēijī",
+     "meaning": "máy bay",
+     "example": {
+      "zh": "你们的飞机到北京要几个小时？",
+      "pinyin": "Nǐmen de fēijī dào Běijīng yào jǐ ge xiǎoshí?",
+      "vi": "Máy bay của các em tới Bắc Kinh mất mấy tiếng?"
+     }
+    },
+    {
+     "hanzi": "要",
+     "pinyin": "yào",
+     "meaning": "mất, cần (thời gian)",
+     "example": {
+      "zh": "要几个小时？",
+      "pinyin": "Yào jǐ ge xiǎoshí?",
+      "vi": "Mất mấy tiếng?"
+     }
+    },
+    {
+     "hanzi": "小时",
+     "pinyin": "xiǎoshí",
+     "meaning": "giờ, tiếng đồng hồ",
+     "example": {
+      "zh": "九个小时。",
+      "pinyin": "Jiǔ ge xiǎoshí.",
+      "vi": "Chín tiếng ạ."
+     }
+    },
+    {
+     "hanzi": "家人",
+     "pinyin": "jiārén",
+     "meaning": "người nhà",
+     "example": {
+      "zh": "我家人都在北京。",
+      "pinyin": "Wǒ jiārén dōu zài Běijīng.",
+      "vi": "Người nhà cô đều ở Bắc Kinh."
+     }
+    },
+    {
+     "hanzi": "时间",
+     "pinyin": "shíjiān",
+     "meaning": "thời gian",
+     "example": {
+      "zh": "星期天我姐姐也有时间。",
+      "pinyin": "Xīngqītiān wǒ jiějie yě yǒu shíjiān.",
+      "vi": "Chủ nhật chị cô cũng rảnh."
+     }
+    },
+    {
+     "hanzi": "机场",
+     "pinyin": "jīchǎng",
+     "meaning": "sân bay",
+     "example": {
+      "zh": "她可以去机场接你们。",
+      "pinyin": "Tā kěyǐ qù jīchǎng jiē nǐmen.",
+      "vi": "Chị ấy có thể ra sân bay đón các em."
+     }
+    },
+    {
+     "hanzi": "接",
+     "pinyin": "jiē",
+     "meaning": "đón",
+     "example": {
+      "zh": "她可以去机场接你们。",
+      "pinyin": "Tā kěyǐ qù jīchǎng jiē nǐmen.",
+      "vi": "Chị ấy có thể ra sân bay đón các em."
+     }
+    },
+    {
+     "hanzi": "住",
+     "pinyin": "zhù",
+     "meaning": "ở, cư trú",
+     "example": {
+      "zh": "你们也可以住我家。",
+      "pinyin": "Nǐmen yě kěyǐ zhù wǒ jiā.",
+      "vi": "Các em cũng có thể ở nhà cô."
+     }
+    },
+    {
+     "hanzi": "早",
+     "pinyin": "zǎo",
+     "meaning": "sớm",
+     "example": {
+      "zh": "早不早？",
+      "pinyin": "Zǎo bu zǎo?",
+      "vi": "Có sớm quá không ạ?"
+     }
+    },
+    {
+     "hanzi": "那",
+     "pinyin": "nà",
+     "meaning": "vậy thì (liên từ)",
+     "example": {
+      "zh": "那我们在大兴机场见！",
+      "pinyin": "Nà wǒmen zài Dàxīng Jīchǎng jiàn!",
+      "vi": "Vậy mình gặp nhau ở sân bay Đại Hưng nhé!"
+     }
+    },
+    {
+     "hanzi": "西安",
+     "pinyin": "Xī'ān",
+     "meaning": "Tây An (danh từ riêng)",
+     "example": {
+      "zh": "去年我去了西安。",
+      "pinyin": "Qùnián wǒ qù le Xī'ān.",
+      "vi": "Năm ngoái mình đã đi Tây An."
+     }
+    },
+    {
+     "hanzi": "北京",
+     "pinyin": "Běijīng",
+     "meaning": "Bắc Kinh (danh từ riêng)",
+     "example": {
+      "zh": "今年我想去北京。",
+      "pinyin": "Jīnnián wǒ xiǎng qù Běijīng.",
+      "vi": "Năm nay mình muốn đi Bắc Kinh."
+     }
+    },
+    {
+     "hanzi": "大兴机场",
+     "pinyin": "Dàxīng Jīchǎng",
+     "meaning": "sân bay Đại Hưng (danh từ riêng, Bắc Kinh)",
+     "example": {
+      "zh": "我们星期日早上八点到大兴机场。",
+      "pinyin": "Wǒmen xīngqīrì zǎoshang bā diǎn dào Dàxīng Jīchǎng.",
+      "vi": "Sáng chủ nhật 8 giờ chúng em tới sân bay Đại Hưng."
+     }
+    }
+   ]
+  }
+ ]
+}
