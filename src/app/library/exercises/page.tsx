@@ -171,7 +171,7 @@ export default function ExerciseLibraryPage() {
       ) : (
         <>
           <Card>
-            <CardContent className="flex flex-wrap items-center gap-3 p-4">
+            <CardContent className="flex flex-wrap items-center gap-3 p-4 sm:p-5">
               <span className="text-sm font-medium text-muted-foreground">Giáo trình:</span>
               <Select
                 wrapClassName="w-full sm:w-auto"

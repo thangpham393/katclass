@@ -77,7 +77,7 @@ export default function LessonLibraryPage() {
       {lessons.error && <ErrorNote message={lessons.error} />}
 
       <Card>
-        <CardContent className="flex flex-wrap items-center gap-3 p-4">
+        <CardContent className="flex flex-wrap items-center gap-3 p-4 sm:p-5">
           <span className="text-sm font-medium text-muted-foreground">Giáo trình:</span>
           <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-64" value={textbookFilter} onChange={(e) => setTextbookFilter(e.target.value)}>
             <option value="">Tất cả</option>

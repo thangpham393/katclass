@@ -73,7 +73,7 @@ export default function TextbookDetailPage() {
           { icon: HelpCircle, label: "Câu hỏi luyện tập", value: totalQuestions },
         ].map((s) => (
           <Card key={s.label}>
-            <CardContent className="flex items-center gap-3 p-4">
+            <CardContent className="flex items-center gap-3 p-4 sm:p-5">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-600">
                 <s.icon className="h-5 w-5" />
               </div>

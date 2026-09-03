@@ -84,7 +84,7 @@ export default function QuestionBankPage() {
       {questions.error && <ErrorNote message={questions.error} />}
 
       <Card>
-        <CardContent className="flex flex-wrap items-center gap-3 p-4">
+        <CardContent className="flex flex-wrap items-center gap-3 p-4 sm:p-5">
           <Select
             wrapClassName="w-full sm:w-auto"
             className="w-full sm:w-44"

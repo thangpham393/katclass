@@ -84,7 +84,7 @@ export default function LibraryPage() {
       <section>
         <h2 className="mb-3 text-lg font-bold">Kho từ vựng</h2>
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-4 sm:p-5">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input

@@ -144,7 +144,7 @@ export default function TextbookLibraryPage() {
 
       {total > 0 && (
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-4 sm:p-5">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -193,7 +193,7 @@ export default function TextbookLibraryPage() {
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {items.map((tb) => (
                     <Card key={tb.id} className="card-hover flex flex-col overflow-hidden">
-                      <CardContent className="flex flex-1 gap-4 p-4">
+                      <CardContent className="flex flex-1 gap-4 p-4 sm:p-5">
                         <Link href={`/library/textbooks/${tb.id}`} className="w-24 shrink-0">
                           <TextbookCover
                             name={tb.name}
