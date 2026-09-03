@@ -53,6 +53,11 @@ export interface ProfileRow {
   enrolled_at: string | null; // ngày nhập học
   study_status: StudyStatus; // đang học / bảo lưu / đã nghỉ
   owner_id: string | null; // nhân viên phụ trách
+  /* --- 0039: học viên đã nghỉ / bảo lưu --- */
+  left_at: string | null; // ngày nghỉ / bắt đầu bảo lưu
+  left_reason: string | null; // lý do nghỉ (danh mục ở db-alumni.ts)
+  left_note: string | null;
+  return_at: string | null; // bảo lưu đến ngày / ngày hẹn quay lại
   invite_code: string | null; // mã kích hoạt tài khoản (null = chưa cấp hoặc đã dùng)
   branch_id: string | null; // chi nhánh của hồ sơ (0026)
   created_at: string;

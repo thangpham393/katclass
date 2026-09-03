@@ -53,6 +53,7 @@ import {
   type StudentListRow,
   type StudentScheduleInput,
 } from "@/lib/db-student-list";
+import { LEAVE_REASONS, LEAVE_REASON_LABELS } from "@/lib/db-alumni";
 import { fmtVND } from "@/lib/db-tuition";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
@@ -922,6 +923,8 @@ function EditStudentModal({
   const [enrolledAt, setEnrolledAt] = useState(row.enrolledAt ?? "");
   const [studyStatus, setStudyStatus] = useState<StudyStatus>(row.status);
   const [ownerId, setOwnerId] = useState(row.ownerId ?? "");
+  const [leftAt, setLeftAt] = useState(row.leftAt ?? todayISO());
+  const [leftReason, setLeftReason] = useState(row.leftReason ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -938,6 +941,10 @@ function EditStudentModal({
         enrolled_at: enrolledAt || null,
         study_status: studyStatus,
         owner_id: ownerId || null,
+        // Về 'studying' thì trigger 0039 tự xóa lý do/ngày nghỉ, không gửi kèm.
+        ...(studyStatus === "studying"
+          ? {}
+          : { left_at: leftAt || null, left_reason: leftReason || null }),
       });
       onSaved();
     } catch (err) {
@@ -971,6 +978,27 @@ function EditStudentModal({
             </Select>
           </Field>
         </div>
+        {studyStatus !== "studying" && (
+          <div className="grid gap-4 rounded-xl border border-gold-200 bg-gold-50/60 p-3 sm:grid-cols-2">
+            <Field label="Ngày nghỉ / bắt đầu bảo lưu">
+              <Input type="date" value={leftAt} onChange={(e) => setLeftAt(e.target.value)} />
+            </Field>
+            <Field label="Lý do">
+              <Select value={leftReason} onChange={(e) => setLeftReason(e.target.value)}>
+                <option value="">Chưa ghi lý do</option>
+                {LEAVE_REASONS.map((r) => (
+                  <option key={r} value={r}>{LEAVE_REASON_LABELS[r]}</option>
+                ))}
+              </Select>
+            </Field>
+            <p className="text-xs text-gold-800 sm:col-span-2">
+              Hẹn quay lại, ghi chú và nhật ký mời học lại nằm ở trang{" "}
+              <Link href="/admin/alumni" className="font-medium underline">
+                Học viên đã nghỉ
+              </Link>.
+            </p>
+          </div>
+        )}
         <Field label="Email">
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </Field>

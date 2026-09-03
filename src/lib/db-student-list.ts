@@ -72,6 +72,11 @@ export interface StudentListRow {
   status: StudyStatus;
   /** Chưa có lớp nào đang hoạt động. */
   unassigned: boolean;
+  /** 0039 — chỉ có nghĩa khi status là 'left' / 'reserved'. */
+  leftAt: string | null;
+  leftReason: string | null;
+  leftNote: string | null;
+  returnAt: string | null;
   courses: string[];
 
   /** Gói buổi: cộng dồn mọi gói còn hiệu lực. */
@@ -224,6 +229,10 @@ export async function fetchStudentList(): Promise<StudentListRow[]> {
       ownerName: p.owner?.name ?? null,
       status: p.study_status,
       unassigned: !classes.some((c) => c.active),
+      leftAt: p.left_at,
+      leftReason: p.left_reason,
+      leftNote: p.left_note,
+      returnAt: p.return_at,
       courses: (p.student_courses ?? []).map((c) => c.course?.name).filter((n): n is string => !!n),
 
       hasPackage: !!pkg,
@@ -253,6 +262,11 @@ export async function updateStudentProfile(
     enrolled_at?: string | null;
     study_status?: StudyStatus;
     owner_id?: string | null;
+    /* --- 0039: gửi kèm khi chuyển sang nghỉ / bảo lưu --- */
+    left_at?: string | null;
+    left_reason?: string | null;
+    left_note?: string | null;
+    return_at?: string | null;
   },
 ) {
   const { error } = await getSupabase().from("profiles").update(patch).eq("id", id);
