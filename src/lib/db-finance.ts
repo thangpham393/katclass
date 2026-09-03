@@ -123,8 +123,12 @@ export async function fetchFinanceEntries(
   return (data ?? []) as FinanceEntryRow[];
 }
 
-export async function createFinanceEntry(input: FinanceEntryInput, createdBy?: string | null) {
-  const { error } = await getSupabase()
+/** Trả về id dòng vừa ghi để nơi gọi (vd phiếu kho) giữ liên kết ngược. */
+export async function createFinanceEntry(
+  input: FinanceEntryInput,
+  createdBy?: string | null,
+): Promise<string> {
+  const { data, error } = await getSupabase()
     .from("finance_entries")
     .insert({
       ...branchStamp(),
@@ -136,8 +140,11 @@ export async function createFinanceEntry(input: FinanceEntryInput, createdBy?: s
       title: input.title.trim(),
       note: input.note?.trim() || null,
       created_by: createdBy || null,
-    });
+    })
+    .select("id")
+    .single();
   if (error) throw error;
+  return (data as { id: string }).id;
 }
 
 export async function updateFinanceEntry(id: string, input: FinanceEntryInput) {

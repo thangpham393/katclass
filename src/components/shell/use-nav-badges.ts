@@ -6,6 +6,7 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { fetchPendingRequestCount, fetchMyPendingRequestCount } from "@/lib/db-requests";
 import { fetchPendingMakeupCount } from "@/lib/db";
 import { fetchPendingAbsenceCount, fetchMyPendingMakeupCount } from "@/lib/db-absence";
+import { fetchLowStockCount } from "@/lib/db-supplies";
 
 /**
  * Số việc đang chờ xử lý, gắn thành chấm đỏ ngay trên mục menu — quản lý
@@ -25,6 +26,7 @@ export function useNavBadges(): Record<string, number> {
   const userId = user?.id;
   const canRequests = !!user && can("requests.manage");
   const canMakeup = !!user && can("makeup.manage");
+  const canSupplies = !!user && can("tuition.manage");
 
   useEffect(() => {
     if (!role || !userId) return;
@@ -38,6 +40,9 @@ export function useNavBadges(): Record<string, number> {
     } else if (role !== "parent") {
       if (canRequests) {
         jobs.push(fetchPendingRequestCount().then((n) => ["/admin/requests", n]));
+      }
+      if (canSupplies) {
+        jobs.push(fetchLowStockCount().then((n) => ["/admin/supplies", n]));
       }
       if (canMakeup) {
         // Một mục menu, hai việc: lượt chờ xếp bù + đơn xin nghỉ HV tự gửi
@@ -63,7 +68,7 @@ export function useNavBadges(): Record<string, number> {
     return () => {
       cancelled = true;
     };
-  }, [role, userId, canRequests, canMakeup, pathname]);
+  }, [role, userId, canRequests, canMakeup, canSupplies, pathname]);
 
   return counts;
 }

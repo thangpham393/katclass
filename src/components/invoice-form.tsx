@@ -44,6 +44,7 @@ import {
   type InvoiceItem,
 } from "@/lib/db-invoices";
 import { fetchTemplate, saveTemplate } from "@/lib/db-leads";
+import { fetchSupplyItems, type SupplyItemRow } from "@/lib/db-supplies";
 import {
   addPayment,
   createPackage,
@@ -100,6 +101,8 @@ export function InvoiceFormModal({
   /** Người đứng tên tờ hoá đơn — điền sẵn từ liên kết gia đình, sửa được. */
   const [parentName, setParentName] = useState("");
   const [courses, setCourses] = useState<CourseRow[]>([]);
+  /** Học cụ còn bán — chọn một dòng là điền sẵn tên và giá bán. */
+  const [supplies, setSupplies] = useState<SupplyItemRow[]>([]);
   const [method, setMethod] = useState<PaymentMethod>("transfer");
   const [issuedOn, setIssuedOn] = useState(todayISO());
   const [dueOn, setDueOn] = useState("");
@@ -131,13 +134,15 @@ export function InvoiceFormModal({
       fetchTemplate("invoice_terms"),
       fetchCourses(),
       needStudents ? fetchProfilesByRole("student") : Promise.resolve([] as ProfileRow[]),
+      fetchSupplyItems().catch(() => [] as SupplyItemRow[]),
     ])
-      .then(([no, tpl, courseList, studentList]) => {
+      .then(([no, tpl, courseList, studentList, supplyList]) => {
         if (cancelled) return;
         setInvoiceNo(no);
         setTerms(tpl.body);
         setCourses(courseList);
         setStudents(studentList);
+        setSupplies(supplyList.filter((s) => s.is_active));
       })
       .catch((err) => !cancelled && setError(dbErrorMessage(err)));
     return () => {
@@ -197,11 +202,31 @@ export function InvoiceFormModal({
     setItems((cur) => cur.map((it, idx) => (idx === i ? { ...it, ...patch } : it)));
   }
 
-  /** Chọn khoá → điền sẵn tên, số buổi chuẩn (vẫn sửa tay được). */
-  function pickCourse(i: number, courseId: string) {
-    const c = courses.find((x) => x.id === courseId) ?? null;
+  /**
+   * Chọn khoá học hoặc học cụ → điền sẵn tên (và giá bán với học cụ, số
+   * buổi chuẩn với khoá học). Mọi ô vẫn sửa tay được sau đó.
+   *
+   * Lựa chọn không được lưu riêng: khoá học nằm ở `course_id`, còn học cụ
+   * nhận ra bằng tên dòng. Gõ đè lên tên thì ô chọn tự trả về trống —
+   * đúng với sự thật là dòng đó không còn là mặt hàng trong kho nữa.
+   */
+  function pickLine(i: number, value: string) {
+    const [type, id] = value.split(":");
+    if (type === "supply") {
+      const s = supplies.find((x) => x.id === id);
+      if (!s) return;
+      patchItem(i, { course_id: null, name: s.name, price: s.sale_price });
+      return;
+    }
+    const c = courses.find((x) => x.id === id) ?? null;
     patchItem(i, { course_id: c?.id ?? null, name: c ? c.name : items[i].name });
     if (c && c.total_sessions > 0 && !sessions) setSessions(String(c.total_sessions));
+  }
+
+  function lineValue(it: InvoiceItem): string {
+    if (it.course_id) return `course:${it.course_id}`;
+    const s = supplies.find((x) => x.name === it.name.trim());
+    return s ? `supply:${s.id}` : "";
   }
 
   async function handleSaveTerms() {
@@ -423,16 +448,27 @@ export function InvoiceFormModal({
                 <div className="flex flex-wrap items-center gap-2">
                   <Select
                     wrapClassName="min-w-0 flex-1 basis-56"
-                    value={it.course_id ?? ""}
-                    onChange={(e) => pickCourse(i, e.target.value)}
+                    value={lineValue(it)}
+                    onChange={(e) => pickLine(i, e.target.value)}
                   >
                     <option value="">Chọn khoá học / học cụ (tuỳ chọn)</option>
-                    {courses.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                        {c.level ? ` — ${LEVEL_LABELS[c.level] ?? c.level}` : ""}
-                      </option>
-                    ))}
+                    <optgroup label="Khoá học">
+                      {courses.map((c) => (
+                        <option key={c.id} value={`course:${c.id}`}>
+                          {c.name}
+                          {c.level ? ` — ${LEVEL_LABELS[c.level] ?? c.level}` : ""}
+                        </option>
+                      ))}
+                    </optgroup>
+                    {supplies.length > 0 && (
+                      <optgroup label="Học cụ">
+                        {supplies.map((s) => (
+                          <option key={s.id} value={`supply:${s.id}`}>
+                            {s.name} — {fmtVND(s.sale_price)}
+                          </option>
+                        ))}
+                      </optgroup>
+                    )}
                   </Select>
                   <Input
                     className="w-16"
