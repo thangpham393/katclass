@@ -201,6 +201,13 @@ function assertPayload(payload: TextbookImportPayload) {
   }
 }
 
+/** Cắt mảng thành từng lô nhỏ để mỗi request không quá lớn / quá dài. */
+function chunk<T>(list: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < list.length; i += size) out.push(list.slice(i, i + size));
+  return out;
+}
+
 /**
  * Import / cập nhật một giáo trình từ payload JSON (chạy dưới quyền
  * staff/admin đang đăng nhập). Gọi lại nhiều lần an toàn.
@@ -298,12 +305,16 @@ export async function importTextbook(
   const vocabIdByKey = new Map<string, string>();
   if (allVocab.length) {
     const hanziList = [...new Set(allVocab.map((v) => v.hanzi.trim()))];
-    const { data: existingVocab, error: vErr } = await supabase
-      .from("vocab_items").select("id, hanzi, pinyin, meaning").in("hanzi", hanziList);
-    if (vErr) throw vErr;
-    for (const v of existingVocab ?? []) {
-      const key = vocabKey(v as { hanzi: string; pinyin: string; meaning: string });
-      if (!vocabIdByKey.has(key)) vocabIdByKey.set(key, v.id as string);
+    // Tra theo lô: giáo trình 400-500 từ mà nhét hết vào một filter "in.()"
+    // sẽ tạo URL rất dài, dễ bị proxy chặn.
+    for (const part of chunk(hanziList, 120)) {
+      const { data: existingVocab, error: vErr } = await supabase
+        .from("vocab_items").select("id, hanzi, pinyin, meaning").in("hanzi", part);
+      if (vErr) throw vErr;
+      for (const v of existingVocab ?? []) {
+        const key = vocabKey(v as { hanzi: string; pinyin: string; meaning: string });
+        if (!vocabIdByKey.has(key)) vocabIdByKey.set(key, v.id as string);
+      }
     }
 
     // Từ khớp sẵn: chỉ làm mới ví dụ / audio nếu file có khai báo. Pinyin và
@@ -316,16 +327,37 @@ export async function importTextbook(
     const reusedKeys = [...vocabIdByKey.keys()].filter((k) => payloadByKey.has(k));
     result.vocabReused = reusedKeys.length;
     if (reusedKeys.length) {
-      progress("Đang cập nhật ví dụ từ vựng có sẵn...");
+      progress(`Đang cập nhật ${reusedKeys.length} từ vựng có sẵn...`);
+      // Gộp thành ít request (upsert theo lô) thay vì mỗi từ một request —
+      // giáo trình vài trăm từ mà update lẻ thì mất nhiều phút, chỉ cần
+      // trang tải lại giữa chừng là import đứt dở.
+      const rows: Record<string, unknown>[] = [];
       for (const key of reusedKeys) {
         const v = payloadByKey.get(key)!;
-        const fields: Record<string, unknown> = {};
-        if (v.example !== undefined) fields.example = v.example;
-        if (v.audio_url !== undefined) fields.audio_url = v.audio_url;
-        if (!Object.keys(fields).length) continue;
-        const { error } = await supabase
-          .from("vocab_items").update(fields).eq("id", vocabIdByKey.get(key)!);
-        if (error) throw error;
+        if (v.example === undefined && v.audio_url === undefined) continue;
+        const row: Record<string, unknown> = {
+          id: vocabIdByKey.get(key)!,
+          hanzi: v.hanzi.trim(),
+          pinyin: v.pinyin.trim(),
+          meaning: v.meaning.trim(),
+        };
+        // Chỉ ghi field có khai báo: file không có audio_url thì giữ nguyên
+        // audio đang có trong kho.
+        if (v.example !== undefined) row.example = v.example;
+        if (v.audio_url !== undefined) row.audio_url = v.audio_url;
+        rows.push(row);
+      }
+      // upsert yêu cầu mọi dòng cùng bộ khóa -> nhóm theo field có mặt.
+      const groups = new Map<string, Record<string, unknown>[]>();
+      for (const row of rows) {
+        const sig = Object.keys(row).sort().join(",");
+        (groups.get(sig) ?? groups.set(sig, []).get(sig)!).push(row);
+      }
+      for (const group of groups.values()) {
+        for (const part of chunk(group, 200)) {
+          const { error } = await supabase.from("vocab_items").upsert(part);
+          if (error) throw error;
+        }
       }
     }
 
@@ -338,22 +370,25 @@ export async function importTextbook(
       missing.push(v);
     }
     if (missing.length) {
-      const { data: inserted, error } = await supabase
-        .from("vocab_items")
-        .insert(missing.map((v) => ({
-          hanzi: v.hanzi.trim(),
-          pinyin: v.pinyin.trim(),
-          meaning: v.meaning.trim(),
-          example: v.example ?? null,
-          audio_url: v.audio_url ?? null,
-          level: tbFields.level,
-          tags: [tb.code.trim()],
-          created_by: createdBy,
-        })))
-        .select("id, hanzi, pinyin, meaning");
-      if (error) throw error;
-      for (const v of inserted ?? []) {
-        vocabIdByKey.set(vocabKey(v as { hanzi: string; pinyin: string; meaning: string }), v.id as string);
+      progress(`Đang thêm ${missing.length} từ vựng mới vào kho...`);
+      for (const part of chunk(missing, 200)) {
+        const { data: inserted, error } = await supabase
+          .from("vocab_items")
+          .insert(part.map((v) => ({
+            hanzi: v.hanzi.trim(),
+            pinyin: v.pinyin.trim(),
+            meaning: v.meaning.trim(),
+            example: v.example ?? null,
+            audio_url: v.audio_url ?? null,
+            level: tbFields.level,
+            tags: [tb.code.trim()],
+            created_by: createdBy,
+          })))
+          .select("id, hanzi, pinyin, meaning");
+        if (error) throw error;
+        for (const v of inserted ?? []) {
+          vocabIdByKey.set(vocabKey(v as { hanzi: string; pinyin: string; meaning: string }), v.id as string);
+        }
       }
       result.vocabCreated = missing.length;
     }
@@ -361,18 +396,27 @@ export async function importTextbook(
 
   // 4. Gắn từ vựng vào từng bài (thay toàn bộ, giữ thứ tự trong file).
   //    Bài không khai báo "vocab" thì giữ nguyên từ đang gắn.
+  progress("Đang gắn từ vựng vào từng bài...");
   for (const lesson of payload.lessons) {
     if (lesson.vocab === undefined) continue;
     const lessonId = lessonIdByUnit.get(lesson.unit)!;
-    const ids = lesson.vocab
-      .map((v) => vocabIdByKey.get(vocabKey(v)))
-      .filter((id): id is string => Boolean(id));
+    // Bỏ trùng trong cùng một bài: lesson_vocab khóa chính là (bài, từ).
+    const ids: string[] = [];
+    for (const v of lesson.vocab) {
+      const id = vocabIdByKey.get(vocabKey(v));
+      if (!id) {
+        throw new Error(
+          `Bài ${lesson.unit}: không tìm được từ "${v.hanzi}" trong kho sau khi nạp — import dừng, hãy chạy lại.`,
+        );
+      }
+      if (!ids.includes(id)) ids.push(id);
+    }
     const { error: delErr } = await supabase.from("lesson_vocab").delete().eq("lesson_id", lessonId);
     if (delErr) throw delErr;
-    if (ids.length) {
+    for (const [i, part] of chunk(ids, 200).entries()) {
       const { error } = await supabase
         .from("lesson_vocab")
-        .insert(ids.map((vocab_id, i) => ({ lesson_id: lessonId, vocab_id, sort: i })));
+        .insert(part.map((vocab_id, j) => ({ lesson_id: lessonId, vocab_id, sort: i * 200 + j })));
       if (error) throw error;
     }
   }
