@@ -78,7 +78,7 @@ function fmtDate(iso: string): string {
 
 export default function SuppliesPage() {
   const { user, can } = useAuth();
-  const editable = can("tuition.manage");
+  const editable = can("supplies.manage");
   const { branch } = useBranch();
 
   const items = useLoad(fetchSupplyItems, []);

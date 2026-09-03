@@ -25,6 +25,8 @@ export type Permission =
   | "homework.manage"
   | "classroom.teach"
   | "tuition.manage"
+  | "finance.view"
+  | "supplies.manage"
   | "payroll.view"
   | "reports.view"
   | "settings.manage";
@@ -54,6 +56,11 @@ export const PERMISSION_GROUPS: { group: string; items: PermissionDef[] }[] = [
         key: "attendance.manage",
         label: "Điểm danh mọi lớp",
         hint: "Điểm danh hộ lớp mình không dạy. Giáo viên luôn điểm danh được lớp của chính mình.",
+      },
+      {
+        key: "supplies.manage",
+        label: "Kho học cụ",
+        hint: "Sửa danh mục học cụ, ghi phiếu nhập/xuất kho. Mọi nhân sự vẫn xem được tồn kho.",
       },
       {
         key: "makeup.manage",
@@ -112,8 +119,13 @@ export const PERMISSION_GROUPS: { group: string; items: PermissionDef[] }[] = [
     items: [
       {
         key: "tuition.manage",
-        label: "Học phí",
-        hint: "Bán gói buổi, thu tiền, xuất biên lai, xem công nợ.",
+        label: "Học phí & hóa đơn",
+        hint: "Bán gói buổi, thu tiền, xuất biên lai, lập hóa đơn gửi khách, xem công nợ.",
+      },
+      {
+        key: "finance.view",
+        label: "Doanh thu — chi phí — lợi nhuận",
+        hint: "Xem và ghi sổ thu chi toàn trung tâm. Sổ chi có cả lương nên tách riêng khỏi học phí.",
       },
       {
         key: "payroll.view",
@@ -159,8 +171,8 @@ export const ROUTE_PERMISSION: { prefix: string; perm: Permission }[] = [
   { prefix: "/admin/leads", perm: "students.manage" },
   { prefix: "/admin/birthdays", perm: "students.manage" },
   { prefix: "/admin/alumni", perm: "students.manage" },
-  { prefix: "/admin/revenue", perm: "tuition.manage" },
-  { prefix: "/admin/supplies", perm: "tuition.manage" },
+  { prefix: "/admin/revenue", perm: "finance.view" },
+  { prefix: "/admin/supplies", perm: "supplies.manage" },
   { prefix: "/admin/centers", perm: "settings.manage" },
   { prefix: "/admin/data", perm: "settings.manage" },
   { prefix: "/admin/classes", perm: "classes.manage" },
@@ -197,7 +209,9 @@ export function permissionForPath(pathname: string): Permission | null {
 const FALLBACK_PERMISSIONS: Record<Role, Permission[]> = {
   admin: ALL_PERMISSIONS,
   accountant: ALL_PERMISSIONS,
-  staff: ALL_PERMISSIONS.filter((p) => p !== "payroll.view"),
+  staff: ALL_PERMISSIONS.filter(
+    (p) => !(["payroll.view", "finance.view", "tuition.manage"] as Permission[]).includes(p),
+  ),
   teacher: ["library.manage"],
   student: [],
   parent: [],

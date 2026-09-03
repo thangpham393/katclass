@@ -26,7 +26,7 @@ export function useNavBadges(): Record<string, number> {
   const userId = user?.id;
   const canRequests = !!user && can("requests.manage");
   const canMakeup = !!user && can("makeup.manage");
-  const canSupplies = !!user && can("tuition.manage");
+  const canSupplies = !!user && can("supplies.manage");
 
   useEffect(() => {
     if (!role || !userId) return;

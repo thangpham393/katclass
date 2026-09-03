@@ -85,7 +85,7 @@ function deltaPct(now: number, before: number): number | null {
 
 export default function RevenuePage() {
   const { user, can } = useAuth();
-  const editable = can("tuition.manage");
+  const editable = can("finance.view");
   const thisYear = new Date().getFullYear();
 
   const [tab, setTab] = useState<Tab>("revenue");

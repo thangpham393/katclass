@@ -311,7 +311,11 @@ function LeadCard({
   onStatus: (s: LeadStatus) => void;
   onOpen: (d: Dialog) => void;
 }) {
+  const { can } = useAuth();
   const closed = lead.status === "registered" || lead.status === "lost";
+  // Hoá đơn là việc của học phí (0038): hành chính chỉ theo dõi khách, không lập
+  // được hoá đơn — RLS cũng chặn, nút bày ra chỉ tổ bấm vào rồi báo lỗi.
+  const canInvoice = can("tuition.manage");
 
   return (
     <Card className={cn(lead.status === "new" && "border-l-4 border-l-primary")}>
@@ -356,12 +360,11 @@ function LeadCard({
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Button
-            size="sm"
-            onClick={() => onOpen({ kind: "invoice", lead })}
-          >
-            <FileText className="h-3.5 w-3.5" /> Invoice
-          </Button>
+          {canInvoice && (
+            <Button size="sm" onClick={() => onOpen({ kind: "invoice", lead })}>
+              <FileText className="h-3.5 w-3.5" /> Invoice
+            </Button>
+          )}
           <Button
             size="sm"
             variant="gold"
