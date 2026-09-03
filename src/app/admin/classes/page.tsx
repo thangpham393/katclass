@@ -26,6 +26,35 @@ import {
 import { fetchTextbooks } from "@/lib/db-library";
 import { useLoad } from "@/lib/use-load";
 
+/**
+ * Chuẩn hoá chuỗi để tìm kiếm: bỏ dấu tiếng Việt, gộp mọi khoảng trắng về
+ * một dấu cách. Tên lớp nhập tay hay dính hai dấu cách (vd "HSK3 T3 T5  (16H-17H30)")
+ * nên khớp chuỗi con nguyên xi sẽ trượt khi người dùng gõ một dấu cách.
+ */
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Tách từ khoá: khớp khi lớp chứa ĐỦ các từ, không cần đúng thứ tự. */
+function searchTerms(q: string): string[] {
+  return normalize(q).split(" ").filter(Boolean);
+}
+
+/** Mọi GV của lớp: GV chính + GV phụ + GV đứng buổi trong tuần. */
+function classTeacherIds(c: { teacher: { id: string } | null; class_teachers: { teacher_id: string }[]; class_schedules: { teacher_id: string | null }[] }): Set<string> {
+  const ids = new Set<string>();
+  if (c.teacher) ids.add(c.teacher.id);
+  for (const t of c.class_teachers ?? []) ids.add(t.teacher_id);
+  for (const s of c.class_schedules ?? []) if (s.teacher_id) ids.add(s.teacher_id);
+  return ids;
+}
+
 export default function AdminClassesPage() {
   const { data: classes, loading, error, reload } = useLoad(fetchClasses);
   const rooms = useLoad(fetchRooms, []);
@@ -38,9 +67,14 @@ export default function AdminClassesPage() {
   const [roomId, setRoomId] = useState("");
 
   // Danh sách lọc lấy ngay từ dữ liệu lớp (không cần query thêm)
+  // Gom cả GV chính, GV phụ (class_teachers) và GV đứng buổi (class_schedules)
   const teacherOptions = useMemo(() => {
     const map = new Map<string, string>();
-    for (const c of classes ?? []) if (c.teacher) map.set(c.teacher.id, c.teacher.name);
+    for (const c of classes ?? []) {
+      if (c.teacher) map.set(c.teacher.id, c.teacher.name);
+      for (const ct of c.class_teachers ?? []) if (ct.teacher) map.set(ct.teacher.id, ct.teacher.name);
+      for (const s of c.class_schedules ?? []) if (s.teacher) map.set(s.teacher.id, s.teacher.name);
+    }
     return [...map.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name, "vi"));
   }, [classes]);
 
@@ -54,17 +88,18 @@ export default function AdminClassesPage() {
     (q.trim() ? 1 : 0) + [teacherId, courseId, status, weekday, roomId].filter(Boolean).length;
 
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
+    const terms = searchTerms(q);
     return (classes ?? []).filter((c) => {
-      if (
-        needle &&
-        !c.name.toLowerCase().includes(needle) &&
-        !c.teacher?.name.toLowerCase().includes(needle) &&
-        !c.course?.name.toLowerCase().includes(needle)
-      ) {
-        return false;
+      if (terms.length) {
+        const hay = normalize(
+          [c.name, c.teacher?.name, c.course?.name, ...(c.class_teachers ?? []).map((t) => t.teacher?.name)]
+            .filter(Boolean)
+            .join(" "),
+        );
+        if (!terms.every((t) => hay.includes(t))) return false;
       }
-      if (teacherId === "none" ? c.teacher : teacherId && c.teacher?.id !== teacherId) return false;
+      const teachers = classTeacherIds(c);
+      if (teacherId === "none" ? teachers.size > 0 : teacherId && !teachers.has(teacherId)) return false;
       if (courseId && c.course?.id !== courseId) return false;
       if (status && c.status !== status) return false;
       if (weekday && !c.class_schedules.some((s) => String(s.weekday) === weekday)) return false;
@@ -99,7 +134,7 @@ export default function AdminClassesPage() {
       {error && <ErrorNote message={error} />}
 
       <Card>
-        <CardContent className="space-y-3 p-4">
+        <CardContent className="space-y-3 p-4 sm:p-5">
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative w-full min-w-0 flex-1 sm:min-w-[240px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
