@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft, Check, Copy, HeartHandshake, KeyRound, Mail, MapPin, Phone,
-  Plus, RotateCcw, StickyNote, Trash2, X,
+  Plus, RotateCcw, Share2, StickyNote, Trash2, X,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +37,7 @@ import {
   unlinkParentStudent,
   RELATIONSHIP_LABELS,
 } from "@/lib/db-student";
+import { ParentShareModal } from "@/components/parent-share-modal";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Select, Field } from "@/components/ui/select";
@@ -438,7 +439,7 @@ export default function AdminMemberDetailPage() {
                 </CardContent>
               </Card>
 
-              <ParentsCard studentId={profileId} studentName={p.name} />
+              <ParentsCard studentId={profileId} studentName={p.name} studentPhone={p.phone} />
             </>
           )}
 
@@ -495,9 +496,19 @@ export default function AdminMemberDetailPage() {
 
 /* ================= Phụ huynh của học viên ================= */
 
-function ParentsCard({ studentId, studentName }: { studentId: string; studentName: string }) {
+function ParentsCard({
+  studentId,
+  studentName,
+  studentPhone,
+}: {
+  studentId: string;
+  studentName: string;
+  studentPhone?: string | null;
+}) {
+  const { user } = useAuth();
   const parents = useLoad(() => fetchParentsOfStudent(studentId), [studentId]);
   const [linking, setLinking] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -520,9 +531,14 @@ function ParentsCard({ studentId, studentName }: { studentId: string; studentNam
           Phụ huynh
           <Badge variant="muted" className="ml-2">{parents.data?.length ?? 0}</Badge>
         </CardTitle>
-        <Button size="sm" variant="outline" onClick={() => setLinking(true)}>
-          <Plus className="h-3.5 w-3.5" /> Liên kết phụ huynh
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button size="sm" variant="outline" onClick={() => setSharing(true)}>
+            <Share2 className="h-3.5 w-3.5" /> Cổng phụ huynh
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => setLinking(true)}>
+            <Plus className="h-3.5 w-3.5" /> Liên kết phụ huynh
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && <ErrorNote message={error} />}
@@ -589,6 +605,18 @@ function ParentsCard({ studentId, studentName }: { studentId: string; studentNam
             setNotice(msg);
             parents.reload();
           }}
+        />
+      )}
+
+      {sharing && (
+        <ParentShareModal
+          studentId={studentId}
+          createdBy={user?.id ?? null}
+          phoneHints={[
+            ...(parents.data ?? []).map((l) => l.parent?.phone),
+            studentPhone,
+          ]}
+          onClose={() => setSharing(false)}
         />
       )}
     </Card>
