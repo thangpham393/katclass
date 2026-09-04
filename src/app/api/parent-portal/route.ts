@@ -172,8 +172,28 @@ export async function POST(req: Request) {
 
 /* ================= Dữ liệu hiển thị cho phụ huynh ================= */
 
+/**
+ * Gom đủ những gì phụ huynh muốn biết về việc học của con, gộp quanh
+ * TỪNG BUỔI (ngày nào, học bài gì, cô nhận xét ra sao, được mấy sao) —
+ * vì đó mới là thứ trả lời câu "hôm nay con học thế nào", chứ không
+ * phải mấy con số tổng.
+ *
+ * Chi tiết chỉ lấy cho `DETAIL_LIMIT` buổi gần nhất; phần đếm tổng vẫn
+ * tính trên toàn bộ điểm danh để số liệu không lệch.
+ */
+const DETAIL_LIMIT = 60;
+
+type SessionRow = {
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+  class: { name: string } | null;
+  teacher: { name: string } | null;
+};
+
 async function loadPortalData(admin: SupabaseClient, studentId: string) {
-  const [pkgRes, remainRes, clsRes, ownRes, attRes, payRes] = await Promise.all([
+  const [pkgRes, remainRes, clsRes, ownRes, attRes, payRes, pointsRes] = await Promise.all([
     admin
       .from("enrollment_packages")
       .select("id, name, total_sessions, start_date")
@@ -194,19 +214,25 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       .order("weekday"),
     admin
       .from("attendance")
-      .select("status, session:sessions (date, start_time, end_time, status, class:classes (name))")
+      .select(
+        "session_id, status, session:sessions (date, start_time, end_time, status, class:classes (name), teacher:profiles!sessions_teacher_id_fkey (name))",
+      )
       .eq("student_id", studentId)
-      .order("marked_at", { ascending: false })
-      .limit(300),
+      .limit(500),
     admin
       .from("payments")
       .select("amount, paid_at, receipt_no, package:enrollment_packages (name)")
       .eq("student_id", studentId)
       .order("paid_at", { ascending: false })
       .limit(50),
+    admin
+      .from("class_points")
+      .select("session_id, points")
+      .eq("student_id", studentId)
+      .limit(2000),
   ]);
 
-  for (const r of [pkgRes, remainRes, clsRes, ownRes, attRes, payRes]) {
+  for (const r of [pkgRes, remainRes, clsRes, ownRes, attRes, payRes, pointsRes]) {
     if (r.error) throw r.error;
   }
 
@@ -219,43 +245,182 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       schedules: { weekday: number; start_time: string; end_time: string }[] | null;
     } | null;
   };
-  type AttRow = {
-    status: string;
-    session: {
-      date: string;
-      start_time: string;
-      end_time: string;
-      status: string;
-      class: { name: string } | null;
-    } | null;
-  };
+  type AttRow = { session_id: string; status: string; session: SessionRow | null };
 
-  const packages = (pkgRes.data ?? []) as { name: string; total_sessions: number; start_date: string }[];
+  const packages = (pkgRes.data ?? []) as {
+    name: string;
+    total_sessions: number;
+    start_date: string;
+  }[];
   const totalSessions = packages.reduce((s, p) => s + (p.total_sessions ?? 0), 0);
   const remaining = (remainRes.data as number | null) ?? null;
 
-  const attendance = ((attRes.data ?? []) as unknown as AttRow[]).filter(
-    (a) => a.session && a.session.status !== "cancelled",
-  );
+  const attendance = ((attRes.data ?? []) as unknown as AttRow[])
+    .filter((a) => a.session && a.session.status !== "cancelled")
+    .sort((x, y) => (x.session!.date < y.session!.date ? 1 : x.session!.date > y.session!.date ? -1 : 0));
+
   // "Đã học" = số buổi bị trừ khỏi gói. Đếm đúng như hàm SQL
   // student_sessions_remaining (chỉ tính từ ngày kích hoạt gói đầu tiên),
   // nếu không thì "đã học" và "còn lại" sẽ đá nhau với học viên từng học
   // trước khi mua gói.
   const firstStart = packages[0]?.start_date ?? null;
-  const used = attendance.filter(
+  const charged = attendance.filter(
     (a) =>
       ["present", "absent_excused", "absent_unexcused"].includes(a.status) &&
       (!firstStart || a.session!.date >= firstStart),
   ).length;
 
-  const rows = attendance.map((a) => ({
+  const attendedCount = attendance.filter(
+    (a) => a.status === "present" || a.status === "makeup",
+  ).length;
+  const absentCount = attendance.length - attendedCount;
+
+  const detail = attendance.slice(0, DETAIL_LIMIT);
+  const sessionIds = detail.map((a) => a.session_id);
+
+  const classIds = ((clsRes.data ?? []) as unknown as ClassRow[])
+    .map((c) => c.class?.id)
+    .filter((id): id is string => !!id);
+
+  const [commentRes, logRes, lessonRes, hwRes] = await Promise.all([
+    sessionIds.length
+      ? admin
+          .from("session_comments")
+          .select("session_id, content, rating, teacher:profiles!session_comments_teacher_id_fkey (name)")
+          .eq("student_id", studentId)
+          .in("session_id", sessionIds)
+      : emptyResult(),
+    sessionIds.length
+      ? admin
+          .from("teaching_logs")
+          .select("session_id, lesson_content")
+          .in("session_id", sessionIds)
+      : emptyResult(),
+    sessionIds.length
+      ? admin
+          .from("session_lessons")
+          .select("session_id, lesson:lessons (title, title_zh, summary)")
+          .in("session_id", sessionIds)
+      : emptyResult(),
+    classIds.length
+      ? admin
+          .from("homeworks")
+          .select("id, title, kind, due_at, created_at")
+          .in("class_id", classIds)
+          .order("created_at", { ascending: false })
+          .limit(60)
+      : emptyResult(),
+  ]);
+  for (const r of [commentRes, logRes, lessonRes, hwRes]) {
+    if (r.error) throw r.error;
+  }
+
+  const homeworks = (hwRes.data ?? []) as {
+    id: string;
+    title: string;
+    kind: string;
+    due_at: string | null;
+    created_at: string;
+  }[];
+
+  const subRes = homeworks.length
+    ? await admin
+        .from("submissions")
+        .select("homework_id, score, auto_score, status, submitted_at")
+        .eq("student_id", studentId)
+        .in("homework_id", homeworks.map((h) => h.id))
+    : await emptyResult();
+  if (subRes.error) throw subRes.error;
+
+  /* --- gom theo buổi --- */
+
+  const comments = new Map<string, { content: string; rating: number | null; teacher: string | null }>();
+  for (const c of (commentRes.data ?? []) as unknown as {
+    session_id: string;
+    content: string;
+    rating: number | null;
+    teacher: { name: string } | null;
+  }[]) {
+    comments.set(c.session_id, {
+      content: c.content,
+      rating: c.rating,
+      teacher: c.teacher?.name ?? null,
+    });
+  }
+
+  const logs = new Map<string, string>();
+  for (const l of (logRes.data ?? []) as { session_id: string; lesson_content: string | null }[]) {
+    if (l.lesson_content) logs.set(l.session_id, l.lesson_content);
+  }
+
+  const lessons = new Map<string, { title: string; title_zh: string | null; summary: string | null }[]>();
+  for (const l of (lessonRes.data ?? []) as unknown as {
+    session_id: string;
+    lesson: { title: string; title_zh: string | null; summary: string | null } | null;
+  }[]) {
+    if (!l.lesson) continue;
+    const list = lessons.get(l.session_id) ?? [];
+    list.push(l.lesson);
+    lessons.set(l.session_id, list);
+  }
+
+  const pointsRows = (pointsRes.data ?? []) as { session_id: string; points: number }[];
+  const starsBySession = new Map<string, number>();
+  let starsTotal = 0;
+  for (const p of pointsRows) {
+    starsTotal += p.points;
+    starsBySession.set(p.session_id, (starsBySession.get(p.session_id) ?? 0) + p.points);
+  }
+
+  const submissions = new Map<
+    string,
+    { score: number | null; status: string; submitted_at: string }
+  >();
+  for (const s of (subRes.data ?? []) as {
+    homework_id: string;
+    score: number | null;
+    auto_score: number | null;
+    status: string;
+    submitted_at: string;
+  }[]) {
+    submissions.set(s.homework_id, {
+      score: s.score ?? s.auto_score,
+      status: s.status,
+      submitted_at: s.submitted_at,
+    });
+  }
+
+  const sessions = detail.map((a) => ({
     date: a.session!.date,
     start_time: a.session!.start_time,
     end_time: a.session!.end_time,
     class_name: a.session!.class?.name ?? null,
+    teacher_name: comments.get(a.session_id)?.teacher ?? a.session!.teacher?.name ?? null,
     status: a.status,
+    lessons: lessons.get(a.session_id) ?? [],
+    lesson_content: logs.get(a.session_id) ?? null,
+    comment: comments.get(a.session_id)?.content ?? null,
+    rating: comments.get(a.session_id)?.rating ?? null,
+    stars: starsBySession.get(a.session_id) ?? 0,
   }));
-  rows.sort((x, y) => (x.date < y.date ? 1 : x.date > y.date ? -1 : 0));
+
+  const assignments = homeworks.map((h) => {
+    const sub = submissions.get(h.id) ?? null;
+    return {
+      title: h.title,
+      kind: h.kind,
+      due_at: h.due_at,
+      created_at: h.created_at,
+      score: sub?.score ?? null,
+      status: sub ? sub.status : "missing",
+      submitted_at: sub?.submitted_at ?? null,
+    };
+  });
+
+  const scored = assignments.filter((a) => typeof a.score === "number");
+  const avgScore = scored.length
+    ? Math.round((scored.reduce((s, a) => s + (a.score as number), 0) / scored.length) * 10) / 10
+    : null;
 
   const classes = ((clsRes.data ?? []) as unknown as ClassRow[])
     .filter((c) => c.class && c.status === "active" && c.class.status !== "cancelled")
@@ -270,15 +435,26 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
 
   return {
     progress: {
+      has_package: packages.length > 0,
       total_sessions: totalSessions,
-      used,
-      remaining: remaining ?? Math.max(0, totalSessions - used),
+      used: charged,
+      remaining: remaining ?? Math.max(0, totalSessions - charged),
       packages: packages.map((p) => ({ name: p.name, total_sessions: p.total_sessions })),
     },
+    stats: {
+      attended: attendedCount,
+      absent: absentCount,
+      stars: starsTotal,
+      avg_score: avgScore,
+    },
     classes,
-    own_schedules: (ownRes.data ?? []) as { weekday: number; start_time: string; end_time: string | null }[],
-    attended: rows.filter((r) => r.status === "present" || r.status === "makeup"),
-    absent: rows.filter((r) => r.status === "absent_excused" || r.status === "absent_unexcused"),
+    own_schedules: (ownRes.data ?? []) as {
+      weekday: number;
+      start_time: string;
+      end_time: string | null;
+    }[],
+    sessions,
+    assignments,
     payments: ((payRes.data ?? []) as unknown as {
       amount: number;
       paid_at: string;
@@ -291,4 +467,9 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       package_name: p.package?.name ?? null,
     })),
   };
+}
+
+/** Trả về "kết quả rỗng" cùng hình dạng với PostgrestResponse để chỗ gọi khỏi rẽ nhánh. */
+function emptyResult() {
+  return Promise.resolve({ data: [] as never[], error: null });
 }
