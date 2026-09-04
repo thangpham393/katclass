@@ -1,0 +1,2029 @@
+{
+  "textbook": {
+    "code": "msutong-3",
+    "name": "Hán ngữ MSutong — Quyển 3",
+    "name_zh": "速通汉语 3",
+    "level": "HSK2",
+    "description": "Giáo trình Hán ngữ MSutong (Expressway to Chinese) — Sơ cấp, quyển 3, 10 bài. Dành cho người đã nắm khoảng 400 từ: miêu tả nơi chốn, sức khoẻ, mời mọc, bổ ngữ trạng thái, động từ xu hướng, câu so sánh; chuẩn đầu ra bắc cầu lên HSK 3.",
+    "sort": 3
+  },
+  "lessons": [
+    {
+      "unit": 1,
+      "title": "Nhà tôi ở nông thôn",
+      "title_zh": "我家在农村",
+      "summary": "Miêu tả môi trường, cảnh vật của một nơi; giới thiệu quê nhà.",
+      "grammar": "1) CÂU TỒN TẠI VỚI “有” VÀ “是”\n• NƠI CHỐN + 有 + NGƯỜI/VẬT — giới thiệu cái gì tồn tại ở đó (chưa xác định):\n  我家附近有一条河。／ 村子里有很多树。\n• NƠI CHỐN + 是 + NGƯỜI/VẬT — cái nằm ở đó là gì (xác định, thường bao trùm cả khu vực):\n  我家后面是山。／ 学校对面是商店。\nPhủ định của 有 là 没有; của 是 là 不是.\n\n2) ĐỘNG TỪ LẶP LẠI (动词重叠) — làm dịu giọng, mang nghĩa “làm thử, làm một chút”:\n• Một âm tiết: 看看 / 看一看; 走走; 试试\n• Hai âm tiết: 休息休息, 介绍介绍, 了解了解\n• 你来我家看看吧。／ 我们出去走走。\n\n3) TỪ CHỈ PHƯƠNG HƯỚNG: 东边, 南边, 西边, 北边, 前边, 后边; 离 + địa điểm + 远/近: 我家离学校很远。",
+      "vocab": [
+        {
+          "hanzi": "北",
+          "pinyin": "běi",
+          "meaning": "(phía) Bắc"
+        },
+        {
+          "hanzi": "北边",
+          "pinyin": "běibian",
+          "meaning": "phía Bắc"
+        },
+        {
+          "hanzi": "北方",
+          "pinyin": "běifāng",
+          "meaning": "miền Bắc"
+        },
+        {
+          "hanzi": "边",
+          "pinyin": "bian",
+          "meaning": "phía, bên"
+        },
+        {
+          "hanzi": "城市",
+          "pinyin": "chéngshì",
+          "meaning": "thành phố"
+        },
+        {
+          "hanzi": "东边",
+          "pinyin": "dōngbian",
+          "meaning": "phía Đông"
+        },
+        {
+          "hanzi": "方便",
+          "pinyin": "fāngbiàn",
+          "meaning": "thuận tiện"
+        },
+        {
+          "hanzi": "环境",
+          "pinyin": "huánjìng",
+          "meaning": "môi trường"
+        },
+        {
+          "hanzi": "交通",
+          "pinyin": "jiāotōng",
+          "meaning": "giao thông"
+        },
+        {
+          "hanzi": "老家",
+          "pinyin": "lǎojiā",
+          "meaning": "quê nhà"
+        },
+        {
+          "hanzi": "离",
+          "pinyin": "lí",
+          "meaning": "cách"
+        },
+        {
+          "hanzi": "南",
+          "pinyin": "nán",
+          "meaning": "(phía) Nam"
+        },
+        {
+          "hanzi": "南方",
+          "pinyin": "nánfāng",
+          "meaning": "miền nam"
+        },
+        {
+          "hanzi": "农村",
+          "pinyin": "nóngcūn",
+          "meaning": "nông thôn"
+        },
+        {
+          "hanzi": "热闹",
+          "pinyin": "rènao",
+          "meaning": "nhộn nhịp"
+        },
+        {
+          "hanzi": "山",
+          "pinyin": "shān",
+          "meaning": "núi"
+        },
+        {
+          "hanzi": "商店",
+          "pinyin": "shāngdiàn",
+          "meaning": "cửa hàng"
+        },
+        {
+          "hanzi": "生活",
+          "pinyin": "shēnghuó",
+          "meaning": "cuộc sống, sinh sống"
+        },
+        {
+          "hanzi": "田野",
+          "pinyin": "tiányě",
+          "meaning": "đồng ruộng"
+        },
+        {
+          "hanzi": "西边",
+          "pinyin": "xībian",
+          "meaning": "phía Tây"
+        },
+        {
+          "hanzi": "小学",
+          "pinyin": "xiǎoxué",
+          "meaning": "tiểu học"
+        },
+        {
+          "hanzi": "新",
+          "pinyin": "xīn",
+          "meaning": "mới"
+        },
+        {
+          "hanzi": "新鲜",
+          "pinyin": "xīnxiān",
+          "meaning": "trong lành, tươi"
+        },
+        {
+          "hanzi": "一定",
+          "pinyin": "yídìng",
+          "meaning": "nhất định"
+        },
+        {
+          "hanzi": "站",
+          "pinyin": "zhàn",
+          "meaning": "trạm, bến, ga"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào giới thiệu sự tồn tại của một vật CHƯA xác định?",
+            "options": [
+              "我家后面是山。",
+              "我家附近有一条河。",
+              "我家在农村。",
+              "我家离学校很远。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "我们出去___吧。",
+            "hint": "Động từ 走 lặp lại"
+          },
+          "answer": [
+            "走走"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "农村",
+            "options": [
+              "nóngcūn",
+              "nòngcūn",
+              "nóngchūn",
+              "nónkūn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我家",
+              "离",
+              "学校",
+              "很远"
+            ],
+            "translation": "Nhà tôi cách trường rất xa."
+          },
+          "answer": [
+            "我家",
+            "离",
+            "学校",
+            "很远"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "环境",
+              "热闹",
+              "交通",
+              "老家"
+            ],
+            "right": [
+              "nhộn nhịp",
+              "quê nhà",
+              "môi trường",
+              "giao thông"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我家在农村",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Nhà tôi ở nông thôn",
+              "Nhà tôi ở thành phố",
+              "Tôi về quê",
+              "Quê tôi rất đẹp"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Nạp tiền là gọi điện được ngay",
+      "title_zh": "一充值就能打电话",
+      "summary": "Hỏi và giải thích cách sử dụng một đồ vật, dịch vụ (nạp thẻ, đăng kí, cài đặt).",
+      "grammar": "1) TỔNG KẾT ĐỘNG TỪ NĂNG NGUYỆN\n• 会: biết làm nhờ học — 我会说汉语。\n• 能: có khả năng / điều kiện làm — 充值以后就能打电话。／ 今天我不能去。\n• 可以: được phép — 这儿可以上网吗？\n• 想: muốn — 我想注册一个微信号。\n• 应该 / 得: nên, phải — 你应该先注册。／ 我得走了。\nTất cả đều đứng TRƯỚC động từ; phủ định thêm 不 phía trước (riêng 得 phủ định là 不用).\n\n2) 一……就…… — hễ… là…, vừa… liền…:\n• 我一充值就能打电话。\n• 他一下课就回家。\n\n3) TỪ NGỮ CÔNG NGHỆ: 充值, 注册, 输入法, 手写, 下(载), 上网, 发短信.",
+      "vocab": [
+        {
+          "hanzi": "充值",
+          "pinyin": "chōng zhí",
+          "meaning": "nạp tiền"
+        },
+        {
+          "hanzi": "担心",
+          "pinyin": "dān xīn",
+          "meaning": "lo lắng"
+        },
+        {
+          "hanzi": "得",
+          "pinyin": "děi",
+          "meaning": "phải"
+        },
+        {
+          "hanzi": "发",
+          "pinyin": "fā",
+          "meaning": "gửi"
+        },
+        {
+          "hanzi": "服务",
+          "pinyin": "fúwù",
+          "meaning": "phục vụ"
+        },
+        {
+          "hanzi": "刚(刚)",
+          "pinyin": "gāng (gāng)",
+          "meaning": "vừa, vừa mới"
+        },
+        {
+          "hanzi": "介绍",
+          "pinyin": "jièshào",
+          "meaning": "giới thiệu"
+        },
+        {
+          "hanzi": "卡",
+          "pinyin": "kǎ",
+          "meaning": "thẻ"
+        },
+        {
+          "hanzi": "能",
+          "pinyin": "néng",
+          "meaning": "có thể"
+        },
+        {
+          "hanzi": "容易",
+          "pinyin": "róngyì",
+          "meaning": "dễ, dễ dàng"
+        },
+        {
+          "hanzi": "上网",
+          "pinyin": "shàng wǎng",
+          "meaning": "lên mạng"
+        },
+        {
+          "hanzi": "手写",
+          "pinyin": "shǒuxiě",
+          "meaning": "viết tay"
+        },
+        {
+          "hanzi": "输入法",
+          "pinyin": "shūrùfǎ",
+          "meaning": "cách nhập liệu"
+        },
+        {
+          "hanzi": "微信",
+          "pinyin": "Wēixìn",
+          "meaning": "WeChat"
+        },
+        {
+          "hanzi": "下",
+          "pinyin": "xià",
+          "meaning": "tải xuống"
+        },
+        {
+          "hanzi": "需要",
+          "pinyin": "xūyào",
+          "meaning": "cần"
+        },
+        {
+          "hanzi": "一……就……",
+          "pinyin": "yī…jiù…",
+          "meaning": "vừa... liền, hễ... là"
+        },
+        {
+          "hanzi": "应该",
+          "pinyin": "yīnggāi",
+          "meaning": "nên, cần"
+        },
+        {
+          "hanzi": "种",
+          "pinyin": "zhǒng",
+          "meaning": "loại"
+        },
+        {
+          "hanzi": "注册",
+          "pinyin": "zhù cè",
+          "meaning": "đăng kí"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chọn câu ĐÚNG để nói “ở đây có được phép lên mạng không?”:",
+            "options": [
+              "这儿会上网吗？",
+              "这儿可以上网吗？",
+              "这儿要上网吗？",
+              "这儿得上网吗？"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "他___下课___回家。",
+            "hint": "Cấu trúc “hễ… là…”"
+          },
+          "answer": [
+            "一",
+            "就"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "充值",
+            "options": [
+              "chōng zhí",
+              "chóng zhí",
+              "chōng zhì",
+              "chūn zhí"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "你",
+              "应该",
+              "先",
+              "注册"
+            ],
+            "translation": "Bạn nên đăng kí trước."
+          },
+          "answer": [
+            "你",
+            "应该",
+            "先",
+            "注册"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "注册",
+              "输入法",
+              "短信",
+              "容易"
+            ],
+            "right": [
+              "cách nhập liệu",
+              "dễ dàng",
+              "đăng kí",
+              "tin nhắn"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "充值以后就能打电话",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Nạp tiền xong là gọi điện được",
+              "Gọi điện xong mới nạp tiền",
+              "Không nạp được tiền",
+              "Điện thoại hỏng rồi"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Thuốc này mỗi ngày uống mấy lần?",
+      "title_zh": "这药每天吃几次？",
+      "summary": "Nói về tình trạng sức khoẻ, đi khám bệnh và hỏi cách dùng thuốc.",
+      "grammar": "1) ĐỘNG LƯỢNG TỪ (动量短语) — số từ + động lượng từ, đứng SAU động từ, chỉ số lần hành động:\n• 次 cì (lần): 这药每天吃三次。／ 我去过两次北京。\n• 遍 biàn (lượt, từ đầu đến cuối): 请再说一遍。\n• Nếu tân ngữ là danh từ thường: động từ + số lượng + tân ngữ — 我看了两次电影。\n• Nếu tân ngữ là người/đại từ: động từ + tân ngữ + số lượng — 我找了他三次。\n\n2) CỤM ĐỘNG TỪ / TIỂU CÂU LÀM ĐỊNH NGỮ (có “的”) — bổ nghĩa cho danh từ:\n• 看病的人很多。— Người đi khám bệnh rất đông.\n• 这是医生给我的药。\n\n3) NÓI VỀ SỨC KHOẺ: 我头疼。／ 我发烧了，三十八度。／ 我拉肚子。／ 没胃口。／ 你要多休息。",
+      "vocab": [
+        {
+          "hanzi": "打针",
+          "pinyin": "dǎ zhēn",
+          "meaning": "tiêm"
+        },
+        {
+          "hanzi": "蛋糕",
+          "pinyin": "dàngāo",
+          "meaning": "bánh gato"
+        },
+        {
+          "hanzi": "第",
+          "pinyin": "dì",
+          "meaning": "thứ..."
+        },
+        {
+          "hanzi": "度",
+          "pinyin": "dù",
+          "meaning": "độ"
+        },
+        {
+          "hanzi": "发烧",
+          "pinyin": "fā shāo",
+          "meaning": "sốt"
+        },
+        {
+          "hanzi": "感冒",
+          "pinyin": "gǎnmào",
+          "meaning": "cảm, cúm"
+        },
+        {
+          "hanzi": "高",
+          "pinyin": "gāo",
+          "meaning": "cao"
+        },
+        {
+          "hanzi": "看病",
+          "pinyin": "kàn bìng",
+          "meaning": "khám bệnh"
+        },
+        {
+          "hanzi": "可能",
+          "pinyin": "kěnéng",
+          "meaning": "có thể, có lẽ"
+        },
+        {
+          "hanzi": "拉肚子",
+          "pinyin": "lā dùzi",
+          "meaning": "tiêu chảy"
+        },
+        {
+          "hanzi": "量",
+          "pinyin": "liáng",
+          "meaning": "đo"
+        },
+        {
+          "hanzi": "牛奶",
+          "pinyin": "niúnǎi",
+          "meaning": "sữa bò"
+        },
+        {
+          "hanzi": "舒服",
+          "pinyin": "shūfu",
+          "meaning": "thoải mái"
+        },
+        {
+          "hanzi": "疼",
+          "pinyin": "téng",
+          "meaning": "đau"
+        },
+        {
+          "hanzi": "体温",
+          "pinyin": "tǐwēn",
+          "meaning": "nhiệt độ cơ thể"
+        },
+        {
+          "hanzi": "头",
+          "pinyin": "tóu",
+          "meaning": "đầu"
+        },
+        {
+          "hanzi": "头疼",
+          "pinyin": "tóuténg",
+          "meaning": "đau đầu"
+        },
+        {
+          "hanzi": "胃口",
+          "pinyin": "wèikǒu",
+          "meaning": "cảm giác muốn ăn, thèm ăn"
+        },
+        {
+          "hanzi": "洗手间",
+          "pinyin": "xǐshǒujiān",
+          "meaning": "nhà vệ sinh"
+        },
+        {
+          "hanzi": "先",
+          "pinyin": "xiān",
+          "meaning": "trước"
+        },
+        {
+          "hanzi": "休息",
+          "pinyin": "xiūxi",
+          "meaning": "nghỉ ngơi"
+        },
+        {
+          "hanzi": "药",
+          "pinyin": "yào",
+          "meaning": "thuốc"
+        },
+        {
+          "hanzi": "医院",
+          "pinyin": "yīyuàn",
+          "meaning": "bệnh viện"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“请再说一遍。” nghĩa là:",
+            "options": [
+              "Xin nói to lên",
+              "Xin nói lại một lượt",
+              "Xin nói chậm lại",
+              "Xin đừng nói nữa"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "这药每天吃三___。",
+            "hint": "Động lượng từ chỉ số lần"
+          },
+          "answer": [
+            "次"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "感冒",
+            "options": [
+              "gǎnmào",
+              "gānmào",
+              "gǎnmāo",
+              "gǎnmáo"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "看病",
+              "的",
+              "人",
+              "很多"
+            ],
+            "translation": "Người đi khám bệnh rất đông."
+          },
+          "answer": [
+            "看病",
+            "的",
+            "人",
+            "很多"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "头疼",
+              "发烧",
+              "休息",
+              "舒服"
+            ],
+            "right": [
+              "sốt",
+              "thoải mái",
+              "đau đầu",
+              "nghỉ ngơi"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我有点儿发烧",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Tôi hơi sốt",
+              "Tôi bị đau đầu",
+              "Tôi rất khoẻ",
+              "Tôi bị đau bụng"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Tôi muốn mời bạn dự tiệc sinh nhật",
+      "title_zh": "我想请你参加生日聚会",
+      "summary": "Mời và nhận lời mời; nói về việc mời khách, tặng quà.",
+      "grammar": "1) CÂU KIÊM NGỮ (兼语句) — tân ngữ của động từ thứ nhất đồng thời là chủ ngữ của động từ thứ hai:\n• 我想请你参加生日聚会。(你 vừa là tân ngữ của 请, vừa là chủ ngữ của 参加)\n• 老师叫我们回答问题。／ 妈妈让我早点儿回家。\nĐộng từ thường gặp: 请, 叫, 让.\n\n2) CÂU HỎI “是不是” — hỏi xác nhận điều mình đã đoán:\n• 明天是不是你的生日？\n• 你是不是不舒服？\nCó thể đặt 是不是 trước vị ngữ hoặc cuối câu (你不舒服，是不是？).\n\n3) MỜI VÀ NHẬN LỜI: 我请客。／ 一起去吧！／ 好啊，谢谢！／ 不好意思，我有事。\n4) VĂN HOÁ: 礼尚往来 — có qua có lại, tặng quà đáp lễ; AA制 — tiền ai nấy trả.",
+      "vocab": [
+        {
+          "hanzi": "AA制",
+          "pinyin": "AA zhì",
+          "meaning": "tiền ai nấy trả"
+        },
+        {
+          "hanzi": "白天",
+          "pinyin": "báitiān",
+          "meaning": "ban ngày"
+        },
+        {
+          "hanzi": "带",
+          "pinyin": "dài",
+          "meaning": "dẫn, đem"
+        },
+        {
+          "hanzi": "短信",
+          "pinyin": "duǎnxìn",
+          "meaning": "tin nhắn"
+        },
+        {
+          "hanzi": "教室",
+          "pinyin": "jiàoshì",
+          "meaning": "lớp học"
+        },
+        {
+          "hanzi": "聚会",
+          "pinyin": "jùhuì",
+          "meaning": "tụ họp, gặp mặt"
+        },
+        {
+          "hanzi": "客人",
+          "pinyin": "kèrén",
+          "meaning": "khách hàng"
+        },
+        {
+          "hanzi": "老",
+          "pinyin": "lǎo",
+          "meaning": "cũ"
+        },
+        {
+          "hanzi": "礼尚往来",
+          "pinyin": "lǐshàngwǎnglái",
+          "meaning": "có qua có lại"
+        },
+        {
+          "hanzi": "马上",
+          "pinyin": "mǎshàng",
+          "meaning": "ngay, lập tức"
+        },
+        {
+          "hanzi": "清楚",
+          "pinyin": "qīngchu",
+          "meaning": "rõ, rõ ràng"
+        },
+        {
+          "hanzi": "请客",
+          "pinyin": "qǐng kè",
+          "meaning": "mời"
+        },
+        {
+          "hanzi": "人气",
+          "pinyin": "rénqì",
+          "meaning": "tiếng tăm, chí khí"
+        },
+        {
+          "hanzi": "同学",
+          "pinyin": "tóngxué",
+          "meaning": "bạn học"
+        },
+        {
+          "hanzi": "问",
+          "pinyin": "wèn",
+          "meaning": "hỏi"
+        },
+        {
+          "hanzi": "语伴",
+          "pinyin": "yǔbàn",
+          "meaning": "bạn cùng học ngoại ngữ"
+        },
+        {
+          "hanzi": "预约",
+          "pinyin": "yùyuē",
+          "meaning": "đặt hẹn"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào là câu kiêm ngữ?",
+            "options": [
+              "我买了一个蛋糕。",
+              "我想请你参加生日聚会。",
+              "明天是我的生日。",
+              "我很高兴。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "明天___你的生日？",
+            "hint": "Cấu trúc hỏi xác nhận"
+          },
+          "answer": [
+            "是不是"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "聚会",
+            "options": [
+              "jùhuì",
+              "jǔhuì",
+              "jùhuǐ",
+              "jūhuì"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "妈妈",
+              "让",
+              "我",
+              "早点儿",
+              "回家"
+            ],
+            "translation": "Mẹ bảo tôi về nhà sớm một chút."
+          },
+          "answer": [
+            "妈妈",
+            "让",
+            "我",
+            "早点儿",
+            "回家"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "请客",
+              "礼物",
+              "同学",
+              "清楚"
+            ],
+            "right": [
+              "món quà",
+              "rõ ràng",
+              "mời (khách)",
+              "bạn học"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我想请你参加生日聚会",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Tôi muốn mời bạn dự tiệc sinh nhật",
+              "Hôm nay là sinh nhật tôi",
+              "Tôi muốn mua quà sinh nhật",
+              "Bạn đến dự tiệc chưa?"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Bây giờ tôi có nhiều bạn Trung Quốc rồi",
+      "title_zh": "现在，我有很多中国朋友了",
+      "summary": "Miêu tả sự thay đổi của một người, một tình huống theo thời gian.",
+      "grammar": "1) “了” CHỈ SỰ THAY ĐỔI (ở cuối câu) — tình hình đã khác trước:\n• 现在，我有很多中国朋友了。\n• 他的汉语好了。／ 天气冷了。／ 我不喝咖啡了。(trước có, giờ thôi)\nPhân biệt với 了 sau động từ (chỉ hoàn thành): 我买了一本书。\n\n2) “要……了” — sắp xảy ra; còn dùng 快要……了 / 就要……了:\n• 我要回国了。／ 快要考试了。／ 他就要来了。\nLưu ý: 就要……了 dùng được với thời gian cụ thể (下个月就要毕业了), 快要……了 thì không.\n\n3) 越来越 + tính từ — càng ngày càng: 他的汉语越来越好。\n4) 以前 / 以后: 以前我很懒，以后我要努力学习。",
+      "vocab": [
+        {
+          "hanzi": "但是",
+          "pinyin": "dànshì",
+          "meaning": "nhưng"
+        },
+        {
+          "hanzi": "还是",
+          "pinyin": "háishi",
+          "meaning": "vẫn"
+        },
+        {
+          "hanzi": "坏",
+          "pinyin": "huài",
+          "meaning": "xấu, hỏng"
+        },
+        {
+          "hanzi": "进步",
+          "pinyin": "jìnbù",
+          "meaning": "tiến bộ"
+        },
+        {
+          "hanzi": "懒",
+          "pinyin": "lǎn",
+          "meaning": "lười"
+        },
+        {
+          "hanzi": "了解",
+          "pinyin": "liǎojiě",
+          "meaning": "hiểu"
+        },
+        {
+          "hanzi": "努力",
+          "pinyin": "nǔlì",
+          "meaning": "chăm chỉ, nỗ lực"
+        },
+        {
+          "hanzi": "胖",
+          "pinyin": "pàng",
+          "meaning": "mập, béo"
+        },
+        {
+          "hanzi": "跑步",
+          "pinyin": "pǎo bù",
+          "meaning": "chạy bộ"
+        },
+        {
+          "hanzi": "瘦",
+          "pinyin": "shòu",
+          "meaning": "gầy"
+        },
+        {
+          "hanzi": "讨价还价",
+          "pinyin": "tǎojià-huánjià",
+          "meaning": "mặc cả"
+        },
+        {
+          "hanzi": "习惯",
+          "pinyin": "xíguàn",
+          "meaning": "quen, thói quen"
+        },
+        {
+          "hanzi": "以后",
+          "pinyin": "yǐhòu",
+          "meaning": "sau này"
+        },
+        {
+          "hanzi": "以前",
+          "pinyin": "yǐqián",
+          "meaning": "trước đây"
+        },
+        {
+          "hanzi": "越来越",
+          "pinyin": "yuèláiyuè",
+          "meaning": "càng ngày càng"
+        },
+        {
+          "hanzi": "最",
+          "pinyin": "zuì",
+          "meaning": "nhất"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“我不喝咖啡了。” nghĩa là:",
+            "options": [
+              "Tôi chưa từng uống cà phê",
+              "Trước đây tôi uống, giờ thì không uống nữa",
+              "Tôi không thích cà phê chút nào",
+              "Tôi sắp uống cà phê"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "他的汉语___好。",
+            "hint": "Cấu trúc “càng ngày càng”"
+          },
+          "answer": [
+            "越来越"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "习惯",
+            "options": [
+              "xíguàn",
+              "xǐguàn",
+              "xìguān",
+              "xīguàn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "要",
+              "回国",
+              "了"
+            ],
+            "translation": "Tôi sắp về nước rồi."
+          },
+          "answer": [
+            "我",
+            "要",
+            "回国",
+            "了"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "努力",
+              "进步",
+              "以前",
+              "了解"
+            ],
+            "right": [
+              "tiến bộ",
+              "hiểu",
+              "chăm chỉ",
+              "trước đây"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "快要考试了",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Sắp thi rồi",
+              "Thi xong rồi",
+              "Đang thi",
+              "Không phải thi"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Cô ấy nói tiếng Hán thế nào?",
+      "title_zh": "她说汉语说得怎么样？",
+      "summary": "Miêu tả và đánh giá về một người: ngoại hình, năng lực, cách làm một việc.",
+      "grammar": "1) BỔ NGỮ TRẠNG THÁI VỚI “得” (情态补语) — đánh giá mức độ của hành động:\n• Không có tân ngữ: 主语 + 动词 + 得 + 形容词 → 她说得很好。\n• Có tân ngữ: 主语 + (动词) + 宾语 + 动词 + 得 + 形容词 → 她说汉语说得很好。\n• Câu hỏi: 她说汉语说得怎么样？／ 她说得好不好？\n• Phủ định đặt ở phần bổ ngữ: 她说得不好。\n\n2) TÍNH TỪ LẶP LẠI (形容词重叠) — miêu tả sinh động, mức độ tăng, KHÔNG dùng 很 phía trước:\n• Một âm tiết: AA → 高高的, 白白的, 长长的 (他个子高高的。)\n• Hai âm tiết: AABB → 漂漂亮亮, 干干净净\n\n3) MIÊU TẢ NGOẠI HÌNH: 个子高/矮, 头发长/短, 皮肤白, 眼睛大, 很帅, 很漂亮.",
+      "vocab": [
+        {
+          "hanzi": "矮",
+          "pinyin": "ǎi",
+          "meaning": "lùn, thấp"
+        },
+        {
+          "hanzi": "白",
+          "pinyin": "bái",
+          "meaning": "trắng"
+        },
+        {
+          "hanzi": "比较",
+          "pinyin": "bǐjiào",
+          "meaning": "khá, tương đối"
+        },
+        {
+          "hanzi": "不过",
+          "pinyin": "búguò",
+          "meaning": "nhưng"
+        },
+        {
+          "hanzi": "长",
+          "pinyin": "cháng",
+          "meaning": "dài"
+        },
+        {
+          "hanzi": "个子",
+          "pinyin": "gèzi",
+          "meaning": "dáng người"
+        },
+        {
+          "hanzi": "黄",
+          "pinyin": "huáng",
+          "meaning": "vàng"
+        },
+        {
+          "hanzi": "皮肤",
+          "pinyin": "pífū",
+          "meaning": "da"
+        },
+        {
+          "hanzi": "巧",
+          "pinyin": "qiǎo",
+          "meaning": "trùng hợp"
+        },
+        {
+          "hanzi": "帅",
+          "pinyin": "shuài",
+          "meaning": "đẹp trai"
+        },
+        {
+          "hanzi": "T恤",
+          "pinyin": "T xù",
+          "meaning": "áo phông"
+        },
+        {
+          "hanzi": "踢",
+          "pinyin": "tī",
+          "meaning": "đá"
+        },
+        {
+          "hanzi": "同屋",
+          "pinyin": "tóngwū",
+          "meaning": "bạn cùng phòng"
+        },
+        {
+          "hanzi": "头发",
+          "pinyin": "tóufa",
+          "meaning": "tóc"
+        },
+        {
+          "hanzi": "详细",
+          "pinyin": "xiángxì",
+          "meaning": "chi tiết, kĩ càng"
+        },
+        {
+          "hanzi": "眼睛",
+          "pinyin": "yǎnjing",
+          "meaning": "mắt"
+        },
+        {
+          "hanzi": "样子",
+          "pinyin": "yàngzi",
+          "meaning": "hình dáng"
+        },
+        {
+          "hanzi": "长",
+          "pinyin": "zhǎng",
+          "meaning": "lớn lên, mọc lên"
+        },
+        {
+          "hanzi": "足球",
+          "pinyin": "zúqiú",
+          "meaning": "bóng đá"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào ĐÚNG?",
+            "options": [
+              "她说得汉语很好。",
+              "她说汉语说得很好。",
+              "她汉语说很好得。",
+              "她说很好得汉语。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "他跑___很快。",
+            "hint": "Trợ từ đứng trước bổ ngữ trạng thái"
+          },
+          "answer": [
+            "得"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "眼睛",
+            "options": [
+              "yǎnjing",
+              "yánjīng",
+              "yǎnjīn",
+              "yānjing"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "她",
+              "说",
+              "汉语",
+              "说得",
+              "很好"
+            ],
+            "translation": "Cô ấy nói tiếng Hán rất giỏi."
+          },
+          "answer": [
+            "她",
+            "说",
+            "汉语",
+            "说得",
+            "很好"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "个子",
+              "头发",
+              "帅",
+              "矮"
+            ],
+            "right": [
+              "tóc",
+              "thấp, lùn",
+              "dáng người",
+              "đẹp trai"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "他汉语说得很流利",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Anh ấy nói tiếng Hán rất trôi chảy",
+              "Anh ấy học tiếng Hán rất lâu",
+              "Anh ấy không biết tiếng Hán",
+              "Anh ấy nói tiếng Hán rất chậm"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Xe buýt đến rồi, chúng ta lên xe thôi",
+      "title_zh": "公交车过来了，我们上车吧",
+      "summary": "Giới thiệu cách sử dụng phương tiện giao thông công cộng: lên xe, quẹt thẻ, mua vé.",
+      "grammar": "1) ĐỘNG TỪ XU HƯỚNG (趋向动词) — 来 / 去 đi sau động từ, cho biết hướng di chuyển so với người nói:\n• 上来, 上去, 下来, 下去, 进来, 进去, 出来, 出去, 回来, 回去, 过来, 过去\n• 公交车过来了。／ 老师进来了。／ 你上来吧。\n• Nếu có tân ngữ chỉ nơi chốn thì đặt giữa động từ và 来/去: 他回学校去了。／ 请上车来。\n\n2) 先……，然后…… — trước hết…, sau đó…: 先刷卡，然后上车。\n3) 就 — nhấn mạnh việc xảy ra ngay/thuận lợi: 前面就是车站。\n4) TỪ NGỮ GIAO THÔNG: 公交卡, 售票机, 投入, 硬币, 刷(卡), 前门, 后门, 入口, 电梯, 扶梯, 打的.",
+      "vocab": [
+        {
+          "hanzi": "办",
+          "pinyin": "bàn",
+          "meaning": "làm"
+        },
+        {
+          "hanzi": "打的",
+          "pinyin": "dǎ dī",
+          "meaning": "gọi taxi"
+        },
+        {
+          "hanzi": "……的时候",
+          "pinyin": "…de shíhou",
+          "meaning": "khi..., lúc..."
+        },
+        {
+          "hanzi": "电梯",
+          "pinyin": "diàntī",
+          "meaning": "thang máy"
+        },
+        {
+          "hanzi": "扶梯",
+          "pinyin": "fútī",
+          "meaning": "thang cuốn"
+        },
+        {
+          "hanzi": "公交卡",
+          "pinyin": "gōngjiāokǎ",
+          "meaning": "thẻ xe buýt"
+        },
+        {
+          "hanzi": "后门",
+          "pinyin": "hòumén",
+          "meaning": "cửa sau"
+        },
+        {
+          "hanzi": "挤",
+          "pinyin": "jǐ",
+          "meaning": "đông đúc, chen chúc"
+        },
+        {
+          "hanzi": "就",
+          "pinyin": "jiù",
+          "meaning": "đã, liền"
+        },
+        {
+          "hanzi": "老人",
+          "pinyin": "lǎorén",
+          "meaning": "người già"
+        },
+        {
+          "hanzi": "年轻",
+          "pinyin": "niánqīng",
+          "meaning": "trẻ"
+        },
+        {
+          "hanzi": "年轻人",
+          "pinyin": "niánqīngrén",
+          "meaning": "thanh niên"
+        },
+        {
+          "hanzi": "前门",
+          "pinyin": "qiánmén",
+          "meaning": "cửa trước"
+        },
+        {
+          "hanzi": "入口",
+          "pinyin": "rùkǒu",
+          "meaning": "lối vào"
+        },
+        {
+          "hanzi": "售票机",
+          "pinyin": "shòupiàojī",
+          "meaning": "máy bán vé"
+        },
+        {
+          "hanzi": "刷",
+          "pinyin": "shuā",
+          "meaning": "quẹt"
+        },
+        {
+          "hanzi": "投入",
+          "pinyin": "tóurù",
+          "meaning": "bỏ vào, thả vào"
+        },
+        {
+          "hanzi": "一般",
+          "pinyin": "yìbān",
+          "meaning": "thông thường"
+        },
+        {
+          "hanzi": "硬币",
+          "pinyin": "yìngbì",
+          "meaning": "tiền xu"
+        },
+        {
+          "hanzi": "自动",
+          "pinyin": "zìdòng",
+          "meaning": "tự động"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Người đứng trên xe buýt gọi bạn đang đứng dưới, sẽ nói:",
+            "options": [
+              "你上来吧！",
+              "你上去吧！",
+              "你下来吧！",
+              "你过去吧！"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "___刷卡，___上车。",
+            "hint": "Cấu trúc “trước hết…, sau đó…”"
+          },
+          "answer": [
+            "先",
+            "然后"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "售票机",
+            "options": [
+              "shòupiàojī",
+              "shǒupiàojī",
+              "shòupiāojī",
+              "shòupiàoqī"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "公交车",
+              "过来",
+              "了"
+            ],
+            "translation": "Xe buýt đến rồi."
+          },
+          "answer": [
+            "公交车",
+            "过来",
+            "了"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "公交卡",
+              "硬币",
+              "入口",
+              "挤"
+            ],
+            "right": [
+              "tiền xu",
+              "đông đúc",
+              "thẻ xe buýt",
+              "lối vào"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我们上车吧",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Chúng ta lên xe thôi",
+              "Chúng ta xuống xe thôi",
+              "Chúng ta đi bộ thôi",
+              "Chúng ta đợi xe nhé"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Tôi dạy bạn tiếng Hán, bạn dạy tôi tiếng Anh",
+      "title_zh": "我教你汉语，你教我英语",
+      "summary": "Tìm đúng người để nhờ giúp đỡ; trao đổi học ngoại ngữ, tìm bạn cùng học.",
+      "grammar": "1) CÂU SONG TÂN NGỮ (双宾语句) — một số động từ mang hai tân ngữ: động từ + tân ngữ chỉ NGƯỜI + tân ngữ chỉ VẬT/VIỆC:\n• 我教你汉语。／ 你教我英语。\n• 他给我一本书。／ 老师问我一个问题。／ 朋友送我一件礼物。\nĐộng từ thường gặp: 教, 给, 问, 送, 告诉.\n\n2) TÍNH TỪ LÀM ĐỊNH NGỮ — bổ nghĩa cho danh từ:\n• Tính từ một âm tiết thường đứng trực tiếp: 新朋友, 好消息, 熟人\n• Tính từ hai âm tiết hoặc có 很 thì thêm 的: 漂亮的房子, 很好的机会.\n\n3) 互相 — lẫn nhau: 我们互相帮助。／ 互相学习。\n4) TỪ NGỮ: 语伴, 家教, 学费, 标准, 普通话, 要求, 结果.",
+      "vocab": [
+        {
+          "hanzi": "把",
+          "pinyin": "bǎ",
+          "meaning": "chiếc (lượng từ)"
+        },
+        {
+          "hanzi": "标准",
+          "pinyin": "biāozhǔn",
+          "meaning": "chuẩn"
+        },
+        {
+          "hanzi": "二胡",
+          "pinyin": "èrhú",
+          "meaning": "đàn nhị"
+        },
+        {
+          "hanzi": "费",
+          "pinyin": "fèi",
+          "meaning": "phí"
+        },
+        {
+          "hanzi": "付",
+          "pinyin": "fù",
+          "meaning": "trả, thanh toán"
+        },
+        {
+          "hanzi": "互相",
+          "pinyin": "hùxiāng",
+          "meaning": "lẫn nhau"
+        },
+        {
+          "hanzi": "家教",
+          "pinyin": "jiājiào",
+          "meaning": "gia sư"
+        },
+        {
+          "hanzi": "结果",
+          "pinyin": "jiéguǒ",
+          "meaning": "kết quả"
+        },
+        {
+          "hanzi": "拉二胡",
+          "pinyin": "lā èrhú",
+          "meaning": "kéo đàn nhị"
+        },
+        {
+          "hanzi": "礼物",
+          "pinyin": "lǐwù",
+          "meaning": "món quà"
+        },
+        {
+          "hanzi": "普通话",
+          "pinyin": "pǔtōnghuà",
+          "meaning": "tiếng phổ thông"
+        },
+        {
+          "hanzi": "熟人",
+          "pinyin": "shúrén",
+          "meaning": "người quen"
+        },
+        {
+          "hanzi": "特别",
+          "pinyin": "tèbié",
+          "meaning": "đặc biệt"
+        },
+        {
+          "hanzi": "消息",
+          "pinyin": "xiāoxi",
+          "meaning": "tin tức, thông tin"
+        },
+        {
+          "hanzi": "学费",
+          "pinyin": "xuéfèi",
+          "meaning": "học phí"
+        },
+        {
+          "hanzi": "演奏",
+          "pinyin": "yǎnzòu",
+          "meaning": "diễn tấu"
+        },
+        {
+          "hanzi": "要求",
+          "pinyin": "yāoqiú",
+          "meaning": "yêu cầu"
+        },
+        {
+          "hanzi": "意思",
+          "pinyin": "yìsi",
+          "meaning": "ý, ý nghĩa"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào là câu song tân ngữ?",
+            "options": [
+              "我学汉语。",
+              "他给我一本书。",
+              "我很喜欢汉语。",
+              "我们一起学习。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "我们___帮助，___学习。",
+            "hint": "Từ nghĩa “lẫn nhau”"
+          },
+          "answer": [
+            "互相",
+            "互相"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "普通话",
+            "options": [
+              "pǔtōnghuà",
+              "púdōnghuà",
+              "pǔtònghuà",
+              "pūtōnghuà"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "教",
+              "你",
+              "汉语"
+            ],
+            "translation": "Tôi dạy bạn tiếng Hán."
+          },
+          "answer": [
+            "我",
+            "教",
+            "你",
+            "汉语"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "语伴",
+              "家教",
+              "消息",
+              "礼物"
+            ],
+            "right": [
+              "gia sư",
+              "món quà",
+              "bạn cùng học ngoại ngữ",
+              "tin tức"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "他的普通话很标准",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Tiếng phổ thông của anh ấy rất chuẩn",
+              "Anh ấy nói tiếng Anh rất chuẩn",
+              "Anh ấy đang học tiếng phổ thông",
+              "Anh ấy không biết tiếng phổ thông"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Mùa hè ở đây nóng hơn quê tôi",
+      "title_zh": "这里的夏天比我老家热",
+      "summary": "So sánh người và sự vật; nói về thời tiết, bốn mùa.",
+      "grammar": "1) CÂU SO SÁNH VỚI “比”: A + 比 + B + tính từ\n• 这里的夏天比我老家热。／ 他比我高。\n• Thêm mức độ ở SAU tính từ: 他比我高一点儿。／ 今天比昨天冷多了。／ 他比我大三岁。\n• KHÔNG dùng 很/非常 trước tính từ: 他比我很高 (sai).\n• Phủ định: A 没有 B + tính từ → 我没有他高。\n• Dùng 更 để nhấn: 今天比昨天更冷。\n\n2) SO SÁNH NGANG BẰNG: A 跟 B 一样 + tính từ\n• 我跟他一样高。／ 这里的冬天跟我老家差不多。\n\n3) THỜI TIẾT – BỐN MÙA: 春天暖和, 夏天热, 秋天凉快, 冬天冷; 下雨, 下雪, 刮风; 天气预报, 温度, 多少度.",
+      "vocab": [
+        {
+          "hanzi": "比",
+          "pinyin": "bǐ",
+          "meaning": "hơn"
+        },
+        {
+          "hanzi": "差不多",
+          "pinyin": "chàbuduō",
+          "meaning": "tương tự"
+        },
+        {
+          "hanzi": "春天",
+          "pinyin": "chūntiān",
+          "meaning": "mùa xuân"
+        },
+        {
+          "hanzi": "低",
+          "pinyin": "dī",
+          "meaning": "thấp"
+        },
+        {
+          "hanzi": "冬天",
+          "pinyin": "dōngtiān",
+          "meaning": "mùa đông"
+        },
+        {
+          "hanzi": "更",
+          "pinyin": "gèng",
+          "meaning": "càng, hơn"
+        },
+        {
+          "hanzi": "刮",
+          "pinyin": "guā",
+          "meaning": "thổi (gió)"
+        },
+        {
+          "hanzi": "冷",
+          "pinyin": "lěng",
+          "meaning": "lạnh"
+        },
+        {
+          "hanzi": "凉快",
+          "pinyin": "liángkuai",
+          "meaning": "mát mẻ"
+        },
+        {
+          "hanzi": "暖和",
+          "pinyin": "nuǎnhuo",
+          "meaning": "ấm áp"
+        },
+        {
+          "hanzi": "秋天",
+          "pinyin": "qiūtiān",
+          "meaning": "mùa thu"
+        },
+        {
+          "hanzi": "热",
+          "pinyin": "rè",
+          "meaning": "nóng"
+        },
+        {
+          "hanzi": "台风",
+          "pinyin": "táifēng",
+          "meaning": "bão"
+        },
+        {
+          "hanzi": "天气",
+          "pinyin": "tiānqì",
+          "meaning": "thời tiết"
+        },
+        {
+          "hanzi": "温度",
+          "pinyin": "wēndù",
+          "meaning": "nhiệt độ"
+        },
+        {
+          "hanzi": "下雪",
+          "pinyin": "xià xuě",
+          "meaning": "tuyết rơi"
+        },
+        {
+          "hanzi": "下雨",
+          "pinyin": "xià yǔ",
+          "meaning": "trời mưa"
+        },
+        {
+          "hanzi": "夏天",
+          "pinyin": "xiàtiān",
+          "meaning": "mùa hè"
+        },
+        {
+          "hanzi": "雪",
+          "pinyin": "xuě",
+          "meaning": "tuyết"
+        },
+        {
+          "hanzi": "一样",
+          "pinyin": "yíyàng",
+          "meaning": "như nhau"
+        },
+        {
+          "hanzi": "雨",
+          "pinyin": "yǔ",
+          "meaning": "mưa"
+        },
+        {
+          "hanzi": "预报",
+          "pinyin": "yùbào",
+          "meaning": "dự báo"
+        },
+        {
+          "hanzi": "左右",
+          "pinyin": "zuǒyòu",
+          "meaning": "khoảng"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào ĐÚNG?",
+            "options": [
+              "他比我很高。",
+              "他比我高一点儿。",
+              "他比我非常高。",
+              "他比高我一点儿。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "我___他一样高。",
+            "hint": "Cấu trúc so sánh ngang bằng"
+          },
+          "answer": [
+            "跟"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "夏天",
+            "options": [
+              "xiàtiān",
+              "xiàtián",
+              "xiátiān",
+              "xiàtiàn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "这里的",
+              "夏天",
+              "比",
+              "我老家",
+              "热"
+            ],
+            "translation": "Mùa hè ở đây nóng hơn quê tôi."
+          },
+          "answer": [
+            "这里的",
+            "夏天",
+            "比",
+            "我老家",
+            "热"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "暖和",
+              "凉快",
+              "预报",
+              "温度"
+            ],
+            "right": [
+              "mát mẻ",
+              "nhiệt độ",
+              "ấm áp",
+              "dự báo"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "今天比昨天冷多了",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Hôm nay lạnh hơn hôm qua nhiều",
+              "Hôm nay ấm hơn hôm qua",
+              "Hôm qua lạnh hơn hôm nay",
+              "Hôm nay và hôm qua như nhau"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Trận bóng đá rất hấp dẫn",
+      "title_zh": "足球比赛很精彩",
+      "summary": "Trò chuyện quanh một sự kiện lớn (trận bóng, giải đấu); ôn tập trọng điểm ngữ pháp bài 1–9.",
+      "grammar": "BÀI ÔN TẬP — hệ thống lại trọng điểm ngôn ngữ của bài 1–9 qua chủ đề trận bóng đá:\n• Câu tồn tại 有/是 và động từ lặp lại (bài 1): 电视里有比赛。我们看看吧。\n• Động từ năng nguyện và 一……就…… (bài 2): 一开始我就打电话给你。\n• Động lượng từ 次/遍 (bài 3): 这场比赛我看了两次。\n• Câu kiêm ngữ, 是不是 (bài 4): 我请你去看比赛，是不是很好？\n• 了 chỉ thay đổi, 要……了 (bài 5): 比赛要开始了！\n• Bổ ngữ trạng thái với 得 (bài 6): 他踢得非常好。\n• Động từ xu hướng (bài 7): 他跑过来了。\n• Câu song tân ngữ (bài 8): 他给我一张球票。\n• Câu so sánh với 比 (bài 9): 这个队比那个队强。\nTỪ NGỮ SỰ KIỆN: 比赛, 世界杯, 队, 迷, 赢, 输, 比(tỉ số), 精彩, 加油, 紧张, 转播, 实力, 机会, 结束.",
+      "vocab": [
+        {
+          "hanzi": "比",
+          "pinyin": "bǐ",
+          "meaning": "tỉ số trận đấu"
+        },
+        {
+          "hanzi": "队",
+          "pinyin": "duì",
+          "meaning": "đội"
+        },
+        {
+          "hanzi": "房间",
+          "pinyin": "fángjiān",
+          "meaning": "phòng"
+        },
+        {
+          "hanzi": "机会",
+          "pinyin": "jīhuì",
+          "meaning": "cơ hội"
+        },
+        {
+          "hanzi": "技术",
+          "pinyin": "jìshù",
+          "meaning": "kĩ thuật"
+        },
+        {
+          "hanzi": "加油",
+          "pinyin": "jiā yóu",
+          "meaning": "cố lên"
+        },
+        {
+          "hanzi": "结束",
+          "pinyin": "jiéshù",
+          "meaning": "kết thúc"
+        },
+        {
+          "hanzi": "紧张",
+          "pinyin": "jǐnzhāng",
+          "meaning": "căng thẳng, hồi hộp"
+        },
+        {
+          "hanzi": "精彩",
+          "pinyin": "jīngcǎi",
+          "meaning": "đặc sắc, hấp dẫn"
+        },
+        {
+          "hanzi": "迷",
+          "pinyin": "mí",
+          "meaning": "người hâm mộ"
+        },
+        {
+          "hanzi": "强",
+          "pinyin": "qiáng",
+          "meaning": "mạnh"
+        },
+        {
+          "hanzi": "实力",
+          "pinyin": "shílì",
+          "meaning": "thực lực"
+        },
+        {
+          "hanzi": "世界杯",
+          "pinyin": "shìjièbēi",
+          "meaning": "World Cup"
+        },
+        {
+          "hanzi": "输",
+          "pinyin": "shū",
+          "meaning": "thua"
+        },
+        {
+          "hanzi": "赢",
+          "pinyin": "yíng",
+          "meaning": "thắng"
+        },
+        {
+          "hanzi": "运气",
+          "pinyin": "yùnqi",
+          "meaning": "may mắn, vận may"
+        },
+        {
+          "hanzi": "转播",
+          "pinyin": "zhuǎnbō",
+          "meaning": "tiếp sóng"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“比赛要开始了！” nghĩa là:",
+            "options": [
+              "Trận đấu sắp bắt đầu!",
+              "Trận đấu đã kết thúc",
+              "Trận đấu bị hoãn",
+              "Trận đấu rất hay"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "他踢___非常好。",
+            "hint": "Trợ từ trước bổ ngữ trạng thái"
+          },
+          "answer": [
+            "得"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "精彩",
+            "options": [
+              "jīngcǎi",
+              "jìngcǎi",
+              "jīngcài",
+              "jīncǎi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "这个队",
+              "比",
+              "那个队",
+              "强"
+            ],
+            "translation": "Đội này mạnh hơn đội kia."
+          },
+          "answer": [
+            "这个队",
+            "比",
+            "那个队",
+            "强"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "赢",
+              "输",
+              "加油",
+              "紧张"
+            ],
+            "right": [
+              "thua",
+              "hồi hộp",
+              "thắng",
+              "cố lên"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "足球比赛很精彩",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Trận bóng đá rất hấp dẫn",
+              "Trận bóng đá rất chán",
+              "Tôi thích bóng rổ",
+              "Trận đấu chưa bắt đầu"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    }
+  ]
+}

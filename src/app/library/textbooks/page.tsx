@@ -256,7 +256,7 @@ export default function TextbookLibraryPage() {
         <CardContent className="p-4 sm:p-5 text-sm leading-relaxed text-muted-foreground">
           <div className="font-semibold text-foreground">Cách import giáo trình</div>
           <ol className="mt-1.5 list-decimal space-y-1 pl-5">
-            <li>Chuẩn bị file JSON theo mẫu trong <code className="rounded bg-muted px-1">supabase/library/</code> (đã có sẵn bộ <code className="rounded bg-muted px-1">hsk1–3-standard.json</code>, <code className="rounded bg-muted px-1">yct1–4-standard.json</code>, <code className="rounded bg-muted px-1">msutong-4.json</code>).</li>
+            <li>Chuẩn bị file JSON theo mẫu trong <code className="rounded bg-muted px-1">supabase/library/</code> (đã có sẵn bộ <code className="rounded bg-muted px-1">hsk1–3-standard.json</code>, <code className="rounded bg-muted px-1">yct1–4-standard.json</code>, <code className="rounded bg-muted px-1">msutong-1–4.json</code>).</li>
             <li>Bấm <b>Nhập giáo trình (JSON)</b> và chọn file. Import lại cùng file để cập nhật — bài khớp theo số bài, từ vựng dùng lại kho chung, câu hỏi trùng tự bỏ qua.</li>
             <li>Muốn có ảnh bìa thật, thêm <code className="rounded bg-muted px-1">&quot;cover_url&quot;</code> vào phần <code className="rounded bg-muted px-1">textbook</code> của file JSON; chưa có thì trang tự vẽ bìa theo bộ HSK / YCT.</li>
             <li>Sau khi import, giáo viên thấy bài học ở mục <b>Bài học</b> để gán vào buổi, và lọc được câu hỏi theo bài khi giao bài tập.</li>

@@ -1,0 +1,2014 @@
+{
+  "textbook": {
+    "code": "msutong-1",
+    "name": "Hán ngữ MSutong — Quyển 1",
+    "name_zh": "速通汉语 1",
+    "level": "HSK1",
+    "description": "Giáo trình Hán ngữ MSutong (Expressway to Chinese) — Sơ cấp, quyển 1, 10 bài. Dành cho người mới bắt đầu: ngữ âm, chữ Hán cơ bản, chào hỏi, giới thiệu bản thân, gọi món, hỏi đường, gia đình; chuẩn đầu ra tham chiếu HSK 1.",
+    "sort": 1
+  },
+  "lessons": [
+    {
+      "unit": 1,
+      "title": "Xin chào",
+      "title_zh": "你好",
+      "summary": "Chào hỏi cơ bản; làm quen ngữ âm tiếng Hán (thanh mẫu, vận mẫu, thanh điệu) và nét chữ Hán, số đếm 一–十.",
+      "grammar": "1) NGỮ ÂM TIẾNG HÁN — Âm tiết tiếng Hán gồm ba phần: THANH MẪU (phụ âm đầu) + VẬN MẪU (phần vần) + THANH ĐIỆU.\n• Thanh mẫu: b p m f d t n l g k h j q x zh ch sh r z c s\n• Vận mẫu đơn: a o e i u ü\n• Bốn thanh điệu: ā (thanh 1, cao – bằng), á (thanh 2, lên), ǎ (thanh 3, xuống – lên), à (thanh 4, xuống); ngoài ra có thanh nhẹ (khinh thanh): māma.\n\n2) CHÀO HỎI\n• 你好！Nǐ hǎo! — Xin chào! (dùng chung mọi lúc)\n• 您好！Nín hǎo! — Chào ngài/bác (lễ phép với người lớn tuổi, khách)\n• 你们好！Nǐmen hǎo! — Chào các bạn.\n• 老师好！Lǎoshī hǎo! — Chào thầy/cô.\nĐáp lại cũng dùng chính câu đó: A: 你好！— B: 你好！\n\n3) CHỮ HÁN — Nét cơ bản: 点 (chấm), 横 (ngang), 竖 (sổ), 撇 (phẩy), 捺 (mác), 提 (hất). Số đếm: 一 二 三 四 五 六 七 八 九 十.",
+      "vocab": [
+        {
+          "hanzi": "好",
+          "pinyin": "hǎo",
+          "meaning": "tốt, đẹp, hay"
+        },
+        {
+          "hanzi": "老师",
+          "pinyin": "lǎoshī",
+          "meaning": "thầy giáo, cô giáo"
+        },
+        {
+          "hanzi": "你",
+          "pinyin": "nǐ",
+          "meaning": "anh, chị, bạn"
+        },
+        {
+          "hanzi": "你们",
+          "pinyin": "nǐmen",
+          "meaning": "các anh, các chị"
+        },
+        {
+          "hanzi": "您",
+          "pinyin": "nín",
+          "meaning": "ngài (xưng hô tôn trọng)"
+        },
+        {
+          "hanzi": "王",
+          "pinyin": "Wáng",
+          "meaning": "Vương (họ)"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Chào một người lớn tuổi một cách lễ phép, nên nói thế nào?",
+            "options": [
+              "你好！",
+              "您好！",
+              "你们好！",
+              "老师好！"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "老师",
+            "options": [
+              "lǎoshī",
+              "lāoshì",
+              "lǎosī",
+              "láoshī"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Tiếng Hán phổ thông có mấy thanh điệu (không kể thanh nhẹ)?",
+            "options": [
+              "3",
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "A: 你好！B: ___ 好！",
+            "hint": "Đáp lại lời chào bằng chính từ xưng hô"
+          },
+          "answer": [
+            "你"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "你",
+              "好",
+              "老师",
+              "王"
+            ],
+            "right": [
+              "họ Vương",
+              "bạn, anh, chị",
+              "thầy giáo, cô giáo",
+              "tốt, đẹp"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "d",
+            "2": "c",
+            "3": "a"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "你好",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Xin chào",
+              "Cảm ơn",
+              "Tạm biệt",
+              "Xin lỗi"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Bạn tên là gì?",
+      "title_zh": "你叫什么名字？",
+      "summary": "Hỏi và giới thiệu tên họ, quốc tịch; câu trần thuật cơ bản chủ – động – tân.",
+      "grammar": "1) CÂU CƠ BẢN TIẾNG HÁN: CHỦ NGỮ + ĐỘNG TỪ + TÂN NGỮ (S + V + O) — trật tự này giữ nguyên cả trong câu hỏi.\n• 我 叫 高小明。Wǒ jiào Gāo Xiǎomíng. — Tôi tên là Cao Tiểu Minh.\n• 我 是 中国人。Wǒ shì Zhōngguórén. — Tôi là người Trung Quốc.\n• 你 叫 什么 名字？Nǐ jiào shénme míngzi? — Bạn tên là gì?\n• 你 是 哪 国 人？Nǐ shì nǎ guó rén? — Bạn là người nước nào?\n\n2) CỤM DANH TỪ + 呢? — câu hỏi nối tiếp, nội dung hỏi lấy từ câu trước.\n• 我叫卡玛拉。你呢？= 我叫卡玛拉。你叫什么名字？\n• 你是美国人。他呢？= 你是美国人。他是哪国人？\n\n3) TÊN NGƯỜI TRUNG QUỐC: họ đứng trước, tên đứng sau — 姓名 = 姓 + 名 (高 小明).",
+      "vocab": [
+        {
+          "hanzi": "国",
+          "pinyin": "guó",
+          "meaning": "quốc gia, nước"
+        },
+        {
+          "hanzi": "叫",
+          "pinyin": "jiào",
+          "meaning": "gọi, tên là"
+        },
+        {
+          "hanzi": "名字",
+          "pinyin": "míngzi",
+          "meaning": "tên"
+        },
+        {
+          "hanzi": "哪",
+          "pinyin": "nǎ",
+          "meaning": "nào"
+        },
+        {
+          "hanzi": "呢",
+          "pinyin": "ne",
+          "meaning": "trợ từ ngữ khí"
+        },
+        {
+          "hanzi": "人",
+          "pinyin": "rén",
+          "meaning": "người"
+        },
+        {
+          "hanzi": "什么",
+          "pinyin": "shénme",
+          "meaning": "gì, cái gì"
+        },
+        {
+          "hanzi": "是",
+          "pinyin": "shì",
+          "meaning": "là"
+        },
+        {
+          "hanzi": "他",
+          "pinyin": "tā",
+          "meaning": "anh ấy, ông ấy"
+        },
+        {
+          "hanzi": "我",
+          "pinyin": "wǒ",
+          "meaning": "tôi"
+        },
+        {
+          "hanzi": "高小明",
+          "pinyin": "Gāo Xiǎomíng",
+          "meaning": "Cao Tiểu Minh"
+        },
+        {
+          "hanzi": "卡玛拉",
+          "pinyin": "Kǎmǎlā",
+          "meaning": "Kamala"
+        },
+        {
+          "hanzi": "美国",
+          "pinyin": "Měiguó",
+          "meaning": "nước Mỹ"
+        },
+        {
+          "hanzi": "南非",
+          "pinyin": "Nánfēi",
+          "meaning": "Nam Phi"
+        },
+        {
+          "hanzi": "欧文",
+          "pinyin": "Ōuwén",
+          "meaning": "Owen"
+        },
+        {
+          "hanzi": "中国",
+          "pinyin": "Zhōngguó",
+          "meaning": "Trung Quốc"
+        }
+      ],
+      "questions": [
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "叫",
+              "高小明"
+            ],
+            "translation": "Tôi tên là Cao Tiểu Minh."
+          },
+          "answer": [
+            "我",
+            "叫",
+            "高小明"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“你是哪国人？” hỏi điều gì?",
+            "options": [
+              "Bạn tên là gì?",
+              "Bạn là người nước nào?",
+              "Bạn đi đâu?",
+              "Bạn làm nghề gì?"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "我叫卡玛拉。你___？",
+            "hint": "Trợ từ tạo câu hỏi nối tiếp"
+          },
+          "answer": [
+            "呢"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "名字",
+            "options": [
+              "míngzi",
+              "mínzi",
+              "mīngzì",
+              "níngzi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "美国",
+              "中国",
+              "南非",
+              "什么"
+            ],
+            "right": [
+              "Trung Quốc",
+              "gì, cái gì",
+              "nước Mỹ",
+              "Nam Phi"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "他是美国人",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Anh ấy là người Mỹ",
+              "Anh ấy là người Trung Quốc",
+              "Cô ấy là người Mỹ",
+              "Anh ấy tên là Mỹ"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Rất vui được quen biết bạn",
+      "title_zh": "很高兴认识你",
+      "summary": "Hỏi họ, trao đổi danh thiếp; trợ từ 的 chỉ sở hữu, câu vị ngữ tính từ, câu hỏi 吗, phó từ 也.",
+      "grammar": "1) TRỢ TỪ “的” CHỈ SỞ HỮU — tương đương “’s” trong tiếng Anh: 我的名片 (danh thiếp của tôi), 老师的名字 (tên của thầy giáo), 马小姐的名片.\n\n2) CÂU VỊ NGỮ TÍNH TỪ — tính từ làm vị ngữ, KHÔNG cần 是; thường có 很 đứng trước:\n• 我很高兴。Wǒ hěn gāoxìng. — Tôi rất vui.\n• Phủ định: 我不高兴。\n\n3) CÂU HỎI VỚI “吗” — đặt 吗 ở cuối câu trần thuật:\n• 你是老师吗？— Bạn là giáo viên phải không?\n• 你有名片吗？— Bạn có danh thiếp không?\n\n4) PHÓ TỪ “也” (cũng) — luôn đứng TRƯỚC động từ/tính từ, không đứng cuối câu:\n• 我也是学生。(đúng)  我是学生也。(sai)\n• 他也很高兴。\n\n5) HỎI HỌ LỊCH SỰ: 您贵姓？— Quý danh của ngài là gì? Đáp: 我姓王。",
+      "vocab": [
+        {
+          "hanzi": "不",
+          "pinyin": "bù",
+          "meaning": "không"
+        },
+        {
+          "hanzi": "的",
+          "pinyin": "de",
+          "meaning": "biểu thị sở hữu"
+        },
+        {
+          "hanzi": "对不起",
+          "pinyin": "duìbuqǐ",
+          "meaning": "xin lỗi"
+        },
+        {
+          "hanzi": "高兴",
+          "pinyin": "gāoxìng",
+          "meaning": "vui mừng"
+        },
+        {
+          "hanzi": "贵",
+          "pinyin": "guì",
+          "meaning": "quý"
+        },
+        {
+          "hanzi": "贵姓",
+          "pinyin": "guìxìng",
+          "meaning": "quý danh"
+        },
+        {
+          "hanzi": "吗",
+          "pinyin": "ma",
+          "meaning": "từ để hỏi"
+        },
+        {
+          "hanzi": "没关系",
+          "pinyin": "méi guānxi",
+          "meaning": "không sao"
+        },
+        {
+          "hanzi": "没有",
+          "pinyin": "méiyǒu",
+          "meaning": "không có"
+        },
+        {
+          "hanzi": "名片",
+          "pinyin": "míngpiàn",
+          "meaning": "danh thiếp"
+        },
+        {
+          "hanzi": "请问",
+          "pinyin": "qǐngwèn",
+          "meaning": "xin hỏi"
+        },
+        {
+          "hanzi": "认识",
+          "pinyin": "rènshi",
+          "meaning": "quen biết"
+        },
+        {
+          "hanzi": "问",
+          "pinyin": "wèn",
+          "meaning": "hỏi"
+        },
+        {
+          "hanzi": "先生",
+          "pinyin": "xiānsheng",
+          "meaning": "ngài, ông"
+        },
+        {
+          "hanzi": "姓",
+          "pinyin": "xìng",
+          "meaning": "họ"
+        },
+        {
+          "hanzi": "也",
+          "pinyin": "yě",
+          "meaning": "cũng"
+        },
+        {
+          "hanzi": "有",
+          "pinyin": "yǒu",
+          "meaning": "có"
+        },
+        {
+          "hanzi": "这",
+          "pinyin": "zhè",
+          "meaning": "này"
+        },
+        {
+          "hanzi": "黄文丽",
+          "pinyin": "Huáng Wénlì",
+          "meaning": "Hoàng Văn Lệ"
+        },
+        {
+          "hanzi": "马",
+          "pinyin": "Mǎ",
+          "meaning": "họ Mã"
+        },
+        {
+          "hanzi": "英国",
+          "pinyin": "Yīngguó",
+          "meaning": "Anh quốc"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Cách hỏi họ lịch sự nhất là:",
+            "options": [
+              "你叫什么名字？",
+              "您贵姓？",
+              "你是谁？",
+              "你姓吗？"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "这是我___名片。",
+            "hint": "Trợ từ chỉ sở hữu"
+          },
+          "answer": [
+            "的"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "也",
+              "很",
+              "高兴"
+            ],
+            "translation": "Tôi cũng rất vui."
+          },
+          "answer": [
+            "我",
+            "也",
+            "很",
+            "高兴"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "认识",
+            "options": [
+              "rènshi",
+              "rènshí",
+              "rěnshi",
+              "rènsi"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "高兴",
+              "名片",
+              "请问",
+              "没关系"
+            ],
+            "right": [
+              "xin hỏi",
+              "vui mừng",
+              "không sao",
+              "danh thiếp"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "d",
+            "2": "a",
+            "3": "c"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "很高兴认识你",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Rất vui được quen biết bạn",
+              "Xin lỗi bạn",
+              "Cảm ơn bạn",
+              "Hẹn gặp lại bạn"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Bạn đi đâu?",
+      "title_zh": "你去哪儿？",
+      "summary": "Đi taxi và hỏi giá tiền; câu hỏi chính phản, số đếm 1–100.",
+      "grammar": "1) CÂU HỎI CHÍNH PHẢN (正反疑问句) — ghép dạng khẳng định và phủ định của động từ/tính từ:\n• 你去不去？= 你去吗？ — Bạn có đi không?\n• 远不远？— Có xa không?  是不是？— Có phải không?\nLưu ý: câu hỏi chính phản KHÔNG dùng chung với 吗.\n\n2) SỐ ĐẾM 1–100\n• 一 二 三 四 五 六 七 八 九 十\n• 11–19: 十一, 十二 … 十九\n• Chục: 二十, 三十 … 九十; 21 = 二十一; 100 = 一百.\n\n3) HỎI GIÁ / SỐ LƯỢNG: 多少钱？— Bao nhiêu tiền? Đơn vị khẩu ngữ là 块: 三十五块.\n\n4) 到 + ĐỊA ĐIỂM — đến đâu đó: 到人民广场。到书店。",
+      "vocab": [
+        {
+          "hanzi": "不客气",
+          "pinyin": "bú kèqi",
+          "meaning": "không có gì"
+        },
+        {
+          "hanzi": "到",
+          "pinyin": "dào",
+          "meaning": "đến, tới"
+        },
+        {
+          "hanzi": "多少",
+          "pinyin": "duōshao",
+          "meaning": "bao nhiêu"
+        },
+        {
+          "hanzi": "广场",
+          "pinyin": "guǎngchǎng",
+          "meaning": "quảng trường"
+        },
+        {
+          "hanzi": "近",
+          "pinyin": "jìn",
+          "meaning": "gần"
+        },
+        {
+          "hanzi": "客气",
+          "pinyin": "kèqi",
+          "meaning": "khách sáo"
+        },
+        {
+          "hanzi": "块",
+          "pinyin": "kuài",
+          "meaning": "đồng"
+        },
+        {
+          "hanzi": "了",
+          "pinyin": "le",
+          "meaning": "rồi"
+        },
+        {
+          "hanzi": "哪儿 / 哪里",
+          "pinyin": "nǎr/nǎli",
+          "meaning": "đâu, ở đâu"
+        },
+        {
+          "hanzi": "钱",
+          "pinyin": "qián",
+          "meaning": "tiền"
+        },
+        {
+          "hanzi": "去",
+          "pinyin": "qù",
+          "meaning": "đi"
+        },
+        {
+          "hanzi": "人民",
+          "pinyin": "rénmín",
+          "meaning": "nhân dân"
+        },
+        {
+          "hanzi": "师傅",
+          "pinyin": "shīfu",
+          "meaning": "sư phụ, thầy"
+        },
+        {
+          "hanzi": "小姐",
+          "pinyin": "xiǎojiě",
+          "meaning": "tiểu thư, cô, em"
+        },
+        {
+          "hanzi": "谢谢",
+          "pinyin": "xièxie",
+          "meaning": "cảm ơn"
+        },
+        {
+          "hanzi": "远",
+          "pinyin": "yuǎn",
+          "meaning": "xa"
+        },
+        {
+          "hanzi": "再",
+          "pinyin": "zài",
+          "meaning": "lại"
+        },
+        {
+          "hanzi": "再见",
+          "pinyin": "zàijiàn",
+          "meaning": "hẹn gặp lại"
+        },
+        {
+          "hanzi": "知道",
+          "pinyin": "zhīdào",
+          "meaning": "biết"
+        },
+        {
+          "hanzi": "人民广场",
+          "pinyin": "Rénmín Guǎngchǎng",
+          "meaning": "quảng trường Nhân Dân"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào là câu hỏi chính phản?",
+            "options": [
+              "你去吗？",
+              "你去不去？",
+              "你去哪儿？",
+              "你去呢？"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "A: 多少___？B: 三十五块。",
+            "hint": "Từ chỉ tiền"
+          },
+          "answer": [
+            "钱"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "广场",
+            "options": [
+              "guǎngchǎng",
+              "guángchāng",
+              "guǎngcháng",
+              "kuǎngchǎng"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "去",
+              "人民广场"
+            ],
+            "translation": "Tôi đi quảng trường Nhân Dân."
+          },
+          "answer": [
+            "我",
+            "去",
+            "人民广场"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "远",
+              "近",
+              "块",
+              "师傅"
+            ],
+            "right": [
+              "gần",
+              "đồng (tiền)",
+              "xa",
+              "bác tài, thầy"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "b",
+            "3": "d"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "你去哪儿",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Bạn đi đâu?",
+              "Bạn tên gì?",
+              "Bạn ở đâu?",
+              "Bạn làm gì?"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Bạn muốn ăn gì?",
+      "title_zh": "你要吃什么？",
+      "summary": "Gọi món ăn, đồ uống; cách dùng lượng từ, câu hỏi lựa chọn với 还是.",
+      "grammar": "1) LƯỢNG TỪ (量词) — số từ + lượng từ + danh từ, KHÔNG nói số từ + danh từ:\n• 一个人, 两杯茶, 一碗米饭 (đúng);  两茶 (sai)\n• 个 gè dùng chung cho người và nhiều vật; 杯 bēi cho đồ uống; 碗 wǎn cho cơm/canh.\n• Số 2 khi đi với lượng từ dùng 两, không dùng 二: 两个人, 两杯咖啡.\n\n2) CÂU HỎI LỰA CHỌN VỚI “还是” (hay là):\n• 你喝茶还是喝咖啡？— Bạn uống trà hay uống cà phê?\n• 你要米饭还是要面？\nLưu ý: câu có 还是 thì KHÔNG thêm 吗.\n\n3) 要 + ĐỘNG TỪ / DANH TỪ — muốn, cần: 我要一杯奶茶。我要吃青菜。\n\n4) 一点儿 — một chút: 我要一点儿米饭。",
+      "vocab": [
+        {
+          "hanzi": "杯",
+          "pinyin": "bēi",
+          "meaning": "cốc, ly"
+        },
+        {
+          "hanzi": "茶",
+          "pinyin": "chá",
+          "meaning": "trà"
+        },
+        {
+          "hanzi": "吃",
+          "pinyin": "chī",
+          "meaning": "ăn"
+        },
+        {
+          "hanzi": "大",
+          "pinyin": "dà",
+          "meaning": "to, lớn"
+        },
+        {
+          "hanzi": "饿",
+          "pinyin": "è",
+          "meaning": "đói"
+        },
+        {
+          "hanzi": "个",
+          "pinyin": "gè",
+          "meaning": "cái"
+        },
+        {
+          "hanzi": "还",
+          "pinyin": "hái",
+          "meaning": "còn"
+        },
+        {
+          "hanzi": "还是",
+          "pinyin": "háishi",
+          "meaning": "hay là"
+        },
+        {
+          "hanzi": "喝",
+          "pinyin": "hē",
+          "meaning": "uống"
+        },
+        {
+          "hanzi": "咖啡",
+          "pinyin": "kāfēi",
+          "meaning": "cà phê"
+        },
+        {
+          "hanzi": "快",
+          "pinyin": "kuài",
+          "meaning": "nhanh"
+        },
+        {
+          "hanzi": "两",
+          "pinyin": "liǎng",
+          "meaning": "hai"
+        },
+        {
+          "hanzi": "米饭",
+          "pinyin": "mǐfàn",
+          "meaning": "cơm"
+        },
+        {
+          "hanzi": "奶茶",
+          "pinyin": "nǎichá",
+          "meaning": "trà sữa"
+        },
+        {
+          "hanzi": "牛肉",
+          "pinyin": "niúròu",
+          "meaning": "thịt bò"
+        },
+        {
+          "hanzi": "青菜",
+          "pinyin": "qīngcài",
+          "meaning": "rau xanh"
+        },
+        {
+          "hanzi": "碗",
+          "pinyin": "wǎn",
+          "meaning": "bát"
+        },
+        {
+          "hanzi": "小",
+          "pinyin": "xiǎo",
+          "meaning": "nhỏ, bé"
+        },
+        {
+          "hanzi": "要",
+          "pinyin": "yào",
+          "meaning": "muốn, cần, phải"
+        },
+        {
+          "hanzi": "一共",
+          "pinyin": "yígòng",
+          "meaning": "tất cả, tổng cộng"
+        },
+        {
+          "hanzi": "(一)点儿",
+          "pinyin": "(yì)diǎnr",
+          "meaning": "một chút"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Cách nói ĐÚNG là:",
+            "options": [
+              "两茶",
+              "两个茶",
+              "两杯茶",
+              "二杯茶"
+            ]
+          },
+          "answer": "C"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "你喝茶___喝咖啡？",
+            "hint": "Từ nối trong câu hỏi lựa chọn"
+          },
+          "answer": [
+            "还是"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "米饭",
+            "options": [
+              "mǐfàn",
+              "mífàn",
+              "mǐfǎn",
+              "mìfàn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "要",
+              "一杯",
+              "奶茶"
+            ],
+            "translation": "Tôi muốn một cốc trà sữa."
+          },
+          "answer": [
+            "我",
+            "要",
+            "一杯",
+            "奶茶"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "饿",
+              "青菜",
+              "牛肉",
+              "一共"
+            ],
+            "right": [
+              "rau xanh",
+              "tổng cộng",
+              "đói",
+              "thịt bò"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我要两碗米饭",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Tôi muốn hai bát cơm",
+              "Tôi muốn hai cốc trà",
+              "Tôi muốn một bát cơm",
+              "Tôi không ăn cơm"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Bạn làm việc ở đâu?",
+      "title_zh": "你在哪儿工作？",
+      "summary": "Lần đầu gặp mặt; hỏi và trả lời về công việc, nơi làm việc, nơi học tập.",
+      "grammar": "1) CỤM GIỚI TỪ “在 + NƠI CHỐN” LÀM TRẠNG NGỮ — đứng TRƯỚC động từ:\n• 我在北京大学学习。Wǒ zài Běijīng Dàxué xuéxí. — Tôi học ở Đại học Bắc Kinh.\n• 他在苹果公司工作。— Anh ấy làm việc ở công ty Apple.\n• Hỏi: 你在哪儿工作？你在哪儿学习？\nLưu ý: KHÔNG nói 我学习在北京大学。\n\n2) 做什么工作 — làm nghề gì: 你做什么工作？我是老师。\n\n3) 是 + NGHỀ NGHIỆP: 她是留学生。他是医生。\n\n4) ĐẠI TỪ NHÂN XƯNG: 我/你/他/她 + 们 → 我们, 你们, 他们.",
+      "vocab": [
+        {
+          "hanzi": "大学",
+          "pinyin": "dàxué",
+          "meaning": "đại học"
+        },
+        {
+          "hanzi": "对",
+          "pinyin": "duì",
+          "meaning": "đúng"
+        },
+        {
+          "hanzi": "工作",
+          "pinyin": "gōngzuò",
+          "meaning": "công việc"
+        },
+        {
+          "hanzi": "公司",
+          "pinyin": "gōngsī",
+          "meaning": "công ty"
+        },
+        {
+          "hanzi": "汉语",
+          "pinyin": "Hànyǔ",
+          "meaning": "tiếng Hán"
+        },
+        {
+          "hanzi": "教",
+          "pinyin": "jiāo",
+          "meaning": "dạy"
+        },
+        {
+          "hanzi": "留学生",
+          "pinyin": "liúxuéshēng",
+          "meaning": "lưu học sinh"
+        },
+        {
+          "hanzi": "男",
+          "pinyin": "nán",
+          "meaning": "nam"
+        },
+        {
+          "hanzi": "男朋友",
+          "pinyin": "nánpéngyou",
+          "meaning": "bạn trai"
+        },
+        {
+          "hanzi": "女",
+          "pinyin": "nǚ",
+          "meaning": "nữ"
+        },
+        {
+          "hanzi": "女朋友",
+          "pinyin": "nǚpéngyou",
+          "meaning": "bạn gái"
+        },
+        {
+          "hanzi": "朋友",
+          "pinyin": "péngyou",
+          "meaning": "bạn, bạn bè"
+        },
+        {
+          "hanzi": "苹果",
+          "pinyin": "píngguǒ",
+          "meaning": "quả táo"
+        },
+        {
+          "hanzi": "她",
+          "pinyin": "tā",
+          "meaning": "chị ấy, bà ấy"
+        },
+        {
+          "hanzi": "学",
+          "pinyin": "xué",
+          "meaning": "học"
+        },
+        {
+          "hanzi": "学生",
+          "pinyin": "xuésheng",
+          "meaning": "học sinh, sinh viên"
+        },
+        {
+          "hanzi": "学习",
+          "pinyin": "xuéxí",
+          "meaning": "học tập"
+        },
+        {
+          "hanzi": "英语",
+          "pinyin": "Yīngyǔ",
+          "meaning": "tiếng Anh"
+        },
+        {
+          "hanzi": "在",
+          "pinyin": "zài",
+          "meaning": "đang, ở tại"
+        },
+        {
+          "hanzi": "这儿 / 这里",
+          "pinyin": "zhèr/zhèli",
+          "meaning": "ở đây"
+        },
+        {
+          "hanzi": "中学",
+          "pinyin": "zhōngxué",
+          "meaning": "trung học"
+        },
+        {
+          "hanzi": "做",
+          "pinyin": "zuò",
+          "meaning": "làm"
+        },
+        {
+          "hanzi": "北京",
+          "pinyin": "Běijīng",
+          "meaning": "Bắc Kinh"
+        },
+        {
+          "hanzi": "海伦",
+          "pinyin": "Hǎilún",
+          "meaning": "Helen"
+        },
+        {
+          "hanzi": "马文",
+          "pinyin": "Mǎ Wén",
+          "meaning": "Mã Văn"
+        },
+        {
+          "hanzi": "苹果公司",
+          "pinyin": "Píngguǒ Gōngsī",
+          "meaning": "công ty Apple"
+        },
+        {
+          "hanzi": "上海",
+          "pinyin": "Shànghǎi",
+          "meaning": "Thượng Hải"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu ĐÚNG là:",
+            "options": [
+              "我学习在北京大学。",
+              "我在北京大学学习。",
+              "我学习北京大学在。",
+              "在我北京大学学习。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "他___苹果公司工作。",
+            "hint": "Giới từ chỉ nơi chốn"
+          },
+          "answer": [
+            "在"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "工作",
+            "options": [
+              "gōngzuò",
+              "gòngzuo",
+              "gōngzhuò",
+              "gōngzòu"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "你",
+              "在",
+              "哪儿",
+              "工作"
+            ],
+            "translation": "Bạn làm việc ở đâu?"
+          },
+          "answer": [
+            "你",
+            "在",
+            "哪儿",
+            "工作"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "公司",
+              "留学生",
+              "中学",
+              "朋友"
+            ],
+            "right": [
+              "lưu học sinh",
+              "bạn bè",
+              "công ty",
+              "trung học"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我在大学教汉语",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Tôi dạy tiếng Hán ở trường đại học",
+              "Tôi học tiếng Hán ở đại học",
+              "Tôi làm việc ở công ty",
+              "Tôi là sinh viên đại học"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Ngân hàng Trung Quốc ở đâu?",
+      "title_zh": "中国银行在哪儿？",
+      "summary": "Hỏi đường và chỉ đường; câu tồn tại với 有, động từ 在, phó từ 就.",
+      "grammar": "1) CÂU CHỮ “有” CHỈ SỰ TỒN TẠI: NƠI CHỐN + 有 + NGƯỜI/VẬT\n• 附近有银行吗？— Gần đây có ngân hàng không?\n• 前面有一家书店。— Phía trước có một hiệu sách.\n• Phủ định dùng 没有: 附近没有超市。\n\n2) ĐỘNG TỪ “在”: NGƯỜI/VẬT + 在 + NƠI CHỐN\n• 中国银行在哪儿？— Ngân hàng Trung Quốc ở đâu?\n• 银行在超市对面。— Ngân hàng ở đối diện siêu thị.\nSo sánh: 有 giới thiệu cái gì tồn tại ở một nơi; 在 nói một cái đã biết nằm ở đâu.\n\n3) PHÓ TỪ “就” — nhấn mạnh “ngay, chính là”: 银行就在前面。前面就是。\n\n4) TỪ CHỈ PHƯƠNG HƯỚNG: 前面, 后面, 左, 右, 对面, 附近; 往前走 (đi thẳng), 往左拐 (rẽ trái), 然后 (sau đó).",
+      "vocab": [
+        {
+          "hanzi": "超市",
+          "pinyin": "chāoshì",
+          "meaning": "siêu thị"
+        },
+        {
+          "hanzi": "从",
+          "pinyin": "cóng",
+          "meaning": "từ"
+        },
+        {
+          "hanzi": "对面",
+          "pinyin": "duìmiàn",
+          "meaning": "đối diện"
+        },
+        {
+          "hanzi": "饭店",
+          "pinyin": "fàndiàn",
+          "meaning": "nhà hàng"
+        },
+        {
+          "hanzi": "附近",
+          "pinyin": "fùjìn",
+          "meaning": "gần đây"
+        },
+        {
+          "hanzi": "拐",
+          "pinyin": "guǎi",
+          "meaning": "rẽ"
+        },
+        {
+          "hanzi": "家",
+          "pinyin": "jiā",
+          "meaning": "lượng từ (nhà, cửa hàng)"
+        },
+        {
+          "hanzi": "就",
+          "pinyin": "jiù",
+          "meaning": "ngay, chính là"
+        },
+        {
+          "hanzi": "面",
+          "pinyin": "miàn",
+          "meaning": "bên, phía"
+        },
+        {
+          "hanzi": "前",
+          "pinyin": "qián",
+          "meaning": "phía trước"
+        },
+        {
+          "hanzi": "然后",
+          "pinyin": "ránhòu",
+          "meaning": "sau đó"
+        },
+        {
+          "hanzi": "书店",
+          "pinyin": "shūdiàn",
+          "meaning": "nhà sách"
+        },
+        {
+          "hanzi": "往",
+          "pinyin": "wǎng",
+          "meaning": "đi đến, hướng tới"
+        },
+        {
+          "hanzi": "银行",
+          "pinyin": "yínháng",
+          "meaning": "ngân hàng"
+        },
+        {
+          "hanzi": "右",
+          "pinyin": "yòu",
+          "meaning": "bên phải"
+        },
+        {
+          "hanzi": "走",
+          "pinyin": "zǒu",
+          "meaning": "đi"
+        },
+        {
+          "hanzi": "左",
+          "pinyin": "zuǒ",
+          "meaning": "bên trái"
+        },
+        {
+          "hanzi": "北京银行",
+          "pinyin": "Běijīng Yínháng",
+          "meaning": "Ngân hàng Bắc Kinh"
+        },
+        {
+          "hanzi": "全家超市",
+          "pinyin": "Quánjiā Chāoshì",
+          "meaning": "siêu thị Toàn Gia"
+        },
+        {
+          "hanzi": "四川饭店",
+          "pinyin": "Sìchuān Fàndiàn",
+          "meaning": "nhà hàng Tứ Xuyên"
+        },
+        {
+          "hanzi": "中国银行",
+          "pinyin": "Zhōngguó Yínháng",
+          "meaning": "Ngân hàng Trung Quốc"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“附近有银行吗？” nghĩa là gì?",
+            "options": [
+              "Ngân hàng ở đâu?",
+              "Gần đây có ngân hàng không?",
+              "Bạn đi ngân hàng à?",
+              "Ngân hàng có xa không?"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "书店___超市对面。",
+            "hint": "Động từ chỉ vị trí"
+          },
+          "answer": [
+            "在"
+          ]
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "往前",
+              "走",
+              "然后",
+              "往左拐"
+            ],
+            "translation": "Đi thẳng về phía trước, sau đó rẽ trái."
+          },
+          "answer": [
+            "往前",
+            "走",
+            "然后",
+            "往左拐"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "附近",
+            "options": [
+              "fùjìn",
+              "fújìn",
+              "fùjīn",
+              "fǔjìn"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "左",
+              "右",
+              "对面",
+              "超市"
+            ],
+            "right": [
+              "đối diện",
+              "bên trái",
+              "siêu thị",
+              "bên phải"
+            ]
+          },
+          "answer": {
+            "0": "b",
+            "1": "d",
+            "2": "a",
+            "3": "c"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "银行就在前面",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Ngân hàng ở ngay phía trước",
+              "Ngân hàng rất xa",
+              "Phía trước không có ngân hàng",
+              "Ngân hàng ở bên trái"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Sinh nhật bạn ngày mấy tháng mấy?",
+      "title_zh": "你的生日是几月几号？",
+      "summary": "Hỏi và giới thiệu ngày tháng, thứ; đưa ra lời mời.",
+      "grammar": "1) CÂU VỊ NGỮ DANH TỪ — ngày tháng, tuổi, giá tiền có thể làm vị ngữ mà KHÔNG cần 是:\n• 今天八月十号。(= 今天是八月十号。)\n• 明天星期五。\nPhủ định thì bắt buộc có 是: 今天不是八月十号。\n\n2) CÁCH NÓI NGÀY THÁNG – THỨ\n• Tháng: 一月, 二月 … 十二月;  Ngày: 一号 … 三十一号 (viết là 日).\n• Thứ: 星期一 … 星期六, 星期天/星期日.\n• Hỏi: 今天几月几号？今天星期几？你的生日是几月几号？\n\n3) TRẠNG NGỮ THỜI GIAN — đứng ĐẦU CÂU hoặc SAU CHỦ NGỮ, luôn TRƯỚC động từ:\n• 明天我有空儿。= 我明天有空儿。\n• 晚上我们一起吃晚饭。\nLưu ý: KHÔNG nói 我有空儿明天。\n\n4) MỜI: 你晚上有空儿吗？我请你吃晚饭。太好了！",
+      "vocab": [
+        {
+          "hanzi": "电影",
+          "pinyin": "diànyǐng",
+          "meaning": "phim"
+        },
+        {
+          "hanzi": "号",
+          "pinyin": "hào",
+          "meaning": "ngày"
+        },
+        {
+          "hanzi": "几",
+          "pinyin": "jǐ",
+          "meaning": "mấy"
+        },
+        {
+          "hanzi": "见",
+          "pinyin": "jiàn",
+          "meaning": "gặp"
+        },
+        {
+          "hanzi": "今天",
+          "pinyin": "jīntiān",
+          "meaning": "hôm nay"
+        },
+        {
+          "hanzi": "看",
+          "pinyin": "kàn",
+          "meaning": "nhìn, xem"
+        },
+        {
+          "hanzi": "空儿",
+          "pinyin": "kòngr",
+          "meaning": "thời gian rảnh"
+        },
+        {
+          "hanzi": "快乐",
+          "pinyin": "kuàilè",
+          "meaning": "vui, hạnh phúc"
+        },
+        {
+          "hanzi": "那",
+          "pinyin": "nà",
+          "meaning": "vậy, vậy thì"
+        },
+        {
+          "hanzi": "漂亮",
+          "pinyin": "piàoliang",
+          "meaning": "đẹp, xinh đẹp"
+        },
+        {
+          "hanzi": "请",
+          "pinyin": "qǐng",
+          "meaning": "mời"
+        },
+        {
+          "hanzi": "生日",
+          "pinyin": "shēngrì",
+          "meaning": "sinh nhật"
+        },
+        {
+          "hanzi": "事",
+          "pinyin": "shì",
+          "meaning": "việc, vấn đề"
+        },
+        {
+          "hanzi": "太……了",
+          "pinyin": "tài…le",
+          "meaning": "quá"
+        },
+        {
+          "hanzi": "晚饭",
+          "pinyin": "wǎnfàn",
+          "meaning": "bữa tối"
+        },
+        {
+          "hanzi": "晚上",
+          "pinyin": "wǎnshang",
+          "meaning": "buổi tối"
+        },
+        {
+          "hanzi": "为什么",
+          "pinyin": "wèi shénme",
+          "meaning": "tại sao"
+        },
+        {
+          "hanzi": "想",
+          "pinyin": "xiǎng",
+          "meaning": "muốn, suy nghĩ"
+        },
+        {
+          "hanzi": "星期",
+          "pinyin": "xīngqī",
+          "meaning": "tuần"
+        },
+        {
+          "hanzi": "星期五",
+          "pinyin": "xīngqīwǔ",
+          "meaning": "thứ sáu"
+        },
+        {
+          "hanzi": "学校",
+          "pinyin": "xuéxiào",
+          "meaning": "trường học"
+        },
+        {
+          "hanzi": "有空儿",
+          "pinyin": "yǒu kòngr",
+          "meaning": "rảnh rỗi"
+        },
+        {
+          "hanzi": "月",
+          "pinyin": "yuè",
+          "meaning": "tháng"
+        },
+        {
+          "hanzi": "真",
+          "pinyin": "zhēn",
+          "meaning": "thật, thật là"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Câu nào ĐÚNG?",
+            "options": [
+              "我有空儿明天。",
+              "明天我有空儿。",
+              "我明天空儿有。",
+              "有空儿我明天。"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "今天八月十___。",
+            "hint": "Đơn vị chỉ ngày trong khẩu ngữ"
+          },
+          "answer": [
+            "号"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "生日",
+            "options": [
+              "shēngrì",
+              "shèngrì",
+              "shēngrí",
+              "shēnrì"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "你的",
+              "生日",
+              "是",
+              "几月几号"
+            ],
+            "translation": "Sinh nhật bạn là ngày mấy tháng mấy?"
+          },
+          "answer": [
+            "你的",
+            "生日",
+            "是",
+            "几月几号"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "星期",
+              "晚上",
+              "有空儿",
+              "请"
+            ],
+            "right": [
+              "buổi tối",
+              "mời",
+              "tuần",
+              "rảnh rỗi"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "明天星期五",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Ngày mai là thứ sáu",
+              "Hôm nay là thứ sáu",
+              "Ngày mai là thứ năm",
+              "Ngày mai là chủ nhật"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Bạn thích phim Trung Quốc hay phim Mỹ?",
+      "title_zh": "你喜欢中国电影还是美国电影？",
+      "summary": "Hỏi về sở thích; hỏi và nói về phương tiện đi lại.",
+      "grammar": "1) TRỢ TỪ NGỮ KHÍ “吧” — dùng để đề nghị, rủ rê hoặc phỏng đoán, làm câu nói mềm hơn:\n• 我们一起去看电影吧。— Chúng ta cùng đi xem phim nhé.\n• 坐地铁去吧。— Đi tàu điện ngầm đi.\n• 你是学生吧？— Bạn là sinh viên phải không nhỉ?\n\n2) 喜欢 + DANH TỪ / ĐỘNG TỪ — thích:\n• 我喜欢中国电影。我喜欢走路。\n• Hỏi lựa chọn: 你喜欢中国电影还是美国电影？\n\n3) PHƯƠNG TIỆN ĐI LẠI: 坐地铁 / 坐公交车 / 坐出租车 (đi bằng…), 走路 (đi bộ).\n• 你怎么去？— Bạn đi bằng gì / đi thế nào?\n• 我坐地铁去。— Tôi đi bằng tàu điện ngầm.\n\n4) 又……又…… — vừa… vừa…: 地铁又快又便宜。",
+      "vocab": [
+        {
+          "hanzi": "吧",
+          "pinyin": "ba",
+          "meaning": "trợ từ ngữ khí"
+        },
+        {
+          "hanzi": "菜",
+          "pinyin": "cài",
+          "meaning": "đồ ăn, món ăn"
+        },
+        {
+          "hanzi": "出租车",
+          "pinyin": "chūzūchē",
+          "meaning": "xe taxi"
+        },
+        {
+          "hanzi": "地铁",
+          "pinyin": "dìtiě",
+          "meaning": "tàu điện ngầm"
+        },
+        {
+          "hanzi": "电影院",
+          "pinyin": "diànyǐngyuàn",
+          "meaning": "rạp chiếu phim"
+        },
+        {
+          "hanzi": "都",
+          "pinyin": "dōu",
+          "meaning": "đều"
+        },
+        {
+          "hanzi": "非常",
+          "pinyin": "fēicháng",
+          "meaning": "rất, cực kì"
+        },
+        {
+          "hanzi": "公交车",
+          "pinyin": "gōngjiāochē",
+          "meaning": "xe buýt"
+        },
+        {
+          "hanzi": "好吃",
+          "pinyin": "hǎochī",
+          "meaning": "ngon"
+        },
+        {
+          "hanzi": "明天",
+          "pinyin": "míngtiān",
+          "meaning": "ngày mai"
+        },
+        {
+          "hanzi": "那儿 / 那里",
+          "pinyin": "nàr/nàli",
+          "meaning": "ở đó, nơi đó"
+        },
+        {
+          "hanzi": "便宜",
+          "pinyin": "piányi",
+          "meaning": "rẻ"
+        },
+        {
+          "hanzi": "喜欢",
+          "pinyin": "xǐhuan",
+          "meaning": "thích"
+        },
+        {
+          "hanzi": "有名",
+          "pinyin": "yǒu míng",
+          "meaning": "nổi tiếng"
+        },
+        {
+          "hanzi": "又",
+          "pinyin": "yòu",
+          "meaning": "vừa, lại"
+        },
+        {
+          "hanzi": "又……又……",
+          "pinyin": "yòu…yòu…",
+          "meaning": "vừa... vừa..."
+        },
+        {
+          "hanzi": "怎么",
+          "pinyin": "zěnme",
+          "meaning": "thế nào"
+        },
+        {
+          "hanzi": "怎么样",
+          "pinyin": "zěnmeyàng",
+          "meaning": "thế nào"
+        },
+        {
+          "hanzi": "走路",
+          "pinyin": "zǒu lù",
+          "meaning": "đi bộ"
+        },
+        {
+          "hanzi": "坐",
+          "pinyin": "zuò",
+          "meaning": "ngồi"
+        },
+        {
+          "hanzi": "韩国",
+          "pinyin": "Hánguó",
+          "meaning": "Hàn Quốc"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "“我们一起去看电影吧。” mang sắc thái gì?",
+            "options": [
+              "Câu hỏi nghi ngờ",
+              "Lời rủ rê, đề nghị",
+              "Câu mệnh lệnh gắt",
+              "Câu phủ định"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "地铁___快___便宜。",
+            "hint": "Cấu trúc “vừa… vừa…”"
+          },
+          "answer": [
+            "又",
+            "又"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "出租车",
+            "options": [
+              "chūzūchē",
+              "chūzhūchē",
+              "chūzūjū",
+              "chuzūchē"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "坐",
+              "地铁",
+              "去"
+            ],
+            "translation": "Tôi đi bằng tàu điện ngầm."
+          },
+          "answer": [
+            "我",
+            "坐",
+            "地铁",
+            "去"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "公交车",
+              "走路",
+              "便宜",
+              "好吃"
+            ],
+            "right": [
+              "đi bộ",
+              "ngon",
+              "xe buýt",
+              "rẻ"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "你怎么去电影院",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Bạn đến rạp phim bằng gì?",
+              "Bạn đi xem phim với ai?",
+              "Rạp phim ở đâu?",
+              "Bạn thích phim gì?"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Nhà bạn có mấy người?",
+      "title_zh": "你家有几口人？",
+      "summary": "Hỏi và giới thiệu các thành viên trong gia đình; hỏi và trả lời về tuổi tác.",
+      "grammar": "1) HỎI SỐ NGƯỜI TRONG GIA ĐÌNH: 你家有几口人？— Nhà bạn có mấy người?\n• 口 kǒu là lượng từ riêng để đếm thành viên gia đình: 我家有四口人。\n• Giới thiệu: 爸爸、妈妈、哥哥和我。\n\n2) HỎI TUỔI — tùy đối tượng:\n• 你多大？— dùng với người ngang tuổi hoặc lớn hơn một chút.\n• 你几岁？— dùng với trẻ nhỏ (dưới 10 tuổi).\n• 您多大年纪？— lễ phép với người lớn tuổi.\nTrả lời: 我二十岁。他今年三十岁。\n\n3) LƯỢNG TỪ 只 — dùng cho vật nuôi nhỏ: 一只狗, 两只猫.\n\n4) 和 (và) — nối danh từ, KHÔNG nối hai mệnh đề: 爸爸和妈妈 (đúng).",
+      "vocab": [
+        {
+          "hanzi": "爸爸",
+          "pinyin": "bàba",
+          "meaning": "bố"
+        },
+        {
+          "hanzi": "弟弟",
+          "pinyin": "dìdi",
+          "meaning": "em trai"
+        },
+        {
+          "hanzi": "多大",
+          "pinyin": "duō dà",
+          "meaning": "bao nhiêu tuổi"
+        },
+        {
+          "hanzi": "哥哥",
+          "pinyin": "gēge",
+          "meaning": "anh trai"
+        },
+        {
+          "hanzi": "狗",
+          "pinyin": "gǒu",
+          "meaning": "con chó"
+        },
+        {
+          "hanzi": "和",
+          "pinyin": "hé",
+          "meaning": "và"
+        },
+        {
+          "hanzi": "家人",
+          "pinyin": "jiārén",
+          "meaning": "người nhà"
+        },
+        {
+          "hanzi": "姐姐",
+          "pinyin": "jiějie",
+          "meaning": "chị gái"
+        },
+        {
+          "hanzi": "今年",
+          "pinyin": "jīnnián",
+          "meaning": "năm nay"
+        },
+        {
+          "hanzi": "可爱",
+          "pinyin": "kě'ài",
+          "meaning": "dễ thương"
+        },
+        {
+          "hanzi": "口",
+          "pinyin": "kǒu",
+          "meaning": "lượng từ (người trong nhà)"
+        },
+        {
+          "hanzi": "律师",
+          "pinyin": "lǜshī",
+          "meaning": "luật sư"
+        },
+        {
+          "hanzi": "妈妈",
+          "pinyin": "māma",
+          "meaning": "mẹ"
+        },
+        {
+          "hanzi": "妹妹",
+          "pinyin": "mèimei",
+          "meaning": "em gái"
+        },
+        {
+          "hanzi": "们",
+          "pinyin": "men",
+          "meaning": "từ chỉ số nhiều"
+        },
+        {
+          "hanzi": "谁",
+          "pinyin": "shéi",
+          "meaning": "ai"
+        },
+        {
+          "hanzi": "岁",
+          "pinyin": "suì",
+          "meaning": "tuổi"
+        },
+        {
+          "hanzi": "他们",
+          "pinyin": "tāmen",
+          "meaning": "họ"
+        },
+        {
+          "hanzi": "医生",
+          "pinyin": "yīshēng",
+          "meaning": "bác sĩ"
+        },
+        {
+          "hanzi": "照片",
+          "pinyin": "zhàopiàn",
+          "meaning": "ảnh"
+        },
+        {
+          "hanzi": "只",
+          "pinyin": "zhī",
+          "meaning": "con (lượng từ)"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "prompt": "Lượng từ dùng để đếm số người trong gia đình là:",
+            "options": [
+              "个",
+              "口",
+              "只",
+              "位"
+            ]
+          },
+          "answer": "B"
+        },
+        {
+          "type": "fill_blank",
+          "content": {
+            "prompt": "我家有四___人。",
+            "hint": "Lượng từ đếm người nhà"
+          },
+          "answer": [
+            "口"
+          ]
+        },
+        {
+          "type": "pinyin_choice",
+          "content": {
+            "hanzi": "姐姐",
+            "options": [
+              "jiějie",
+              "jiējie",
+              "jièjie",
+              "jiéjie"
+            ]
+          },
+          "answer": "A"
+        },
+        {
+          "type": "reorder",
+          "content": {
+            "tokens": [
+              "我",
+              "今年",
+              "二十",
+              "岁"
+            ],
+            "translation": "Năm nay tôi hai mươi tuổi."
+          },
+          "answer": [
+            "我",
+            "今年",
+            "二十",
+            "岁"
+          ]
+        },
+        {
+          "type": "matching",
+          "content": {
+            "left": [
+              "爸爸",
+              "妹妹",
+              "弟弟",
+              "医生"
+            ],
+            "right": [
+              "em gái",
+              "bác sĩ",
+              "bố",
+              "em trai"
+            ]
+          },
+          "answer": {
+            "0": "c",
+            "1": "a",
+            "2": "d",
+            "3": "b"
+          }
+        },
+        {
+          "type": "listening",
+          "content": {
+            "tts": "我家有一只狗",
+            "prompt": "Nghe và chọn nghĩa đúng",
+            "options": [
+              "Nhà tôi có một con chó",
+              "Nhà tôi có một người",
+              "Nhà tôi nuôi hai con chó",
+              "Tôi thích chó"
+            ]
+          },
+          "answer": "A"
+        }
+      ]
+    }
+  ]
+}
