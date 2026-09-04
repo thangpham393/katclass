@@ -1027,19 +1027,28 @@ export async function fetchMakeupForSession(sessionId: string): Promise<MakeupCr
  * chọn ngày giờ, phòng, GV; điểm danh 'makeup' xong là buổi khép lại.
  * GV đứng buổi được tính công như buổi thường. Trả về id buổi mới.
  */
+/**
+ * Buổi phát sinh ngoài lịch cố định.
+ *
+ * - Có `class_id`: lớp học tăng buổi trong tuần → coi như buổi thường của lớp
+ *   (`type: 'regular'`), danh sách điểm danh tự lấy học viên đang học của lớp.
+ * - Không có `class_id`: buổi bù riêng, học viên xếp vào từ hàng chờ học bù.
+ */
 export async function createStandaloneMakeupSession(input: {
   date: string;
   start_time: string;
   end_time: string;
   room_id: string | null;
   teacher_id: string;
+  class_id?: string | null;
   note?: string | null;
 }): Promise<string> {
+  const classId = input.class_id || null;
   const { data, error } = await getSupabase()
     .from("sessions")
     .insert({
-      class_id: null,
-      type: "makeup",
+      class_id: classId,
+      type: classId ? "regular" : "makeup",
       status: "scheduled",
       date: input.date,
       start_time: input.start_time,

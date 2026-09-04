@@ -22,8 +22,10 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { cn } from "@/lib/utils";
 import {
+  classTeachers,
   createStandaloneMakeupSession,
   dbErrorMessage,
+  fetchClasses,
   fetchProfilesByRole,
   fetchRooms,
   saveAttendance,
@@ -268,7 +270,7 @@ export default function AdminAttendancePage() {
         <Button variant="outline" onClick={() => setDate(todayISO())}>Hôm nay</Button>
         {canManageSessions && (
           <Button variant="outline" onClick={() => setBooking(true)}>
-            <CalendarPlus className="h-4 w-4" /> Đặt buổi học lẻ
+            <CalendarPlus className="h-4 w-4" /> Đặt buổi phát sinh
           </Button>
         )}
         <Link
@@ -294,7 +296,7 @@ export default function AdminAttendancePage() {
           title={rows.length === 0 ? `Không có ca dạy nào ${fmtDateLabel(date).toLowerCase()}` : "Không có ca nào khớp bộ lọc"}
           description={
             rows.length === 0
-              ? "Sinh buổi học cho lớp ở trang Lớp học, hoặc đặt một buổi học lẻ."
+              ? "Sinh buổi học cho lớp ở trang Lớp học, hoặc đặt một buổi phát sinh."
               : "Thử bỏ bớt bộ lọc hoặc đổi từ khóa."
           }
         />
@@ -442,11 +444,19 @@ function SessionCard({
   );
 }
 
-/* ================= Đặt buổi học lẻ ================= */
+/* ================= Đặt buổi phát sinh (tăng buổi cho lớp / bù riêng) ================= */
 
 async function fetchBookingOptions() {
-  const [rooms, teachers] = await Promise.all([fetchRooms(), fetchProfilesByRole("teacher")]);
-  return { rooms, teachers };
+  const [rooms, teachers, classes] = await Promise.all([
+    fetchRooms(),
+    fetchProfilesByRole("teacher"),
+    fetchClasses(),
+  ]);
+  return {
+    rooms,
+    teachers,
+    classes: classes.filter((c) => c.status === "active" || c.status === "planned"),
+  };
 }
 
 function BookSessionModal({
@@ -460,6 +470,7 @@ function BookSessionModal({
 }) {
   const { data: opts } = useLoad(fetchBookingOptions);
   const [day, setDay] = useState(date);
+  const [classId, setClassId] = useState("");
   const [start, setStart] = useState("18:00");
   const [end, setEnd] = useState("19:30");
   const [roomId, setRoomId] = useState("");
@@ -483,6 +494,7 @@ function BookSessionModal({
         end_time: end,
         room_id: roomId || null,
         teacher_id: teacherId,
+        class_id: classId || null,
         note,
       });
       onCreated();
@@ -493,9 +505,27 @@ function BookSessionModal({
   }
 
   return (
-    <Modal open onClose={onClose} title="Đặt buổi học lẻ">
+    <Modal open onClose={onClose} title="Đặt buổi phát sinh">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <ErrorNote message={error} />}
+        <Field label="Lớp học">
+          <Select
+            value={classId}
+            onChange={(e) => {
+              const id = e.target.value;
+              setClassId(id);
+              // Gợi ý sẵn GV phụ trách lớp cho đỡ phải chọn lại
+              const cls = (opts?.classes ?? []).find((c) => c.id === id);
+              const main = cls ? classTeachers(cls)[0] : null;
+              if (main) setTeacherId(main.id);
+            }}
+          >
+            <option value="">Không gắn lớp (buổi bù riêng)</option>
+            {(opts?.classes ?? []).map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </Select>
+        </Field>
         <Field label="Ngày" required>
           <Input type="date" value={day} onChange={(e) => setDay(e.target.value)} required />
         </Field>
@@ -527,9 +557,20 @@ function BookSessionModal({
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Bù bài 12 cho nhóm HSK2..." />
         </Field>
         <p className="rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
-          Buổi lẻ không gắn lớp nào. Tạo xong vào{" "}
-          <Link href="/admin/makeup" className="font-medium text-primary hover:underline">hàng chờ học bù</Link>{" "}
-          xếp học viên vào buổi này, rồi quay lại đây điểm danh. Giáo viên đứng buổi vẫn được tính công như buổi thường.
+          {classId ? (
+            <>
+              Buổi tăng cường của lớp: cả lớp sẽ hiện sẵn trong danh sách điểm danh của ngày này,
+              tính buổi như buổi thường. Muốn xếp thêm học viên lớp khác vào học bù thì vào{" "}
+              <Link href="/admin/makeup" className="font-medium text-primary hover:underline">hàng chờ học bù</Link>.
+            </>
+          ) : (
+            <>
+              Buổi lẻ không gắn lớp nào. Tạo xong vào{" "}
+              <Link href="/admin/makeup" className="font-medium text-primary hover:underline">hàng chờ học bù</Link>{" "}
+              xếp học viên vào buổi này, rồi quay lại đây điểm danh.
+            </>
+          )}{" "}
+          Giáo viên đứng buổi vẫn được tính công như buổi thường.
         </p>
         <div className="flex justify-end gap-2 pt-1">
           <Button type="button" variant="outline" onClick={onClose}>Hủy</Button>
