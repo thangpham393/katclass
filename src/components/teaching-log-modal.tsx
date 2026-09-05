@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
+import { Clock, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -10,11 +10,14 @@ import { ErrorNote } from "@/components/ui/loading";
 import { dbErrorMessage, WEEKDAY_LABELS, sessionClassLabel } from "@/lib/db";
 import { fetchSessionLessons } from "@/lib/db-content";
 import {
+  canTeacherUndoLog,
+  deleteTeachingLog,
   pickLog,
   saveTeachingLog,
   sessionHours,
   type TeachingLogRow,
 } from "@/lib/db-tuition";
+import { useAuth } from "@/components/auth/auth-provider";
 
 /** Buổi dạy tối thiểu cần cho việc chấm công (dùng được cả SessionRow). */
 export interface LogTargetSession {
@@ -59,7 +62,13 @@ export function TeachingLogModal({
   const [content, setContent] = useState("");
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const isStaff = user ? ["staff", "accountant", "admin"].includes(user.role) : false;
+  // Chấm nhầm buổi/nhầm ngày thì phải huỷ bản ghi ở buổi sai rồi chấm lại
+  // ở buổi đúng. GV tự huỷ trong 24h, quá hạn thì hành chính huỷ hộ (0042).
+  const canDelete = !!log && (isStaff || canTeacherUndoLog(log));
 
   // Mở modal: nạp giá trị đã chấm, hoặc mặc định theo giờ lịch
   useEffect(() => {
@@ -70,6 +79,7 @@ export function TeachingLogModal({
     setContent(l?.lesson_content ?? "");
     setNote(l?.note ?? "");
     setError(null);
+    setConfirmDelete(false);
     // Chưa chấm bao giờ → gợi ý nội dung từ bài học đã gán cho buổi
     if (!l) {
       fetchSessionLessons(session.id)
@@ -124,6 +134,21 @@ export function TeachingLogModal({
     }
   }
 
+  async function handleDelete() {
+    if (!session) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await deleteTeachingLog(session.id);
+      onSaved();
+      onClose();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <Modal open onClose={onClose} title={log ? "Sửa chấm công ca dạy" : "Chấm công ca dạy"}>
       <div className="space-y-4">
@@ -165,14 +190,48 @@ export function TeachingLogModal({
 
         {error && <ErrorNote message={error} />}
 
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose} disabled={saving}>
-            Hủy
-          </Button>
-          <Button onClick={handleSave} disabled={saving}>
-            {saving ? "Đang lưu…" : log ? "Lưu thay đổi" : "Xác nhận chấm công"}
-          </Button>
-        </div>
+        {log && !canDelete && (
+          <p className="text-xs text-muted-foreground">
+            Đã quá 24h kể từ lúc chấm công — muốn huỷ (VD chấm nhầm ngày) hãy nhờ hành chính.
+          </p>
+        )}
+
+        {confirmDelete ? (
+          <div className="space-y-2 rounded-lg border border-destructive/40 bg-destructive/5 p-3">
+            <p className="text-sm">
+              Huỷ chấm công buổi này? Buổi quay lại trạng thái{" "}
+              <span className="font-semibold">chưa dạy</span> và không còn được tính công.
+              Nếu chấm nhầm ngày, sau đó hãy vào đúng buổi để chấm lại.
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" size="sm" onClick={() => setConfirmDelete(false)} disabled={saving}>
+                Quay lại
+              </Button>
+              <Button variant="destructive" size="sm" onClick={handleDelete} disabled={saving}>
+                {saving ? "Đang huỷ…" : "Xác nhận huỷ công"}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {canDelete && (
+              <Button
+                variant="ghost"
+                onClick={() => setConfirmDelete(true)}
+                disabled={saving}
+                className="mr-auto text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="h-4 w-4" /> Huỷ chấm công
+              </Button>
+            )}
+            <Button variant="outline" onClick={onClose} disabled={saving}>
+              Hủy
+            </Button>
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? "Đang lưu…" : log ? "Lưu thay đổi" : "Xác nhận chấm công"}
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

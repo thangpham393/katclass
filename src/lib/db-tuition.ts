@@ -358,6 +358,25 @@ export async function saveTeachingLog(input: SaveTeachingLogInput): Promise<void
   if (error) throw error;
 }
 
+/**
+ * Huỷ chấm công một buổi (0042) — dùng khi chấm nhầm buổi/nhầm ngày:
+ * xoá ở buổi sai rồi chấm lại ở buổi đúng. Trigger trả buổi về
+ * 'scheduled' để bảng công không đếm nữa. RLS chặn giáo viên huỷ công
+ * quá 24h (khi đó hành chính huỷ hộ).
+ */
+export async function deleteTeachingLog(sessionId: string): Promise<void> {
+  const { error } = await getSupabase()
+    .from("teaching_logs")
+    .delete()
+    .eq("session_id", sessionId);
+  if (error) throw error;
+}
+
+/** Giáo viên còn tự huỷ được công này không (trong 24h kể từ lúc bấm). */
+export function canTeacherUndoLog(log: Pick<TeachingLogRow, "checked_in_at">): boolean {
+  return Date.now() - new Date(log.checked_in_at).getTime() < 24 * 60 * 60 * 1000;
+}
+
 /** Số giờ của một buổi (end - start), làm tròn 0.25h. */
 export function sessionHours(s: { start_time: string; end_time: string }): number {
   const [sh, sm] = s.start_time.split(":").map(Number);
