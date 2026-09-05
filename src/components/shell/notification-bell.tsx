@@ -3,12 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Award,
   Bell,
   CalendarClock,
   CalendarOff,
   CalendarRange,
   CheckCircle2,
   ClipboardList,
+  FileText,
+  MessageSquareText,
   UserX,
   Wallet,
   Info,
@@ -30,6 +33,10 @@ const TYPE_ICONS: Record<NotificationType, React.ComponentType<{ className?: str
   schedule_change: CalendarRange,
   request_new: CalendarOff,
   request_resolved: CheckCircle2,
+  session_report: FileText,
+  homework_reminder: ClipboardList,
+  comment_new: MessageSquareText,
+  review_new: Award,
   generic: Info,
 };
 

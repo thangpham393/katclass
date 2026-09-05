@@ -3,6 +3,7 @@ import {
   BookMarked,
   BookOpen,
   Building2,
+  Award,
   Cake,
   CalendarCheck,
   CalendarClock,
@@ -122,6 +123,7 @@ const teacherNav: NavSection[] = [
     label: "Vận hành",
     entries: [
       { href: "/teacher/homework", label: "Giao bài tập", icon: ClipboardList },
+      { href: "/teacher/reviews", label: "Nhận xét tổng kết", icon: Award },
       { href: "/teacher/requests", label: "Xin đổi lịch", icon: CalendarOff },
       { href: "/teacher/payroll", label: "Chấm công của tôi", icon: CalendarCheck },
     ],
@@ -148,6 +150,7 @@ const adminNav: NavSection[] = [
       { href: "/admin/students", label: "Học viên", icon: Users },
       { href: "/admin/attendance", label: "Điểm danh", icon: ClipboardCheck },
       { href: "/admin/checkin", label: "Check-in ca dạy", icon: Clock },
+      { href: "/admin/reviews", label: "Nhận xét học viên", icon: Award },
       { href: "/admin/absences", label: "Vắng liên tiếp", icon: CalendarX2 },
       { href: "/admin/classes", label: "Lớp học", icon: School },
       { href: "/admin/timetable", label: "Thời khóa biểu", icon: CalendarDays },

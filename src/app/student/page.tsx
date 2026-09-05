@@ -19,6 +19,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
 import { LatestSessionReport } from "@/components/session-report";
+import { StudentReviewList } from "@/components/student-reviews";
 import { PointsSummaryCard } from "@/components/points-summary";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
@@ -233,6 +234,8 @@ export default function StudentHome() {
           </CardContent>
         </Card>
       </div>
+
+      {studentId && <StudentReviewList studentId={studentId} subject="Bạn" />}
 
       {/* Nhận xét mới nhất của giáo viên */}
       <Card>

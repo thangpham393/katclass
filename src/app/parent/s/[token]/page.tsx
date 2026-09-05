@@ -19,6 +19,7 @@
 import { use, useState } from "react";
 import {
   AlertTriangle,
+  Award,
   BookOpen,
   CalendarDays,
   ClipboardCheck,
@@ -59,6 +60,19 @@ type Assignment = {
   submitted_at: string | null;
 };
 
+type Review = {
+  id: string;
+  title: string;
+  rating: number | null;
+  strengths: string | null;
+  improvements: string | null;
+  content: string | null;
+  stats: Record<string, number | null> | null;
+  period_start: string;
+  period_end: string;
+  teacher_name: string | null;
+};
+
 type Portal = {
   student: {
     name: string;
@@ -80,6 +94,7 @@ type Portal = {
   stats: { attended: number; absent: number; stars: number; avg_score: number | null };
   classes: { name: string; schedules: { weekday: number; start_time: string; end_time: string }[] }[];
   own_schedules: { weekday: number; start_time: string; end_time: string | null }[];
+  reviews: Review[];
   sessions: SessionEntry[];
   assignments: Assignment[];
   payments: { amount: number; paid_at: string; receipt_no: string; package_name: string | null }[];
@@ -266,6 +281,8 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
             tone="brand"
           />
         </section>
+
+        <Reviews items={data.reviews ?? []} />
 
         <SessionJournal sessions={data.sessions} />
 
@@ -468,6 +485,44 @@ function SessionJournal({ sessions }: { sessions: SessionEntry[] }) {
           )}
         </>
       )}
+    </Panel>
+  );
+}
+
+/**
+ * Nhận xét tổng kết cả kỳ — để trên nhật ký từng buổi vì phụ huynh mở
+ * link thường muốn câu trả lời gọn "kỳ vừa rồi con thế nào" trước, rồi
+ * mới soi từng ngày.
+ */
+function Reviews({ items }: { items: Review[] }) {
+  if (!items.length) return null;
+  return (
+    <Panel icon={<Award className="h-4 w-4" />} title="Nhận xét tổng kết" count={items.length}>
+      <div className="space-y-3">
+        {items.map((r) => (
+          <div key={r.id} className="rounded-xl border border-brand-100 bg-brand-50/50 p-3">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span className="font-bold">{r.title}</span>
+              <span className="text-xs text-slate-500">
+                {vnDate(r.period_start)} – {vnDate(r.period_end)}
+                {r.teacher_name ? ` · ${r.teacher_name}` : ""}
+              </span>
+            </div>
+            {r.rating !== null && <Stars value={r.rating} />}
+            {r.content && <p className="mt-2 whitespace-pre-line text-sm">{r.content}</p>}
+            {r.strengths && (
+              <p className="mt-2 text-sm">
+                <b className="text-emerald-700">Con làm tốt:</b> {r.strengths}
+              </p>
+            )}
+            {r.improvements && (
+              <p className="mt-1 text-sm">
+                <b className="text-amber-700">Cần cải thiện:</b> {r.improvements}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
     </Panel>
   );
 }

@@ -193,7 +193,7 @@ type SessionRow = {
 };
 
 async function loadPortalData(admin: SupabaseClient, studentId: string) {
-  const [pkgRes, remainRes, clsRes, ownRes, attRes, payRes, pointsRes] = await Promise.all([
+  const [pkgRes, remainRes, clsRes, ownRes, attRes, payRes, pointsRes, reviewRes] = await Promise.all([
     admin
       .from("enrollment_packages")
       .select("id, name, total_sessions, start_date")
@@ -230,11 +230,24 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       .select("session_id, points")
       .eq("student_id", studentId)
       .limit(2000),
+    // Nhận xét tổng kết ĐÃ PHÁT HÀNH (0043) — bản nháp không lộ ra ngoài
+    admin
+      .from("student_reviews")
+      .select(
+        "id, title, rating, strengths, improvements, content, stats, period_start, period_end, teacher:profiles!student_reviews_teacher_id_fkey (name)",
+      )
+      .eq("student_id", studentId)
+      .not("published_at", "is", null)
+      .order("period_end", { ascending: false })
+      .limit(6),
   ]);
 
   for (const r of [pkgRes, remainRes, clsRes, ownRes, attRes, payRes, pointsRes]) {
     if (r.error) throw r.error;
   }
+  // reviewRes cố ý KHÔNG nằm trong vòng throw trên: nhận xét tổng kết là phần
+  // thêm, hỏng nó thì vẫn phải cho phụ huynh xem lịch học và điểm danh.
+  if (reviewRes.error) console.error("parent-portal reviews:", reviewRes.error);
 
   type ClassRow = {
     status: string;
@@ -433,7 +446,21 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       })),
     }));
 
+  const reviews = ((reviewRes.data ?? []) as unknown as {
+    id: string;
+    title: string;
+    rating: number | null;
+    strengths: string | null;
+    improvements: string | null;
+    content: string | null;
+    stats: Record<string, number | null> | null;
+    period_start: string;
+    period_end: string;
+    teacher: { name: string } | null;
+  }[]).map((r) => ({ ...r, teacher_name: r.teacher?.name ?? null }));
+
   return {
+    reviews,
     progress: {
       has_package: packages.length > 0,
       total_sessions: totalSessions,

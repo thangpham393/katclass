@@ -17,6 +17,10 @@ export type NotificationType =
   | "schedule_change" // buổi học đổi lịch / hủy / đổi GV (HV + PH)
   | "request_new" // GV gửi yêu cầu nghỉ/đổi buổi (admin/staff)
   | "request_resolved" // kết quả duyệt yêu cầu (GV)
+  | "session_report" // báo cáo buổi học gửi HV + PH
+  | "homework_reminder" // nhắc làm bài tập
+  | "comment_new" // GV nhận xét sau buổi học (HV + PH)
+  | "review_new" // GV phát hành nhận xét tổng kết (HV + PH)
   | "generic";
 
 export interface NotificationRow {

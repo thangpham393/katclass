@@ -18,6 +18,7 @@ import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
 import { LatestSessionReport } from "@/components/session-report";
+import { StudentReviewList } from "@/components/student-reviews";
 import { PointsSummaryCard } from "@/components/points-summary";
 import { RemindHomeworkButton } from "@/components/remind-homework-button";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -276,6 +277,8 @@ export default function ParentHome() {
               </CardContent>
             </Card>
           </div>
+
+          {childId && <StudentReviewList studentId={childId} subject="Con" />}
 
           {/* Nhận xét của giáo viên */}
           <Card>

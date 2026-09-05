@@ -43,7 +43,7 @@ export function Modal({
       <div
         className={cn(
           // Mobile: bám đáy màn hình như bottom sheet, cao tối đa 92% và tự cuộn
-          "my-auto max-h-[92dvh] w-full max-w-lg animate-fade-in overflow-y-auto rounded-t-2xl border bg-card shadow-soft sm:max-h-[88vh] sm:rounded-xl",
+          "my-auto max-h-[92dvh] w-full max-w-lg animate-fade-in overflow-y-auto rounded-t-2xl border bg-card text-foreground shadow-soft sm:max-h-[88vh] sm:rounded-xl",
           className,
         )}
         role="dialog"

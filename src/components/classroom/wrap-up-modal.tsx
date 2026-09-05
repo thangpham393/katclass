@@ -102,6 +102,15 @@ export function WrapUpModal({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /* Esc để thoát — modal chiếm trọn màn nên phải luôn có đường ra. */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !busy) onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [busy, onClose]);
+
   /* --- bước 2: nhận xét --- */
   const totals = useMemo(() => {
     const map: Record<string, number> = {};
@@ -180,7 +189,9 @@ export function WrapUpModal({
           await upsertSessionComment({
             session_id: session.id,
             student_id: s.id,
-            teacher_id: session.teacher?.id ?? currentUserId,
+            // Người ĐANG ghi, không phải GV được xếp lịch: dạy thay mà ghi tên
+            // người khác thì RLS chặn, và phụ huynh cũng cần biết ai nhận xét.
+            teacher_id: currentUserId,
             content: n.content.trim(),
             rating: n.rating,
           });
@@ -224,8 +235,13 @@ export function WrapUpModal({
   const idx = STEPS.findIndex((s) => s.key === step);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-ink-950/70 backdrop-blur-sm sm:items-center sm:p-4">
-      <div className="flex max-h-[95dvh] w-full max-w-3xl flex-col rounded-t-2xl border bg-card shadow-soft sm:max-h-[92vh] sm:rounded-2xl">
+    <div
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget && !busy) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-ink-950/70 backdrop-blur-sm sm:items-center sm:p-4"
+    >
+      <div className="flex max-h-[95dvh] w-full max-w-3xl flex-col rounded-t-2xl border bg-card text-foreground shadow-soft sm:max-h-[92vh] sm:rounded-2xl">
         <div className="border-b px-4 py-3.5 sm:px-6 sm:py-4">
           <h2 className="text-lg font-extrabold">Kết thúc buổi học</h2>
           <div className="mt-3 flex items-center gap-1">

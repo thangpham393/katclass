@@ -110,7 +110,7 @@ export const PERMISSION_GROUPS: { group: string; items: PermissionDef[] }[] = [
       {
         key: "classroom.teach",
         label: "Lớp học trực tiếp & chấm công ca dạy",
-        hint: "Vào lớp dạy hộ, cộng sao, ghi nhận xét, và trang Check-in ca dạy: theo dõi / chấm công hộ giáo viên (không thấy tiền).",
+        hint: "Vào lớp dạy hộ, cộng sao, ghi nhận xét, đọc lại nhận xét của mọi giáo viên, và trang Check-in ca dạy: theo dõi / chấm công hộ giáo viên (không thấy tiền).",
       },
     ],
   },
@@ -182,6 +182,7 @@ export const ROUTE_PERMISSION: { prefix: string; perm: Permission }[] = [
   { prefix: "/admin/requests", perm: "requests.manage" },
   { prefix: "/admin/tuition", perm: "tuition.manage" },
   { prefix: "/admin/checkin", perm: "classroom.teach" },
+  { prefix: "/admin/reviews", perm: "classroom.teach" },
   { prefix: "/admin/payroll", perm: "payroll.view" },
   { prefix: "/admin/reports", perm: "reports.view" },
   { prefix: "/admin/settings", perm: "settings.manage" },
