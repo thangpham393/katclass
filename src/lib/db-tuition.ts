@@ -264,6 +264,8 @@ export interface TeachingSessionRow {
   status: "scheduled" | "completed" | "cancelled";
   type: "regular" | "makeup";
   note: string | null;
+  /** Lý do lớp nghỉ (0044) — chỉ có khi status = 'cancelled'. */
+  cancel_reason: string | null;
   teacher: { id: string; name: string } | null;
   class: { id: string; name: string } | null;
   room: { id: string; name: string } | null;
@@ -273,7 +275,7 @@ export interface TeachingSessionRow {
 }
 
 const TEACHING_SELECT = `
-  id, date, start_time, end_time, session_no, status, type, note,
+  id, date, start_time, end_time, session_no, status, type, note, cancel_reason,
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
   class:classes ( id, name ),
   room:rooms ( id, name ),
@@ -369,6 +371,29 @@ export async function deleteTeachingLog(sessionId: string): Promise<void> {
     .from("teaching_logs")
     .delete()
     .eq("session_id", sessionId);
+  if (error) throw error;
+}
+
+/**
+ * BÁO LỚP NGHỈ (0044) — buổi chuyển "đã hủy", toàn bộ học viên đang học
+ * của lớp thành "vắng có phép" và vào hàng chờ xếp bù, công đã chấm (nếu
+ * có) bị xoá. Giáo viên vẫn rảnh khung giờ đó nên vẫn nhận dạy thay được.
+ * Trả về số học viên đã chuyển sang vắng có phép.
+ */
+export async function markClassOff(sessionId: string, reason: string | null): Promise<number> {
+  const { data, error } = await getSupabase().rpc("cancel_class_session", {
+    p_session_id: sessionId,
+    p_reason: reason?.trim() || null,
+  });
+  if (error) throw error;
+  return (data as number) ?? 0;
+}
+
+/** Bỏ đánh dấu lớp nghỉ: gỡ điểm danh do nút này tạo, buổi về "chưa dạy". */
+export async function undoClassOff(sessionId: string): Promise<void> {
+  const { error } = await getSupabase().rpc("restore_class_session", {
+    p_session_id: sessionId,
+  });
   if (error) throw error;
 }
 

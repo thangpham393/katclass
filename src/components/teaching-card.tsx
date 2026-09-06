@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   CalendarClock,
+  CalendarX2,
   CheckCircle2,
   ClipboardCheck,
   ListChecks,
   Radio,
   Timer,
+  Undo2,
   User,
   UserX,
 } from "lucide-react";
@@ -51,22 +53,27 @@ export function TeachingCard({
   future,
   showTeacher,
   onLog,
+  onClassOff,
 }: {
   session: TeachingSessionRow;
   future?: boolean;
   showTeacher?: boolean;
   onLog: () => void;
+  /** Mở hộp thoại báo lớp nghỉ / bỏ đánh dấu nghỉ (0044). */
+  onClassOff?: () => void;
 }) {
   const log = pickLog(s);
   const d = new Date(s.date + "T00:00:00");
   const marked = attendanceCount(s);
-  const live = useIsLive(s);
+  const off = s.status === "cancelled";
+  const live = useIsLive(s) && !off;
 
   return (
     <div
       className={cn(
         "rounded-xl border bg-card p-3.5",
-        log && "border-emerald-200 bg-emerald-50/40",
+        off && "border-dashed bg-muted/40",
+        log && !off && "border-emerald-200 bg-emerald-50/40",
         live && !log && "border-brand-300 bg-brand-50/40",
       )}
     >
@@ -87,7 +94,11 @@ export function TeachingCard({
                 <Radio className="h-3 w-3 animate-pulse" /> Đang diễn ra
               </Badge>
             )}
-            {log ? (
+            {off ? (
+              <Badge variant="destructive" className="shrink-0">
+                <CalendarX2 className="h-3 w-3" /> Lớp nghỉ
+              </Badge>
+            ) : log ? (
               <Badge variant="jade" className="shrink-0">
                 <CheckCircle2 className="h-3 w-3" /> Đã chấm công
               </Badge>
@@ -100,7 +111,7 @@ export function TeachingCard({
                 Chưa chấm công
               </Badge>
             )}
-            {!future && marked === 0 && (
+            {!future && !off && marked === 0 && (
               <Badge variant="destructive" className="shrink-0">
                 <UserX className="h-3 w-3" /> Chưa điểm danh
               </Badge>
@@ -118,7 +129,13 @@ export function TeachingCard({
               <User className="h-3 w-3" /> {s.teacher?.name ?? "Chưa phân công giáo viên"}
             </div>
           )}
-          {log && (
+          {off && (
+            <div className="mt-1 text-xs text-muted-foreground">
+              Buổi nghỉ · học viên đã chuyển vắng có phép và chờ xếp bù
+              {s.cancel_reason ? ` · ${s.cancel_reason}` : ""}
+            </div>
+          )}
+          {log && !off && (
             <div className="mt-1 text-xs text-emerald-700">
               Thực dạy {log.actual_start.slice(0, 5)}–{log.actual_end.slice(0, 5)} ·{" "}
               {sessionHours({ start_time: log.actual_start, end_time: log.actual_end })}h
@@ -130,28 +147,48 @@ export function TeachingCard({
 
       {/* Hàng nút: màn hẹp xếp 2 cột cho dễ bấm, màn rộng nằm ngang một hàng */}
       <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-        <Link href={`/teacher/sessions/${s.id}/prepare`} className="w-full sm:w-auto">
-          <Button size="sm" variant={future ? "default" : "outline"} className="w-full sm:w-auto">
-            <ListChecks className="h-3.5 w-3.5" /> Chuẩn bị bài
-          </Button>
-        </Link>
-        {!future && (
-          <EnterClassroomButton
-            sessionId={s.id}
-            size="sm"
-            className="w-full sm:w-auto"
-            iconClassName="h-3.5 w-3.5"
-          />
-        )}
-        <Link href={`/teacher/sessions/${s.id}`} className="w-full sm:w-auto">
-          <Button size="sm" variant="outline" className="w-full sm:w-auto">
-            <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh HV
-          </Button>
-        </Link>
-        {!future && (
-          <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={onLog}>
-            <Timer className="h-3.5 w-3.5" /> {log ? "Sửa công" : "Chấm công"}
-          </Button>
+        {off ? (
+          onClassOff && (
+            <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={onClassOff}>
+              <Undo2 className="h-3.5 w-3.5" /> Bỏ đánh dấu nghỉ
+            </Button>
+          )
+        ) : (
+          <>
+            <Link href={`/teacher/sessions/${s.id}/prepare`} className="w-full sm:w-auto">
+              <Button size="sm" variant={future ? "default" : "outline"} className="w-full sm:w-auto">
+                <ListChecks className="h-3.5 w-3.5" /> Chuẩn bị bài
+              </Button>
+            </Link>
+            {!future && (
+              <EnterClassroomButton
+                sessionId={s.id}
+                size="sm"
+                className="w-full sm:w-auto"
+                iconClassName="h-3.5 w-3.5"
+              />
+            )}
+            <Link href={`/teacher/sessions/${s.id}`} className="w-full sm:w-auto">
+              <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh HV
+              </Button>
+            </Link>
+            {!future && (
+              <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={onLog}>
+                <Timer className="h-3.5 w-3.5" /> {log ? "Sửa công" : "Chấm công"}
+              </Button>
+            )}
+            {onClassOff && !log && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="w-full text-destructive hover:bg-destructive/10 sm:w-auto"
+                onClick={onClassOff}
+              >
+                <CalendarX2 className="h-3.5 w-3.5" /> Lớp nghỉ
+              </Button>
+            )}
+          </>
         )}
       </div>
     </div>

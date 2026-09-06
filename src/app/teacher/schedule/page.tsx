@@ -10,6 +10,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { TeachingCard } from "@/components/teaching-card";
+import { ClassOffModal } from "@/components/class-off-modal";
 import { cn } from "@/lib/utils";
 import { todayISO, WEEKDAY_LABELS } from "@/lib/db";
 import {
@@ -59,11 +60,12 @@ export default function TeacherSchedulePage() {
   const [to, setTo] = useState(() => shiftISO(mondayOf(todayISO()), 6));
   const [filter, setFilter] = useState<Filter>("all");
   const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
+  const [offFor, setOffFor] = useState<TeachingSessionRow | null>(null);
 
   const sessions = useLoad(
     () =>
       teacherId && from <= to
-        ? fetchTeachingSessions(from, to, { teacherId })
+        ? fetchTeachingSessions(from, to, { teacherId, includeCancelled: true })
         : Promise.resolve([]),
     [teacherId, from, to],
   );
@@ -79,6 +81,7 @@ export default function TeacherSchedulePage() {
   const rows = useMemo(() => {
     const list = sessions.data ?? [];
     return list.filter((s) => {
+      if (s.status === "cancelled") return filter === "all"; // buổi nghỉ không thiếu gì cả
       if (filter === "no_attendance") return s.date <= today && attendanceCount(s) === 0;
       if (filter === "no_log") return s.date <= today && !pickLog(s);
       return true;
@@ -96,10 +99,11 @@ export default function TeacherSchedulePage() {
     return [...map.entries()];
   }, [rows]);
 
-  const past = (sessions.data ?? []).filter((s) => s.date <= today);
+  const active = (sessions.data ?? []).filter((s) => s.status !== "cancelled");
+  const past = active.filter((s) => s.date <= today);
   const missingAttendance = past.filter((s) => attendanceCount(s) === 0).length;
   const missingLog = past.filter((s) => !pickLog(s)).length;
-  const hours = (sessions.data ?? []).reduce((sum, s) => sum + payHours(s), 0);
+  const hours = active.reduce((sum, s) => sum + payHours(s), 0);
 
   return (
     <div className="space-y-6">
@@ -179,7 +183,7 @@ export default function TeacherSchedulePage() {
 
           {!sessions.loading && (
             <div className="flex flex-wrap gap-2 text-xs">
-              <Badge variant="muted">{sessions.data?.length ?? 0} buổi</Badge>
+              <Badge variant="muted">{active.length} buổi</Badge>
               <Badge variant="muted">{hours}h dạy</Badge>
               {missingAttendance > 0 && (
                 <Badge variant="destructive">{missingAttendance} buổi chưa điểm danh</Badge>
@@ -214,6 +218,7 @@ export default function TeacherSchedulePage() {
                   session={s}
                   future={s.date > today}
                   onLog={() => setLogFor(s)}
+                  onClassOff={() => setOffFor(s)}
                 />
               ))}
             </section>
@@ -230,6 +235,8 @@ export default function TeacherSchedulePage() {
           setLogFor(null);
         }}
       />
+
+      <ClassOffModal session={offFor} onClose={() => setOffFor(null)} onSaved={sessions.reload} />
     </div>
   );
 }

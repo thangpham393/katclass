@@ -18,6 +18,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { TeachingCard } from "@/components/teaching-card";
+import { ClassOffModal } from "@/components/class-off-modal";
 import { cn } from "@/lib/utils";
 import {
   fetchTeacherClasses,
@@ -46,6 +47,7 @@ export default function TeacherHome() {
   const teacherId = user?.id ?? "";
   const [tab, setTab] = useState<DayTab>("today");
   const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
+  const [offFor, setOffFor] = useState<TeachingSessionRow | null>(null);
 
   const classes = useLoad(
     () => (teacherId ? fetchTeacherClasses(teacherId) : Promise.resolve([])),
@@ -55,7 +57,7 @@ export default function TeacherHome() {
   const sessions = useLoad(
     () =>
       teacherId
-        ? fetchTeachingSessions(todayISO(-1), todayISO(1), { teacherId })
+        ? fetchTeachingSessions(todayISO(-1), todayISO(1), { teacherId, includeCancelled: true })
         : Promise.resolve([]),
     [teacherId],
   );
@@ -80,7 +82,9 @@ export default function TeacherHome() {
   }, [sessions.data]);
 
   const today = byDay.today;
-  const pendingToday = today.filter((s) => !pickLog(s)).length;
+  // Buổi báo nghỉ vẫn hiện trên thẻ (để bỏ đánh dấu) nhưng không tính ca, không đòi chấm công
+  const activeToday = today.filter((s) => s.status !== "cancelled");
+  const pendingToday = activeToday.filter((s) => !pickLog(s)).length;
   const monthHours = (monthSessions.data ?? []).reduce((sum, s) => sum + payHours(s), 0);
   const totalStudents = (classes.data ?? []).reduce(
     (sum, c) => sum + (c.class_students?.[0]?.count ?? 0),
@@ -102,14 +106,14 @@ export default function TeacherHome() {
             ? "…"
             : pendingToday > 0
               ? ` — còn ${pendingToday} ca dạy chưa chấm công.`
-              : today.length > 0
+              : activeToday.length > 0
                 ? " — đã chấm công đủ các ca hôm nay. ✓"
                 : " — hôm nay không có ca dạy nào."}
         </p>
       </section>
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-        <StatCard label="Ca dạy hôm nay" value={sessions.loading ? "…" : today.length} icon={CalendarDays} accent="brand" />
+        <StatCard label="Ca dạy hôm nay" value={sessions.loading ? "…" : activeToday.length} icon={CalendarDays} accent="brand" />
         <StatCard label="Chưa chấm công" value={sessions.loading ? "…" : pendingToday} icon={Timer} accent="gold" />
         <StatCard
           label="Công tháng này"
@@ -171,6 +175,7 @@ export default function TeacherHome() {
                     session={s}
                     future={tab === "tomorrow"}
                     onLog={() => setLogFor(s)}
+                    onClassOff={() => setOffFor(s)}
                   />
                 ))
               )}
@@ -240,6 +245,15 @@ export default function TeacherHome() {
         session={logFor}
         currentUserId={teacherId}
         onClose={() => setLogFor(null)}
+        onSaved={() => {
+          sessions.reload();
+          monthSessions.reload();
+        }}
+      />
+
+      <ClassOffModal
+        session={offFor}
+        onClose={() => setOffFor(null)}
         onSaved={() => {
           sessions.reload();
           monthSessions.reload();

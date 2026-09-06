@@ -14,12 +14,14 @@ import Link from "next/link";
 import {
   CalendarCheck,
   CalendarDays,
+  CalendarX2,
   ChevronLeft,
   ChevronRight,
   CircleAlert,
   Pencil,
   Clock,
   Timer,
+  Undo2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +33,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { SessionEditModal } from "@/components/session-edit-modal";
+import { ClassOffModal } from "@/components/class-off-modal";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
 import { WEEKDAY_LABELS, sessionClassLabel, todayISO } from "@/lib/db";
@@ -55,6 +58,7 @@ export default function AdminCheckinPage() {
   const [date, setDate] = useState(todayISO());
   const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
   const [editFor, setEditFor] = useState<TeachingSessionRow | null>(null);
+  const [offFor, setOffFor] = useState<TeachingSessionRow | null>(null);
 
   const sessions = useLoad(
     () => fetchTeachingSessions(date, date, { includeCancelled: true }),
@@ -147,7 +151,11 @@ export default function AdminCheckinPage() {
                           <span className="truncate">{sessionClassLabel(s)}</span>
                         )}
                         {s.type === "makeup" && <Badge variant="jade">Buổi bù</Badge>}
-                        {s.status === "cancelled" && <Badge variant="destructive">Đã hủy</Badge>}
+                        {s.status === "cancelled" && (
+                          <Badge variant="destructive">
+                            <CalendarX2 className="h-3 w-3" /> Lớp nghỉ
+                          </Badge>
+                        )}
                       </div>
                       <div className="truncate text-xs text-muted-foreground">
                         {s.teacher?.name ?? "Chưa gán GV"}
@@ -155,6 +163,11 @@ export default function AdminCheckinPage() {
                         {s.session_no ? ` · Buổi ${s.session_no}` : ""}
                         {attendanceCount(s) > 0 ? ` · điểm danh ${attendanceCount(s)} HV` : " · chưa điểm danh HV"}
                       </div>
+                      {s.status === "cancelled" && s.cancel_reason && (
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          Lý do nghỉ: {s.cancel_reason}
+                        </div>
+                      )}
                       {log && (
                         <div className="mt-0.5 text-xs text-emerald-700">
                           Thực dạy {log.actual_start.slice(0, 5)}–{log.actual_end.slice(0, 5)} ·{" "}
@@ -173,10 +186,26 @@ export default function AdminCheckinPage() {
                       <Button size="sm" variant="ghost" onClick={() => setEditFor(s)}>
                         <Pencil className="h-3.5 w-3.5" /> Sửa lớp
                       </Button>
-                      {s.status !== "cancelled" && (
-                        <Button size="sm" variant={log ? "ghost" : "outline"} onClick={() => setLogFor(s)}>
-                          {log ? "Sửa công" : "Chấm hộ"}
+                      {s.status === "cancelled" ? (
+                        <Button size="sm" variant="ghost" onClick={() => setOffFor(s)}>
+                          <Undo2 className="h-3.5 w-3.5" /> Bỏ nghỉ
                         </Button>
+                      ) : (
+                        <>
+                          <Button size="sm" variant={log ? "ghost" : "outline"} onClick={() => setLogFor(s)}>
+                            {log ? "Sửa công" : "Chấm hộ"}
+                          </Button>
+                          {!log && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="text-destructive hover:bg-destructive/10"
+                              onClick={() => setOffFor(s)}
+                            >
+                              <CalendarX2 className="h-3.5 w-3.5" /> Lớp nghỉ
+                            </Button>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -195,6 +224,8 @@ export default function AdminCheckinPage() {
       />
 
       <SessionEditModal session={editFor} onClose={() => setEditFor(null)} onSaved={sessions.reload} />
+
+      <ClassOffModal session={offFor} onClose={() => setOffFor(null)} onSaved={sessions.reload} />
     </div>
   );
 }
