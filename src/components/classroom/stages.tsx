@@ -621,11 +621,14 @@ function DeckItem({ label, active, onClick }: { label: string; active: boolean; 
 /* ===================== Lưới từ vựng ===================== */
 
 /**
- * Chiếu từ vựng của bài: ẩn/hiện nghĩa để kiểm tra miệng, bấm loa để đọc mẫu.
+ * Chiếu từ vựng của bài: ẩn/hiện nghĩa để kiểm tra miệng, ẩn/hiện pinyin để
+ * học viên luyện nhận mặt chữ mà đọc; đang ẩn thì bấm thẻ để lật từng từ.
+ * Bấm loa để đọc mẫu.
  * Có ô tra nhanh cả kho từ vựng cho lúc học viên hỏi một từ ngoài bài.
  */
 export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
   const [hidden, setHidden] = useState(false);
+  const [hidePinyin, setHidePinyin] = useState(false);
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState("");
   const [found, setFound] = useState<VocabRow[] | null>(null);
@@ -661,7 +664,18 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
 
   return (
     <div className="flex h-full flex-col gap-3">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          size="sm"
+          variant={hidePinyin ? "gold" : "secondary"}
+          onClick={() => {
+            setHidePinyin((h) => !h);
+            setRevealed(new Set());
+          }}
+        >
+          {hidePinyin ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          {hidePinyin ? "Đang ẩn pinyin" : "Ẩn pinyin (luyện đọc mặt chữ)"}
+        </Button>
         <Button
           size="sm"
           variant={hidden ? "gold" : "secondary"}
@@ -671,8 +685,21 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
           }}
         >
           {hidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          {hidden ? "Đang ẩn nghĩa — bấm thẻ để lật" : "Ẩn nghĩa (kiểm tra miệng)"}
+          {hidden ? "Đang ẩn nghĩa" : "Ẩn nghĩa (kiểm tra miệng)"}
         </Button>
+        {(hidden || hidePinyin) && (
+          <>
+            <span className="text-sm text-ink-300">Bấm thẻ để lật</span>
+            {revealed.size > 0 && (
+              <button
+                onClick={() => setRevealed(new Set())}
+                className="text-xs font-semibold text-ink-300 hover:text-white"
+              >
+                Úp lại hết
+              </button>
+            )}
+          </>
+        )}
         <span className="text-sm text-ink-300">{list.length} từ</span>
         <div className="ml-auto flex items-center gap-2">
           <Search className="h-4 w-4 text-ink-400" />
@@ -701,11 +728,13 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
         )}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {list.map((v) => {
-            const show = !hidden || revealed.has(v.id);
+            const flipped = revealed.has(v.id);
+            const show = !hidden || flipped;
+            const showPinyin = !hidePinyin || flipped;
             return (
               <button
                 key={v.id}
-                onClick={() => hidden && toggle(v.id)}
+                onClick={() => (hidden || hidePinyin) && toggle(v.id)}
                 className="rounded-2xl border border-ink-700 bg-ink-800 p-4 text-left transition-colors hover:border-brand-500"
               >
                 <div className="flex items-start justify-between gap-2">
@@ -723,7 +752,14 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
                     <Volume2 className="h-4 w-4" />
                   </span>
                 </div>
-                <div className="mt-1 text-sm font-semibold text-brand-300">{v.pinyin}</div>
+                <div
+                  className={cn(
+                    "mt-1 text-sm font-semibold",
+                    showPinyin ? "text-brand-300" : "select-none text-ink-500 blur-sm",
+                  )}
+                >
+                  {showPinyin ? v.pinyin : "••••••"}
+                </div>
                 <div className={cn("mt-1 text-sm", show ? "text-ink-100" : "select-none blur-sm")}>
                   {show ? v.meaning : "••••••"}
                 </div>
