@@ -19,6 +19,7 @@ import {
   fetchQuestions,
   questionPreview,
   HOMEWORK_KIND_LABELS,
+  MANUAL_HOMEWORK_OPTIONS,
   QUESTION_TYPE_LABELS,
   type HomeworkKind,
   type QuestionRow,
@@ -46,6 +47,8 @@ export default function NewHomeworkPage() {
   const [typeFilter, setTypeFilter] = useState<QuestionType | "">("");
   const [lessonFilter, setLessonFilter] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
+  const [manualTasks, setManualTasks] = useState<string[]>([]);
+  const [teacherNote, setTeacherNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -93,7 +96,10 @@ export default function NewHomeworkPage() {
     if (!user) return;
     if (!title.trim()) return setError("Nhập tiêu đề bài tập.");
     if (!classId) return setError("Chọn lớp được giao.");
-    if (!selected.length) return setError("Chọn ít nhất 1 câu hỏi.");
+    if (kind === "test" && !selected.length) return setError("Bài kiểm tra cần có ít nhất 1 câu hỏi trên hệ thống.");
+    if (!selected.length && !manualTasks.length && !teacherNote.trim()) {
+      return setError("Chọn câu hỏi trên hệ thống hoặc thêm nội dung giao thủ công.");
+    }
     const limit = parseInt(timeLimit, 10);
     if (kind === "test" && (!limit || limit <= 0)) {
       return setError("Nhập thời gian làm bài (phút) cho bài kiểm tra.");
@@ -109,6 +115,8 @@ export default function NewHomeworkPage() {
         open_at: kind === "test" && openAt ? new Date(openAt).toISOString() : null,
         due_at: dueAt ? new Date(dueAt).toISOString() : null,
         question_ids: selected,
+        manual_tasks: manualTasks,
+        teacher_note: teacherNote.trim(),
         created_by: user.id,
       });
       router.replace(`/teacher/homework/${id}`);
@@ -213,7 +221,7 @@ export default function NewHomeworkPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>2. Chọn câu hỏi ({selected.length})</CardTitle>
+              <CardTitle>2. Bài tập trên hệ thống ({selected.length})</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -321,6 +329,47 @@ export default function NewHomeworkPage() {
               )}
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>3. Bài tập thủ công</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 p-4 pt-0 sm:p-6 sm:pt-0">
+              <p className="text-sm text-muted-foreground">
+                Chọn các phần học viên cần làm ngoài hệ thống và ghi thêm dặn dò nếu cần.
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {MANUAL_HOMEWORK_OPTIONS.map((task) => {
+                  const checked = manualTasks.includes(task);
+                  return (
+                    <label key={task} className={cn(
+                      "flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-sm font-medium transition-colors",
+                      checked ? "border-brand-500 bg-brand-50/60" : "hover:bg-secondary/60",
+                    )}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => setManualTasks((current) =>
+                          checked ? current.filter((item) => item !== task) : [...current, task],
+                        )}
+                        className="h-4 w-4 accent-brand-600"
+                      />
+                      {task}
+                    </label>
+                  );
+                })}
+              </div>
+              <Field label="Dặn dò hoặc bài tập khác" hint="Không bắt buộc">
+                <textarea
+                  value={teacherNote}
+                  onChange={(e) => setTeacherNote(e.target.value)}
+                  rows={4}
+                  placeholder="Ví dụ: Ôn lại từ vựng bài 6, viết mỗi từ 3 lần…"
+                  className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-brand-500"
+                />
+              </Field>
+            </CardContent>
+          </Card>
         </div>
 
         <aside className="h-fit space-y-4 lg:sticky lg:top-20">
@@ -330,6 +379,7 @@ export default function NewHomeworkPage() {
               <SummaryRow label="Loại" value={HOMEWORK_KIND_LABELS[kind]} />
               <SummaryRow label="Lớp" value={activeClasses.find((c) => c.id === classId)?.name ?? "—"} />
               <SummaryRow label="Số câu hỏi" value={selected.length || "—"} />
+              <SummaryRow label="Bài thủ công" value={manualTasks.length + (teacherNote.trim() ? 1 : 0) || "—"} />
               {kind === "test" && (
                 <>
                   <SummaryRow label="Thời gian làm" value={timeLimit ? `${timeLimit} phút` : "—"} />

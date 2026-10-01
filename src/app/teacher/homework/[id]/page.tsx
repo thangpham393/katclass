@@ -17,6 +17,7 @@ import {
   fetchHomework,
   fetchHomeworkSubmissions,
   fetchTestAttempts,
+  gradeManualHomework,
   attemptDeadline,
   questionPreview,
   QUESTION_TYPE_LABELS,
@@ -42,6 +43,9 @@ export default function TeacherHomeworkDetailPage() {
   );
 
   const [deleting, setDeleting] = useState(false);
+  const [scoreInputs, setScoreInputs] = useState<Record<string, string>>({});
+  const [savingScoreFor, setSavingScoreFor] = useState<string | null>(null);
+  const [savedScoreFor, setSavedScoreFor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function handleDelete() {
@@ -54,6 +58,27 @@ export default function TeacherHomeworkDetailPage() {
     } catch (e) {
       setError(dbErrorMessage(e));
       setDeleting(false);
+    }
+  }
+
+  async function saveManualScore(studentId: string) {
+    const raw = scoreInputs[studentId] ?? String(subByStudent.get(studentId)?.score ?? "");
+    const score = Number(raw);
+    if (!raw.trim() || !Number.isFinite(score) || score < 0 || score > 10) {
+      setError("Nhập điểm từ 0 đến 10.");
+      return;
+    }
+    setSavingScoreFor(studentId);
+    setSavedScoreFor(null);
+    setError(null);
+    try {
+      await gradeManualHomework(homeworkId, studentId, score);
+      await submissions.reload();
+      setSavedScoreFor(studentId);
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setSavingScoreFor(null);
     }
   }
 
@@ -77,6 +102,7 @@ export default function TeacherHomeworkDetailPage() {
   const attemptByStudent = new Map((attempts.data ?? []).map((a) => [a.student_id, a]));
   const pendingAttempts = (attempts.data ?? []).filter((a) => !subByStudent.has(a.student_id));
   const scores = subs.map((s) => s.score).filter((s): s is number => s != null);
+  const hasManualTasks = hw.manual_tasks.length > 0 || Boolean(hw.teacher_note.trim());
   const avg = scores.length
     ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
     : null;
@@ -102,7 +128,7 @@ export default function TeacherHomeworkDetailPage() {
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span>{hw.class?.name}</span>
-            <span>· {hw.questions.length} câu</span>
+            {hw.questions.length > 0 && <span>· {hw.questions.length} câu trên hệ thống</span>}
             {hw.kind === "test" && hw.open_at && (
               <span>
                 · Mở đề {new Date(hw.open_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
@@ -129,10 +155,71 @@ export default function TeacherHomeworkDetailPage() {
 
       {error && <ErrorNote message={error} />}
 
+      {hasManualTasks && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Nhập điểm phần bài tập thủ công <Badge variant="muted" className="ml-1">thang 10</Badge></CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+            {roster.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Lớp chưa có học viên.</p>
+            ) : (
+              <div className="divide-y">
+                {roster.map((student) => {
+                  const currentScore = subByStudent.get(student.student_id)?.score;
+                  return (
+                    <div key={student.student_id} className="flex flex-wrap items-center gap-3 py-3">
+                      <Avatar name={student.student.name} src={student.student.avatar ?? undefined} size={34} />
+                      <span className="min-w-32 flex-1 text-sm font-semibold">{student.student.name}</span>
+                      <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                        Điểm
+                        <input
+                          type="number"
+                          min={0}
+                          max={10}
+                          step={0.1}
+                          value={scoreInputs[student.student_id] ?? (currentScore == null ? "" : String(currentScore))}
+                          onChange={(event) => setScoreInputs((current) => ({ ...current, [student.student_id]: event.target.value }))}
+                          placeholder="—"
+                          className="h-9 w-20 rounded-lg border border-input bg-background px-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                        />
+                        <span>/ 10</span>
+                      </label>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={savingScoreFor === student.student_id}
+                        onClick={() => saveManualScore(student.student_id)}
+                      >
+                        {savingScoreFor === student.student_id ? "Đang lưu…" : savedScoreFor === student.student_id ? "Đã lưu" : "Lưu điểm"}
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {(hw.manual_tasks.length > 0 || hw.teacher_note.trim()) && (
+        <Card>
+          <CardHeader><CardTitle>Phần giao thủ công</CardTitle></CardHeader>
+          <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
+            {hw.manual_tasks.length > 0 && (
+              <ul className="space-y-2">
+                {hw.manual_tasks.map((task) => <li key={task} className="flex items-center gap-2 text-sm"><span className="text-brand-600">✓</span>{task}</li>)}
+              </ul>
+            )}
+            {hw.teacher_note.trim() && <p className="whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-sm">{hw.teacher_note}</p>}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <StatCard label="Sĩ số lớp" value={roster.length} icon={Users} accent="brand" />
-        <StatCard label="Đã nộp" value={`${subs.length}/${roster.length}`} icon={ClipboardList} accent="gold" />
-        <StatCard label="Tỷ lệ nộp" value={roster.length ? `${pct(subs.length, roster.length)}%` : "—"} accent="sky" />
+        <StatCard label="Đã nộp / chấm" value={`${subs.length}/${roster.length}`} icon={ClipboardList} accent="gold" />
+        <StatCard label="Tỷ lệ nộp / chấm" value={roster.length ? `${pct(subs.length, roster.length)}%` : "—"} accent="sky" />
         <StatCard label="Điểm trung bình" value={avg ?? "—"} accent="jade" />
       </div>
 
@@ -149,7 +236,7 @@ export default function TeacherHomeworkDetailPage() {
               <LoadingRows rows={3} className="p-0" />
             ) : subs.length === 0 ? (
               <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                Chưa có học viên nào nộp bài.
+                Chưa có học viên nào nộp bài hoặc được nhập điểm.
               </div>
             ) : (
               <div className="divide-y">
@@ -159,7 +246,8 @@ export default function TeacherHomeworkDetailPage() {
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-semibold">{s.student?.name ?? "Học viên"}</div>
                       <div className="text-xs text-muted-foreground">
-                        Nộp {new Date(s.submitted_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
+                        {s.auto_score == null && Object.keys(s.answers).length === 0 ? "Chấm thủ công" : "Nộp"}{" "}
+                        {new Date(s.submitted_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}
                       </div>
                     </div>
                     <div className="shrink-0 text-right">
@@ -180,7 +268,7 @@ export default function TeacherHomeworkDetailPage() {
             {notSubmitted.length > 0 && (
               <div className="mt-4">
                 <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Chưa nộp ({notSubmitted.length})
+                  Chưa nộp / chưa chấm ({notSubmitted.length})
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {notSubmitted.map((st) => {

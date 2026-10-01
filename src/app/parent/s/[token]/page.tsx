@@ -53,9 +53,12 @@ type SessionEntry = {
 type Assignment = {
   title: string;
   kind: string;
+  manual_tasks: string[];
+  teacher_note: string;
   due_at: string | null;
   created_at: string;
   score: number | null;
+  auto_score: number | null;
   status: string;
   submitted_at: string | null;
 };
@@ -573,10 +576,20 @@ function Assignments({ items }: { items: Assignment[] }) {
                       ? a.due_at
                         ? `Chưa nộp · hạn ${vnDate(a.due_at)}`
                         : "Chưa nộp"
-                      : `Nộp ngày ${vnDate(a.submitted_at ?? a.created_at)}${
+                      : `${a.auto_score == null ? "Đã chấm thủ công" : `Nộp ngày ${vnDate(a.submitted_at ?? a.created_at)}`}${
                           a.status === "graded" ? " · đã chấm" : " · chờ chấm"
                         }`}
                   </p>
+                  {a.manual_tasks.length > 0 && (
+                    <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                      {a.manual_tasks.map((task) => <li key={task}>☐ {task}</li>)}
+                    </ul>
+                  )}
+                  {a.teacher_note.trim() && (
+                    <p className="mt-2 whitespace-pre-wrap rounded-lg bg-slate-50 px-2.5 py-2 text-xs leading-relaxed text-slate-700">
+                      {a.teacher_note}
+                    </p>
+                  )}
                 </div>
                 <ScoreChip score={a.score} missing={a.status === "missing"} />
               </li>

@@ -35,7 +35,7 @@ export default function TeacherHomeworkPage() {
         <Empty
           icon={ClipboardList}
           title="Chưa giao bài tập nào"
-          description="Tạo câu hỏi ở Ngân hàng câu hỏi, rồi bấm “Giao bài tập mới”."
+          description="Tạo bài tập trên hệ thống, giao thủ công bằng checkbox và dặn dò, hoặc kết hợp cả hai."
         />
       ) : (
         <div className="grid gap-3">
@@ -62,7 +62,12 @@ export default function TeacherHomeworkPage() {
                             <Timer className="h-3 w-3" /> Kiểm tra · {h.time_limit_minutes}′
                           </Badge>
                         )}
-                        <Badge variant="outline">{h.homework_questions[0]?.count ?? 0} câu</Badge>
+                        {(h.homework_questions[0]?.count ?? 0) > 0 && (
+                          <Badge variant="outline">{h.homework_questions[0].count} câu trên hệ thống</Badge>
+                        )}
+                        {(h.manual_tasks.length > 0 || h.teacher_note.trim()) && (
+                          <Badge variant="outline">Có bài thủ công</Badge>
+                        )}
                         {overdue && submitted < total && <Badge variant="gold">Quá hạn</Badge>}
                       </div>
                       <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">

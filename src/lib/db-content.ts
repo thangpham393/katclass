@@ -457,12 +457,20 @@ export const HOMEWORK_KIND_LABELS: Record<HomeworkKind, string> = {
   test: "Bài kiểm tra",
 };
 
+export const MANUAL_HOMEWORK_OPTIONS = [
+  "Làm phiếu bài tập",
+  "Làm vở tập viết",
+  "Làm trong sách bài tập",
+] as const;
+
 export interface HomeworkListRow {
   id: string;
   class_id: string;
   session_id: string | null;
   title: string;
   kind: HomeworkKind;
+  manual_tasks: string[];
+  teacher_note: string;
   time_limit_minutes: number | null;
   open_at: string | null;
   due_at: string | null;
@@ -473,7 +481,7 @@ export interface HomeworkListRow {
 }
 
 const HOMEWORK_LIST_SELECT = `
-  id, class_id, session_id, title, kind, time_limit_minutes, open_at, due_at, created_at,
+  id, class_id, session_id, title, kind, manual_tasks, teacher_note, time_limit_minutes, open_at, due_at, created_at,
   class:classes ( id, name, class_students ( count ) ),
   homework_questions ( count ),
   submissions ( id, student_id, auto_score, score, status, submitted_at )
@@ -512,6 +520,8 @@ export interface HomeworkDetail {
   session_id: string | null;
   title: string;
   kind: HomeworkKind;
+  manual_tasks: string[];
+  teacher_note: string;
   time_limit_minutes: number | null;
   open_at: string | null;
   due_at: string | null;
@@ -525,7 +535,7 @@ export async function fetchHomework(id: string): Promise<HomeworkDetail | null> 
   const { data, error } = await getSupabase()
     .from("homeworks")
     .select(`
-      id, class_id, session_id, title, kind, time_limit_minutes, open_at, due_at, created_at,
+      id, class_id, session_id, title, kind, manual_tasks, teacher_note, time_limit_minutes, open_at, due_at, created_at,
       class:classes ( id, name ),
       homework_questions ( sort, question:questions ( ${QUESTION_SELECT} ) )
     `)
@@ -549,6 +559,8 @@ export async function createHomework(input: {
   session_id?: string | null;
   title: string;
   kind?: HomeworkKind;
+  manual_tasks?: string[];
+  teacher_note?: string;
   time_limit_minutes?: number | null;
   open_at?: string | null;
   due_at: string | null;
@@ -592,6 +604,17 @@ export async function fetchHomeworkSubmissions(homeworkId: string): Promise<Subm
     .order("submitted_at", { ascending: false });
   if (error) throw error;
   return data as unknown as SubmissionRow[];
+}
+
+/** Lưu điểm chấm tay cho phần bài tập giao thủ công, thang điểm 10. */
+export async function gradeManualHomework(homeworkId: string, studentId: string, score: number) {
+  const { data, error } = await getSupabase().rpc("grade_manual_homework", {
+    hw_id: homeworkId,
+    sid: studentId,
+    manual_score: score,
+  });
+  if (error) throw error;
+  return data as SubmissionLite;
 }
 
 /** Bài nộp của một học viên cho một bài tập (RLS: chỉ thấy của mình/của con). */

@@ -168,7 +168,7 @@ export default function StudentHomeworkPlayerPage() {
 
   // Màn kết quả: vừa nộp xong, hoặc đã nộp từ trước và chưa bấm "Làm lại"
   const showScore = result ?? (existing && !redo ? { score: existing.score } : null);
-  if (showScore) {
+  if (showScore && questions.length > 0) {
     return (
       <div className="mx-auto max-w-xl space-y-6">
         <Link
@@ -312,7 +312,7 @@ export default function StudentHomeworkPlayerPage() {
         <h1 className="text-2xl font-extrabold tracking-tight">{hw.title}</h1>
         <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span>{hw.class?.name}</span>
-          <span>· {questions.length} câu</span>
+          {questions.length > 0 && <span>· {questions.length} câu trên hệ thống</span>}
           {hw.due_at && (
             <span className="inline-flex items-center gap-1">
               <Calendar className="h-3.5 w-3.5" />
@@ -322,13 +322,49 @@ export default function StudentHomeworkPlayerPage() {
         </div>
       </div>
 
-      {questions.length === 0 ? (
+      {(hw.manual_tasks.length > 0 || hw.teacher_note.trim()) && (
+        <Card>
+          <CardHeader><CardTitle>Phần giao thủ công</CardTitle></CardHeader>
+          <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
+            {hw.manual_tasks.length > 0 && (
+              <ul className="space-y-2">
+                {hw.manual_tasks.map((task) => (
+                  <li key={task} className="flex items-start gap-2 text-sm">
+                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded border border-brand-500 text-[10px] text-brand-600">✓</span>
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {hw.teacher_note.trim() && (
+              <div className="whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-sm leading-relaxed">
+                {hw.teacher_note}
+              </div>
+            )}
+            {questions.length === 0 && (
+              <p className="text-xs text-muted-foreground">Hoàn thành phần này ở nhà; học viên không cần nộp bài trên hệ thống.</p>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {questions.length === 0 && existing?.score != null && (
+        <Card>
+          <CardContent className="p-4 text-sm">
+            <span className="text-muted-foreground">Điểm giáo viên chấm: </span>
+            <strong className="text-lg text-brand-700">{existing.score}/10</strong>
+          </CardContent>
+        </Card>
+      )}
+
+      {questions.length === 0 && hw.manual_tasks.length === 0 && !hw.teacher_note.trim() ? (
         <Card>
           <CardContent className="p-8 text-center text-sm text-muted-foreground">
             Bài tập chưa có câu hỏi nào.
           </CardContent>
         </Card>
       ) : (
+        questions.length > 0 &&
         <div className="space-y-4">
           {questions.map((q, i) => (
             <Card key={q.id}>

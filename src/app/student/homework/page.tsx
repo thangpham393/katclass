@@ -40,7 +40,7 @@ export default function StudentHomeworkPage() {
       <div>
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Bài tập về nhà</h1>
         <p className="mt-1 text-muted-foreground">
-          Bài trắc nghiệm được hệ thống chấm ngay khi nộp.
+          Bài trên hệ thống được chấm ngay khi nộp; phần giao thủ công xem trong từng bài.
         </p>
       </div>
 
@@ -77,8 +77,11 @@ export default function StudentHomeworkPage() {
                       </div>
                       <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                         <span className="text-muted-foreground">{h.class?.name}</span>
+                        {(h.manual_tasks.length > 0 || h.teacher_note.trim()) && (
+                          <Badge variant="outline">Có bài thủ công</Badge>
+                        )}
                         {/* Đề bài kiểm tra chưa bắt đầu bị RLS giấu → số câu = 0, không hiển thị */}
-                        {(h.kind !== "test" || (h.homework_questions[0]?.count ?? 0) > 0) && (
+                        {(h.homework_questions[0]?.count ?? 0) > 0 && (
                           <span className="text-muted-foreground">· {h.homework_questions[0]?.count ?? 0} câu</span>
                         )}
                         {h.kind === "test" && h.open_at && new Date(h.open_at) > new Date() && (
@@ -96,7 +99,7 @@ export default function StudentHomeworkPage() {
                       </div>
                     </div>
                     <Link href={`/student/homework/${h.id}`}>
-                      <Button>{h.kind === "test" ? "Vào làm" : "Làm bài"}</Button>
+                      <Button>{h.kind === "test" ? "Vào làm" : h.homework_questions[0]?.count ? "Làm bài" : "Xem bài"}</Button>
                     </Link>
                   </CardContent>
                 </Card>

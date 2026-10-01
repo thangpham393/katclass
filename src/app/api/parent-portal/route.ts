@@ -318,7 +318,7 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
     classIds.length
       ? admin
           .from("homeworks")
-          .select("id, title, kind, due_at, created_at")
+          .select("id, title, kind, manual_tasks, teacher_note, due_at, created_at")
           .in("class_id", classIds)
           .order("created_at", { ascending: false })
           .limit(60)
@@ -332,6 +332,8 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
     id: string;
     title: string;
     kind: string;
+    manual_tasks: string[];
+    teacher_note: string;
     due_at: string | null;
     created_at: string;
   }[];
@@ -422,9 +424,12 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
     return {
       title: h.title,
       kind: h.kind,
+      manual_tasks: h.manual_tasks ?? [],
+      teacher_note: h.teacher_note ?? "",
       due_at: h.due_at,
       created_at: h.created_at,
       score: sub?.score ?? null,
+      auto_score: sub?.auto_score ?? null,
       status: sub ? sub.status : "missing",
       submitted_at: sub?.submitted_at ?? null,
     };

@@ -354,9 +354,21 @@ export default function ParentHome() {
                             {h.due_at &&
                               ` · Hạn ${new Date(h.due_at).toLocaleDateString("vi-VN")}`}
                           </div>
+                          {h.manual_tasks.length > 0 && (
+                            <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                              {h.manual_tasks.map((task) => <li key={task}>☐ {task}</li>)}
+                            </ul>
+                          )}
+                          {h.teacher_note.trim() && (
+                            <p className="mt-2 whitespace-pre-wrap rounded-lg bg-muted/40 p-2 text-xs leading-relaxed">
+                              {h.teacher_note}
+                            </p>
+                          )}
                         </div>
                         {sub ? (
-                          <Badge variant="jade">Đã nộp · {sub.score ?? "—"}/10</Badge>
+                          <Badge variant="jade">
+                            {sub.auto_score == null ? "Đã chấm" : "Đã nộp"} · {sub.score ?? "—"}/10
+                          </Badge>
                         ) : (
                           <>
                             <Badge variant={overdue ? "destructive" : "gold"}>
