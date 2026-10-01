@@ -1,5 +1,7 @@
 "use client";
 
+import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -193,6 +195,10 @@ export default function TeacherHomeworkDetailPage() {
                       >
                         {savingScoreFor === student.student_id ? "Đang lưu…" : savedScoreFor === student.student_id ? "Đã lưu" : "Lưu điểm"}
                       </Button>
+                      <div className="w-full pl-0 sm:pl-12">
+                        <ManualHomeworkChecklist homeworkId={hw.id} studentId={student.student_id}
+                          tasks={hw.manual_tasks} teacherNote={hw.teacher_note} editable />
+                      </div>
                     </div>
                   );
                 })}

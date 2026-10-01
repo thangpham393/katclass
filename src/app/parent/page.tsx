@@ -1,5 +1,7 @@
 "use client";
 
+import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
+
 import { useEffect, useMemo, useState } from "react";
 import {
   CalendarClock,
@@ -354,11 +356,10 @@ export default function ParentHome() {
                             {h.due_at &&
                               ` · Hạn ${new Date(h.due_at).toLocaleDateString("vi-VN")}`}
                           </div>
-                          {h.manual_tasks.length > 0 && (
-                            <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-                              {h.manual_tasks.map((task) => <li key={task}>☐ {task}</li>)}
-                            </ul>
-                          )}
+                          <div className="mt-2">
+                            <ManualHomeworkChecklist homeworkId={h.id} studentId={childId}
+                              tasks={h.manual_tasks} teacherNote={h.teacher_note} />
+                          </div>
                           {h.teacher_note.trim() && (
                             <p className="mt-2 whitespace-pre-wrap rounded-lg bg-muted/40 p-2 text-xs leading-relaxed">
                               {h.teacher_note}
@@ -372,7 +373,7 @@ export default function ParentHome() {
                         ) : (
                           <>
                             <Badge variant={overdue ? "destructive" : "gold"}>
-                              {overdue ? "Quá hạn" : "Chưa làm"}
+                              {(h.homework_questions[0]?.count ?? 0) === 0 && (h.manual_tasks.length > 0 || h.teacher_note.trim()) ? "Chưa chấm điểm" : overdue ? "Quá hạn" : "Chưa làm"}
                             </Badge>
                             <RemindHomeworkButton homeworkId={h.id} studentId={childId} />
                           </>

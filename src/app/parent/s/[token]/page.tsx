@@ -16,7 +16,7 @@
  * — đóng tab là phải nhập lại, đúng tinh thần "chỉ để xem".
  */
 
-import { use, useState } from "react";
+import { useEffect, use, useState } from "react";
 import {
   AlertTriangle,
   Award,
@@ -55,6 +55,7 @@ type Assignment = {
   title: string;
   kind: string;
   manual_tasks: string[];
+  received_tasks: string[];
   teacher_note: string;
   due_at: string | null;
   created_at: string;
@@ -139,6 +140,31 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
     }
   }
 
+  const verified = data !== null;
+  useEffect(() => {
+    if (!verified) return;
+    let active = true;
+    let pending = false;
+    async function refresh() {
+      if (pending || document.visibilityState === "hidden") return;
+      pending = true;
+      try {
+        const res = await fetch("/api/parent-portal", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, last4 }),
+        });
+        if (!res.ok) throw new Error("Không cập nhật được dữ liệu. Vui lòng tải lại trang.");
+        const json = await res.json();
+        if (active) { setData(json as Portal); setError(null); }
+      } catch (err) {
+        if (active) setError(err instanceof Error ? err.message : "Không cập nhật được dữ liệu.");
+      } finally { pending = false; }
+    }
+    const timer = window.setInterval(() => void refresh(), 15000);
+    window.addEventListener("focus", refresh);
+    return () => { active = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); };
+  }, [verified, token, last4]);
+
   if (!data) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-gradient-to-b from-brand-50 via-white to-white p-4">
@@ -187,6 +213,7 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
 
   return (
     <div className="min-h-dvh bg-slate-50 pb-12">
+      {error && <p role="alert" className="bg-red-50 p-3 text-center text-sm text-red-600">{error}</p>}
       {/* Đầu trang: nền thương hiệu, thẻ học viên đè lên cho gọn màn hình dọc */}
       <header className="bg-gradient-to-br from-brand-700 to-brand-500 px-4 pb-16 pt-7 text-center text-white">
         <div className="mx-auto mb-4 w-fit max-w-full rounded-xl bg-white px-4 py-3 shadow-sm">
@@ -577,7 +604,7 @@ function Assignments({ items }: { items: Assignment[] }) {
                   </div>
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     {a.status === "missing"
-                      ? a.due_at
+                      ? a.received_tasks.length > 0 ? "Đã nhận bài thủ công · chưa chấm điểm" : a.due_at
                         ? `Chưa nộp · hạn ${vnDate(a.due_at)}`
                         : "Chưa nộp"
                       : `${a.auto_score == null ? "Đã chấm thủ công" : `Nộp ngày ${vnDate(a.submitted_at ?? a.created_at)}`}${
@@ -586,12 +613,13 @@ function Assignments({ items }: { items: Assignment[] }) {
                   </p>
                   {a.manual_tasks.length > 0 && (
                     <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-                      {a.manual_tasks.map((task) => <li key={task}>☐ {task}</li>)}
+                      {a.manual_tasks.map((task) => <li key={task}>{a.received_tasks.includes(task) ? "☑" : "☐"} {task} · {a.received_tasks.includes(task) ? "Đã nộp" : "Chưa nộp"}</li>)}
                     </ul>
                   )}
                   {a.teacher_note.trim() && (
                     <p className="mt-2 whitespace-pre-wrap rounded-lg bg-slate-50 px-2.5 py-2 text-xs leading-relaxed text-slate-700">
                       {a.teacher_note}
+                      <span className="mt-1 block font-medium">{a.received_tasks.includes("__teacher_note__") ? "☑ Đã nộp" : "☐ Chưa nộp"} phần dặn dò / bài tập khác</span>
                     </p>
                   )}
                 </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -193,6 +195,8 @@ export default function StudentHomeworkPlayerPage() {
             {showScore.score ?? "—"}
           </div>
           <div className="mt-1 text-sm text-muted-foreground">/ 10 điểm</div>
+          <ManualHomeworkChecklist homeworkId={hw.id} studentId={studentId}
+            tasks={hw.manual_tasks} teacherNote={hw.teacher_note} />
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             {hw.kind !== "test" && (
               <Button
@@ -326,16 +330,8 @@ export default function StudentHomeworkPlayerPage() {
         <Card>
           <CardHeader><CardTitle>Phần giao thủ công</CardTitle></CardHeader>
           <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
-            {hw.manual_tasks.length > 0 && (
-              <ul className="space-y-2">
-                {hw.manual_tasks.map((task) => (
-                  <li key={task} className="flex items-start gap-2 text-sm">
-                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded border border-brand-500 text-[10px] text-brand-600">✓</span>
-                    {task}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <ManualHomeworkChecklist homeworkId={hw.id} studentId={studentId}
+              tasks={hw.manual_tasks} teacherNote={hw.teacher_note} />
             {hw.teacher_note.trim() && (
               <div className="whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-sm leading-relaxed">
                 {hw.teacher_note}

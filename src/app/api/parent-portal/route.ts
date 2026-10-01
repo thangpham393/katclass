@@ -347,6 +347,13 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
     : await emptyResult();
   if (subRes.error) throw subRes.error;
 
+  const receiptRes = homeworks.length
+    ? await admin.from("manual_homework_receipts").select("homework_id, task, received")
+        .eq("student_id", studentId).in("homework_id", homeworks.map((h) => h.id))
+    : await emptyResult();
+  if (receiptRes.error) throw receiptRes.error;
+  const receipts = (receiptRes.data ?? []) as { homework_id: string; task: string; received: boolean }[];
+
   /* --- gom theo buổi --- */
 
   const comments = new Map<string, { content: string; rating: number | null; teacher: string | null }>();
@@ -426,6 +433,7 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
       title: h.title,
       kind: h.kind,
       manual_tasks: h.manual_tasks ?? [],
+      received_tasks: receipts.filter((r) => r.homework_id === h.id && r.received).map((r) => r.task),
       teacher_note: h.teacher_note ?? "",
       due_at: h.due_at,
       created_at: h.created_at,

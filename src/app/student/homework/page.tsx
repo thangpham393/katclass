@@ -1,5 +1,7 @@
 "use client";
 
+import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
+
 import Link from "next/link";
 import { Calendar, CheckCircle2, ClipboardList, Clock, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -80,6 +82,10 @@ export default function StudentHomeworkPage() {
                         {(h.manual_tasks.length > 0 || h.teacher_note.trim()) && (
                           <Badge variant="outline">Có bài thủ công</Badge>
                         )}
+                        <div className="w-full">
+                          <ManualHomeworkChecklist homeworkId={h.id} studentId={studentId}
+                            tasks={h.manual_tasks} teacherNote={h.teacher_note} />
+                        </div>
                         {/* Đề bài kiểm tra chưa bắt đầu bị RLS giấu → số câu = 0, không hiển thị */}
                         {(h.homework_questions[0]?.count ?? 0) > 0 && (
                           <span className="text-muted-foreground">· {h.homework_questions[0]?.count ?? 0} câu</span>
