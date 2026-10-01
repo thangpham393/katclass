@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/brand/logo";
 
 const WEEKDAYS = ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
 const WEEKDAYS_SHORT = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
@@ -142,8 +143,8 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
     return (
       <div className="flex min-h-dvh items-center justify-center bg-gradient-to-b from-brand-50 via-white to-white p-4">
         <div className="w-full max-w-sm rounded-2xl border bg-white p-6 shadow-lg shadow-brand-900/5">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white">
-            <GraduationCap className="h-6 w-6" />
+          <div className="mb-5 flex justify-center">
+            <Logo className="h-9 max-w-full" />
           </div>
           <h1 className="text-center text-lg font-bold">Xác minh phụ huynh</h1>
           <p className="mt-1.5 text-center text-sm text-muted-foreground">
@@ -188,11 +189,14 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
     <div className="min-h-dvh bg-slate-50 pb-12">
       {/* Đầu trang: nền thương hiệu, thẻ học viên đè lên cho gọn màn hình dọc */}
       <header className="bg-gradient-to-br from-brand-700 to-brand-500 px-4 pb-16 pt-7 text-center text-white">
+        <div className="mx-auto mb-4 w-fit max-w-full rounded-xl bg-white px-4 py-3 shadow-sm">
+          <Logo className="h-9 max-w-full sm:h-11" />
+        </div>
         {center && <p className="text-xs font-medium text-white/70">{center.name}</p>}
         <h1 className="mt-1 text-xl font-bold">
           Xin chào {viewer?.name ? `Anh/Chị ${viewer.name}` : "Anh/Chị"}
         </h1>
-        <p className="mt-0.5 text-sm text-white/80">Tình hình học tập của con tại trung tâm</p>
+        <p className="mt-0.5 text-sm text-white/80">Tình hình học tập của con tại trung tâm KAT CHINESE</p>
       </header>
 
       <main className="mx-auto -mt-12 max-w-2xl space-y-4 px-4">
