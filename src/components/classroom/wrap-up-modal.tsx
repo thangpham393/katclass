@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Check, ClipboardList, MessageSquareText, Star, Timer, UserCheck } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import { ErrorNote } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 import {
@@ -16,7 +16,7 @@ import {
   type SessionCommentRow,
   type SessionRow,
 } from "@/lib/db";
-import { createHomework, fetchQuestions, type LessonDetail } from "@/lib/db-content";
+import { createHomework, fetchQuestions, MANUAL_HOMEWORK_OPTIONS, type LessonDetail } from "@/lib/db-content";
 import { saveTeachingLog } from "@/lib/db-tuition";
 import {
   countByReason,
@@ -146,21 +146,34 @@ export function WrapUpModal({
   const [hwIds, setHwIds] = useState<string[]>([]);
   const [hwSkip, setHwSkip] = useState(false);
   const [hwCreated, setHwCreated] = useState(false);
+  const [hwOnline, setHwOnline] = useState(true);
+  const [hwManual, setHwManual] = useState(false);
+  const [hwManualTasks, setHwManualTasks] = useState<string[]>([]);
+  const [hwTeacherNote, setHwTeacherNote] = useState("");
+  const [hwQuestionsError, setHwQuestionsError] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+    setHwCount(null);
+    setHwIds([]);
+    setHwQuestionsError(false);
     if (!hwLesson) {
-      setHwCount(null);
-      setHwIds([]);
       return;
     }
     const l = lessons.find((x) => x.id === hwLesson);
     setHwTitle(`Luyện tập${l?.unit != null ? ` Bài ${l.unit}` : ""}${l ? ` — ${l.title}` : ""}`);
     fetchQuestions({ lessonId: hwLesson })
       .then((qs) => {
+        if (cancelled) return;
         setHwIds(qs.map((q) => q.id));
         setHwCount(qs.length);
       })
-      .catch(() => setHwCount(0));
+      .catch(() => {
+        if (cancelled) return;
+        setHwCount(0);
+        setHwQuestionsError(true);
+      });
+    return () => { cancelled = true; };
   }, [hwLesson, lessons]);
 
   /* --- bước 4: chấm công --- */
@@ -198,14 +211,31 @@ export function WrapUpModal({
         }
         setStep("homework");
       } else if (step === "homework") {
-        if (!hwSkip && !hwCreated && session.class_id && hwIds.length) {
+        if (!hwSkip && !hwCreated && session.class_id) {
+          if (hwOnline && hwLesson && hwCount === null) {
+            throw new Error("Đang tải câu hỏi, vui lòng chờ một chút.");
+          }
+          if (hwOnline && hwQuestionsError) {
+            throw new Error("Không tải được câu hỏi. Vui lòng thử lại hoặc bỏ chọn bài tập trên hệ thống để giao riêng bài thủ công.");
+          }
+          const questionIds = hwOnline ? hwIds : [];
+          const manualTasks = hwManual ? hwManualTasks : [];
+          const teacherNote = hwManual ? hwTeacherNote.trim() : "";
+          if (hwManual && !manualTasks.length && !teacherNote) {
+            throw new Error("Chọn phần bài tập thủ công hoặc nhập nội dung dặn dò.");
+          }
+          if (!questionIds.length && !manualTasks.length && !teacherNote) {
+            throw new Error("Chọn câu hỏi trên hệ thống, thêm bài tập thủ công hoặc chọn “Buổi này không giao bài tập”.");
+          }
           await createHomework({
             class_id: session.class_id,
             session_id: session.id,
             title: hwTitle.trim() || "Bài tập về nhà",
             kind: "homework",
             due_at: hwDue ? new Date(hwDue).toISOString() : null,
-            question_ids: hwIds,
+            question_ids: questionIds,
+            manual_tasks: manualTasks,
+            teacher_note: teacherNote,
             created_by: currentUserId,
           });
           setHwCreated(true);
@@ -367,36 +397,76 @@ export function WrapUpModal({
                   </label>
                   {!hwSkip && (
                     <>
-                      <div>
-                        <div className="mb-1 text-sm font-semibold">Bộ câu hỏi theo bài</div>
-                        <div className="flex flex-wrap gap-2">
-                          {lessons.length === 0 && (
-                            <span className="text-sm text-muted-foreground">
-                              Buổi chưa gán bài học nào — giao bài tập ở trang “Giao bài tập”.
-                            </span>
-                          )}
-                          {lessons.map((l) => (
-                            <button
-                              key={l.id}
-                              onClick={() => setHwLesson(l.id)}
-                              className={cn(
-                                "rounded-lg border px-3 py-1.5 text-sm font-semibold",
-                                hwLesson === l.id ? "border-brand-600 bg-brand-50 text-brand-700" : "hover:bg-secondary",
-                              )}
-                            >
-                              {l.unit != null ? `Bài ${l.unit} — ` : ""}
-                              {l.title}
-                            </button>
-                          ))}
-                        </div>
-                        {hwCount !== null && (
-                          <div className="mt-2 text-sm text-muted-foreground">
-                            {hwCount > 0
-                              ? `Có ${hwCount} câu trong ngân hàng cho bài này — giao cả bộ.`
-                              : "Bài này chưa có câu hỏi trong ngân hàng."}
+                      <label className="flex cursor-pointer items-center gap-2 text-sm font-medium">
+                        <input type="checkbox" checked={hwOnline} onChange={(e) => setHwOnline(e.target.checked)} className="h-4 w-4 accent-brand-600" />
+                        Giao bài tập trên hệ thống
+                      </label>
+                      {hwOnline && (
+                        <div>
+                          <div className="mb-1 text-sm font-semibold">Bộ câu hỏi theo bài</div>
+                          <div className="flex flex-wrap gap-2">
+                            {lessons.length === 0 && (
+                              <span className="text-sm text-muted-foreground">
+                                Buổi chưa gán bài học nào — bạn có thể giao bài thủ công bên dưới.
+                              </span>
+                            )}
+                            {lessons.map((l) => (
+                              <button
+                                key={l.id}
+                                onClick={() => setHwLesson(l.id)}
+                                className={cn(
+                                  "rounded-lg border px-3 py-1.5 text-sm font-semibold",
+                                  hwLesson === l.id ? "border-brand-600 bg-brand-50 text-brand-700" : "hover:bg-secondary",
+                                )}
+                              >
+                                {l.unit != null ? `Bài ${l.unit} — ` : ""}
+                                {l.title}
+                              </button>
+                            ))}
                           </div>
-                        )}
-                      </div>
+                          {hwQuestionsError ? (
+                            <p className="mt-2 text-sm text-destructive">Không tải được câu hỏi của bài này.</p>
+                          ) : hwCount !== null ? (
+                            <div className="mt-2 text-sm text-muted-foreground">
+                              {hwCount > 0
+                                ? `Có ${hwCount} câu trong ngân hàng cho bài này — giao cả bộ.`
+                                : "Bài này chưa có câu hỏi trong ngân hàng."}
+                            </div>
+                          ) : hwLesson ? <p className="mt-2 text-sm text-muted-foreground">Đang tải câu hỏi…</p> : null}
+                        </div>
+                      )}
+                      <label className="flex cursor-pointer items-center gap-2 text-sm font-medium">
+                        <input type="checkbox" checked={hwManual} onChange={(e) => setHwManual(e.target.checked)} className="h-4 w-4 accent-brand-600" />
+                        Giao bài thủ công
+                      </label>
+                      {hwManual && (
+                        <div className="space-y-3 rounded-xl border p-3">
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {MANUAL_HOMEWORK_OPTIONS.map((task) => (
+                              <label key={task} className="flex cursor-pointer items-center gap-2 text-sm">
+                                <input
+                                  type="checkbox"
+                                  checked={hwManualTasks.includes(task)}
+                                  onChange={(e) => setHwManualTasks((current) =>
+                                    e.target.checked ? [...current, task] : current.filter((item) => item !== task),
+                                  )}
+                                  className="h-4 w-4 accent-brand-600"
+                                />
+                                {task}
+                              </label>
+                            ))}
+                          </div>
+                          <label className="block space-y-1 text-sm font-semibold">
+                            <span>Dặn dò hoặc bài tập khác</span>
+                            <Textarea
+                              value={hwTeacherNote}
+                              onChange={(e) => setHwTeacherNote(e.target.value)}
+                              rows={3}
+                              placeholder="Ví dụ: Làm trang 12–13 trong sách bài tập, viết mỗi từ 3 lần…"
+                            />
+                          </label>
+                        </div>
+                      )}
                       <div className="grid gap-3 sm:grid-cols-2">
                         <div>
                           <div className="mb-1 text-sm font-semibold">Tiêu đề</div>
