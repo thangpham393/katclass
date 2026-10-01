@@ -389,7 +389,7 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
 
   const submissions = new Map<
     string,
-    { score: number | null; status: string; submitted_at: string }
+    { score: number | null; auto_score: number | null; status: string; submitted_at: string }
   >();
   for (const s of (subRes.data ?? []) as {
     homework_id: string;
@@ -400,6 +400,7 @@ async function loadPortalData(admin: SupabaseClient, studentId: string) {
   }[]) {
     submissions.set(s.homework_id, {
       score: s.score ?? s.auto_score,
+      auto_score: s.auto_score,
       status: s.status,
       submitted_at: s.submitted_at,
     });

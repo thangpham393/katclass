@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ArrowLeft, Calendar, Play, RotateCcw, Send, Timer, Trophy, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
