@@ -84,6 +84,7 @@ export const libraryGroup: NavGroup = {
   icon: Library,
   children: [
     { href: "/library/textbooks", label: "Giáo trình", icon: BookMarked },
+    { href: "/library/tests", label: "Bài kiểm tra", icon: ListChecks },
     { href: "/library/exercises", label: "Bộ bài tập", icon: ClipboardList },
     { href: "/library/lessons", label: "Bài học", icon: BookOpen },
     { href: "/library/vocab", label: "Kho từ vựng", icon: Languages },

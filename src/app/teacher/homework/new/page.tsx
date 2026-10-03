@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Send } from "lucide-react";
@@ -12,7 +12,7 @@ import { Select, Field } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
-import { dbErrorMessage, fetchTeacherClasses } from "@/lib/db";
+import { dbErrorMessage, fetchClasses, fetchTeacherClasses } from "@/lib/db";
 import {
   createHomework,
   fetchLessons,
@@ -25,15 +25,18 @@ import {
   type QuestionRow,
   type QuestionType,
 } from "@/lib/db-content";
+import { fetchTestTemplates } from "@/lib/db-tests";
 import { cn } from "@/lib/utils";
 
 export default function NewHomeworkPage() {
   const router = useRouter();
   const { user } = useAuth();
   const teacherId = user?.id ?? "";
+  const templates = useLoad(fetchTestTemplates);
+  const [templateId, setTemplateId] = useState("");
 
   const classes = useLoad(
-    () => (teacherId ? fetchTeacherClasses(teacherId) : Promise.resolve([])),
+    () => (teacherId ? (user?.role === "admin" ? fetchClasses() : fetchTeacherClasses(teacherId)) : Promise.resolve([])),
     [teacherId],
   );
   const lessons = useLoad(() => fetchLessons(), []);
@@ -56,6 +59,16 @@ export default function NewHomeworkPage() {
     () => fetchQuestions({ type: typeFilter, lessonId: lessonFilter || undefined }),
     [typeFilter, lessonFilter],
   );
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("test");
+    if (id) { setTemplateId(id); setKind("test"); }
+  }, []);
+  useEffect(() => {
+    if (kind !== "test") return;
+    const template = templates.data?.find(t => t.id === templateId);
+    setSelected(template?.question_ids ?? []);
+    if (template) { setTitle(template.title); setTimeLimit(String(template.time_limit_minutes)); }
+  }, [templateId, templates.data, kind]);
   const [onlyClassTextbook, setOnlyClassTextbook] = useState(true);
 
   const questionById = useMemo(() => {
@@ -96,6 +109,7 @@ export default function NewHomeworkPage() {
     if (!user) return;
     if (!title.trim()) return setError("Nhập tiêu đề bài tập.");
     if (!classId) return setError("Chọn lớp được giao.");
+    if (kind === "test" && !templateId) return setError("Chọn đề kiểm tra từ thư viện.");
     if (kind === "test" && !selected.length) return setError("Bài kiểm tra cần có ít nhất 1 câu hỏi trên hệ thống.");
     if (!selected.length && !manualTasks.length && !teacherNote.trim()) {
       return setError("Chọn câu hỏi trên hệ thống hoặc thêm nội dung giao thủ công.");
@@ -108,6 +122,7 @@ export default function NewHomeworkPage() {
     setError(null);
     try {
       const id = await createHomework({
+        template_id: kind === "test" ? templateId : null,
         class_id: classId,
         title: title.trim(),
         kind,
@@ -115,8 +130,8 @@ export default function NewHomeworkPage() {
         open_at: kind === "test" && openAt ? new Date(openAt).toISOString() : null,
         due_at: dueAt ? new Date(dueAt).toISOString() : null,
         question_ids: selected,
-        manual_tasks: manualTasks,
-        teacher_note: teacherNote.trim(),
+        manual_tasks: kind === "test" ? [] : manualTasks,
+        teacher_note: kind === "test" ? "" : teacherNote.trim(),
         created_by: user.id,
       });
       router.replace(`/teacher/homework/${id}`);
@@ -219,7 +234,13 @@ export default function NewHomeworkPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          {kind === "test" && <Card><CardHeader><CardTitle>2. Chọn bài kiểm tra từ thư viện</CardTitle></CardHeader><CardContent className="space-y-3 p-5">
+            {templates.error && <ErrorNote message={templates.error} />}
+            <Select value={templateId} onChange={e => setTemplateId(e.target.value)}><option value="">— Chọn đề kiểm tra —</option>{(templates.data ?? []).map(t => <option key={t.id} value={t.id}>{t.title} · {t.time_limit_minutes} phút</option>)}</Select>
+            <Link href="/library/tests" className="text-sm font-semibold text-brand-600">Mở thư viện để tạo hoặc sửa đề →</Link>
+            <p className="text-sm text-muted-foreground">Đã chọn {selected.length} câu / phần trong đề.</p>
+          </CardContent></Card>}
+          {kind === "homework" && <Card>
             <CardHeader>
               <CardTitle>2. Bài tập trên hệ thống ({selected.length})</CardTitle>
             </CardHeader>
@@ -328,9 +349,9 @@ export default function NewHomeworkPage() {
                 </div>
               )}
             </CardContent>
-          </Card>
+          </Card>}
 
-          <Card>
+          {kind === "homework" && <Card>
             <CardHeader>
               <CardTitle>3. Bài tập thủ công</CardTitle>
             </CardHeader>
@@ -369,7 +390,7 @@ export default function NewHomeworkPage() {
                 />
               </Field>
             </CardContent>
-          </Card>
+          </Card>}
         </div>
 
         <aside className="h-fit space-y-4 lg:sticky lg:top-20">

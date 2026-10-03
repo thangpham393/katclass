@@ -425,6 +425,9 @@ function fmtCountdown(ms: number): string {
 
 function isAnswered(q: QuestionRow, a: QuestionAnswer | undefined): boolean {
   if (a === undefined) return false;
+  if (q.type === "reading") {
+    return typeof a === "object" && !Array.isArray(a) && (q.content.items ?? []).every((_, i) => Boolean(a[String(i)]?.trim()));
+  }
   if (q.type === "fill_blank") {
     return Array.isArray(a) && a.length > 0 && a.every((s) => String(s).trim() !== "");
   }
@@ -450,6 +453,17 @@ function QuestionInput({
   onChange: (v: QuestionAnswer) => void;
 }) {
   switch (q.type) {
+    case "reading": {
+      const responses = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+      return <div className="space-y-4">
+        <div className="zh whitespace-pre-wrap rounded-xl bg-secondary p-4">{q.content.passage}</div>
+        {(q.content.items ?? []).map((item, i) => <div key={i} className="space-y-2">
+          <p className="font-medium">{i + 1}. {item.prompt}</p>
+          {item.type === "multiple_choice" ? <div className="space-y-2">{item.options?.map((option, k) => <label key={k} className="flex cursor-pointer items-center gap-2 rounded-lg border p-3"><input type="radio" name={`${q.id}-${i}`} checked={responses[String(i)] === CHOICE_LETTERS[k]} onChange={() => onChange({ ...responses, [String(i)]: CHOICE_LETTERS[k] })} />{CHOICE_LETTERS[k]}. {option}</label>)}</div> : <Input value={responses[String(i)] ?? ""} onChange={e => onChange({ ...responses, [String(i)]: e.target.value })} placeholder="Nhập câu trả lời" />}
+        </div>)}
+      </div>;
+    }
+
     case "multiple_choice":
     case "pinyin_choice":
     case "listening":

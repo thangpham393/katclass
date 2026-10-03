@@ -260,9 +260,11 @@ export type QuestionType =
   | "matching"
   | "reorder"
   | "listening"
-  | "pinyin_choice";
+  | "pinyin_choice"
+  | "reading";
 
 export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
+  reading: "Đọc hiểu",
   multiple_choice: "Trắc nghiệm",
   fill_blank: "Điền từ",
   matching: "Nối từ – nghĩa",
@@ -273,7 +275,14 @@ export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
 
 export const CHOICE_LETTERS = ["A", "B", "C", "D", "E", "F"];
 
+export interface ReadingItem {
+  prompt: string;
+  type: "multiple_choice" | "short_answer";
+  options?: string[];
+}
+
 export interface QuestionContent {
+  items?: ReadingItem[];
   prompt?: string;
   /** Đoạn văn / câu dẫn (đọc hiểu, chọn vị trí từ...) — hiển thị trong khung riêng, giữ xuống dòng. */
   passage?: string;
@@ -342,6 +351,8 @@ export function shuffleTokens(tokens: string[], seed?: string): string[] {
 export function questionPreview(q: Pick<QuestionRow, "type" | "content">): string {
   const c = q.content;
   switch (q.type) {
+    case "reading":
+      return c.passage ?? "";
     case "multiple_choice":
     case "listening":
       return c.prompt ?? c.passage ?? c.hanzi ?? c.tts ?? "";
@@ -365,7 +376,7 @@ export async function fetchQuestions(filter?: {
   type?: QuestionType | "";
   lessonId?: string;
 }): Promise<QuestionRow[]> {
-  let query = getSupabase().from("questions").select(QUESTION_SELECT)
+  let query = getSupabase().from("questions").select(QUESTION_SELECT).eq("is_test_snapshot", false)
     .order("created_at", { ascending: false }).limit(500);
   if (filter?.type) query = query.eq("type", filter.type);
   if (filter?.lessonId) query = query.eq("lesson_id", filter.lessonId);
@@ -555,6 +566,7 @@ export async function fetchHomework(id: string): Promise<HomeworkDetail | null> 
 }
 
 export async function createHomework(input: {
+  template_id?: string | null;
   class_id: string;
   session_id?: string | null;
   title: string;
@@ -568,7 +580,12 @@ export async function createHomework(input: {
   created_by: string;
 }): Promise<string> {
   const supabase = getSupabase();
-  const { question_ids, ...hw } = input;
+  const { question_ids, template_id, ...hw } = input;
+  if (hw.kind === "test" && template_id) {
+    const { data, error } = await supabase.rpc("assign_test_template", { tid: template_id, cid: hw.class_id, assignment_title: hw.title, minutes: hw.time_limit_minutes, opens: hw.open_at ?? null, due: hw.due_at });
+    if (error) throw error;
+    return data as string;
+  }
   const { data, error } = await supabase.from("homeworks").insert(hw).select("id").single();
   if (error) throw error;
   if (question_ids.length) {
