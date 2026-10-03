@@ -1,0 +1,98 @@
+{
+  "verified_at": "2026-10-03T15:59:37.055535+00:00",
+  "textbook_id": "338e4a6f-7f77-4ee8-9840-faa9113b8b35",
+  "textbook_code": "hsk1-new30",
+  "payload_sha256": "6e78e01d690f82e76f3d16cf026470d9847b3c70e914b2afdec5a8ac304b5e6e",
+  "lessons": [
+    {
+      "unit": 1,
+      "records": 27,
+      "new": 27,
+      "existing": 0
+    },
+    {
+      "unit": 2,
+      "records": 42,
+      "new": 42,
+      "existing": 0
+    },
+    {
+      "unit": 3,
+      "records": 42,
+      "new": 42,
+      "existing": 0
+    },
+    {
+      "unit": 4,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 5,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 6,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 8,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 9,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 10,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 11,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 12,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 13,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 14,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    },
+    {
+      "unit": 15,
+      "records": 43,
+      "new": 43,
+      "existing": 0
+    }
+  ],
+  "verified_question_records": 584,
+  "verified_answers": 584,
+  "skipped_unit": 7,
+  "skipped_unit_question_count": 0,
+  "metadata_unchanged": true,
+  "mode": "apply"
+}

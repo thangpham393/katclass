@@ -1,0 +1,462 @@
+{
+  "files": [
+    {
+      "unit": 1,
+      "file": "BÀI 1 HSK1 3.0.pdf",
+      "sha256": "56f2f98bad5ab06bb7d1bc1364b4010110817a4319447a690c6ab65031486263",
+      "source_exercises": 25,
+      "question_records": 21,
+      "types": {
+        "pinyin_choice": 5,
+        "multi_matching": 1,
+        "hanzi_pinyin": 10,
+        "reorder": 5
+      }
+    },
+    {
+      "unit": 2,
+      "file": "BÀI 2 HSK1 3.0.pdf",
+      "sha256": "14be2b648c3a3caef09922d5e27815ff5537ea079767de1ad88043b2188cf98a",
+      "source_exercises": 50,
+      "question_records": 41,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10
+      }
+    },
+    {
+      "unit": 3,
+      "file": "BÀI 3 HSK1 3.0.pdf",
+      "sha256": "34c8ff74d0e217a0b25289a0e645ad3a922166e4598d5d5401ef778930cba395",
+      "source_exercises": 50,
+      "question_records": 41,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10
+      }
+    },
+    {
+      "unit": 4,
+      "file": "BÀI 4 HSK1 3.0.pdf",
+      "sha256": "87e9a1655fa6e39127dc5caeff53a94e5d8f9cc15311fd34214f420371f365ee",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 5,
+      "file": "BÀI 5 HSK1 3.0.pdf",
+      "sha256": "69de375a4d82ba1453953dbb22e0d47e515f2323efa93fa912b38d5e0743ebb6",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 6,
+      "file": "BÀI 6 HSK1 3.0.pdf",
+      "sha256": "99c97f0720ed2910dd160e0d05734e57c5a9537883eee36e2937103ba3310fba",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 7,
+      "file": "BÀI 7 HSK1 3.0.pdf",
+      "sha256": "331a143a59eaf8a590e6208ed7bcee7ddf08ba3f2e4c44fb51cc1d5c1dea4a0d",
+      "skipped": "User requested skipping: exact duplicate of lesson 9 PDF."
+    },
+    {
+      "unit": 8,
+      "file": "BÀI 8 HSK1 3.0.pdf",
+      "sha256": "0074910454241b0d5d016c38dac83d35ccfd7c0ba2c5c6f3be18356f053e5a09",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 9,
+      "file": "BÀI 9 HSK1 3.0.pdf",
+      "sha256": "331a143a59eaf8a590e6208ed7bcee7ddf08ba3f2e4c44fb51cc1d5c1dea4a0d",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 10,
+      "file": "BÀI 10 HSK1 3.0.pdf",
+      "sha256": "fe2082f2ae21ac6d7c173463dc5f053b0c9a3bd219626bda5d9906db79dd6e64",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "pinyin_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 11,
+      "file": "BÀI 11 HSK1 3.0.pdf",
+      "sha256": "b1e9fce471449614fc20b55c90fce0cb48b6123fa5d50fe61919718d75a46ea3",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 12,
+      "file": "BÀI 12 HSK1 3.0.pdf",
+      "sha256": "69c88123a3f8c17d2ef2d8bfa406dde85eea459f9c7e73ce84e3dfddcebd12fc",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 13,
+      "file": "BÀI 13 HSK1 3.0.pdf",
+      "sha256": "c98848c1b6df9e21a3e56d351c600223f63402e399553b83e3a1d513224f1453",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 14,
+      "file": "BÀI 14 HSK1 3.0.pdf",
+      "sha256": "b1742fa32b1e8f2b472dd2583cc32dcf2c2bb5ad818657c55b86b583f00b6967",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    },
+    {
+      "unit": 15,
+      "file": "BÀI 15 HSK1 3.0.pdf",
+      "sha256": "4b2d9dd0b08145614ee09a717d62d56817b16d1c9cc1066e43659328431442dc",
+      "source_exercises": 60,
+      "question_records": 42,
+      "types": {
+        "multiple_choice": 10,
+        "matching": 1,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10,
+        "reading": 1
+      }
+    }
+  ],
+  "corrections": [
+    {
+      "unit": 1,
+      "number": 20,
+      "message": "Đề câu 20 bị cắt ở cuối trang; khôi phục câu 对不起 theo đáp án tham khảo."
+    },
+    {
+      "unit": 1,
+      "number": [
+        9,
+        10
+      ],
+      "message": "Bảng nối bị cắt cuối trang. Khôi phục mục 9–10 và các lựa chọn còn thiếu từ đáp án tham khảo."
+    },
+    {
+      "unit": 2,
+      "number": 4,
+      "message": "Sửa khóa đáp án: C → B"
+    },
+    {
+      "unit": 3,
+      "number": 6,
+      "message": "Đề in 女友 nhưng các lựa chọn là Pinyin của 女朋友; bổ sung 朋 để khớp đáp án."
+    },
+    {
+      "unit": 5,
+      "number": 19,
+      "message": "Nghĩa của 星期 bị in nhầm “Sắp / Tuần”; sửa thành “Thứ / Tuần”."
+    },
+    {
+      "unit": 5,
+      "number": 7,
+      "message": "PDF có hai lựa chọn A/B giống hệt diànnǎo; sửa phương án nhiễu A để chỉ có một đáp án đúng (B)."
+    },
+    {
+      "unit": 5,
+      "number": 33,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 昨天星期六。"
+    },
+    {
+      "unit": 6,
+      "number": [
+        36,
+        39
+      ],
+      "message": "Hiệu chỉnh câu mẫu thiếu từ nghi vấn hoặc dùng 谁 để hỏi số điện thoại; dùng 多少."
+    },
+    {
+      "unit": 6,
+      "number": 22,
+      "message": "Đề gốc 你的电话___是多少？ cần điền 号; sửa đáp án 电话 thành 号."
+    },
+    {
+      "unit": 6,
+      "number": 25,
+      "message": "Hiệu chỉnh đề điền từ: 我的电话号是八九___三___五。 → 我的电话号是八九___三五。"
+    },
+    {
+      "unit": 6,
+      "number": 29,
+      "message": "Hiệu chỉnh đề điền từ: 你有___个___SĐT？ → 你有___个电话号码？"
+    },
+    {
+      "unit": 6,
+      "number": 31,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 你的手机号是多少？"
+    },
+    {
+      "unit": 6,
+      "number": 32,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 电话号码是多少？"
+    },
+    {
+      "unit": 6,
+      "number": 36,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 你的电话号码是多少？"
+    },
+    {
+      "unit": 6,
+      "number": 39,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 他的电话号码是多少？"
+    },
+    {
+      "unit": 8,
+      "number": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "message": "Phiếu không có khóa đáp án đọc hiểu. Bổ sung đáp án bằng cách đối chiếu đoạn văn."
+    },
+    {
+      "unit": 8,
+      "number": 9,
+      "message": "Cuối trang bị cắt mất C; giữ hai phương án đọc được, đáp án B theo khóa gốc."
+    },
+    {
+      "unit": 8,
+      "number": 10,
+      "message": "Cuối trang bị cắt mất C; khôi phục 房间 từ Pinyin fángjiān và khóa đáp án C."
+    },
+    {
+      "unit": 8,
+      "number": 4,
+      "message": "Sửa khóa đáp án: D → C"
+    },
+    {
+      "unit": 9,
+      "number": 42,
+      "message": "Câu dịch “Sáng mai tôi học ở trường” thiếu 学习 trong đáp án gốc; bổ sung để đúng nghĩa."
+    },
+    {
+      "unit": 9,
+      "number": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "message": "Khóa nối từ của PDF lệch với bảng nghĩa đang in. Đối chiếu chữ Hán và nghĩa, sửa thành 11.A đến 20.J."
+    },
+    {
+      "unit": 10,
+      "number": 9,
+      "message": "PDF có hai lựa chọn A/C giống hệt zěnme; sửa phương án nhiễu C để chỉ có một đáp án đúng (A)."
+    },
+    {
+      "unit": 10,
+      "number": 5,
+      "message": "Sửa khóa đáp án: A → B"
+    },
+    {
+      "unit": 10,
+      "number": 40,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 一共多少钱？"
+    },
+    {
+      "unit": 11,
+      "number": [
+        9,
+        10
+      ],
+      "message": "Cuối trang cắt mất phương án C. Giữ các phương án A/B đọc được; đáp án tương ứng A/B không thay đổi."
+    },
+    {
+      "unit": 12,
+      "number": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "message": "Phiếu chỉ ghi “Xem chi tiết trong tài liệu”, không có đáp án dạng 4–5. Bổ sung câu chuẩn từ các khối chữ và đề dịch."
+    },
+    {
+      "unit": 13,
+      "number": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "message": "Phiếu chỉ ghi “Xem chi tiết trong tài liệu”, không có đáp án dạng 4–5. Bổ sung câu chuẩn từ các khối chữ và đề dịch."
+    },
+    {
+      "unit": 13,
+      "number": 31,
+      "message": "Các khối gốc không khớp đáp án. Tái tạo các khối chữ từ câu chuẩn: 喂，你是谁？"
+    },
+    {
+      "unit": 14,
+      "number": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "message": "Phiếu chỉ ghi “Xem chi tiết trong tài liệu”, không có đáp án dạng 4–5. Bổ sung câu chuẩn từ các khối chữ và đề dịch."
+    },
+    {
+      "unit": 15,
+      "number": 39,
+      "message": "Đáp án mẫu thiếu 的 so với các khối chữ; giữ 的 và dùng câu đúng 我的家有三口人。"
+    }
+  ]
+}

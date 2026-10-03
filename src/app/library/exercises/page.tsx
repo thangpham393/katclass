@@ -24,10 +24,10 @@ import { dbErrorMessage, LEVEL_LABELS } from "@/lib/db";
 import { TextbookCover } from "@/components/library/textbook-cover";
 import {
   fetchQuestionAnswers,
+  questionAnswerPreview,
   fetchQuestions,
   questionPreview,
   QUESTION_TYPE_LABELS,
-  type QuestionAnswer,
   type QuestionRow,
 } from "@/lib/db-content";
 import {
@@ -39,15 +39,6 @@ import {
   type TextbookLessonRow,
 } from "@/lib/db-library";
 
-function answerPreview(q: QuestionRow, a: QuestionAnswer | undefined): string {
-  if (a === undefined) return "—";
-  if (typeof a === "string") return a;
-  if (Array.isArray(a)) return a.join(q.type === "reorder" ? "" : ", ");
-  return Object.entries(a)
-    .map(([k, v]) => `${Number(k) + 1}→${String(v).toUpperCase()}`)
-    .join(", ");
-}
-
 /**
  * Thư viện bài tập — kho bài tập về nhà soạn sẵn theo từng bài của giáo trình.
  * Chọn giáo trình → xem bộ đề của từng bài → giao thẳng cho lớp.
@@ -55,7 +46,7 @@ function answerPreview(q: QuestionRow, a: QuestionAnswer | undefined): string {
 export default function ExerciseLibraryPage() {
   const { user, can } = useAuth();
   const canManage = can("textbooks.manage");
-  const canAssign = user?.role === "teacher";
+  const canAssign = user?.role === "teacher" || user?.role === "admin";
 
   const textbooks = useLoad(fetchTextbooks);
   const [textbookId, setTextbookId] = useState("");
@@ -266,7 +257,7 @@ export default function ExerciseLibraryPage() {
                           Xem bộ đề
                         </Button>
                         {canAssign && (
-                          <Link href="/teacher/homework/new" className="flex-1">
+                          <Link href={`/teacher/homework/new?textbook=${current!.id}&lesson=${l.id}`} className="flex-1">
                             <Button size="sm" variant="outline" className="w-full" disabled={!count}>
                               <Send className="h-3.5 w-3.5" /> Giao bài
                             </Button>
@@ -350,7 +341,7 @@ function ExercisePreviewModal({
                 <div className="zh mt-1.5 text-sm">{questionPreview(x)}</div>
                 {showAnswers && (
                   <div className="mt-1.5 text-xs font-semibold text-emerald-700">
-                    Đáp án: {answerPreview(x, answers.data?.[x.id])}
+                    Đáp án: {questionAnswerPreview(x, answers.data?.[x.id])}
                   </div>
                 )}
               </div>

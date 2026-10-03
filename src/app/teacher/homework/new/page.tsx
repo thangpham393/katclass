@@ -1,29 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Send } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, Field } from "@/components/ui/select";
-import { LoadingRows, ErrorNote } from "@/components/ui/loading";
+import { ErrorNote } from "@/components/ui/loading";
+import { HomeworkQuestionPicker } from "@/components/homework-question-picker";
+import type { TextbookLessonRow } from "@/lib/db-library";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import { dbErrorMessage, fetchClasses, fetchTeacherClasses } from "@/lib/db";
 import {
   createHomework,
-  fetchLessons,
-  fetchQuestions,
-  questionPreview,
   HOMEWORK_KIND_LABELS,
   MANUAL_HOMEWORK_OPTIONS,
-  QUESTION_TYPE_LABELS,
   type HomeworkKind,
   type QuestionRow,
-  type QuestionType,
 } from "@/lib/db-content";
 import { fetchTestTemplates } from "@/lib/db-tests";
 import { cn } from "@/lib/utils";
@@ -37,9 +33,8 @@ export default function NewHomeworkPage() {
 
   const classes = useLoad(
     () => (teacherId ? (user?.role === "admin" ? fetchClasses() : fetchTeacherClasses(teacherId)) : Promise.resolve([])),
-    [teacherId],
+    [teacherId, user?.role],
   );
-  const lessons = useLoad(() => fetchLessons(), []);
 
   const [title, setTitle] = useState("");
   const [classId, setClassId] = useState("");
@@ -47,21 +42,21 @@ export default function NewHomeworkPage() {
   const [timeLimit, setTimeLimit] = useState("15");
   const [openAt, setOpenAt] = useState("");
   const [dueAt, setDueAt] = useState("");
-  const [typeFilter, setTypeFilter] = useState<QuestionType | "">("");
+  const [textbookId, setTextbookId] = useState("");
   const [lessonFilter, setLessonFilter] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
   const [manualTasks, setManualTasks] = useState<string[]>([]);
   const [teacherNote, setTeacherNote] = useState("");
   const [saving, setSaving] = useState(false);
+  const [choosingPack, setChoosingPack] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const questions = useLoad(
-    () => fetchQuestions({ type: typeFilter, lessonId: lessonFilter || undefined }),
-    [typeFilter, lessonFilter],
-  );
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("test");
     if (id) { setTemplateId(id); setKind("test"); }
+    const params = new URLSearchParams(window.location.search);
+    setTextbookId(params.get("textbook") ?? "");
+    setLessonFilter(params.get("lesson") ?? "");
   }, []);
   useEffect(() => {
     if (kind !== "test") return;
@@ -69,44 +64,27 @@ export default function NewHomeworkPage() {
     setSelected(template?.question_ids ?? []);
     if (template) { setTitle(template.title); setTimeLimit(String(template.time_limit_minutes)); }
   }, [templateId, templates.data, kind]);
-  const [onlyClassTextbook, setOnlyClassTextbook] = useState(true);
-
-  const questionById = useMemo(() => {
-    const map = new Map<string, QuestionRow>();
-    for (const q of questions.data ?? []) map.set(q.id, q);
-    return map;
-  }, [questions.data]);
-
-  // Giáo trình của lớp đang chọn — mặc định chỉ hiện bài học / câu hỏi thuộc giáo trình đó
-  const classTextbook = (classes.data ?? []).find((c) => c.id === classId)?.textbook ?? null;
-  const textbookFilterOn = Boolean(classTextbook) && onlyClassTextbook;
-  const lessonOptions = (lessons.data ?? []).filter(
-    (l) => !textbookFilterOn || l.textbook_id === classTextbook!.id,
-  );
-  const visibleQuestions = (questions.data ?? []).filter(
-    (q) =>
-      !textbookFilterOn ||
-      lessonFilter !== "" || // đã lọc theo 1 bài cụ thể thì giữ nguyên
-      q.lesson?.textbook_id === classTextbook!.id,
-  );
-
-  function toggle(id: string) {
-    setSelected((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
+  function addQuestions(rows: QuestionRow[], lesson: TextbookLessonRow) {
+    setSelected(current => [...new Set([...current, ...rows.map(q => q.id)])]);
+    setTitle(current => current.trim() ? current : `Luyện tập${lesson.unit != null ? ` Bài ${lesson.unit}` : ""} — ${lesson.title}`);
   }
 
-  /** Chọn nguyên bộ câu hỏi đang hiện (giữ câu đã chọn, không trùng). */
-  function selectAllVisible() {
-    const ids = visibleQuestions.map((q) => q.id);
-    setSelected((cur) => [...cur, ...ids.filter((id) => !cur.includes(id))]);
-    // Chưa đặt tiêu đề + đang lọc theo 1 bài → tự điền "Luyện tập Bài N"
-    if (!title.trim() && lessonFilter) {
-      const l = (lessons.data ?? []).find((x) => x.id === lessonFilter);
-      if (l) setTitle(`Luyện tập${l.unit != null ? ` Bài ${l.unit}` : ""} — ${l.title}`);
+  function removeQuestions(ids: string[]) {
+    const removed = new Set(ids);
+    setSelected(current => current.filter(id => !removed.has(id)));
+  }
+
+  function changeClass(id: string) {
+    setClassId(id);
+    const textbook = classes.data?.find(c => c.id === id)?.textbook;
+    if (textbook && textbook.id !== textbookId) {
+      setTextbookId(textbook.id);
+      setLessonFilter("");
     }
   }
 
   async function handleSubmit() {
-    if (!user) return;
+    if (!user || choosingPack || saving) return;
     if (!title.trim()) return setError("Nhập tiêu đề bài tập.");
     if (!classId) return setError("Chọn lớp được giao.");
     if (kind === "test" && !templateId) return setError("Chọn đề kiểm tra từ thư viện.");
@@ -154,7 +132,7 @@ export default function NewHomeworkPage() {
       <div>
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Giao bài tập mới</h1>
         <p className="mt-1 text-muted-foreground">
-          Chọn câu hỏi từ ngân hàng — học viên nộp là hệ thống chấm ngay.
+          Chọn giáo trình và bộ đề theo bài học — học viên nộp là hệ thống chấm ngay.
         </p>
       </div>
 
@@ -197,7 +175,7 @@ export default function NewHomeworkPage() {
               </Field>
               <div className="grid gap-4 md:grid-cols-2">
                 <Field label="Lớp được giao" required>
-                  <Select value={classId} onChange={(e) => setClassId(e.target.value)}>
+                  <Select value={classId} onChange={(e) => changeClass(e.target.value)}>
                     <option value="">— Chọn lớp —</option>
                     {activeClasses.map((c) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
@@ -245,109 +223,18 @@ export default function NewHomeworkPage() {
               <CardTitle>2. Bài tập trên hệ thống ({selected.length})</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-4 pt-0 sm:p-6 sm:pt-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <Select
-                  wrapClassName="w-full sm:w-auto"
-                  className="w-full sm:w-44"
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value as QuestionType | "")}
-                >
-                  <option value="">Mọi dạng câu</option>
-                  {(Object.keys(QUESTION_TYPE_LABELS) as QuestionType[]).map((t) => (
-                    <option key={t} value={t}>{QUESTION_TYPE_LABELS[t]}</option>
-                  ))}
-                </Select>
-                <Select wrapClassName="w-full sm:w-auto" className="w-full sm:w-56" value={lessonFilter} onChange={(e) => setLessonFilter(e.target.value)}>
-                  <option value="">Mọi bài học</option>
-                  {lessonOptions.map((l) => (
-                    <option key={l.id} value={l.id}>
-                      {l.textbook ? `${l.textbook.name} — ` : ""}
-                      {l.unit != null ? `Bài ${l.unit}: ` : ""}{l.title}
-                    </option>
-                  ))}
-                </Select>
-                {classTextbook && (
-                  <label className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <input
-                      type="checkbox"
-                      checked={onlyClassTextbook}
-                      onChange={(e) => setOnlyClassTextbook(e.target.checked)}
-                      className="h-3.5 w-3.5 accent-brand-600"
-                    />
-                    Chỉ giáo trình của lớp ({classTextbook.name})
-                  </label>
-                )}
-              </div>
-
-              {/* Chọn nguyên bộ: lấy toàn bộ câu hỏi đang hiện (vd. cả bộ luyện tập của 1 bài) */}
-              {!questions.loading && visibleQuestions.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button type="button" variant="secondary" size="sm" onClick={selectAllVisible}>
-                    <Plus className="h-3.5 w-3.5" />
-                    Chọn cả bộ ({visibleQuestions.length} câu{lessonFilter ? " của bài này" : ""})
-                  </Button>
-                  {selected.length > 0 && (
-                    <Button type="button" variant="outline" size="sm" onClick={() => setSelected([])}>
-                      Bỏ chọn tất cả
-                    </Button>
-                  )}
-                  {lessonFilter && (
-                    <span className="text-xs text-muted-foreground">
-                      Chọn bài học rồi bấm “Chọn cả bộ” — khỏi tích tay từng câu.
-                    </span>
-                  )}
-                </div>
-              )}
-
-              {questions.loading ? (
-                <LoadingRows rows={4} className="p-0" />
-              ) : visibleQuestions.length === 0 ? (
-                <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  {textbookFilterOn && (questions.data?.length ?? 0) > 0 ? (
-                    <>Giáo trình của lớp chưa có câu hỏi phù hợp — bỏ chọn “Chỉ giáo trình của lớp” để xem tất cả.</>
-                  ) : (
-                    <>
-                      Không có câu hỏi phù hợp —{" "}
-                      <Link href="/library/questions" className="font-semibold text-brand-600 hover:underline">
-                        tạo ở Ngân hàng câu hỏi
-                      </Link>
-                      .
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div className="max-h-96 space-y-1.5 overflow-y-auto pr-1">
-                  {visibleQuestions.map((q) => {
-                    const picked = selected.includes(q.id);
-                    return (
-                      <button
-                        key={q.id}
-                        type="button"
-                        onClick={() => toggle(q.id)}
-                        className={cn(
-                          "flex w-full items-center gap-3 rounded-xl border bg-card p-2.5 text-left transition-all",
-                          picked ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-200" : "hover:border-brand-300",
-                        )}
-                      >
-                        <Badge variant="outline" className="w-24 shrink-0 justify-center text-[10px]">
-                          {QUESTION_TYPE_LABELS[q.type]}
-                        </Badge>
-                        <div className="min-w-0 flex-1">
-                          <div className="zh truncate text-sm">{questionPreview(q) || "(chưa có đề bài)"}</div>
-                          {q.lesson && (
-                            <div className="truncate text-xs text-muted-foreground">
-                              {q.lesson.unit != null ? `Bài ${q.lesson.unit}: ` : ""}{q.lesson.title}
-                            </div>
-                          )}
-                        </div>
-                        {picked && (
-                          <Badge variant="jade">#{selected.indexOf(q.id) + 1}</Badge>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+              <HomeworkQuestionPicker
+                textbookId={textbookId}
+                lessonId={lessonFilter}
+                selected={selected}
+                onBrowse={(textbook, lesson) => {
+                  setTextbookId(textbook);
+                  setLessonFilter(lesson);
+                }}
+                onAdd={addQuestions}
+                onRemove={removeQuestions}
+                onBusyChange={setChoosingPack}
+              />
             </CardContent>
           </Card>}
 
@@ -418,7 +305,7 @@ export default function NewHomeworkPage() {
             </CardContent>
           </Card>
 
-          <Button className="w-full" size="lg" disabled={saving} onClick={handleSubmit}>
+          <Button className="w-full" size="lg" disabled={saving || choosingPack} onClick={handleSubmit}>
             <Send className="h-4 w-4" />
             {saving ? "Đang giao..." : kind === "test" ? "Giao bài kiểm tra" : "Giao bài tập"}
           </Button>

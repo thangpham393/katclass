@@ -1,0 +1,4 @@
+interface:
+  display_name: "Import bài tập CLASSHUB"
+  short_description: "Số hoá PDF và nhập bài tập theo giáo trình, level"
+  default_prompt: "Dùng $classhub-workbook-import để số hoá và import toàn bộ phiếu bài tập HSK 2 3.0 từ Downloads vào Bộ bài tập của giáo trình tương ứng."

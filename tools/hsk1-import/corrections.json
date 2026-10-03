@@ -1,0 +1,380 @@
+{
+  "1": {
+    "fill": {
+      "11": {
+        "prompt": "Hoàn thành: Lǎoshī, ___ hǎo! (Chào thầy ạ! — Tôn trọng)\nPinyin của chữ vừa điền: ___",
+        "answer": [
+          "您",
+          "nín"
+        ]
+      },
+      "12": {
+        "prompt": "Hoàn thành: ___ jiā hǎo! (Chào mọi người!)\nPinyin của chữ vừa điền: ___",
+        "answer": [
+          "大",
+          "dà"
+        ]
+      },
+      "13": {
+        "prompt": "Hoàn thành: Wǒmen shì xué ___. (Chúng tôi là học sinh.)\nPinyin của chữ vừa điền: ___",
+        "answer": [
+          "生",
+          "shēng"
+        ]
+      },
+      "14": {
+        "prompt": "Hoàn thành: Zǎo ___ hǎo! (Chào buổi sáng!)\nPinyin của chữ vừa điền: ___",
+        "answer": [
+          "上",
+          "shang"
+        ]
+      },
+      "15": {
+        "prompt": "Hoàn thành: Tóngxué ___, zàijiàn! (Tạm biệt các em!)\nPinyin của chữ vừa điền: ___",
+        "answer": [
+          "们",
+          "men"
+        ]
+      }
+    },
+    "tokens": {
+      "16": [
+        "好",
+        "你",
+        "们",
+        "！"
+      ],
+      "17": [
+        "老师",
+        "您",
+        "好",
+        "，",
+        "！"
+      ],
+      "18": [
+        "见",
+        "再",
+        "！"
+      ],
+      "19": [
+        "客",
+        "不",
+        "气",
+        "！"
+      ],
+      "20": [
+        "起",
+        "对",
+        "不",
+        "！"
+      ]
+    },
+    "order_prompts": {
+      "20": "起 / 对 / 不 / ！"
+    },
+    "order_answers": {
+      "16": "你们好！",
+      "17": "老师，您好！",
+      "18": "再见！",
+      "19": "不客气！",
+      "20": "对不起！"
+    },
+    "order_pinyin": {
+      "16": "Nǐmen hǎo!",
+      "17": "Lǎoshī, nín hǎo!",
+      "18": "Zàijiàn!",
+      "19": "Bú kèqi!",
+      "20": "Duìbuqǐ!"
+    },
+    "translations": {
+      "21": [
+        "王老师，您好！",
+        "Wáng lǎoshī, nín hǎo!"
+      ],
+      "22": [
+        "谢谢大家！",
+        "Xièxie dàjiā!"
+      ],
+      "23": [
+        "老师，再见！",
+        "Lǎoshī, zàijiàn!"
+      ],
+      "24": [
+        "没关系！",
+        "Méi guānxi!"
+      ],
+      "25": [
+        "你们好！",
+        "Nǐmen hǎo!"
+      ]
+    }
+  },
+  "2": {
+    "letter_answers": {
+      "4": "B"
+    },
+    "translation_variants": {
+      "45": [
+        "我的名字叫李文。"
+      ],
+      "47": [
+        "没事。"
+      ]
+    }
+  },
+  "5": {
+    "choices": {
+      "7": {
+        "target": "电脑",
+        "options": [
+          "diānnǎo",
+          "diànnǎo",
+          "diǎnnǎo"
+        ],
+        "reason": "PDF có hai lựa chọn A/B giống hệt diànnǎo; sửa phương án nhiễu A để chỉ có một đáp án đúng (B)."
+      }
+    },
+    "matching_meanings": {
+      "I": "Thứ / Tuần"
+    },
+    "notes": [
+      {
+        "number": 19,
+        "message": "Nghĩa của 星期 bị in nhầm “Sắp / Tuần”; sửa thành “Thứ / Tuần”."
+      }
+    ]
+  },
+  "6": {
+    "fill_prompts": {
+      "25": "我的电话号是八九___三五。",
+      "29": "你有___个电话号码？"
+    },
+    "order_answers": {
+      "36": "你的电话号码是多少？",
+      "39": "他的电话号码是多少？"
+    },
+    "notes": [
+      {
+        "number": [
+          36,
+          39
+        ],
+        "message": "Hiệu chỉnh câu mẫu thiếu từ nghi vấn hoặc dùng 谁 để hỏi số điện thoại; dùng 多少."
+      },
+      {
+        "number": 22,
+        "message": "Đề gốc 你的电话___是多少？ cần điền 号; sửa đáp án 电话 thành 号."
+      }
+    ],
+    "fill_answers": {
+      "22": "号"
+    },
+    "word_bank": "手机、电话、多少、号、零、是、你的、房间、几、呢"
+  },
+  "8": {
+    "choices": {
+      "9": {
+        "target": "wài (Bên ngoài)",
+        "options": [
+          "里",
+          "外"
+        ],
+        "reason": "Cuối trang bị cắt mất C; giữ hai phương án đọc được, đáp án B theo khóa gốc."
+      },
+      "10": {
+        "target": "fángjiān (Phòng)",
+        "options": [
+          "教室",
+          "医院",
+          "房间"
+        ],
+        "reason": "Cuối trang bị cắt mất C; khôi phục 房间 từ Pinyin fángjiān và khóa đáp án C."
+      }
+    },
+    "reading_answers": {
+      "51": "B",
+      "52": "B",
+      "53": "A",
+      "54": "C",
+      "55": "B",
+      "56": "B",
+      "57": "B",
+      "58": "B",
+      "59": "B",
+      "60": "A"
+    },
+    "letter_answers": {
+      "4": "C"
+    }
+  },
+  "12": {
+    "word_bank": "会、太、怎么样、冷、热、身体、雨、天气、爱、些",
+    "order_answers": {
+      "31": "昨天天气怎么样？",
+      "32": "今天太热了！",
+      "33": "明天会下雨吗？",
+      "34": "你的身体怎么样？",
+      "35": "多吃些水果。",
+      "36": "今天不冷。",
+      "37": "下午会下雨。",
+      "38": "我不爱吃饭。",
+      "39": "这个苹果太贵了！",
+      "40": "她明天会去学校吗？"
+    },
+    "translation_answers": {
+      "41": "今天天气怎么样？",
+      "42": "昨天太热了！",
+      "43": "明天会下雨吗？",
+      "44": "今天不冷。",
+      "45": "明天不会下雨。",
+      "46": "你的身体怎么样？",
+      "47": "我很爱吃水果。",
+      "48": "我的身体不太好。",
+      "49": "这儿的水果太贵了！",
+      "50": "多吃些水果。"
+    }
+  },
+  "13": {
+    "word_bank": "喂、在、电视、喜欢、给、打电话、中国菜、呢、吧、学习",
+    "order_answers": {
+      "31": "喂，你是谁？",
+      "32": "他在睡觉呢。",
+      "33": "我喜欢看电视。",
+      "34": "我给妈妈打电话。",
+      "35": "我们去吃饭吧！",
+      "36": "她在学习汉语。",
+      "37": "妈妈在做中国菜。",
+      "38": "你在做什么呢？",
+      "39": "我不喜欢看书。",
+      "40": "他没在打电话。"
+    },
+    "translation_answers": {
+      "41": "喂，你在做什么呢？",
+      "42": "他在学习汉语。",
+      "43": "我很喜欢看电视。",
+      "44": "明天我给你打电话吧。",
+      "45": "妈妈在做中国菜。",
+      "46": "我们去买东西吧！",
+      "47": "她没在睡觉。",
+      "48": "喂，请问大卫在家吗？",
+      "49": "他们在看电影。",
+      "50": "我喜欢学习汉语。"
+    }
+  },
+  "14": {
+    "word_bank": "火车、写、听、汉字、汉语、明年、说话、不要、都、听见",
+    "order_answers": {
+      "31": "我明天坐火车。",
+      "32": "老师写汉字。",
+      "33": "我喜欢听音乐。",
+      "34": "他在学习汉语。",
+      "35": "我明年去中国。",
+      "36": "请不要说话。",
+      "37": "我们都是学生。",
+      "38": "你听见我吗？",
+      "39": "这个字我会写。",
+      "40": "听老师讲课。"
+    },
+    "translation_answers": {
+      "41": "明天我坐火车。",
+      "42": "老师在写汉字。",
+      "43": "我喜欢听音乐。",
+      "44": "他在学习汉语。",
+      "45": "我明年去中国。",
+      "46": "请不要说话。",
+      "47": "我们都是学生。",
+      "48": "你听见了吗？",
+      "49": "我会写这个字。",
+      "50": "他什么也没说。"
+    }
+  },
+  "10": {
+    "choices": {
+      "9": {
+        "target": "怎么",
+        "options": [
+          "zěnme",
+          "zhěnme",
+          "zènme"
+        ],
+        "reason": "PDF có hai lựa chọn A/C giống hệt zěnme; sửa phương án nhiễu C để chỉ có một đáp án đúng (A)."
+      }
+    },
+    "letter_answers": {
+      "5": "B"
+    }
+  },
+  "3": {
+    "choices": {
+      "6": {
+        "target": "女朋友",
+        "options": [
+          "nǚpéngyou",
+          "nǔpéngyou",
+          "nǚpéngyǒu"
+        ],
+        "reason": "Đề in 女友 nhưng các lựa chọn là Pinyin của 女朋友; bổ sung 朋 để khớp đáp án."
+      }
+    }
+  },
+  "9": {
+    "translation_answers": {
+      "42": "我明天上午在学校学习。"
+    },
+    "notes": [
+      {
+        "number": 42,
+        "message": "Câu dịch “Sáng mai tôi học ở trường” thiếu 学习 trong đáp án gốc; bổ sung để đúng nghĩa."
+      },
+      {
+        "number": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "message": "Khóa nối từ của PDF lệch với bảng nghĩa đang in. Đối chiếu chữ Hán và nghĩa, sửa thành 11.A đến 20.J."
+      }
+    ],
+    "matching_answers": {
+      "11": "A",
+      "12": "B",
+      "13": "C",
+      "14": "D",
+      "15": "E",
+      "16": "F",
+      "17": "G",
+      "18": "H",
+      "19": "I",
+      "20": "J"
+    }
+  },
+  "11": {
+    "notes": [
+      {
+        "number": [
+          9,
+          10
+        ],
+        "message": "Cuối trang cắt mất phương án C. Giữ các phương án A/B đọc được; đáp án tương ứng A/B không thay đổi."
+      }
+    ]
+  },
+  "15": {
+    "order_answers": {
+      "39": "我的家有三口人。"
+    },
+    "notes": [
+      {
+        "number": 39,
+        "message": "Đáp án mẫu thiếu 的 so với các khối chữ; giữ 的 và dùng câu đúng 我的家有三口人。"
+      }
+    ]
+  }
+}

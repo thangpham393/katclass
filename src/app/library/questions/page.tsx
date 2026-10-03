@@ -14,22 +14,15 @@ import {
   deleteQuestion,
   fetchLessons,
   fetchQuestionAnswers,
+  questionAnswerPreview,
   fetchQuestions,
   questionPreview,
   QUESTION_TYPE_LABELS,
-  type QuestionAnswer,
   type QuestionRow,
   type QuestionType,
 } from "@/lib/db-content";
 
 import { QuestionModal } from "@/components/library/question-modal";
-
-function answerPreview(q: QuestionRow, a: QuestionAnswer | undefined): string {
-  if (a === undefined) return "—";
-  if (typeof a === "string") return a;
-  if (Array.isArray(a)) return a.join(q.type === "reorder" ? "" : ", ");
-  return Object.entries(a).map(([k, v]) => `${Number(k) + 1}→${String(v).toUpperCase()}`).join(", ");
-}
 
 export default function QuestionBankPage() {
   const [typeFilter, setTypeFilter] = useState<QuestionType | "">("");
@@ -122,7 +115,7 @@ export default function QuestionBankPage() {
                 <div className="min-w-0 flex-1">
                   <div className="zh truncate text-sm font-medium">{questionPreview(q) || "(chưa có đề bài)"}</div>
                   <div className="truncate text-xs text-muted-foreground">
-                    Đáp án: <b>{answerPreview(q, answers.data?.[q.id])}</b>
+                    Đáp án: <b>{questionAnswerPreview(q, answers.data?.[q.id])}</b>
                     {q.lesson && <> · {q.lesson.unit != null ? `Bài ${q.lesson.unit}: ` : ""}{q.lesson.title}</>}
                     {q.level && ` · ${q.level}`}
                   </div>

@@ -38,6 +38,7 @@ import type {
   VocabExample,
 } from "./db-content";
 import { QUESTION_TYPE_LABELS } from "./db-content";
+import { validateQuestionDefinition } from "./question-schema";
 
 /* ============ Giáo trình ============ */
 
@@ -95,6 +96,7 @@ export async function fetchTextbookLessons(textbookId: string): Promise<Textbook
       questions ( count )
     `)
     .eq("textbook_id", textbookId)
+    .eq("questions.is_test_snapshot", false)
     .order("unit")
     .order("sort");
   if (error) throw error;
@@ -197,6 +199,8 @@ function assertPayload(payload: TextbookImportPayload) {
       if (!q.content || q.answer === undefined || q.answer === null) {
         throw new Error(`Bài ${l.unit}, câu hỏi thứ ${i + 1}: thiếu content hoặc answer.`);
       }
+      try { validateQuestionDefinition(q); }
+      catch (error) { throw new Error(`Bài ${l.unit}, câu hỏi thứ ${i + 1}: ${error instanceof Error ? error.message : "Nội dung không hợp lệ."}`); }
     }
   }
 }

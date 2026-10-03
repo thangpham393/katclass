@@ -5,7 +5,7 @@
  * từ vựng, bài học, nội dung ôn tập theo buổi, ngân hàng câu hỏi,
  * bài tập về nhà tự chấm.
  *
- * Quy ước jsonb (khớp RPC submit_homework — so sánh bằng jsonb equality):
+ * Quy ước jsonb (khớp RPC submit_homework):
  * - multiple_choice / pinyin_choice / listening:
  *     content = { prompt?, hanzi?, tts?, audio_url?, options: string[] }
  *     answer  = chữ cái đáp án đúng, vd "B"
@@ -18,6 +18,13 @@
  * - matching:
  *     content = { left: string[], right: string[] }
  *     answer  = { "<chỉ số trái>": "<chữ cái phải>", vd {"0":"b","1":"a"} }
+ * - translation: answer = các bản dịch mẫu được chấp nhận (string[])
+ * - hanzi_pinyin: answer = { hanzi, pinyin }
+ * - multi_matching: content.columns = hai cột Pinyin/nghĩa;
+ *     answer = { "<hàng>:<cột>": "<chữ cái lựa chọn>" }
+ * - reorder với require_pinyin: answer = { hanzi, pinyin, order: JSON.stringify(tokens) }
+ * Câu viết chuẩn hóa khoảng trắng, dấu câu, Unicode; giữ thanh điệu Pinyin.
+ * Bài nối / đọc hiểu và hai phần Hán-Pinyin chấm từng mục.
  */
 
 import { getSupabase } from "./supabase";
@@ -254,50 +261,8 @@ export async function setSessionLessons(sessionId: string, lessonIds: string[]) 
 
 /* ============ Ngân hàng câu hỏi ============ */
 
-export type QuestionType =
-  | "multiple_choice"
-  | "fill_blank"
-  | "matching"
-  | "reorder"
-  | "listening"
-  | "pinyin_choice"
-  | "reading";
-
-export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
-  reading: "Đọc hiểu",
-  multiple_choice: "Trắc nghiệm",
-  fill_blank: "Điền từ",
-  matching: "Nối từ – nghĩa",
-  reorder: "Sắp xếp câu",
-  listening: "Nghe – chọn",
-  pinyin_choice: "Chọn pinyin",
-};
-
-export const CHOICE_LETTERS = ["A", "B", "C", "D", "E", "F"];
-
-export interface ReadingItem {
-  prompt: string;
-  type: "multiple_choice" | "short_answer";
-  options?: string[];
-}
-
-export interface QuestionContent {
-  items?: ReadingItem[];
-  prompt?: string;
-  /** Đoạn văn / câu dẫn (đọc hiểu, chọn vị trí từ...) — hiển thị trong khung riêng, giữ xuống dòng. */
-  passage?: string;
-  hanzi?: string;
-  tts?: string;
-  audio_url?: string;
-  options?: string[];
-  hint?: string;
-  tokens?: string[];
-  translation?: string;
-  left?: string[];
-  right?: string[];
-}
-
-export type QuestionAnswer = string | string[] | Record<string, string>;
+export * from "./question-schema";
+import { validateQuestionDefinition, type QuestionType, type QuestionContent, type QuestionAnswer } from "./question-schema";
 
 export interface QuestionRow {
   id: string;
@@ -351,6 +316,11 @@ export function shuffleTokens(tokens: string[], seed?: string): string[] {
 export function questionPreview(q: Pick<QuestionRow, "type" | "content">): string {
   const c = q.content;
   switch (q.type) {
+    case "translation":
+    case "hanzi_pinyin":
+      return c.prompt ?? "";
+    case "multi_matching":
+      return (c.left ?? []).join(", ");
     case "reading":
       return c.passage ?? "";
     case "multiple_choice":
@@ -376,25 +346,32 @@ export async function fetchQuestions(filter?: {
   type?: QuestionType | "";
   lessonId?: string;
 }): Promise<QuestionRow[]> {
-  let query = getSupabase().from("questions").select(QUESTION_SELECT).eq("is_test_snapshot", false)
-    .order("created_at", { ascending: false }).limit(500);
-  if (filter?.type) query = query.eq("type", filter.type);
-  if (filter?.lessonId) query = query.eq("lesson_id", filter.lessonId);
-  const { data, error } = await query;
-  if (error) throw error;
-  return data as unknown as QuestionRow[];
+  const rows: QuestionRow[] = [];
+  const pageSize = 500;
+  for (let offset = 0; ; offset += pageSize) {
+    let query = getSupabase().from("questions").select(QUESTION_SELECT).eq("is_test_snapshot", false)
+      .order("created_at", { ascending: false }).order("id").range(offset, offset + pageSize - 1);
+    if (filter?.type) query = query.eq("type", filter.type);
+    if (filter?.lessonId) query = query.eq("lesson_id", filter.lessonId);
+    const { data, error } = await query;
+    if (error) throw error;
+    rows.push(...data as unknown as QuestionRow[]);
+    if (data.length < pageSize) return rows;
+  }
 }
 
 /** Đáp án của các câu hỏi — RLS chỉ cho GV/staff đọc. */
 export async function fetchQuestionAnswers(questionIds: string[]): Promise<Record<string, QuestionAnswer>> {
   if (!questionIds.length) return {};
-  const { data, error } = await getSupabase()
-    .from("question_answers").select("question_id, answer")
-    .in("question_id", questionIds);
-  if (error) throw error;
   const map: Record<string, QuestionAnswer> = {};
-  for (const r of data as { question_id: string; answer: QuestionAnswer }[]) {
-    map[r.question_id] = r.answer;
+  for (let offset = 0; offset < questionIds.length; offset += 100) {
+    const { data, error } = await getSupabase()
+      .from("question_answers").select("question_id, answer")
+      .in("question_id", questionIds.slice(offset, offset + 100));
+    if (error) throw error;
+    for (const r of data as { question_id: string; answer: QuestionAnswer }[]) {
+      map[r.question_id] = r.answer;
+    }
   }
   return map;
 }
@@ -411,6 +388,7 @@ export async function createQuestion(
   answer: QuestionAnswer,
   createdBy: string,
 ): Promise<string> {
+  validateQuestionDefinition({ ...input, answer });
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from("questions")
@@ -430,6 +408,7 @@ export async function createQuestion(
 }
 
 export async function updateQuestion(id: string, input: Partial<QuestionInput>, answer: QuestionAnswer) {
+  if (input.type && input.content) validateQuestionDefinition({ type: input.type, content: input.content, answer });
   const supabase = getSupabase();
   const { error } = await supabase.from("questions").update(input).eq("id", id);
   if (error) throw error;

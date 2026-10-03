@@ -8,7 +8,7 @@ import { Select, Field } from "@/components/ui/select";
 import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { dbErrorMessage } from "@/lib/db";
-import { createQuestion, updateQuestion, shuffleTokens, CHOICE_LETTERS, QUESTION_TYPE_LABELS, type LessonRow, type QuestionAnswer, type QuestionContent, type QuestionRow, type QuestionType } from "@/lib/db-content";
+import { createQuestion, updateQuestion, shuffleTokens, CHOICE_LETTERS, MATCHING_LETTERS, readTokenOrder, QUESTION_TYPE_LABELS, type LessonRow, type QuestionAnswer, type QuestionContent, type QuestionRow, type QuestionType } from "@/lib/db-content";
 export function QuestionModal({
   question,
   answer,
@@ -44,27 +44,38 @@ export function QuestionModal({
   const [passage, setPassage] = useState(question?.content.passage ?? "");
   const [readingItems, setReadingItems] = useState((question?.content.items ?? [{ prompt: "", type: "multiple_choice" as const, options: ["", "", "", ""] }]).map((item, i) => ({ ...item, correct: answer && typeof answer === "object" && !Array.isArray(answer) ? answer[String(i)] ?? "" : "" })));
   const [hint, setHint] = useState(question?.content.hint ?? "");
+  const writtenAnswer = answer && typeof answer === "object" && !Array.isArray(answer) ? answer : {};
+  const [writtenHanzi, setWrittenHanzi] = useState(writtenAnswer.hanzi ?? "");
+  const [writtenPinyin, setWrittenPinyin] = useState(writtenAnswer.pinyin ?? "");
+  const [acceptedTranslations, setAcceptedTranslations] = useState(question?.type === "translation" ?
+    (Array.isArray(answer) ? answer.join("\n") : typeof answer === "string" ? answer : "") : "");
+  const [requirePinyin, setRequirePinyin] = useState(question?.content.require_pinyin ?? false);
 
   // Sắp xếp câu
   const [sentence, setSentence] = useState(
-    Array.isArray(answer) && question?.type === "reorder" ? (answer as string[]).join(" / ") : "",
+    question?.type === "reorder" ? (Array.isArray(answer) ? answer : readTokenOrder(writtenAnswer.order)).join(" / ") : "",
   );
   const [translation, setTranslation] = useState(question?.content.translation ?? "");
 
   // Nối từ – nghĩa: dựng lại cặp từ content + answer hiện có
   const initialPairs = useMemo(() => {
+    if (question?.type === "multi_matching" && question.content.left && answer && typeof answer === "object" && !Array.isArray(answer)) {
+      return question.content.left.map((left, i) => ({ left,
+        pinyin: question.content.columns?.[0]?.options[MATCHING_LETTERS.findIndex(c => c.toLowerCase() === answer[`${i}:0`])] ?? "",
+        right: question.content.columns?.[1]?.options[MATCHING_LETTERS.findIndex(c => c.toLowerCase() === answer[`${i}:1`])] ?? "" }));
+    }
     if (question?.type === "matching" && question.content.left && question.content.right && answer) {
       const map = answer as Record<string, string>;
       return question.content.left.map((l, i) => {
         const letter = map[String(i)] ?? "";
-        const j = CHOICE_LETTERS.findIndex((c) => c.toLowerCase() === letter.toLowerCase());
-        return { left: l, right: question.content.right?.[j] ?? "" };
+        const j = MATCHING_LETTERS.findIndex((c) => c.toLowerCase() === letter.toLowerCase());
+        return { left: l, pinyin: "", right: question.content.right?.[j] ?? "" };
       });
     }
     return [
-      { left: "", right: "" },
-      { left: "", right: "" },
-      { left: "", right: "" },
+      { left: "", pinyin: "", right: "" },
+      { left: "", pinyin: "", right: "" },
+      { left: "", pinyin: "", right: "" },
     ];
   }, [question, answer]);
   const [pairs, setPairs] = useState(initialPairs);
@@ -75,7 +86,7 @@ export function QuestionModal({
   function setOption(i: number, v: string) {
     setOptions((o) => o.map((x, j) => (j === i ? v : x)));
   }
-  function setPair(i: number, side: "left" | "right", v: string) {
+  function setPair(i: number, side: "left" | "right" | "pinyin", v: string) {
     setPairs((p) => p.map((x, j) => (j === i ? { ...x, [side]: v } : x)));
   }
 
@@ -87,7 +98,16 @@ export function QuestionModal({
     let content: QuestionContent;
     let ans: QuestionAnswer;
 
-    if (type === "reading") {
+    if (type === "translation") {
+      const accepted = [...new Set(acceptedTranslations.split("\n").map(s => s.trim()).filter(Boolean))];
+      if (!prompt.trim() || !accepted.length) return setError("Nhập câu cần dịch và ít nhất một bản dịch đúng.");
+      content = { prompt: prompt.trim(), hint: hint.trim() || undefined };
+      ans = accepted;
+    } else if (type === "hanzi_pinyin") {
+      if (!prompt.trim() || !writtenHanzi.trim() || !writtenPinyin.trim()) return setError("Nhập đề bài và đủ hai đáp án chữ Hán, Pinyin.");
+      content = { prompt: prompt.trim(), hint: hint.trim() || undefined };
+      ans = { hanzi: writtenHanzi.trim(), pinyin: writtenPinyin.trim() };
+    } else if (type === "reading") {
       if (!passage.trim() || !readingItems.length) return setError("Nhập bài đọc và ít nhất một câu hỏi.");
       if (readingItems.some(item => !item.prompt.trim() || !item.correct.trim() || (item.type === "multiple_choice" && ((item.options ?? []).some(o => !o.trim()) || !CHOICE_LETTERS.slice(0, item.options?.length).includes(item.correct))))) return setError("Nhập đầy đủ câu hỏi, lựa chọn và đáp án đọc hiểu.");
       content = { passage: passage.trim(), items: readingItems.map(({ prompt, type, options }) => ({ prompt: prompt.trim(), type, options: type === "multiple_choice" ? options?.map(o => o.trim()) : undefined })) };
@@ -118,33 +138,46 @@ export function QuestionModal({
     } else if (type === "reorder") {
       const tokens = sentence.split("/").map((s) => s.trim()).filter(Boolean);
       if (tokens.length < 2) return setError("Nhập câu đúng, ngăn cách các cụm bằng dấu / (ít nhất 2 cụm).");
+      if (requirePinyin && !writtenPinyin.trim()) return setError("Nhập đáp án Pinyin của câu sắp xếp.");
       // Xáo cụm từ khi lưu — nếu để nguyên thứ tự đúng thì học viên không
       // còn gì để sắp xếp. Đáp án vẫn là thứ tự đúng vừa nhập.
-      content = { tokens: shuffleTokens(tokens), translation: translation.trim() || undefined };
-      ans = tokens;
+      content = { tokens: shuffleTokens(tokens), translation: translation.trim() || undefined, require_pinyin: requirePinyin };
+      ans = requirePinyin ? { hanzi: tokens.join(""), pinyin: writtenPinyin.trim(), order: JSON.stringify(tokens) } : tokens;
     } else {
       // matching
-      const valid = pairs.filter((p) => p.left.trim() && p.right.trim());
+      const valid = pairs.filter(p => p.left.trim() || p.right.trim() || (type === "multi_matching" && p.pinyin.trim()));
       if (valid.length < 2) return setError("Cần ít nhất 2 cặp từ – nghĩa.");
-      // Trộn cột phải để thứ tự hiển thị không trùng thứ tự đáp án
-      const rightShuffled = valid
-        .map((p, i) => ({ text: p.right.trim(), i }))
-        .sort(() => Math.random() - 0.5);
-      const map: Record<string, string> = {};
-      valid.forEach((p, i) => {
-        const j = rightShuffled.findIndex((r) => r.i === i);
-        map[String(i)] = CHOICE_LETTERS[j].toLowerCase();
-      });
-      content = {
-        left: valid.map((p) => p.left.trim()),
-        right: rightShuffled.map((r) => r.text),
-      };
-      ans = map;
+      if (valid.length > MATCHING_LETTERS.length || valid.some(p => !p.left.trim() || !p.right.trim() || (type === "multi_matching" && !p.pinyin.trim()))) return setError("Nhập đủ mỗi dòng (tối đa 26 mục).");
+      if (type === "multi_matching") {
+        const columns = ["pinyin", "right"].map(side => {
+          const values = valid.map((p, i) => ({ text: p[side as "pinyin" | "right"].trim(), i }));
+          return shuffleTokens(values.map(v => String(v.i))).map(i => values[Number(i)]);
+        });
+        content = { left: valid.map(p => p.left.trim()), columns: columns.map((values, i) => ({
+          label: i === 0 ? "Pinyin" : "Nghĩa", options: values.map(v => v.text) })) };
+        ans = Object.fromEntries(valid.flatMap((_, row) => columns.map((values, col) =>
+          [`${row}:${col}`, MATCHING_LETTERS[values.findIndex(v => v.i === row)].toLowerCase()])));
+      } else {
+        // Trộn cột phải để thứ tự hiển thị không trùng thứ tự đáp án
+        const rightShuffled = valid
+          .map((p, i) => ({ text: p.right.trim(), i }))
+          .sort(() => Math.random() - 0.5);
+        const map: Record<string, string> = {};
+        valid.forEach((p, i) => {
+          const j = rightShuffled.findIndex((r) => r.i === i);
+          map[String(i)] = MATCHING_LETTERS[j].toLowerCase();
+        });
+        content = {
+          left: valid.map((p) => p.left.trim()),
+          right: rightShuffled.map((r) => r.text),
+        };
+        ans = map;
+      }
     }
 
     setSaving(true);
     try {
-      const input = { type, content, lesson_id: lessonId || null };
+      const input = { type, content: { ...question?.content, ...content }, lesson_id: lessonId || null };
       if (question) await updateQuestion(question.id, input, ans);
       else await createQuestion(input, ans, user.id);
       onSaved();
@@ -179,6 +212,20 @@ export function QuestionModal({
             </Select>
           </Field>
         </div>
+
+        {(type === "translation" || type === "hanzi_pinyin") && <>
+          <Field label={type === "translation" ? "Câu tiếng Việt cần dịch" : "Đề bài"} required>
+            <Textarea rows={3} value={prompt} onChange={e => setPrompt(e.target.value)} />
+          </Field>
+          {type === "translation" ? <Field label="Các bản dịch được chấp nhận" required hint="Mỗi dòng một bản dịch đúng; có thể khai báo nhiều cách diễn đạt.">
+            <Textarea className="zh" rows={4} value={acceptedTranslations} onChange={e => setAcceptedTranslations(e.target.value)} />
+          </Field> : <>
+            <Field label="Đáp án chữ Hán" required><Textarea className="zh" rows={2} value={writtenHanzi} onChange={e => setWrittenHanzi(e.target.value)} /></Field>
+            <Field label="Đáp án Pinyin" required><Input value={writtenPinyin} onChange={e => setWrittenPinyin(e.target.value)} /></Field>
+          </>}
+          <Field label="Gợi ý"><Input value={hint} onChange={e => setHint(e.target.value)} /></Field>
+          <p className="text-xs text-muted-foreground">Chấm theo đáp án đã khai báo, bỏ qua khoảng trắng, chữ hoa và dấu câu; Pinyin vẫn cần đúng dấu thanh.</p>
+        </>}
 
         {type === "reading" && <div className="space-y-4">
           <Field label="Nội dung bài đọc" required><Textarea rows={6} value={passage} onChange={e => setPassage(e.target.value)} /></Field>
@@ -303,15 +350,17 @@ export function QuestionModal({
             <Field label="Nghĩa tiếng Việt (không bắt buộc)">
               <Input value={translation} onChange={(e) => setTranslation(e.target.value)} placeholder="Tôi thích học tiếng Trung." />
             </Field>
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={requirePinyin} onChange={e => setRequirePinyin(e.target.checked)} />Yêu cầu viết thêm Pinyin</label>
+            {requirePinyin && <Field label="Đáp án Pinyin" required><Input value={writtenPinyin} onChange={e => setWrittenPinyin(e.target.value)} /></Field>}
           </>
         )}
 
-        {type === "matching" && (
+        {(type === "matching" || type === "multi_matching") && (
           <div>
-            <span className="text-sm font-medium">Các cặp từ – nghĩa</span>
+            <span className="text-sm font-medium">{type === "multi_matching" ? "Các dòng chữ Hán – Pinyin – nghĩa" : "Các cặp từ – nghĩa"}</span>
             <div className="mt-1.5 space-y-2">
               {pairs.map((p, i) => (
-                <div key={i} className="flex items-center gap-2">
+                <div key={i} className="grid grid-cols-1 gap-2 rounded-xl border p-2 sm:flex sm:items-center">
                   <Input
                     value={p.left}
                     onChange={(e) => setPair(i, "left", e.target.value)}
@@ -319,6 +368,7 @@ export function QuestionModal({
                     placeholder="咖啡"
                   />
                   <span className="text-muted-foreground">=</span>
+                  {type === "multi_matching" && <Input value={p.pinyin} onChange={e => setPair(i, "pinyin", e.target.value)} placeholder="Pinyin" />}
                   <Input
                     value={p.right}
                     onChange={(e) => setPair(i, "right", e.target.value)}
@@ -336,19 +386,19 @@ export function QuestionModal({
                 </div>
               ))}
             </div>
-            {pairs.length < CHOICE_LETTERS.length && (
+            {pairs.length < MATCHING_LETTERS.length && (
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 className="mt-2"
-                onClick={() => setPairs((ps) => [...ps, { left: "", right: "" }])}
+                onClick={() => setPairs((ps) => [...ps, { left: "", pinyin: "", right: "" }])}
               >
                 <Plus className="h-3.5 w-3.5" /> Thêm cặp
               </Button>
             )}
             <p className="mt-1.5 text-xs text-muted-foreground">
-              Cột nghĩa sẽ được trộn thứ tự khi lưu — học viên chọn nghĩa đúng cho từng từ.
+              {type === "multi_matching" ? "Hai cột Pinyin và nghĩa được trộn độc lập; học viên chọn cả hai cho mỗi từ." : "Cột nghĩa được trộn thứ tự; học viên chọn nghĩa đúng cho từng từ."}
             </p>
           </div>
         )}

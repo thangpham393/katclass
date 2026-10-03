@@ -9,7 +9,7 @@ import { ArrowLeft, Calendar, Play, RotateCcw, Send, Timer, Trophy, Volume2 } fr
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -24,6 +24,9 @@ import {
   startTest,
   submitHomework,
   CHOICE_LETTERS,
+  MATCHING_LETTERS,
+  questionIsAnswered,
+  readTokenOrder,
   QUESTION_TYPE_LABELS,
   type QuestionAnswer,
   type QuestionRow,
@@ -75,7 +78,7 @@ export default function StudentHomeworkPlayerPage() {
 
   const questions = homework.data?.questions ?? [];
   const answeredCount = useMemo(
-    () => questions.filter((q) => isAnswered(q, answers[q.id])).length,
+    () => questions.filter((q) => questionIsAnswered(q, answers[q.id])).length,
     [questions, answers],
   );
 
@@ -421,26 +424,6 @@ function fmtCountdown(ms: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-/* ================= Trạng thái "đã trả lời" theo loại câu ================= */
-
-function isAnswered(q: QuestionRow, a: QuestionAnswer | undefined): boolean {
-  if (a === undefined) return false;
-  if (q.type === "reading") {
-    return typeof a === "object" && !Array.isArray(a) && (q.content.items ?? []).every((_, i) => Boolean(a[String(i)]?.trim()));
-  }
-  if (q.type === "fill_blank") {
-    return Array.isArray(a) && a.length > 0 && a.every((s) => String(s).trim() !== "");
-  }
-  if (q.type === "reorder") {
-    return Array.isArray(a) && a.length === (q.content.tokens?.length ?? 0);
-  }
-  if (q.type === "matching") {
-    const need = q.content.left?.length ?? 0;
-    return typeof a === "object" && !Array.isArray(a) && Object.keys(a).length === need;
-  }
-  return typeof a === "string" && a !== "";
-}
-
 /* ================= Ô nhập theo loại câu hỏi ================= */
 
 function QuestionInput({
@@ -453,6 +436,17 @@ function QuestionInput({
   onChange: (v: QuestionAnswer) => void;
 }) {
   switch (q.type) {
+    case "translation":
+      return <div className="space-y-2">
+        <p className="whitespace-pre-wrap">{q.content.prompt}</p>
+        <Textarea aria-label="Bản dịch tiếng Trung" className="zh" rows={3} value={typeof value === "string" ? value : ""}
+          onChange={e => onChange(e.target.value)} placeholder="Viết bản dịch bằng chữ Hán…" />
+        {q.content.hint && <p className="text-sm text-muted-foreground">{q.content.hint}</p>}
+      </div>;
+    case "hanzi_pinyin":
+      return <WrittenPairInput q={q} value={value && typeof value === "object" && !Array.isArray(value) ? value : {}} onChange={onChange} />;
+    case "multi_matching":
+      return <MultiMatchingInput q={q} value={value && typeof value === "object" && !Array.isArray(value) ? value : {}} onChange={onChange} />;
     case "reading": {
       const responses = value && typeof value === "object" && !Array.isArray(value) ? value : {};
       return <div className="space-y-4">
@@ -471,6 +465,15 @@ function QuestionInput({
     case "fill_blank":
       return <FillBlankInput q={q} value={Array.isArray(value) ? (value as string[]) : []} onChange={onChange} />;
     case "reorder":
+      if (q.content.require_pinyin) {
+        const pair = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+        return <div className="space-y-3">
+          <ReorderInput q={q} value={readTokenOrder(pair.order)} onChange={tokens => onChange({ ...pair, hanzi: tokens.join(""), order: JSON.stringify(tokens) })} />
+          <label className="block space-y-1 text-sm font-medium">Pinyin
+            <Input value={pair.pinyin ?? ""} onChange={e => onChange({ ...pair, pinyin: e.target.value })} placeholder="Viết Pinyin của câu vừa xếp…" />
+          </label>
+        </div>;
+      }
       return <ReorderInput q={q} value={Array.isArray(value) ? (value as string[]) : []} onChange={onChange} />;
     case "matching":
       return (
@@ -481,6 +484,39 @@ function QuestionInput({
         />
       );
   }
+}
+
+function WrittenPairInput({ q, value, onChange }: {
+  q: QuestionRow; value: Record<string, string>; onChange: (v: Record<string, string>) => void;
+}) {
+  return <div className="space-y-3">
+    <p className="whitespace-pre-wrap">{q.content.prompt}</p>
+    <label className="block space-y-1 text-sm font-medium">Chữ Hán
+      <Textarea className="zh" rows={2} value={value.hanzi ?? ""} onChange={e => onChange({ ...value, hanzi: e.target.value })} placeholder="Nhập chữ Hán…" />
+    </label>
+    <label className="block space-y-1 text-sm font-medium">Pinyin
+      <Input value={value.pinyin ?? ""} onChange={e => onChange({ ...value, pinyin: e.target.value })} placeholder="Nhập Pinyin có dấu thanh…" />
+    </label>
+    {q.content.hint && <p className="text-sm text-muted-foreground">{q.content.hint}</p>}
+  </div>;
+}
+
+function MultiMatchingInput({ q, value, onChange }: {
+  q: QuestionRow; value: Record<string, string>; onChange: (v: Record<string, string>) => void;
+}) {
+  return <div className="space-y-3">
+    <p>{q.content.prompt ?? "Nối mỗi chữ Hán với Pinyin và nghĩa tương ứng."}</p>
+    {(q.content.left ?? []).map((left, row) => <div key={row} className="grid gap-2 rounded-xl border p-3 sm:grid-cols-[6rem_1fr_1fr]">
+      <p className="zh self-center text-lg font-bold">{left}</p>
+      {(q.content.columns ?? []).map((column, col) => <label key={col} className="space-y-1 text-sm">
+        <span>{column.label}</span>
+        <Select value={value[`${row}:${col}`] ?? ""} onChange={e => onChange({ ...value, [`${row}:${col}`]: e.target.value })}>
+          <option value="">— Chọn —</option>
+          {column.options.map((option, i) => <option key={i} value={MATCHING_LETTERS[i].toLowerCase()}>{MATCHING_LETTERS[i]}. {option}</option>)}
+        </Select>
+      </label>)}
+    </div>)}
+  </div>;
 }
 
 function ChoiceInput({
@@ -708,8 +744,8 @@ function MatchingInput({
           >
             <option value="">— Chọn —</option>
             {right.map((r, j) => (
-              <option key={j} value={CHOICE_LETTERS[j].toLowerCase()}>
-                {CHOICE_LETTERS[j]}. {r}
+              <option key={j} value={MATCHING_LETTERS[j].toLowerCase()}>
+                {MATCHING_LETTERS[j]}. {r}
               </option>
             ))}
           </Select>
