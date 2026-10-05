@@ -317,6 +317,8 @@ export function questionPreview(q: Pick<QuestionRow, "type" | "content">): strin
   const c = q.content;
   switch (q.type) {
     case "translation":
+    case "sentence_correction":
+    case "essay":
     case "hanzi_pinyin":
       return c.prompt ?? "";
     case "multi_matching":

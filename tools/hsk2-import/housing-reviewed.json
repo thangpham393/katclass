@@ -1,0 +1,1254 @@
+{
+  "2": {
+    "1": [
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "我想___到外面去住。",
+          "options": [
+            "搬 (bān)",
+            "离 (lí)",
+            "发现 (fāxiàn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "学校___我家很近。",
+          "options": [
+            "比 (bǐ)",
+            "离 (lí)",
+            "到 (dào)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "这里的___太贵了。",
+          "options": [
+            "水平 (shuǐpíng)",
+            "房租 (fángzū)",
+            "厨房 (chúfáng)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "你的汉语___很高。",
+          "options": [
+            "方便 (fāngbiàn)",
+            "水平 (shuǐpíng)",
+            "原来 (yuánlái)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "他说汉语说得很___。",
+          "options": [
+            "流利 (liúlì)",
+            "方便 (fāngbiàn)",
+            "近 (jìn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "你想找___的房子？",
+          "options": [
+            "什么样 (shénmeyàng)",
+            "怎么 (zěnme)",
+            "谁 (shuí)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "哥哥___弟弟大很多。",
+          "options": [
+            "离 (lí)",
+            "比 (bǐ)",
+            "很 (hěn)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "___是你啊！好久不见。",
+          "options": [
+            "原来 (yuánlái)",
+            "发现 (fāxiàn)",
+            "方便 (fāngbiàn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "这个___很大，可以做菜。",
+          "options": [
+            "房子 (fángzi)",
+            "厨房 (chúfáng)",
+            "外面 (wàimiàn)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "坐地铁去公司很___。",
+          "options": [
+            "方便 (fāngbiàn)",
+            "近 (jìn)",
+            "流利 (liúlì)"
+          ]
+        },
+        "answer": "A"
+      }
+    ],
+    "2": [
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "这个地方交通很___。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "方便"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "昨天晚上我___他不在家。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "发现"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "听说今天___昨天冷。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "比"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "我家___公司比较远。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "离"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "他明天要___家了。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "搬"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "___他就是你的哥哥啊。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "原来"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "每个月的___是2000块。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "房租"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "他的英语___很不错。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "水平"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "妈妈正在___做饭呢。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "厨房"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "___下雨了，出门记得带伞。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "外面"
+        ]
+      }
+    ],
+    "3": [
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "想",
+            "我",
+            "外面",
+            "搬到",
+            "去住"
+          ]
+        },
+        "answer": [
+          "我",
+          "想",
+          "搬到",
+          "外面",
+          "去住"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "离",
+            "学校",
+            "我家",
+            "很近"
+          ]
+        },
+        "answer": [
+          "我家",
+          "离",
+          "学校",
+          "很近"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "哥哥",
+            "弟弟",
+            "比",
+            "很多",
+            "大"
+          ]
+        },
+        "answer": [
+          "哥哥",
+          "比",
+          "弟弟",
+          "大",
+          "很多"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "房子",
+            "找",
+            "你",
+            "什么样的",
+            "想"
+          ]
+        },
+        "answer": [
+          "你",
+          "想",
+          "找",
+          "什么样的",
+          "房子"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "汉语",
+            "他",
+            "很高",
+            "的",
+            "水平"
+          ]
+        },
+        "answer": [
+          "他",
+          "的",
+          "汉语",
+          "水平",
+          "很高"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "汉语",
+            "他",
+            "说得",
+            "流利",
+            "很"
+          ]
+        },
+        "answer": [
+          "他",
+          "汉语",
+          "说得",
+          "很",
+          "流利"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "房租",
+            "贵",
+            "这里",
+            "的",
+            "很"
+          ]
+        },
+        "answer": [
+          "这里",
+          "的",
+          "房租",
+          "很",
+          "贵"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "在",
+            "妈妈",
+            "做饭",
+            "厨房"
+          ]
+        },
+        "answer": [
+          "妈妈",
+          "在",
+          "厨房",
+          "做饭"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "发现",
+            "我",
+            "没来",
+            "他",
+            "上课"
+          ]
+        },
+        "answer": [
+          "我",
+          "发现",
+          "他",
+          "没来",
+          "上课"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "原来",
+            "这样",
+            "是",
+            "啊"
+          ]
+        },
+        "answer": [
+          "原来",
+          "是",
+          "这样",
+          "啊"
+        ]
+      }
+    ],
+    "4": [
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 我家比学校很远。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 我想搬到外面去。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 这里的房租很方便。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 你的汉语水平比我高。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 厨房离洗手间近。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 他原来是我的汉语老师。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 妈妈发现我没做作业。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 昨天比今天很冷。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 坐地铁去学校很方便。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 妹妹比我很高。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      }
+    ],
+    "5": [
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tôi muốn chuyển ra ngoài ở.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我想搬到外面去住。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Nhà tôi cách trường rất gần.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我家离学校很近。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tiền thuê nhà ở đây rất đắt.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "这里的房租很贵。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Hóa ra là như vậy.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "原来是这样。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Trình độ tiếng Hán của anh ấy rất cao.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "他的汉语水平很高。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Anh ấy nói tiếng Hán rất lưu loát.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "他汉语说得很流利。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Bạn muốn tìm ngôi nhà như thế nào?",
+          "target_language": "zh"
+        },
+        "answer": [
+          "你想找什么样的房子？"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Nhà bếp của ngôi nhà này rất lớn.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "这个房子的厨房很大。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Hôm nay nóng hơn hôm qua.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "今天比昨天热。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tôi phát hiện anh ấy không có ở nhà.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我发现他不在家。"
+        ]
+      }
+    ]
+  },
+  "3": {
+    "1": [
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "我想___到外面去住。",
+          "options": [
+            "搬 (bān)",
+            "离 (lí)",
+            "发现 (fāxiàn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "学校___我家很近。",
+          "options": [
+            "比 (bǐ)",
+            "离 (lí)",
+            "到 (dào)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "这里的___太贵了。",
+          "options": [
+            "水平 (shuǐpíng)",
+            "房租 (fángzū)",
+            "厨房 (chúfáng)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "你的汉语___很高。",
+          "options": [
+            "方便 (fāngbiàn)",
+            "水平 (shuǐpíng)",
+            "原来 (yuánlái)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "他说汉语说得很___。",
+          "options": [
+            "流利 (liúlì)",
+            "方便 (fāngbiàn)",
+            "近 (jìn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "你想找___的房子？",
+          "options": [
+            "什么样 (shénmeyàng)",
+            "怎么 (zěnme)",
+            "谁 (shuí)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "哥哥___弟弟大很多。",
+          "options": [
+            "离 (lí)",
+            "比 (bǐ)",
+            "很 (hěn)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "___是你啊！好久不见。",
+          "options": [
+            "原来 (yuánlái)",
+            "发现 (fāxiàn)",
+            "方便 (fāngbiàn)"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "这个___很大，可以做菜。",
+          "options": [
+            "房子 (fángzi)",
+            "厨房 (chúfáng)",
+            "外面 (wàimiàn)"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "坐地铁去公司很___。",
+          "options": [
+            "方便 (fāngbiàn)",
+            "近 (jìn)",
+            "流利 (liúlì)"
+          ]
+        },
+        "answer": "A"
+      }
+    ],
+    "2": [
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "这个地方交通很___。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "方便"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "昨天晚上我___他不在家。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "发现"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "听说今天___昨天冷。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "比"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "我家___公司比较远。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "离"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "他明天要___家了。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "搬"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "___他就是你的哥哥啊。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "原来"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "每个月的___是2000块。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "房租"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "他的英语___很不错。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "水平"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "妈妈正在___做饭呢。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "厨房"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "___下雨了，出门记得带伞。",
+          "hint": "Từ cho sẵn: 搬、离、比、发现、原来、方便、房租、水平、厨房、外面"
+        },
+        "answer": [
+          "外面"
+        ]
+      }
+    ],
+    "3": [
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "想",
+            "我",
+            "外面",
+            "搬到",
+            "去住"
+          ]
+        },
+        "answer": [
+          "我",
+          "想",
+          "搬到",
+          "外面",
+          "去住"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "离",
+            "学校",
+            "我家",
+            "很近"
+          ]
+        },
+        "answer": [
+          "我家",
+          "离",
+          "学校",
+          "很近"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "哥哥",
+            "弟弟",
+            "比",
+            "很多",
+            "大"
+          ]
+        },
+        "answer": [
+          "哥哥",
+          "比",
+          "弟弟",
+          "大",
+          "很多"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "房子",
+            "找",
+            "你",
+            "什么样的",
+            "想"
+          ]
+        },
+        "answer": [
+          "你",
+          "想",
+          "找",
+          "什么样的",
+          "房子"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "汉语",
+            "他",
+            "很高",
+            "的",
+            "水平"
+          ]
+        },
+        "answer": [
+          "他",
+          "的",
+          "汉语",
+          "水平",
+          "很高"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "汉语",
+            "他",
+            "说得",
+            "流利",
+            "很"
+          ]
+        },
+        "answer": [
+          "他",
+          "汉语",
+          "说得",
+          "很",
+          "流利"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "房租",
+            "贵",
+            "这里",
+            "的",
+            "很"
+          ]
+        },
+        "answer": [
+          "这里",
+          "的",
+          "房租",
+          "很",
+          "贵"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "在",
+            "妈妈",
+            "做饭",
+            "厨房"
+          ]
+        },
+        "answer": [
+          "妈妈",
+          "在",
+          "厨房",
+          "做饭"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "发现",
+            "我",
+            "没来",
+            "他",
+            "上课"
+          ]
+        },
+        "answer": [
+          "我",
+          "发现",
+          "他",
+          "没来",
+          "上课"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "tokens": [
+            "原来",
+            "这样",
+            "是",
+            "啊"
+          ]
+        },
+        "answer": [
+          "原来",
+          "是",
+          "这样",
+          "啊"
+        ]
+      }
+    ],
+    "4": [
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 我家比学校很远。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 我想搬到外面去。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 这里房租很方便。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 你汉语水平比我高。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 厨房离洗手间近。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 他原来是老师。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 妈妈发现我没做作业。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 昨天比今天很冷。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 坐地铁去学校很方便。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "prompt": "Câu sau đúng hay sai về ngữ pháp? 妹妹比我很高。",
+          "options": [
+            "Đúng",
+            "Sai"
+          ]
+        },
+        "answer": "B"
+      }
+    ],
+    "5": [
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tôi muốn chuyển ra ngoài ở.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我想搬到外面去住。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Nhà tôi cách trường rất gần.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我家离学校很近。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tiền thuê nhà ở đây rất đắt.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "这里的房租很贵。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Hóa ra là như vậy.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "原来是这样。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Trình độ tiếng Hán của anh ấy rất cao.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "他的汉语水平很高。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Anh ấy nói tiếng Hán rất lưu loát.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "他汉语说得很流利。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Bạn muốn tìm ngôi nhà như thế nào?",
+          "target_language": "zh"
+        },
+        "answer": [
+          "你想找什么样的房子？"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Nhà bếp của ngôi nhà này rất lớn.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "这个房子的厨房很大。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Hôm nay nóng hơn hôm qua.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "今天比昨天热。"
+        ]
+      },
+      {
+        "type": "translation",
+        "content": {
+          "prompt": "Tôi phát hiện anh ấy không có ở nhà.",
+          "target_language": "zh"
+        },
+        "answer": [
+          "我发现他不在家。"
+        ]
+      }
+    ]
+  }
+}

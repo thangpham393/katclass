@@ -188,8 +188,10 @@ export default function StudentHomeworkPlayerPage() {
           </div>
           <h2 className="mt-5 text-2xl font-bold">{hw.title}</h2>
           <p className="mt-1 text-muted-foreground">
-            {hw.kind === "test"
-              ? "Đã nộp bài kiểm tra — bài kiểm tra chỉ nộp một lần."
+            {questions.some(q => q.type === "essay") && showScore.score == null
+              ? hw.kind === "test" ? "Đã nộp bài kiểm tra — đang chờ giáo viên chấm phần viết. Bài kiểm tra chỉ nộp một lần." : "Đã nộp bài — đang chờ giáo viên chấm phần viết."
+              : hw.kind === "test"
+                ? "Đã nộp bài kiểm tra — bài kiểm tra chỉ nộp một lần."
               : result
                 ? "Đã nộp bài — hệ thống chấm tự động."
                 : "Bạn đã nộp bài tập này."}
@@ -437,10 +439,14 @@ function QuestionInput({
 }) {
   switch (q.type) {
     case "translation":
+    case "sentence_correction":
+    case "essay":
       return <div className="space-y-2">
         <p className="whitespace-pre-wrap">{q.content.prompt}</p>
-        <Textarea aria-label="Bản dịch tiếng Trung" className="zh" rows={3} value={typeof value === "string" ? value : ""}
-          onChange={e => onChange(e.target.value)} placeholder="Viết bản dịch bằng chữ Hán…" />
+        <Textarea aria-label={q.type === "essay" ? "Bài viết" : q.type === "sentence_correction" ? "Câu đã sửa" : q.content.target_language === "vi" ? "Bản dịch tiếng Việt" : "Bản dịch tiếng Trung"}
+          className={q.content.target_language === "vi" ? "" : "zh"} rows={q.type === "essay" ? 6 : 3} value={typeof value === "string" ? value : ""}
+          onChange={e => onChange(e.target.value)} placeholder={q.type === "essay" ? "Viết đoạn văn của bạn…" : q.type === "sentence_correction" ? "Viết lại câu đúng…" : q.content.target_language === "vi" ? "Viết bản dịch tiếng Việt…" : "Viết bản dịch bằng chữ Hán…"} />
+        {q.type === "essay" && <p className="text-sm text-muted-foreground">Giáo viên sẽ đọc và chấm bài viết của bạn.</p>}
         {q.content.hint && <p className="text-sm text-muted-foreground">{q.content.hint}</p>}
       </div>;
     case "hanzi_pinyin":

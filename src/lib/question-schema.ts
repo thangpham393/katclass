@@ -7,11 +7,15 @@ export type QuestionType =
   | "pinyin_choice"
   | "reading"
   | "translation"
+  | "sentence_correction"
+  | "essay"
   | "hanzi_pinyin"
   | "multi_matching";
 
 export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
   translation: "Dịch câu",
+  sentence_correction: "Sửa lỗi câu",
+  essay: "Viết đoạn văn · GV chấm",
   hanzi_pinyin: "Viết chữ Hán và Pinyin",
   multi_matching: "Nối chữ Hán – Pinyin – nghĩa",
   reading: "Đọc hiểu",
@@ -33,6 +37,7 @@ export interface ReadingItem {
 }
 
 export interface QuestionContent {
+  target_language?: "zh" | "vi";
   /** Các cột cần nối; khóa đáp án là row:column, giá trị là a, b, c… */
   columns?: { label: string; options: string[] }[];
   /** Sắp xếp câu có thêm ô viết Pinyin. Đáp án chứa hanzi, pinyin, order (JSON). */
@@ -58,7 +63,7 @@ export type QuestionAnswer = string | string[] | Record<string, string>;
 export function questionAnswerPreview(q: { type: QuestionType; content: QuestionContent }, answer: QuestionAnswer | undefined): string {
   if (answer === undefined) return "—";
   if (typeof answer === "string") return answer;
-  if (Array.isArray(answer)) return answer.join(q.type === "reorder" ? "" : q.type === "translation" ? " / " : ", ");
+  if (Array.isArray(answer)) return answer.join(q.type === "reorder" ? "" : ["translation", "sentence_correction", "essay"].includes(q.type) ? " / " : ", ");
   if (q.type === "hanzi_pinyin" || (q.type === "reorder" && q.content.require_pinyin)) {
     return `${answer.hanzi ?? ""} · ${answer.pinyin ?? ""}`;
   }
@@ -105,8 +110,9 @@ export function validateQuestionDefinition(q: { type: QuestionType; content: Que
   const map = typeof a === "object" && a !== null && !Array.isArray(a) ? a : {};
   const pair = () => { if (!map.hanzi?.trim() || !map.pinyin?.trim()) fail("Cần đủ đáp án chữ Hán và Pinyin."); };
   if (!c || !QUESTION_TYPE_LABELS[type]) fail("Dạng câu hỏi không hợp lệ.");
-  if (type === "translation") {
-    if (!c.prompt?.trim() || !strings(a)) fail("Cần câu cần dịch và danh sách bản dịch được chấp nhận.");
+  if (type === "translation" || type === "sentence_correction" || type === "essay") {
+    if (!c.prompt?.trim() || !strings(a)) fail(type === "essay" ? "Cần đề bài và bài mẫu tham khảo." : type === "sentence_correction" ? "Cần câu cần sửa và danh sách câu đúng được chấp nhận." : "Cần câu cần dịch và danh sách bản dịch được chấp nhận.");
+    if (c.target_language !== undefined && !["zh", "vi"].includes(c.target_language)) fail("Ngôn ngữ trả lời không hợp lệ.");
   } else if (type === "hanzi_pinyin") {
     if (!c.prompt?.trim()) fail("Cần đề bài chữ Hán và Pinyin.");
     pair();

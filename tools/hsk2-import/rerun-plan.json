@@ -1,0 +1,98 @@
+{
+  "textbook_id": "01928202-602a-4f13-a3a2-0c60ca6e70fc",
+  "textbook_code": "hsk2-new30",
+  "payload_sha256": "7bf87e14bf445c604632799085d0912747fcb1191922f0705b43b46a8e164bee",
+  "mode": "plan",
+  "supported_only": false,
+  "lessons": [
+    {
+      "unit": 1,
+      "records": 47,
+      "new": 0
+    },
+    {
+      "unit": 2,
+      "records": 50,
+      "new": 0
+    },
+    {
+      "unit": 3,
+      "records": 50,
+      "new": 0
+    },
+    {
+      "unit": 4,
+      "records": 60,
+      "new": 0
+    },
+    {
+      "unit": 5,
+      "records": 51,
+      "new": 0
+    },
+    {
+      "unit": 6,
+      "records": 60,
+      "new": 0
+    },
+    {
+      "unit": 7,
+      "records": 50,
+      "new": 0
+    },
+    {
+      "unit": 8,
+      "records": 51,
+      "new": 0
+    },
+    {
+      "unit": 9,
+      "records": 50,
+      "new": 0
+    },
+    {
+      "unit": 10,
+      "records": 52,
+      "new": 0
+    },
+    {
+      "unit": 11,
+      "records": 52,
+      "new": 0
+    },
+    {
+      "unit": 12,
+      "records": 52,
+      "new": 0
+    },
+    {
+      "unit": 13,
+      "records": 49,
+      "new": 0
+    },
+    {
+      "unit": 14,
+      "records": 50,
+      "new": 0
+    },
+    {
+      "unit": 15,
+      "records": 49,
+      "new": 0
+    }
+  ],
+  "expected_records": 773,
+  "new_records": 0,
+  "missing_answers": 0,
+  "deferred_until_0051": 0,
+  "pending_source_items": 17,
+  "types": {
+    "fill_blank": 50,
+    "reorder": 150,
+    "multiple_choice": 197,
+    "translation": 250,
+    "sentence_correction": 106,
+    "essay": 10,
+    "hanzi_pinyin": 10
+  }
+}

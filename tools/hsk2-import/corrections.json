@@ -1,0 +1,639 @@
+{
+  "5": {
+    "paragraph_answer": "Một ngày trước khi về nước, chúng tôi đã đến nhà chị Nhất Tuyết. Khi đến nhà chị ấy, cơm nước đã nấu xong cả rồi. Ông Lưu còn chuẩn bị trà sữa. Vì đã ăn quá nhiều đồ ăn, nên ăn cơm xong chúng tôi đã đi bộ về khách sạn.",
+    "5:41": {
+      "answer": [
+        "他进房间去了。"
+      ],
+      "reason": "Đáp án bỏ chủ ngữ 他; khôi phục chủ ngữ từ đề."
+    },
+    "5:49": {
+      "pending": true,
+      "reason": "Câu 他们拿来很多礼物了 có thể diễn tả tình huống đã thay đổi; không có ngữ cảnh để kết luận 了 sai."
+    }
+  },
+  "7": {
+    "paragraph_answer": "Trần Thiên Trung là một nam sinh viên rất thích thể thao. Môn thể thao anh ấy thích nhất là chơi bóng rổ và đá bóng. Mỗi ngày vừa mới tan học xong là anh ấy liền chạy ngay ra sân vận động để chơi bóng rổ cùng các bạn học. Anh ấy chơi bóng rổ rất giỏi, chạy cũng rất nhanh. Đến Chủ nhật, anh ấy còn cùng bạn bè đi đá bóng. Mặc dù anh ấy đá bóng không giỏi bằng chơi bóng rổ, nhưng đá cũng khá ổn. Ngoài chơi bóng ra, vào mùa hè Trần Thiên Trung còn thích đi bơi. Anh ấy cảm thấy tập thể dục nhiều không chỉ giúp cơ thể khỏe mạnh hơn mà còn có thể làm quen được với nhiều người bạn mới.",
+    "5:43": {
+      "answer": [
+        "妹妹跑得不快，但是她游泳游得很好。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:46": {
+      "answer": [
+        "到了星期天我们就去踢足球。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:47": {
+      "answer": [
+        "你是不是非常喜欢打篮球？"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:48": {
+      "answer": [
+        "他说汉语说得非常清楚。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:50": {
+      "answer": [
+        "你们玩得高兴不高兴？"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:42": {
+      "pending": true,
+      "reason": "我一下课就往外跑了 là câu đúng khi kể một sự việc đã xảy ra; không đủ ngữ cảnh để sửa 了."
+    },
+    "2:16": {
+      "pending": true,
+      "reason": "往哪儿开 và 从哪儿开 đều hợp ngữ pháp (hướng đi / điểm xuất phát); thiếu ngữ cảnh để chọn duy nhất A."
+    }
+  },
+  "8": {
+    "paragraph_answer": "Hôm nay là ngày 27 tháng 1, là sinh nhật của người vợ. Mặc dù công việc của người vợ rất bận rộn nên đã quên mất sinh nhật của mình, nhưng người chồng vẫn luôn nhớ rõ. Buổi tối, người chồng đã mời vợ đến một nhà hàng vô cùng xinh đẹp để ăn tối. Sau khi ăn xong, họ còn đi đến rạp chiếu phim xem một bộ phim rất hay. Trên đường về nhà, người chồng tặng vợ một món quà sinh nhật, đó là một chiếc đồng hồ đeo tay có họa tiết hoa màu trắng ở bên trái. Chiếc đồng hồ này mặc dù thật sự không rẻ chút nào, nhưng người vợ lại vô cùng thích. Người vợ cảm thấy người chồng đối với mình còn tốt hơn cả bản thân tự chăm sóc mình, hôm nay đã trải qua một ngày rất hạnh phúc.",
+    "1:7": {
+      "answer": [
+        "虽然这件衣服贵但是我喜欢。"
+      ],
+      "reason": "Đáp án nguồn thêm 很/高兴 không có trong các khối; chọn 喜欢 và dùng đủ đúng khối nguồn."
+    },
+    "2:17": {
+      "pending": true,
+      "reason": "五千______块: 千/百/十 đều có thể tạo số hợp lệ; khóa A tạo 五千千 không đúng, thiếu số tiền mục tiêu."
+    },
+    "3:26": {
+      "answer": [
+        "丈夫请妻子去饭馆吃饭。"
+      ],
+      "reason": "Đề nói ăn cơm, không chỉ định buổi tối; chấp nhận câu đúng bám nghĩa thay mẫu 晚饭."
+    },
+    "5:44": {
+      "answer": [
+        "我觉得左边的比右边的漂亮。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:47": {
+      "answer": [
+        "我看那个电影比这个更有意思。",
+        "我觉得那个电影比这个更有意思。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:48": {
+      "answer": [
+        "虽然今天很累，但是我很高兴。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:49": {
+      "answer": [
+        "我忘了带钥匙了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:50": {
+      "answer": [
+        "这块手表要很多钱，要八千八百。",
+        "这块手表很贵，要八千八百。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "6:51": {
+      "prompt": "Hãy dịch đoạn văn sau sang tiếng Việt:\n今天是1月27号，是妻子的生日。虽然妻子工作很忙，忘了自己的生日，但是丈夫一直记得。晚上，丈夫请妻子去了一家非常漂亮的饭馆吃晚饭。吃完饭后，他们还去电影院看了一场很有意思的电影。在回家的路上，丈夫送给妻子一个生日礼物，是一块左边带白色花纹的手表。这块手表虽然真不便宜，但是妻子非常喜欢。妻子觉得，丈夫对她比她对自己还好，今天过得很快乐。",
+      "reason": "Đoạn văn nhầm đại từ: 丈夫对自己比对自己还好; sửa theo góc nhìn người vợ và bản dịch nguồn."
+    }
+  },
+  "9": {
+    "paragraph_answer": "Tuần này Lưu Minh được nghỉ, sau giờ làm tôi đi cùng anh ấy đến một cửa hàng. Quần áo trong cửa hàng không đẹp bằng quần áo trong trung tâm thương mại. Chúng tôi không mua được quần áo nào ưng ý, từ cửa hàng đi ra liền đến quán cà phê ngồi một lát. Vì muốn vận động một chút, cho nên sau khi uống xong đồ uống, chúng tôi đã đi bộ về nhà.",
+    "5:41": {
+      "answer": [
+        "咖啡店离这儿有点儿远。",
+        "咖啡店离这儿很远。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:42": {
+      "pending": true,
+      "reason": "昨天没有今天那么冷吗 là câu hỏi phủ định hợp lệ; đáp án đổi thành câu hỏi khẳng định làm đổi nghĩa."
+    },
+    "5:45": {
+      "pending": true,
+      "reason": "他每天学习汉语两个小时了 có thể nói về thói quen mới; thiếu ngữ cảnh để kết luận 了 sai."
+    },
+    "5:49": {
+      "answer": [
+        "喝了咖啡，晚上就别想睡觉了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    }
+  },
+  "10": {
+    "paragraph_answer": "Sắp khai giảng rồi, bố giúp em trai chuẩn bị cặp sách, vở và bút. Tôi thì sắp thi rồi, mẹ bảo tôi học bài và xem lại những câu làm sai. Chúng tôi đi học, nhưng bố mẹ còn bận hơn cả chúng tôi. Tôi hỏi bố mẹ rằng: 'Là em trai và con đi học hay là bố mẹ đi học vậy?' Tôi hỏi xong, cả hai đều bật cười."
+  },
+  "11": {
+    "paragraph_answer": "Mấy ngày nay tôi thường xuyên bị đau đầu, đã mua một ít thuốc từ hiệu thuốc về mà không đi bệnh viện. Hôm nay sau khi tan học, cô Vương thấy tôi không được khoẻ nên đã đưa tôi đến bệnh viện. Sau khi từ bệnh viện về, Lý Văn cũng đến thăm tôi. Bây giờ họ đều về cả rồi, tôi cũng phải đi ngủ đây."
+  },
+  "12": {
+    "paragraph_answer": "Mấy hôm trước thời tiết xấu, tôi không đi bộ mà mỗi ngày đều đi hai trạm tàu điện ngầm đến trường. Hôm nay trời quang đãng, Lý Văn rủ tôi cùng bạn ấy ra ngoài chạy bộ. Hồi nhỏ, bạn ấy thường xuyên chạy bộ, chạy nhanh hơn tôi, nhưng bạn ấy sẽ đợi tôi. Chạy bộ cùng Lý Văn tôi thấy rất vui!",
+    "1:6": {
+      "tokens": [
+        "天气",
+        "怎么样",
+        "那里",
+        "您",
+        "？"
+      ],
+      "reason": "您那里 là cụm liền theo đáp án, cho phép ghép hai khối 您 và 那里."
+    },
+    "4:34": {
+      "answer": [
+        "Mấy ngày nay tôi học trực tuyến trên mạng, chưa từng ra ngoài."
+      ],
+      "reason": "在网上上课 không xác định dạy học; dùng học trực tuyến đúng đề."
+    },
+    "3:22": {
+      "answer": [
+        "昨天下的雪比今天大。",
+        "昨天雪下得比今天大。"
+      ],
+      "reason": "Đề dịch chỉ rõ tuyết; thêm 雪 để câu đứng độc lập giữ ngữ cảnh nguồn."
+    },
+    "5:41": {
+      "answer": [
+        "这里比北京冷多了。",
+        "这里比北京冷得多。",
+        "这里比北京冷。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:44": {
+      "answer": [
+        "飞机比火车快得多。",
+        "飞机比火车快多了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:50": {
+      "answer": [
+        "那个男孩儿唱歌唱得非常好。"
+      ],
+      "reason": "Câu không cho đối tượng so sánh; bỏ 得多 thay vì ép thêm so sánh thiếu ngữ cảnh."
+    }
+  },
+  "13": {
+    "paragraph_answer": "Năm mới sắp đến rồi, Annie tặng tôi một cuốn vở mới. Bạn ấy kể với tôi là mua trên mạng, đắt hơn cuốn vở của tôi một chút. Các bạn lớp tôi cũng tặng cô Vương bó hoa đẹp, hy vọng cô sẽ đón một năm mới thật vui vẻ.",
+    "5:44": {
+      "pending": true,
+      "reason": "我告诉他了件事 là lược 一 trong lượng từ theo khẩu ngữ; không đủ căn cứ xem là lỗi."
+    },
+    "5:46": {
+      "pending": true,
+      "reason": "句末 了 có thể chỉ chênh lệch giá đã thay đổi; thiếu ngữ cảnh để kết luận sai."
+    },
+    "5:49": {
+      "pending": true,
+      "reason": "就快要 là kết hợp dùng được; không nên áp quy tắc loại bỏ 就 một cách tuyệt đối."
+    },
+    "5:48": {
+      "answer": [
+        "他给我买了一杯奶茶。",
+        "他买给了我一杯奶茶。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    }
+  },
+  "14": {
+    "paragraph_answer": "Bạn trai tôi họ Dương, tên là Dương Đồng Lạc. Anh ấy có dáng người cao, mắt to, hát rất hay và nhảy cũng rất đẹp. Anh ấy làm việc cùng với chị gái tôi, chị chính là người giới thiệu chúng tôi quen nhau. Anh ấy kể với tôi rằng, ngay từ ngày đầu tiên gặp tôi, anh ấy đã đem lòng yêu mến tôi rồi.",
+    "1:9": {
+      "tokens": [
+        "走出",
+        "教室",
+        "同学们",
+        "了",
+        "都",
+        "去",
+        "。"
+      ],
+      "reason": "Khối 走出去 phải tách 走出 + 去 để tân ngữ địa điểm đứng trước 去; đáp án nguồn đánh dấu 【出】教室【去】."
+    },
+    "5:42": {
+      "answer": [
+        "手里拿着一个包。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:44": {
+      "answer": [
+        "他跳舞跳得很不错。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:45": {
+      "answer": [
+        "老师走进教室去了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:46": {
+      "answer": [
+        "他跑上来了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:43": {
+      "pending": true,
+      "reason": "太没意思啊 là lời cảm thán có thể dùng; không đủ căn cứ coi dùng 太 là lỗi ngữ pháp."
+    },
+    "5:49": {
+      "pending": true,
+      "reason": "妈妈买回来菜 không bắt buộc phải thêm lượng từ trong mọi ngữ cảnh; chờ đề rõ hơn."
+    }
+  },
+  "15": {
+    "paragraph_answer": "Hồi tháng Sáu tôi từng về Bắc Kinh một lần, đến nay đã hơn nửa năm chưa về rồi, tôi thấy hơi nhớ nhà. Năm mới sắp đến rồi, tôi phải về nhà đón Tết thôi. Lần này Gia Nguyệt cũng đi Bắc Kinh, chúng tôi đều đi chuyến bay ngày thứ Sáu. Gia Nguyệt nói chúng tôi giống như đôi chim nhỏ vậy, cùng nhau bay đến Bắc Kinh rồi lại cùng nhau bay trở về đây.",
+    "5:44": {
+      "answer": [
+        "出门旅游，多个朋友多条路。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:46": {
+      "pending": true,
+      "reason": "Đề có thể dùng bổ ngữ động lượng và 了 hợp lệ; mẫu 飞去过一次北京了 / 飞过北京一次 không đáng tin cậy."
+    },
+    "5:49": {
+      "pending": true,
+      "reason": "我找李文一次 có thể là yêu cầu/kế hoạch; thiếu ngữ cảnh để tự thêm 过 và đổi thời."
+    },
+    "5:47": {
+      "answer": [
+        "考完试了，我可以出国旅游了。",
+        "考完试了，我可以出门旅游了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "2:18": {
+      "pending": true,
+      "reason": "见了...两次 và 见了...两回 đều dùng được; không có ngữ cảnh phân biệt đáp án C và D."
+    }
+  },
+  "1": {
+    "5:1": {
+      "answer": [
+        "谢谢你帮忙。",
+        "谢谢你帮我的忙。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:2": {
+      "answer": [
+        "我给你介绍一下我的朋友。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:3": {
+      "answer": [
+        "明天我去机场接你。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:5": {
+      "answer": [
+        "昨天是她来接我的。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:6": {
+      "answer": [
+        "他说得太快了，我听不懂。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:9": {
+      "answer": [
+        "他给我们介绍了很多东西。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:10": {
+      "answer": [
+        "真不好意思，我迟到了。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:4": {
+      "pending": true,
+      "reason": "请 có thể dùng khi nhờ rửa bát; thiếu ngữ cảnh để kết luận sai."
+    },
+    "5:7": {
+      "pending": true,
+      "reason": "Câu kể việc hôm qua không bắt buộc có 了 trong mọi ngữ cảnh."
+    },
+    "5:8": {
+      "pending": true,
+      "reason": "吧 cũng dùng cho lời đề nghị/mệnh lệnh nhẹ; thiếu ngữ cảnh để coi đây là lỗi."
+    }
+  },
+  "4": {
+    "1:1": {
+      "answer": [
+        "A"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:2": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:3": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:4": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:5": {
+      "answer": [
+        "A"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:6": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:7": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:8": {
+      "answer": [
+        "C"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:9": {
+      "answer": [
+        "A"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "1:10": {
+      "answer": [
+        "B"
+      ],
+      "reason": "Khóa Dạng 1 nguồn không ứng với đề Pinyin. Suy ra từ Pinyin và ba chữ Hán lựa chọn."
+    },
+    "2:1": {
+      "answer": [
+        "过"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:2": {
+      "answer": [
+        "进去"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:3": {
+      "answer": [
+        "因为"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:4": {
+      "answer": [
+        "条"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:5": {
+      "answer": [
+        "书包"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:6": {
+      "answer": [
+        "颜色"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:7": {
+      "answer": [
+        "过去"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:8": {
+      "answer": [
+        "白色"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:9": {
+      "answer": [
+        "试"
+      ],
+      "reason": "Khóa nguồn lệch với đề; đối chiếu ngữ nghĩa câu và kho từ cho sẵn."
+    },
+    "2:10": {
+      "prompt": "他今天很累，___他想休息。",
+      "answer": [
+        "所以"
+      ],
+      "reason": "Câu không có ô trống trong PDF; khôi phục ô 所以 đúng cấu trúc nhân quả và ghi thêm 所以 vào kho từ."
+    },
+    "4:3": {
+      "answer": [
+        "因为很便宜所以我想买。"
+      ],
+      "reason": "Đáp án nguồn thừa 要; dùng đúng toàn bộ các khối chữ cho sẵn."
+    },
+    "5:1": {
+      "answer": [
+        "我没去过中国。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:2": {
+      "answer": [
+        "因为下雨，所以我没去。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:3": {
+      "answer": [
+        "我想买个红色的新书包。",
+        "我想买条红色的新裤子。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:4": {
+      "answer": [
+        "你看没看过这本书？"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:5": {
+      "answer": [
+        "妈妈让我试了试。",
+        "妈妈让我试一下。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:6": {
+      "answer": [
+        "我们过去吧。",
+        "我们进去吧。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:7": {
+      "answer": [
+        "绿色的更好看。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:8": {
+      "answer": [
+        "我有一条白色的裤子。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:9": {
+      "answer": [
+        "因为没穿过，所以要试试。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    },
+    "5:10": {
+      "answer": [
+        "衣服颜色很多。"
+      ],
+      "reason": "Đối chiếu đề với đáp án nguồn; khôi phục câu đầy đủ và tách các phương án đúng."
+    }
+  },
+  "6": {
+    "4:40": {
+      "tokens": [
+        "真",
+        "了",
+        "忘",
+        "我",
+        "记",
+        "还",
+        "。"
+      ],
+      "reason": "Đề thiếu 还 có trong đáp án 我还真忘记了; bổ sung khối chữ theo đáp án nguồn."
+    },
+    "5:46": {
+      "hanzi": "祝你生日快乐。",
+      "pinyin": "Zhù nǐ shēngrì kuàilè.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:47": {
+      "hanzi": "她高高兴兴地走了。",
+      "pinyin": "Tā gāogāoxìngxìng de zǒu le.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:48": {
+      "hanzi": "他买了一个蛋糕。",
+      "pinyin": "Tā mǎi le yí ge dàngāo.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:49": {
+      "hanzi": "我想买衣服、裤子、鞋子什么的。",
+      "pinyin": "Wǒ xiǎng mǎi yīfu, kùzi, xiézi shénmede.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:50": {
+      "hanzi": "孩子们很高兴地玩。",
+      "pinyin": "Háizimen hěn gāoxìng de wán.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:51": {
+      "hanzi": "你打开礼物看看。",
+      "pinyin": "Nǐ dǎkāi lǐwù kànkan.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:52": {
+      "hanzi": "昨天我过生日了，吃长长的面条儿。",
+      "pinyin": "Zuótiān wǒ guò shēngrì le, chī chángcháng de miàntiáor.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:53": {
+      "hanzi": "爸爸早早地到家了。",
+      "pinyin": "Bàba zǎozǎo de dào jiā le.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:54": {
+      "hanzi": "弟弟画了一幅画。",
+      "pinyin": "Dìdi huà le yì fú huà.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    },
+    "5:55": {
+      "hanzi": "鱼啊肉啊什么的，我都喜欢。",
+      "pinyin": "Yú a ròu a shénmede, wǒ dōu xǐhuan.",
+      "reason": "Đề yêu cầu sửa câu kèm Pinyin; bổ sung Pinyin thiếu/cắt, chọn một lượng từ hợp lệ và giữ nguyên phần câu không sai."
+    }
+  },
+  "2": {
+    "mapping": {
+      "reason": "Người dùng yêu cầu dùng tiêu đề giáo trình HSK 2 3.0 trên hệ thống. Giữ nội dung PDF và gắn theo số bài."
+    },
+    "2:10": {
+      "answer": [
+        "外面"
+      ],
+      "reason": "Khóa nguồn lặp 原来 nhưng kho từ có 外面; câu nói trời bên ngoài mưa, chọn 外面 theo câu và kho từ."
+    },
+    "reorder_punctuation": {
+      "reason": "Đề không cho khối dấu câu; đáp án sắp xếp dùng nguyên khối từ, không thêm dấu câu vào thứ tự chấm."
+    }
+  },
+  "3": {
+    "mapping": {
+      "reason": "Người dùng yêu cầu dùng tiêu đề giáo trình HSK 2 3.0 trên hệ thống. Giữ nội dung PDF và gắn theo số bài."
+    },
+    "2:10": {
+      "answer": [
+        "外面"
+      ],
+      "reason": "Khóa nguồn lặp 原来 nhưng kho từ có 外面; câu nói trời bên ngoài mưa, chọn 外面 theo câu và kho từ."
+    },
+    "reorder_punctuation": {
+      "reason": "Đề không cho khối dấu câu; đáp án sắp xếp dùng nguyên khối từ, không thêm dấu câu vào thứ tự chấm."
+    },
+    "2:7": {
+      "prompt": "每个月的___是2000块。",
+      "answer": [
+        "房租"
+      ],
+      "reason": "Đề Bài 3 bị thiếu 的/是; đối chiếu đáp án 房租 và câu tương ứng ở phiếu Bài 2 để khôi phục."
+    },
+    "3:4": {
+      "reason": "Bổ sung 的 vào khối 什么样 theo đáp án 你想找什么样的房子; đề Bài 3 thiếu 的."
+    },
+    "3:5": {
+      "reason": "Bổ sung khối 的 theo đáp án 他的汉语水平很高; đề Bài 3 thiếu 的."
+    }
+  }
+}

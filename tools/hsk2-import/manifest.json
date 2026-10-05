@@ -1,0 +1,3473 @@
+{
+  "sources": [
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 1 HSK2 3.0.pdf",
+      "sha256": "1ca065a5f25904fc749f7514eb6b3eeb1a3fc9ac79e66d6b3ade984d2171bd32",
+      "unit": 1,
+      "lesson_id": "b38641c4-7422-4341-a75a-5bd3c8cc5232",
+      "lesson_title": "Chị ấy mời chúng em ăn vịt quay Bắc Kinh",
+      "source_items": 50,
+      "imported_records": 47,
+      "pending_items": 3,
+      "types": {
+        "fill_blank": 10,
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 10,
+        "sentence_correction": 7
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 1
+        },
+        {
+          "section": 2,
+          "number": 2
+        },
+        {
+          "section": 2,
+          "number": 3
+        },
+        {
+          "section": 2,
+          "number": 4
+        },
+        {
+          "section": 2,
+          "number": 5
+        },
+        {
+          "section": 2,
+          "number": 6
+        },
+        {
+          "section": 2,
+          "number": 7
+        },
+        {
+          "section": 2,
+          "number": 8
+        },
+        {
+          "section": 2,
+          "number": 9
+        },
+        {
+          "section": 2,
+          "number": 10
+        },
+        {
+          "section": 3,
+          "number": 1
+        },
+        {
+          "section": 3,
+          "number": 2
+        },
+        {
+          "section": 3,
+          "number": 3
+        },
+        {
+          "section": 3,
+          "number": 4
+        },
+        {
+          "section": 3,
+          "number": 5
+        },
+        {
+          "section": 3,
+          "number": 6
+        },
+        {
+          "section": 3,
+          "number": 7
+        },
+        {
+          "section": 3,
+          "number": 8
+        },
+        {
+          "section": 3,
+          "number": 9
+        },
+        {
+          "section": 3,
+          "number": 10
+        },
+        {
+          "section": 4,
+          "number": 1
+        },
+        {
+          "section": 4,
+          "number": 2
+        },
+        {
+          "section": 4,
+          "number": 3
+        },
+        {
+          "section": 4,
+          "number": 4
+        },
+        {
+          "section": 4,
+          "number": 5
+        },
+        {
+          "section": 4,
+          "number": 6
+        },
+        {
+          "section": 4,
+          "number": 7
+        },
+        {
+          "section": 4,
+          "number": 8
+        },
+        {
+          "section": 4,
+          "number": 9
+        },
+        {
+          "section": 4,
+          "number": 10
+        },
+        {
+          "section": 5,
+          "number": 1
+        },
+        {
+          "section": 5,
+          "number": 2
+        },
+        {
+          "section": 5,
+          "number": 3
+        },
+        {
+          "section": 5,
+          "number": 5
+        },
+        {
+          "section": 5,
+          "number": 6
+        },
+        {
+          "section": 5,
+          "number": 9
+        },
+        {
+          "section": 5,
+          "number": 10
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 5,
+          "number": 4
+        },
+        {
+          "section": 5,
+          "number": 7
+        },
+        {
+          "section": 5,
+          "number": 8
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 2 HSK2 3.0.pdf",
+      "sha256": "2144d0033ac6141cde2e5e76a73d9c127b2210e9d3c3b3c82ab1c1f4f96c5a1e",
+      "unit": 2,
+      "lesson_id": "a81dc428-47bc-4b57-8e04-0d37de54d8b6",
+      "lesson_title": "Hay là mình bắt taxi tới Đại học Bắc Kinh đi",
+      "source_items": 50,
+      "imported_records": 50,
+      "pending_items": 0,
+      "types": {
+        "multiple_choice": 20,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 1
+        },
+        {
+          "section": 2,
+          "number": 2
+        },
+        {
+          "section": 2,
+          "number": 3
+        },
+        {
+          "section": 2,
+          "number": 4
+        },
+        {
+          "section": 2,
+          "number": 5
+        },
+        {
+          "section": 2,
+          "number": 6
+        },
+        {
+          "section": 2,
+          "number": 7
+        },
+        {
+          "section": 2,
+          "number": 8
+        },
+        {
+          "section": 2,
+          "number": 9
+        },
+        {
+          "section": 2,
+          "number": 10
+        },
+        {
+          "section": 3,
+          "number": 1
+        },
+        {
+          "section": 3,
+          "number": 2
+        },
+        {
+          "section": 3,
+          "number": 3
+        },
+        {
+          "section": 3,
+          "number": 4
+        },
+        {
+          "section": 3,
+          "number": 5
+        },
+        {
+          "section": 3,
+          "number": 6
+        },
+        {
+          "section": 3,
+          "number": 7
+        },
+        {
+          "section": 3,
+          "number": 8
+        },
+        {
+          "section": 3,
+          "number": 9
+        },
+        {
+          "section": 3,
+          "number": 10
+        },
+        {
+          "section": 4,
+          "number": 1
+        },
+        {
+          "section": 4,
+          "number": 2
+        },
+        {
+          "section": 4,
+          "number": 3
+        },
+        {
+          "section": 4,
+          "number": 4
+        },
+        {
+          "section": 4,
+          "number": 5
+        },
+        {
+          "section": 4,
+          "number": 6
+        },
+        {
+          "section": 4,
+          "number": 7
+        },
+        {
+          "section": 4,
+          "number": 8
+        },
+        {
+          "section": 4,
+          "number": 9
+        },
+        {
+          "section": 4,
+          "number": 10
+        },
+        {
+          "section": 5,
+          "number": 1
+        },
+        {
+          "section": 5,
+          "number": 2
+        },
+        {
+          "section": 5,
+          "number": 3
+        },
+        {
+          "section": 5,
+          "number": 4
+        },
+        {
+          "section": 5,
+          "number": 5
+        },
+        {
+          "section": 5,
+          "number": 6
+        },
+        {
+          "section": 5,
+          "number": 7
+        },
+        {
+          "section": 5,
+          "number": 8
+        },
+        {
+          "section": 5,
+          "number": 9
+        },
+        {
+          "section": 5,
+          "number": 10
+        }
+      ],
+      "pending_coverage": [],
+      "mapping_note": "Người dùng yêu cầu giữ tiêu đề giáo trình hiện có; nhập theo số bài, dù nội dung PDF Bài 2–3 đều là thuê nhà."
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 3 HSK2 3.0.pdf",
+      "sha256": "4bd7120b853731584b3d42d2195fb260174b3507ccd323ef1fea93db27403392",
+      "unit": 3,
+      "lesson_id": "c69a39d4-6033-40e3-ac68-328d06f0fa92",
+      "lesson_title": "Em muốn đi du lịch Tây An",
+      "source_items": 50,
+      "imported_records": 50,
+      "pending_items": 0,
+      "types": {
+        "multiple_choice": 20,
+        "fill_blank": 10,
+        "reorder": 10,
+        "translation": 10
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 1
+        },
+        {
+          "section": 2,
+          "number": 2
+        },
+        {
+          "section": 2,
+          "number": 3
+        },
+        {
+          "section": 2,
+          "number": 4
+        },
+        {
+          "section": 2,
+          "number": 5
+        },
+        {
+          "section": 2,
+          "number": 6
+        },
+        {
+          "section": 2,
+          "number": 7
+        },
+        {
+          "section": 2,
+          "number": 8
+        },
+        {
+          "section": 2,
+          "number": 9
+        },
+        {
+          "section": 2,
+          "number": 10
+        },
+        {
+          "section": 3,
+          "number": 1
+        },
+        {
+          "section": 3,
+          "number": 2
+        },
+        {
+          "section": 3,
+          "number": 3
+        },
+        {
+          "section": 3,
+          "number": 4
+        },
+        {
+          "section": 3,
+          "number": 5
+        },
+        {
+          "section": 3,
+          "number": 6
+        },
+        {
+          "section": 3,
+          "number": 7
+        },
+        {
+          "section": 3,
+          "number": 8
+        },
+        {
+          "section": 3,
+          "number": 9
+        },
+        {
+          "section": 3,
+          "number": 10
+        },
+        {
+          "section": 4,
+          "number": 1
+        },
+        {
+          "section": 4,
+          "number": 2
+        },
+        {
+          "section": 4,
+          "number": 3
+        },
+        {
+          "section": 4,
+          "number": 4
+        },
+        {
+          "section": 4,
+          "number": 5
+        },
+        {
+          "section": 4,
+          "number": 6
+        },
+        {
+          "section": 4,
+          "number": 7
+        },
+        {
+          "section": 4,
+          "number": 8
+        },
+        {
+          "section": 4,
+          "number": 9
+        },
+        {
+          "section": 4,
+          "number": 10
+        },
+        {
+          "section": 5,
+          "number": 1
+        },
+        {
+          "section": 5,
+          "number": 2
+        },
+        {
+          "section": 5,
+          "number": 3
+        },
+        {
+          "section": 5,
+          "number": 4
+        },
+        {
+          "section": 5,
+          "number": 5
+        },
+        {
+          "section": 5,
+          "number": 6
+        },
+        {
+          "section": 5,
+          "number": 7
+        },
+        {
+          "section": 5,
+          "number": 8
+        },
+        {
+          "section": 5,
+          "number": 9
+        },
+        {
+          "section": 5,
+          "number": 10
+        }
+      ],
+      "pending_coverage": [],
+      "mapping_note": "Người dùng yêu cầu giữ tiêu đề giáo trình hiện có; nhập theo số bài, dù nội dung PDF Bài 2–3 đều là thuê nhà."
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 4 HSK2 3.0.pdf",
+      "sha256": "482646e8d590ebb81eaf12891c0b5c6e1dddd52e4a1b27e4ee6165be9c212a5a",
+      "unit": 4,
+      "lesson_id": "eefe4059-6982-4822-bdbf-44ff436198bf",
+      "lesson_title": "Con mặc màu đỏ đẹp lắm",
+      "source_items": 60,
+      "imported_records": 60,
+      "pending_items": 0,
+      "types": {
+        "multiple_choice": 25,
+        "fill_blank": 10,
+        "reorder": 10,
+        "sentence_correction": 10,
+        "translation": 5
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 1
+        },
+        {
+          "section": 2,
+          "number": 2
+        },
+        {
+          "section": 2,
+          "number": 3
+        },
+        {
+          "section": 2,
+          "number": 4
+        },
+        {
+          "section": 2,
+          "number": 5
+        },
+        {
+          "section": 2,
+          "number": 6
+        },
+        {
+          "section": 2,
+          "number": 7
+        },
+        {
+          "section": 2,
+          "number": 8
+        },
+        {
+          "section": 2,
+          "number": 9
+        },
+        {
+          "section": 2,
+          "number": 10
+        },
+        {
+          "section": 3,
+          "number": 1
+        },
+        {
+          "section": 3,
+          "number": 2
+        },
+        {
+          "section": 3,
+          "number": 3
+        },
+        {
+          "section": 3,
+          "number": 4
+        },
+        {
+          "section": 3,
+          "number": 5
+        },
+        {
+          "section": 3,
+          "number": 6
+        },
+        {
+          "section": 3,
+          "number": 7
+        },
+        {
+          "section": 3,
+          "number": 8
+        },
+        {
+          "section": 3,
+          "number": 9
+        },
+        {
+          "section": 3,
+          "number": 10
+        },
+        {
+          "section": 3,
+          "number": 11
+        },
+        {
+          "section": 3,
+          "number": 12
+        },
+        {
+          "section": 3,
+          "number": 13
+        },
+        {
+          "section": 3,
+          "number": 14
+        },
+        {
+          "section": 3,
+          "number": 15
+        },
+        {
+          "section": 4,
+          "number": 1
+        },
+        {
+          "section": 4,
+          "number": 2
+        },
+        {
+          "section": 4,
+          "number": 3
+        },
+        {
+          "section": 4,
+          "number": 4
+        },
+        {
+          "section": 4,
+          "number": 5
+        },
+        {
+          "section": 4,
+          "number": 6
+        },
+        {
+          "section": 4,
+          "number": 7
+        },
+        {
+          "section": 4,
+          "number": 8
+        },
+        {
+          "section": 4,
+          "number": 9
+        },
+        {
+          "section": 4,
+          "number": 10
+        },
+        {
+          "section": 5,
+          "number": 1
+        },
+        {
+          "section": 5,
+          "number": 2
+        },
+        {
+          "section": 5,
+          "number": 3
+        },
+        {
+          "section": 5,
+          "number": 4
+        },
+        {
+          "section": 5,
+          "number": 5
+        },
+        {
+          "section": 5,
+          "number": 6
+        },
+        {
+          "section": 5,
+          "number": 7
+        },
+        {
+          "section": 5,
+          "number": 8
+        },
+        {
+          "section": 5,
+          "number": 9
+        },
+        {
+          "section": 5,
+          "number": 10
+        },
+        {
+          "section": 6,
+          "number": 1
+        },
+        {
+          "section": 6,
+          "number": 2
+        },
+        {
+          "section": 6,
+          "number": 3
+        },
+        {
+          "section": 6,
+          "number": 4
+        },
+        {
+          "section": 6,
+          "number": 5
+        }
+      ],
+      "pending_coverage": []
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 5 HSK2 3.0.pdf",
+      "sha256": "680ed276a3890101256df6a77df1d8e6a05c16f40f1503b4bf8002f99bfff0d1",
+      "unit": 5,
+      "lesson_id": "e14c9797-8845-48b8-8f66-3266a3cad02d",
+      "lesson_title": "Lần đầu đến nhà bạn Trung Quốc",
+      "source_items": 52,
+      "imported_records": 51,
+      "pending_items": 1,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 9,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 5,
+          "number": 49
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 6 HSK2 3.0.pdf",
+      "sha256": "8a0949ecf01114430307eb44e651e076ea22067f000affe4e838e2ec8b49fc80",
+      "unit": 6,
+      "lesson_id": "2e7d7fa6-3658-4c64-9ac8-b686a7ebf003",
+      "lesson_title": "Tiểu Tuyết, chúc mừng sinh nhật!",
+      "source_items": 60,
+      "imported_records": 60,
+      "pending_items": 0,
+      "types": {
+        "multiple_choice": 25,
+        "fill_blank": 10,
+        "reorder": 10,
+        "hanzi_pinyin": 10,
+        "translation": 5
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 3,
+          "number": 31
+        },
+        {
+          "section": 3,
+          "number": 32
+        },
+        {
+          "section": 3,
+          "number": 33
+        },
+        {
+          "section": 3,
+          "number": 34
+        },
+        {
+          "section": 3,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 4,
+          "number": 41
+        },
+        {
+          "section": 4,
+          "number": 42
+        },
+        {
+          "section": 4,
+          "number": 43
+        },
+        {
+          "section": 4,
+          "number": 44
+        },
+        {
+          "section": 4,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 5,
+          "number": 51
+        },
+        {
+          "section": 5,
+          "number": 52
+        },
+        {
+          "section": 5,
+          "number": 53
+        },
+        {
+          "section": 5,
+          "number": 54
+        },
+        {
+          "section": 5,
+          "number": 55
+        },
+        {
+          "section": 6,
+          "number": 56
+        },
+        {
+          "section": 6,
+          "number": 57
+        },
+        {
+          "section": 6,
+          "number": 58
+        },
+        {
+          "section": 6,
+          "number": 59
+        },
+        {
+          "section": 6,
+          "number": 60
+        }
+      ],
+      "pending_coverage": []
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 7 HSK2 3.0.pdf",
+      "sha256": "0522e185d7c0825d22c169ef31e7fb714c34e11a80b205bf215b28a17f888b45",
+      "unit": 7,
+      "lesson_id": "17ac52a7-373e-44b0-9517-96f6c4dd055c",
+      "lesson_title": "Cậu ấy chơi bóng rổ rất giỏi",
+      "source_items": 52,
+      "imported_records": 50,
+      "pending_items": 2,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 9,
+        "translation": 21,
+        "sentence_correction": 9,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 5,
+          "number": 42
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 8 HSK2 3.0.pdf",
+      "sha256": "baf767529a9e50a264d660eb714dbe8a0b65221dd64f30f04577c01ab9037dd8",
+      "unit": 8,
+      "lesson_id": "9a3bc779-80ba-4b21-b984-f6535c82e268",
+      "lesson_title": "Tuy em quên nhưng anh vẫn nhớ",
+      "source_items": 52,
+      "imported_records": 51,
+      "pending_items": 1,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 9,
+        "translation": 21,
+        "sentence_correction": 10,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 2,
+          "number": 17
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 9 HSK2 3.0.pdf",
+      "sha256": "d43b0335348582895a5e53a518d9c5e75fad35fdbfe1f714b1a5f0c2273d0096",
+      "unit": 9,
+      "lesson_id": "73620839-0c02-40a2-a4fb-10c5dd671009",
+      "lesson_title": "Em đi mua cốc trà sữa",
+      "source_items": 52,
+      "imported_records": 50,
+      "pending_items": 2,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 8,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 45
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 10 HSK2 3.0.pdf",
+      "sha256": "52c4b66c5e46b30193079fb27e27dfae579b042d5344ad107093f4626a3bf41f",
+      "unit": 10,
+      "lesson_id": "5213135f-6a28-4e42-825d-e2dacf2ca8d1",
+      "lesson_title": "Sắp thi rồi",
+      "source_items": 52,
+      "imported_records": 52,
+      "pending_items": 0,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 10,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": []
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 11 HSK2 3.0.pdf",
+      "sha256": "2947c5d5da2931263c9112de252bd48386f15d428abdac517d9795c7df00f184",
+      "unit": 11,
+      "lesson_id": "e5fd54ac-6f27-4e11-a917-2cddc7050ca1",
+      "lesson_title": "Em thích nhất là ăn món Trung Quốc",
+      "source_items": 52,
+      "imported_records": 52,
+      "pending_items": 0,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 10,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": []
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 12 HSK2 3.0.pdf",
+      "sha256": "eed4fe8535e965b281f6b8258a6b7952467da13987c6a27a2a11aca19cdf5f75",
+      "unit": 12,
+      "lesson_id": "0ccacd6d-4e49-4442-8d80-f59b299d9e78",
+      "lesson_title": "Ở đây lạnh hơn Bắc Kinh nhiều",
+      "source_items": 52,
+      "imported_records": 52,
+      "pending_items": 0,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 10,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 49
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": []
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 13 HSK2 3.0.pdf",
+      "sha256": "a94674c102f2f6ef2f0768412bc68cbb56bab4600b722fcc785fad4b845dd97e",
+      "unit": 13,
+      "lesson_id": "b45cdd7b-e67a-432c-8aba-eb15b569b348",
+      "lesson_title": "Chúng em rất thích giờ học tiếng Trung",
+      "source_items": 52,
+      "imported_records": 49,
+      "pending_items": 3,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 7,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 49
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 14 HSK2 3.0.pdf",
+      "sha256": "8bdfe87627b64ad03f55b53105462af49592fa3b1ac7cc0796ec74e1682fb649",
+      "unit": 14,
+      "lesson_id": "27acf965-cdb8-4bb4-8d9b-5957b8e0e0e2",
+      "lesson_title": "Ăn Tết một mình chán lắm chứ!",
+      "source_items": 52,
+      "imported_records": 50,
+      "pending_items": 2,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 10,
+        "translation": 21,
+        "sentence_correction": 8,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 49
+        }
+      ]
+    },
+    {
+      "file": "PHIẾU BÀI TẬP BÀI 15 HSK2 3.0.pdf",
+      "sha256": "66c93e30ae596a4f96d66e064ed3e2c062924737cfe3a9490aa63d4546868ea3",
+      "unit": 15,
+      "lesson_id": "129b1d24-5d5c-4e45-b937-557b80e66452",
+      "lesson_title": "Em muốn đi Trung Quốc thêm một lần nữa",
+      "source_items": 52,
+      "imported_records": 49,
+      "pending_items": 3,
+      "types": {
+        "reorder": 10,
+        "multiple_choice": 9,
+        "translation": 21,
+        "sentence_correction": 8,
+        "essay": 1
+      },
+      "coverage": [
+        {
+          "section": 1,
+          "number": 1
+        },
+        {
+          "section": 1,
+          "number": 2
+        },
+        {
+          "section": 1,
+          "number": 3
+        },
+        {
+          "section": 1,
+          "number": 4
+        },
+        {
+          "section": 1,
+          "number": 5
+        },
+        {
+          "section": 1,
+          "number": 6
+        },
+        {
+          "section": 1,
+          "number": 7
+        },
+        {
+          "section": 1,
+          "number": 8
+        },
+        {
+          "section": 1,
+          "number": 9
+        },
+        {
+          "section": 1,
+          "number": 10
+        },
+        {
+          "section": 2,
+          "number": 11
+        },
+        {
+          "section": 2,
+          "number": 12
+        },
+        {
+          "section": 2,
+          "number": 13
+        },
+        {
+          "section": 2,
+          "number": 14
+        },
+        {
+          "section": 2,
+          "number": 15
+        },
+        {
+          "section": 2,
+          "number": 16
+        },
+        {
+          "section": 2,
+          "number": 17
+        },
+        {
+          "section": 2,
+          "number": 19
+        },
+        {
+          "section": 2,
+          "number": 20
+        },
+        {
+          "section": 3,
+          "number": 21
+        },
+        {
+          "section": 3,
+          "number": 22
+        },
+        {
+          "section": 3,
+          "number": 23
+        },
+        {
+          "section": 3,
+          "number": 24
+        },
+        {
+          "section": 3,
+          "number": 25
+        },
+        {
+          "section": 3,
+          "number": 26
+        },
+        {
+          "section": 3,
+          "number": 27
+        },
+        {
+          "section": 3,
+          "number": 28
+        },
+        {
+          "section": 3,
+          "number": 29
+        },
+        {
+          "section": 3,
+          "number": 30
+        },
+        {
+          "section": 4,
+          "number": 31
+        },
+        {
+          "section": 4,
+          "number": 32
+        },
+        {
+          "section": 4,
+          "number": 33
+        },
+        {
+          "section": 4,
+          "number": 34
+        },
+        {
+          "section": 4,
+          "number": 35
+        },
+        {
+          "section": 4,
+          "number": 36
+        },
+        {
+          "section": 4,
+          "number": 37
+        },
+        {
+          "section": 4,
+          "number": 38
+        },
+        {
+          "section": 4,
+          "number": 39
+        },
+        {
+          "section": 4,
+          "number": 40
+        },
+        {
+          "section": 5,
+          "number": 41
+        },
+        {
+          "section": 5,
+          "number": 42
+        },
+        {
+          "section": 5,
+          "number": 43
+        },
+        {
+          "section": 5,
+          "number": 44
+        },
+        {
+          "section": 5,
+          "number": 45
+        },
+        {
+          "section": 5,
+          "number": 47
+        },
+        {
+          "section": 5,
+          "number": 48
+        },
+        {
+          "section": 5,
+          "number": 50
+        },
+        {
+          "section": 6,
+          "number": 51
+        },
+        {
+          "section": 7,
+          "number": 52
+        }
+      ],
+      "pending_coverage": [
+        {
+          "section": 2,
+          "number": 18
+        },
+        {
+          "section": 5,
+          "number": 46
+        },
+        {
+          "section": 5,
+          "number": 49
+        }
+      ]
+    }
+  ],
+  "payload_sha256": "7bf87e14bf445c604632799085d0912747fcb1191922f0705b43b46a8e164bee"
+}

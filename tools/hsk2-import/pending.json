@@ -1,0 +1,240 @@
+[
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 1 HSK2 3.0.pdf",
+      "sha256": "1ca065a5f25904fc749f7514eb6b3eeb1a3fc9ac79e66d6b3ade984d2171bd32",
+      "unit": 1,
+      "section": 5,
+      "numbers": [
+        4
+      ]
+    },
+    "prompt": "妈妈请我洗碗，我不去。",
+    "source_answer": "妈妈请我洗碗 → 妈妈叫/让我洗碗（长辈/người trên sai bảo dùng 叫/让）。",
+    "reason": "请 có thể dùng khi nhờ rửa bát; thiếu ngữ cảnh để kết luận sai."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 1 HSK2 3.0.pdf",
+      "sha256": "1ca065a5f25904fc749f7514eb6b3eeb1a3fc9ac79e66d6b3ade984d2171bd32",
+      "unit": 1,
+      "section": 5,
+      "numbers": [
+        7
+      ]
+    },
+    "prompt": "昨天我吃北京烤鸭，很好吃。",
+    "source_answer": "昨天我吃北京烤鸭 → 昨天我吃了北京烤鸭（Thiếu 了 chỉ quá khứ）。",
+    "reason": "Câu kể việc hôm qua không bắt buộc có 了 trong mọi ngữ cảnh."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 1 HSK2 3.0.pdf",
+      "sha256": "1ca065a5f25904fc749f7514eb6b3eeb1a3fc9ac79e66d6b3ade984d2171bd32",
+      "unit": 1,
+      "section": 5,
+      "numbers": [
+        8
+      ]
+    },
+    "prompt": "经理叫我明天来早一点儿吧。",
+    "source_answer": "来早一点儿吧 → 来早一点儿（Câu lệnh không dùng 吧 suy đoán）。",
+    "reason": "吧 cũng dùng cho lời đề nghị/mệnh lệnh nhẹ; thiếu ngữ cảnh để coi đây là lỗi."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 5 HSK2 3.0.pdf",
+      "sha256": "680ed276a3890101256df6a77df1d8e6a05c16f40f1503b4bf8002f99bfff0d1",
+      "unit": 5,
+      "section": 5,
+      "numbers": [
+        49
+      ]
+    },
+    "prompt": "他们拿来很多礼物了。 (Tāmen ná lái hěn duō lǐwù le.) -> Lỗi vị trí của từ '了'",
+    "source_answer": "他们拿来很多礼物。",
+    "reason": "Câu 他们拿来很多礼物了 có thể diễn tả tình huống đã thay đổi; không có ngữ cảnh để kết luận 了 sai."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 7 HSK2 3.0.pdf",
+      "sha256": "0522e185d7c0825d22c169ef31e7fb714c34e11a80b205bf215b28a17f888b45",
+      "unit": 7,
+      "section": 2,
+      "numbers": [
+        16
+      ]
+    },
+    "prompt": "请问，这辆车是______哪儿开的？ A. 往 B. 从 C. 到 D. 过",
+    "source_answer": "A",
+    "reason": "往哪儿开 và 从哪儿开 đều hợp ngữ pháp (hướng đi / điểm xuất phát); thiếu ngữ cảnh để chọn duy nhất A."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 7 HSK2 3.0.pdf",
+      "sha256": "0522e185d7c0825d22c169ef31e7fb714c34e11a80b205bf215b28a17f888b45",
+      "unit": 7,
+      "section": 5,
+      "numbers": [
+        42
+      ]
+    },
+    "prompt": "我一下课就往外跑了。",
+    "source_answer": "我一下课就往外跑。",
+    "reason": "我一下课就往外跑了 là câu đúng khi kể một sự việc đã xảy ra; không đủ ngữ cảnh để sửa 了."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 8 HSK2 3.0.pdf",
+      "sha256": "baf767529a9e50a264d660eb714dbe8a0b65221dd64f30f04577c01ab9037dd8",
+      "unit": 8,
+      "section": 2,
+      "numbers": [
+        17
+      ]
+    },
+    "prompt": "这件衣服五千______块人民币。 A. 千 B. 百 C. 十 D. 个",
+    "source_answer": "A",
+    "reason": "五千______块: 千/百/十 đều có thể tạo số hợp lệ; khóa A tạo 五千千 không đúng, thiếu số tiền mục tiêu."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 9 HSK2 3.0.pdf",
+      "sha256": "d43b0335348582895a5e53a518d9c5e75fad35fdbfe1f714b1a5f0c2273d0096",
+      "unit": 9,
+      "section": 5,
+      "numbers": [
+        42
+      ]
+    },
+    "prompt": "昨天没有今天那么冷吗？",
+    "source_answer": "昨天有今天那么冷吗？",
+    "reason": "昨天没有今天那么冷吗 là câu hỏi phủ định hợp lệ; đáp án đổi thành câu hỏi khẳng định làm đổi nghĩa."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 9 HSK2 3.0.pdf",
+      "sha256": "d43b0335348582895a5e53a518d9c5e75fad35fdbfe1f714b1a5f0c2273d0096",
+      "unit": 9,
+      "section": 5,
+      "numbers": [
+        45
+      ]
+    },
+    "prompt": "他每天学习汉语两个小时了。",
+    "source_answer": "他每天学习汉语两个小时。",
+    "reason": "他每天学习汉语两个小时了 có thể nói về thói quen mới; thiếu ngữ cảnh để kết luận 了 sai."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 13 HSK2 3.0.pdf",
+      "sha256": "a94674c102f2f6ef2f0768412bc68cbb56bab4600b722fcc785fad4b845dd97e",
+      "unit": 13,
+      "section": 5,
+      "numbers": [
+        44
+      ]
+    },
+    "prompt": "我告诉他了件事。",
+    "source_answer": "我告诉他一件事了。",
+    "reason": "我告诉他了件事 là lược 一 trong lượng từ theo khẩu ngữ; không đủ căn cứ xem là lỗi."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 13 HSK2 3.0.pdf",
+      "sha256": "a94674c102f2f6ef2f0768412bc68cbb56bab4600b722fcc785fad4b845dd97e",
+      "unit": 13,
+      "section": 5,
+      "numbers": [
+        46
+      ]
+    },
+    "prompt": "这个本子比那个贵五块钱了。",
+    "source_answer": "这个本子比那个贵五块钱。(So sánh số lượng không thêm '了')",
+    "reason": "句末 了 có thể chỉ chênh lệch giá đã thay đổi; thiếu ngữ cảnh để kết luận sai."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 13 HSK2 3.0.pdf",
+      "sha256": "a94674c102f2f6ef2f0768412bc68cbb56bab4600b722fcc785fad4b845dd97e",
+      "unit": 13,
+      "section": 5,
+      "numbers": [
+        49
+      ]
+    },
+    "prompt": "新年就快要到了。",
+    "source_answer": "新年就要到了 / 新年快要到了。(Không dùng chung 就 và 快要)",
+    "reason": "就快要 là kết hợp dùng được; không nên áp quy tắc loại bỏ 就 một cách tuyệt đối."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 14 HSK2 3.0.pdf",
+      "sha256": "8bdfe87627b64ad03f55b53105462af49592fa3b1ac7cc0796ec74e1682fb649",
+      "unit": 14,
+      "section": 5,
+      "numbers": [
+        43
+      ]
+    },
+    "prompt": "一个人过年太没意思啊！",
+    "source_answer": "多没意思啊！(Câu cảm thán dùng 多...啊)",
+    "reason": "太没意思啊 là lời cảm thán có thể dùng; không đủ căn cứ coi dùng 太 là lỗi ngữ pháp."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 14 HSK2 3.0.pdf",
+      "sha256": "8bdfe87627b64ad03f55b53105462af49592fa3b1ac7cc0796ec74e1682fb649",
+      "unit": 14,
+      "section": 5,
+      "numbers": [
+        49
+      ]
+    },
+    "prompt": "妈妈买回来菜。",
+    "source_answer": "妈妈买回来一些菜。(Cần lượng từ trước tân ngữ vật)",
+    "reason": "妈妈买回来菜 không bắt buộc phải thêm lượng từ trong mọi ngữ cảnh; chờ đề rõ hơn."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 15 HSK2 3.0.pdf",
+      "sha256": "66c93e30ae596a4f96d66e064ed3e2c062924737cfe3a9490aa63d4546868ea3",
+      "unit": 15,
+      "section": 2,
+      "numbers": [
+        18
+      ]
+    },
+    "prompt": "李文见了杨同乐两______。 A. 个 B. 年 C. 次 D. 回",
+    "source_answer": "C",
+    "reason": "见了...两次 và 见了...两回 đều dùng được; không có ngữ cảnh phân biệt đáp án C và D."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 15 HSK2 3.0.pdf",
+      "sha256": "66c93e30ae596a4f96d66e064ed3e2c062924737cfe3a9490aa63d4546868ea3",
+      "unit": 15,
+      "section": 5,
+      "numbers": [
+        46
+      ]
+    },
+    "prompt": "他飞去北京一次了。",
+    "source_answer": "他飞去过一次北京了。/飞过北京一次。",
+    "reason": "Đề có thể dùng bổ ngữ động lượng và 了 hợp lệ; mẫu 飞去过一次北京了 / 飞过北京一次 không đáng tin cậy."
+  },
+  {
+    "source": {
+      "file": "PHIẾU BÀI TẬP BÀI 15 HSK2 3.0.pdf",
+      "sha256": "66c93e30ae596a4f96d66e064ed3e2c062924737cfe3a9490aa63d4546868ea3",
+      "unit": 15,
+      "section": 5,
+      "numbers": [
+        49
+      ]
+    },
+    "prompt": "我找李文一次。",
+    "source_answer": "我找过一次李文。(Hoặc 找过李文一次)",
+    "reason": "我找李文一次 có thể là yêu cầu/kế hoạch; thiếu ngữ cảnh để tự thêm 过 và đổi thời."
+  }
+]

@@ -18,6 +18,7 @@ import {
   deleteHomework,
   fetchHomework,
   fetchHomeworkSubmissions,
+  fetchQuestionAnswers,
   fetchTestAttempts,
   gradeManualHomework,
   attemptDeadline,
@@ -33,6 +34,9 @@ export default function TeacherHomeworkDetailPage() {
 
   const homework = useLoad(() => fetchHomework(homeworkId), [homeworkId]);
   const submissions = useLoad(() => fetchHomeworkSubmissions(homeworkId), [homeworkId]);
+  const essayQuestions = (homework.data?.questions ?? []).filter(q => q.type === "essay");
+  const essayIds = essayQuestions.map(q => q.id).join(",");
+  const essayModels = useLoad(() => fetchQuestionAnswers(essayIds ? essayIds.split(",") : []), [essayIds]);
   const isTest = homework.data?.kind === "test";
   const attempts = useLoad(
     () => (isTest ? fetchTestAttempts(homeworkId) : Promise.resolve([])),
@@ -104,7 +108,7 @@ export default function TeacherHomeworkDetailPage() {
   const attemptByStudent = new Map((attempts.data ?? []).map((a) => [a.student_id, a]));
   const pendingAttempts = (attempts.data ?? []).filter((a) => !subByStudent.has(a.student_id));
   const scores = subs.map((s) => s.score).filter((s): s is number => s != null);
-  const hasManualTasks = hw.manual_tasks.length > 0 || Boolean(hw.teacher_note.trim());
+  const hasManualTasks = hw.manual_tasks.length > 0 || Boolean(hw.teacher_note.trim()) || essayQuestions.length > 0;
   const avg = scores.length
     ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
     : null;
@@ -160,7 +164,7 @@ export default function TeacherHomeworkDetailPage() {
       {hasManualTasks && (
         <Card>
           <CardHeader>
-            <CardTitle>Nhập điểm phần bài tập thủ công <Badge variant="muted" className="ml-1">thang 10</Badge></CardTitle>
+            <CardTitle>{essayQuestions.length ? "Chấm bài viết và nhập điểm toàn bài" : "Nhập điểm phần bài tập thủ công"} <Badge variant="muted" className="ml-1">thang 10</Badge></CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
             {roster.length === 0 ? (
@@ -190,12 +194,24 @@ export default function TeacherHomeworkDetailPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        disabled={savingScoreFor === student.student_id}
+                        disabled={savingScoreFor === student.student_id || (essayQuestions.length > 0 && !subByStudent.has(student.student_id))}
                         onClick={() => saveManualScore(student.student_id)}
                       >
                         {savingScoreFor === student.student_id ? "Đang lưu…" : savedScoreFor === student.student_id ? "Đã lưu" : "Lưu điểm"}
                       </Button>
                       <div className="w-full pl-0 sm:pl-12">
+                        {essayQuestions.length > 0 && <div className="space-y-3 pb-3">
+                          <p className="text-xs text-muted-foreground">Điểm tự động của phần còn lại: {subByStudent.get(student.student_id)?.auto_score ?? "—"}/10. Nhập điểm cuối cùng cho toàn bài sau khi đọc phần viết.</p>
+                          {essayQuestions.map(q => {
+                            const response = subByStudent.get(student.student_id)?.answers[q.id];
+                            const model = essayModels.data?.[q.id];
+                            return <div key={q.id} className="rounded-lg border p-3 text-sm">
+                              <p className="mb-2 font-semibold whitespace-pre-wrap">{q.content.prompt}</p>
+                              <p className="zh whitespace-pre-wrap rounded bg-muted/40 p-2">{typeof response === "string" && response.trim() ? response : "Chưa có bài viết."}</p>
+                              {essayModels.error ? <ErrorNote message={essayModels.error} /> : <details className="mt-2"><summary className="cursor-pointer text-muted-foreground">Bài mẫu tham khảo</summary><p className="zh mt-2 whitespace-pre-wrap">{Array.isArray(model) ? model.join("\n\n") : typeof model === "string" ? model : "Đang tải…"}</p></details>}
+                            </div>;
+                          })}
+                        </div>}
                         <ManualHomeworkChecklist homeworkId={hw.id} studentId={student.student_id}
                           tasks={hw.manual_tasks} teacherNote={hw.teacher_note} editable />
                       </div>

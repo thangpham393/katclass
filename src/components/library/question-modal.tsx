@@ -47,7 +47,8 @@ export function QuestionModal({
   const writtenAnswer = answer && typeof answer === "object" && !Array.isArray(answer) ? answer : {};
   const [writtenHanzi, setWrittenHanzi] = useState(writtenAnswer.hanzi ?? "");
   const [writtenPinyin, setWrittenPinyin] = useState(writtenAnswer.pinyin ?? "");
-  const [acceptedTranslations, setAcceptedTranslations] = useState(question?.type === "translation" ?
+  const [targetLanguage, setTargetLanguage] = useState<"zh" | "vi">(question?.content.target_language ?? "zh");
+  const [acceptedTranslations, setAcceptedTranslations] = useState(question && ["translation", "sentence_correction", "essay"].includes(question.type) ?
     (Array.isArray(answer) ? answer.join("\n") : typeof answer === "string" ? answer : "") : "");
   const [requirePinyin, setRequirePinyin] = useState(question?.content.require_pinyin ?? false);
 
@@ -98,10 +99,10 @@ export function QuestionModal({
     let content: QuestionContent;
     let ans: QuestionAnswer;
 
-    if (type === "translation") {
+    if (type === "translation" || type === "sentence_correction" || type === "essay") {
       const accepted = [...new Set(acceptedTranslations.split("\n").map(s => s.trim()).filter(Boolean))];
-      if (!prompt.trim() || !accepted.length) return setError("Nhập câu cần dịch và ít nhất một bản dịch đúng.");
-      content = { prompt: prompt.trim(), hint: hint.trim() || undefined };
+      if (!prompt.trim() || !accepted.length) return setError("Nhập đề bài và ít nhất một đáp án hoặc bài mẫu.");
+      content = { prompt: prompt.trim(), hint: hint.trim() || undefined, target_language: targetLanguage };
       ans = accepted;
     } else if (type === "hanzi_pinyin") {
       if (!prompt.trim() || !writtenHanzi.trim() || !writtenPinyin.trim()) return setError("Nhập đề bài và đủ hai đáp án chữ Hán, Pinyin.");
@@ -213,18 +214,21 @@ export function QuestionModal({
           </Field>
         </div>
 
-        {(type === "translation" || type === "hanzi_pinyin") && <>
-          <Field label={type === "translation" ? "Câu tiếng Việt cần dịch" : "Đề bài"} required>
+        {(["translation", "sentence_correction", "essay", "hanzi_pinyin"].includes(type)) && <>
+          <Field label="Đề bài" required>
             <Textarea rows={3} value={prompt} onChange={e => setPrompt(e.target.value)} />
           </Field>
-          {type === "translation" ? <Field label="Các bản dịch được chấp nhận" required hint="Mỗi dòng một bản dịch đúng; có thể khai báo nhiều cách diễn đạt.">
-            <Textarea className="zh" rows={4} value={acceptedTranslations} onChange={e => setAcceptedTranslations(e.target.value)} />
-          </Field> : <>
+          {type !== "hanzi_pinyin" ? <>
+            <Field label="Ngôn ngữ trả lời"><Select value={targetLanguage} onChange={e => setTargetLanguage(e.target.value as "zh" | "vi")}><option value="zh">Tiếng Trung</option><option value="vi">Tiếng Việt</option></Select></Field>
+            <Field label={type === "essay" ? "Bài mẫu cho giáo viên" : "Các đáp án được chấp nhận"} required hint={type === "essay" ? "Giáo viên chấm thủ công; bài mẫu không dùng để chấm tự động và không gửi cho học viên." : "Mỗi dòng một đáp án đúng; có thể khai báo nhiều cách diễn đạt."}>
+              <Textarea className={targetLanguage === "zh" ? "zh" : ""} rows={type === "essay" ? 6 : 4} value={acceptedTranslations} onChange={e => setAcceptedTranslations(e.target.value)} />
+            </Field>
+          </> : <>
             <Field label="Đáp án chữ Hán" required><Textarea className="zh" rows={2} value={writtenHanzi} onChange={e => setWrittenHanzi(e.target.value)} /></Field>
             <Field label="Đáp án Pinyin" required><Input value={writtenPinyin} onChange={e => setWrittenPinyin(e.target.value)} /></Field>
           </>}
           <Field label="Gợi ý"><Input value={hint} onChange={e => setHint(e.target.value)} /></Field>
-          <p className="text-xs text-muted-foreground">Chấm theo đáp án đã khai báo, bỏ qua khoảng trắng, chữ hoa và dấu câu; Pinyin vẫn cần đúng dấu thanh.</p>
+          {type !== "essay" && <p className="text-xs text-muted-foreground">Chấm theo đáp án đã khai báo, bỏ qua khoảng trắng, chữ hoa và dấu câu; Pinyin vẫn cần đúng dấu thanh.</p>}
         </>}
 
         {type === "reading" && <div className="space-y-4">
