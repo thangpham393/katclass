@@ -1,0 +1,52 @@
+{
+  "source": "DANH SÁCH HỌC VIÊN QUẬN 2 (2026) - 2026.pdf",
+  "branch": {"name": "Quận 2", "code": "quan2"},
+  "classes": [
+    {
+      "name": "K3MSU02001", "teacher": "Cô Tuyết Trang",
+      "weekdays": [1, 3], "start_time": "17:30:00", "end_time": "19:00:00",
+      "students": [
+        {"name": "Đào Thị Ngọc Uyển", "raw_parent_phone": "906027637"},
+        {"name": "Lưu Hoàng Thiên Thi", "raw_parent_phone": "912718039"},
+        {"name": "Dương Thanh Ngọc", "raw_parent_phone": null},
+        {"name": "Võ Trần Hương Giang", "raw_parent_phone": "931850710"}
+      ]
+    },
+    {
+      "name": "K3YCT02001", "teacher": "Cô Tuyết Trang",
+      "weekdays": [1, 3], "start_time": "19:15:00", "end_time": "20:45:00",
+      "students": [
+        {"name": "Nguyễn Tuấn Anh", "raw_parent_phone": "984117447"},
+        {"name": "Nguyễn Thiên Khôi", "raw_parent_phone": "984117447"}
+      ]
+    },
+    {
+      "name": "YCT101002", "teacher": "Cô Tuyết Trang",
+      "weekdays": [2, 4], "start_time": "17:30:00", "end_time": "19:00:00",
+      "students": [
+        {"name": "Lê Bảo Ngọc", "raw_parent_phone": "0982731399"},
+        {"name": "Nguyễn Hoàng Bảo Châu", "raw_parent_phone": "0937667090"},
+        {"name": "Nguyễn Hoàng Bảo Ngọc", "raw_parent_phone": "0937667090"},
+        {"name": "Lê Nguyễn Hoàng Mỹ", "raw_parent_phone": "937975270"},
+        {"name": "Nguyễn Thanh Thúy Vy", "raw_parent_phone": "966791838"}
+      ]
+    },
+    {
+      "name": "YCT101003", "teacher": "Cô Thùy Dương", "format": "1:1",
+      "weekdays": [0], "start_time": "16:00:00", "end_time": "17:30:00",
+      "students": [{"name": "Võ Đông Nguyên", "raw_parent_phone": "367874797"}]
+    },
+    {
+      "name": "MSU01002", "teacher": "Cô Tuyết Trang",
+      "weekdays": [2, 4], "start_time": "19:15:00", "end_time": "20:45:00",
+      "students": [
+        {"name": "Bùi Vũ Thảo Nguyên", "raw_parent_phone": "0982731399"},
+        {"name": "Nguyễn Nhật Nam", "raw_parent_phone": "915856866"}
+      ]
+    },
+    {
+      "name": "PREKIDS01001", "teacher": "Cô Gia Khanh", "weekdays": [],
+      "students": [{"name": "Nguyễn Khả Di", "raw_parent_phone": null}]
+    }
+  ]
+}

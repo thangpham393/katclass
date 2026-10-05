@@ -1,0 +1,40 @@
+{
+  "branch": {
+    "name": "Quận 2",
+    "code": "quan2"
+  },
+  "source_sha256": "0d874fea39ea1c9de607059e0cfe32d8e1a2dcd06a0bb6d9d9f796609f1455ae",
+  "roster_sha256": "627f4be88bebc8c59f8b79b5ee2127f6ae25168c355707958e88fee17827aad9",
+  "class_counts": {
+    "K3MSU02001": 4,
+    "K3YCT02001": 2,
+    "YCT101002": 5,
+    "YCT101003": 1,
+    "MSU01002": 2,
+    "PREKIDS01001": 1
+  },
+  "students": 15,
+  "parent_phone_links": 13,
+  "unique_parent_phones": 10,
+  "weekly_schedules": 9,
+  "missing_parent_phones": [
+    "Dương Thanh Ngọc",
+    "Nguyễn Khả Di"
+  ],
+  "missing_class_schedules": [
+    "PREKIDS01001"
+  ],
+  "new_rows": {
+    "branches": 0,
+    "profiles": 28,
+    "classes": 6,
+    "class_schedules": 9,
+    "class_students": 15,
+    "parent_students": 13,
+    "class_teachers": 6
+  },
+  "verified_at": "2026-10-05T08:20:35.897461+00:00",
+  "unrelated_rows_unchanged": true,
+  "rerun_new_rows": 0,
+  "assigned_student_codes": 15
+}
