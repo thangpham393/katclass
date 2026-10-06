@@ -11,6 +11,22 @@ const config: Config = {
     },
     extend: {
       colors: {
+        classroom: {
+          background: "rgb(var(--classroom-background) / <alpha-value>)",
+          canvas: "rgb(var(--classroom-canvas) / <alpha-value>)",
+          surface: "rgb(var(--classroom-surface) / <alpha-value>)",
+          muted: "rgb(var(--classroom-muted) / <alpha-value>)",
+          hover: "rgb(var(--classroom-hover) / <alpha-value>)",
+          border: "rgb(var(--classroom-border) / <alpha-value>)",
+          "border-muted": "rgb(var(--classroom-border-muted) / <alpha-value>)",
+          foreground: "rgb(var(--classroom-foreground) / <alpha-value>)",
+          secondary: "rgb(var(--classroom-secondary) / <alpha-value>)",
+          "muted-foreground": "rgb(var(--classroom-muted-foreground) / <alpha-value>)",
+          faint: "rgb(var(--classroom-faint) / <alpha-value>)",
+          accent: "rgb(var(--classroom-accent) / <alpha-value>)",
+          warning: "rgb(var(--classroom-warning) / <alpha-value>)",
+          success: "rgb(var(--classroom-success) / <alpha-value>)",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -215,7 +215,7 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
   const loose = spots.filter((s) => !s.rect);
 
   return (
-    <div className="group relative h-full w-full overflow-hidden bg-black">
+    <div className="group relative h-full w-full overflow-hidden bg-classroom-canvas">
       <div
         ref={boxRef}
         onClick={(e) => {
@@ -281,7 +281,7 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
       )}
 
       {status === "loading" && (
-        <div className="absolute inset-0 grid place-items-center text-sm text-ink-300">
+        <div className="absolute inset-0 grid place-items-center text-sm text-classroom-muted-foreground">
           <div className="flex items-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin" /> Đang mở {deck.name}…
           </div>
@@ -291,20 +291,20 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
       {status === "error" && (
         <div className="absolute inset-0 grid place-items-center p-8 text-center">
           <div className="max-w-md">
-            <div className="mb-2 text-lg font-bold text-white">Không mở được bộ slide</div>
-            <p className="text-sm leading-relaxed text-ink-300">{error}</p>
+            <div className="mb-2 text-lg font-bold text-classroom-foreground">Không mở được bộ slide</div>
+            <p className="text-sm leading-relaxed text-classroom-muted-foreground">{error}</p>
           </div>
         </div>
       )}
 
-      <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-ink-950/70 px-3 py-1.5 text-xs text-ink-200 backdrop-blur">
-        <span className="max-w-[16rem] truncate font-semibold text-white">{deck.name}</span>
+      <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-classroom-background/70 px-3 py-1.5 text-xs text-classroom-secondary backdrop-blur">
+        <span className="max-w-[16rem] truncate font-semibold text-classroom-foreground">{deck.name}</span>
         {status === "ready" && (
           <span className="flex items-center gap-1">
             <button
               onClick={() => go(page - 1)}
               disabled={page === 0}
-              className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+              className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
               title="Slide trước (←)"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -315,12 +315,12 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
             <button
               onClick={() => go(page + 1)}
               disabled={page >= count - 1}
-              className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+              className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
               title="Slide sau (→)"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
-            <span className="hidden text-ink-400 sm:inline">· bấm lên slide để chuyển</span>
+            <span className="hidden text-classroom-muted-foreground sm:inline">· bấm lên slide để chuyển</span>
           </span>
         )}
 
@@ -348,7 +348,7 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
 
         <button
           onClick={onClose}
-          className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+          className="ml-auto inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold hover:bg-classroom-hover"
         >
           <X className="h-3.5 w-3.5" /> Đóng bộ slide
         </button>
@@ -380,7 +380,7 @@ export function DeckStage({ deck, onClose }: { deck: LessonDeck; onClose: () => 
           />
           <button
             onClick={() => setVideo(null)}
-            className="absolute right-3 top-11 inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 text-xs font-semibold text-white hover:bg-ink-700"
+            className="absolute right-3 top-11 inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 text-xs font-semibold text-classroom-foreground hover:bg-classroom-hover"
           >
             <X className="h-3.5 w-3.5" /> Đóng video
           </button>

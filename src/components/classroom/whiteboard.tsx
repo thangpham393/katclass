@@ -208,7 +208,7 @@ export function WhiteboardStage() {
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex gap-1 rounded-lg bg-ink-800 p-1">
+        <div className="flex gap-1 rounded-lg bg-classroom-muted p-1">
           {([
             { key: "pen", icon: Pen, title: "Bút viết tay" },
             { key: "text", icon: Type, title: "Gõ chữ bằng bàn phím — bấm lên bảng rồi gõ" },
@@ -222,7 +222,7 @@ export function WhiteboardStage() {
               }}
               className={cn(
                 "grid h-8 w-8 place-items-center rounded-md",
-                mode === t.key ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+                mode === t.key ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-hover",
               )}
               title={t.title}
             >
@@ -241,7 +241,7 @@ export function WhiteboardStage() {
               }}
               className={cn(
                 "h-7 w-7 rounded-full border-2 transition-transform",
-                color === c && mode !== "eraser" ? "scale-110 border-white" : "border-ink-700",
+                color === c && mode !== "eraser" ? "scale-110 border-classroom-foreground" : "border-classroom-border",
               )}
               style={{ background: c }}
               title="Màu bút"
@@ -249,14 +249,14 @@ export function WhiteboardStage() {
           ))}
         </div>
 
-        <div className={cn("flex gap-1 rounded-lg bg-ink-800 p-1", mode !== "text" && "hidden")}>
+        <div className={cn("flex gap-1 rounded-lg bg-classroom-muted p-1", mode !== "text" && "hidden")}>
           {FONT_SIZES.map((f) => (
             <button
               key={f.value}
               onClick={() => setFontSize(f.value)}
               className={cn(
                 "rounded-md px-2 py-1.5 text-xs font-semibold",
-                fontSize === f.value ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+                fontSize === f.value ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-hover",
               )}
             >
               {f.label}
@@ -264,30 +264,33 @@ export function WhiteboardStage() {
           ))}
         </div>
 
-        <div className={cn("flex gap-1 rounded-lg bg-ink-800 p-1", mode === "text" && "hidden")}>
+        <div className={cn("flex gap-1 rounded-lg bg-classroom-muted p-1", mode === "text" && "hidden")}>
           {WIDTHS.map((w) => (
             <button
               key={w}
               onClick={() => setWidth(w)}
               className={cn(
                 "grid h-8 w-8 place-items-center rounded-md",
-                width === w ? "bg-brand-600" : "hover:bg-ink-700",
+                width === w ? "bg-brand-600" : "hover:bg-classroom-hover",
               )}
               title={`Nét ${w}px`}
             >
-              <span className="rounded-full bg-white" style={{ width: w + 2, height: w + 2 }} />
+              <span
+                className={cn("rounded-full", width === w ? "bg-white" : "bg-classroom-foreground")}
+                style={{ width: w + 2, height: w + 2 }}
+              />
             </button>
           ))}
         </div>
 
-        <div className="flex gap-1 rounded-lg bg-ink-800 p-1">
+        <div className="flex gap-1 rounded-lg bg-classroom-muted p-1">
           {BACKGROUNDS.map((b) => (
             <button
               key={b.value}
               onClick={() => setBg(b.value)}
               className={cn(
                 "rounded-md px-2 py-1.5 text-xs font-semibold",
-                bg === b.value ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+                bg === b.value ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-hover",
               )}
             >
               {b.value === "tianzi" && <Grid3x3 className="mr-1 inline h-3 w-3" />}
@@ -300,20 +303,20 @@ export function WhiteboardStage() {
           <button
             onClick={undo}
             disabled={count === 0}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ink-800 px-2.5 text-xs font-semibold text-ink-100 hover:bg-ink-700 disabled:opacity-40"
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-classroom-muted px-2.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover disabled:opacity-40"
           >
             <Undo2 className="h-3.5 w-3.5" /> Hoàn tác
           </button>
           <button
             onClick={download}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ink-800 px-2.5 text-xs font-semibold text-ink-100 hover:bg-ink-700"
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-classroom-muted px-2.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover"
             title="Lưu ảnh bảng về máy để gửi lại cho lớp"
           >
             <Download className="h-3.5 w-3.5" /> Lưu ảnh
           </button>
           <button
             onClick={clear}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ink-800 px-2.5 text-xs font-semibold text-gold-300 hover:bg-ink-700"
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-classroom-muted px-2.5 text-xs font-semibold text-classroom-warning hover:bg-classroom-hover"
           >
             <Trash2 className="h-3.5 w-3.5" /> Xóa hết
           </button>
@@ -322,7 +325,7 @@ export function WhiteboardStage() {
 
       <div
         ref={boxRef}
-        className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-ink-700 bg-white"
+        className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-classroom-border bg-white"
       >
         <canvas
           ref={canvasRef}

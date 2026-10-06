@@ -125,16 +125,16 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 lg:flex-row">
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-4">
-        <div className="rounded-3xl border border-ink-700 bg-white p-2">
+        <div className="rounded-3xl border border-classroom-border bg-white p-2">
           <div ref={target} style={{ width: size, height: size }} />
         </div>
 
         {error ? (
-          <p className="text-sm font-semibold text-gold-300">{error}</p>
+          <p className="text-sm font-semibold text-classroom-warning">{error}</p>
         ) : result ? (
-          <p className="text-sm font-semibold text-gold-300">{result}</p>
+          <p className="text-sm font-semibold text-classroom-warning">{result}</p>
         ) : (
-          <p className="text-sm text-ink-300">
+          <p className="text-sm text-classroom-muted-foreground">
             {quizing ? "Học viên viết trực tiếp lên khung — máy chấm từng nét." : "Bấm Viết mẫu để xem thứ tự nét."}
           </p>
         )}
@@ -151,33 +151,33 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
           </Button>
           <button
             onClick={() => writer.current?.showCharacter()}
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700"
+            className="grid h-9 w-9 place-items-center rounded-lg bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover"
             title="Hiện chữ"
           >
             <Eye className="h-4 w-4" />
           </button>
           <button
             onClick={() => writer.current?.hideCharacter()}
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700"
+            className="grid h-9 w-9 place-items-center rounded-lg bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover"
             title="Ẩn chữ"
           >
             <EyeOff className="h-4 w-4" />
           </button>
           <button
             onClick={() => speakZh(current)}
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink-800 text-ink-100 hover:bg-ink-700"
+            className="grid h-9 w-9 place-items-center rounded-lg bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover"
             title="Đọc mẫu"
           >
             <Volume2 className="h-4 w-4" />
           </button>
-          <div className="flex gap-1 rounded-lg bg-ink-800 p-1">
+          <div className="flex gap-1 rounded-lg bg-classroom-muted p-1">
             {SPEEDS.map((s) => (
               <button
                 key={s.value}
                 onClick={() => setSpeed(s.value)}
                 className={cn(
                   "rounded-md px-2 py-1 text-xs font-semibold",
-                  speed === s.value ? "bg-brand-600 text-white" : "text-ink-200 hover:bg-ink-700",
+                  speed === s.value ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-hover",
                 )}
               >
                 {s.label}
@@ -187,7 +187,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
         </div>
       </div>
 
-      <div className="flex w-full shrink-0 flex-col gap-2 rounded-2xl border border-ink-800 bg-ink-900 p-3 lg:w-64">
+      <div className="flex w-full shrink-0 flex-col gap-2 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-3 lg:w-64">
         <input
           value={raw}
           onChange={(e) => applyRaw(e.target.value)}
@@ -199,7 +199,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
             applyRaw((e.target as HTMLInputElement).value);
           }}
           placeholder="Gõ hoặc dán chữ Hán…"
-          className="zh h-11 w-full rounded-lg border border-ink-700 bg-ink-950 px-3 text-center text-2xl text-white placeholder:text-sm placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          className="zh h-11 w-full rounded-lg border border-classroom-border bg-classroom-background px-3 text-center text-2xl text-classroom-foreground placeholder:text-sm placeholder:text-classroom-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         />
         {typed.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -209,7 +209,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
                 onClick={() => setChar(c)}
                 className={cn(
                   "zh grid h-10 w-10 place-items-center rounded-lg text-xl transition-colors",
-                  c === current ? "bg-brand-600 text-white" : "bg-ink-800 text-white hover:bg-ink-700",
+                  c === current ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-foreground hover:bg-classroom-hover",
                 )}
                 title="Chọn chữ để xem nét"
               >
@@ -221,24 +221,24 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
                 setRaw("");
                 setChar("");
               }}
-              className="rounded-lg px-2 text-xs font-semibold text-ink-300 hover:text-white"
+              className="rounded-lg px-2 text-xs font-semibold text-classroom-muted-foreground hover:text-classroom-foreground"
             >
               Xoá
             </button>
           </div>
         )}
         {meaning && (
-          <div className="rounded-lg bg-ink-800 p-2 text-center">
-            <div className="text-sm font-semibold text-brand-300">{meaning.pinyin}</div>
-            <div className="text-xs text-ink-200">{meaning.meaning}</div>
+          <div className="rounded-lg bg-classroom-muted p-2 text-center">
+            <div className="text-sm font-semibold text-classroom-accent">{meaning.pinyin}</div>
+            <div className="text-xs text-classroom-secondary">{meaning.meaning}</div>
           </div>
         )}
-        <div className="text-[11px] font-semibold uppercase tracking-wide text-ink-400">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-classroom-muted-foreground">
           Chữ trong bài
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
           {suggestions.length === 0 ? (
-            <p className="text-xs text-ink-400">Buổi chưa gán bài có từ vựng — gõ chữ vào ô trên.</p>
+            <p className="text-xs text-classroom-muted-foreground">Buổi chưa gán bài có từ vựng — gõ chữ vào ô trên.</p>
           ) : (
             <div className="grid grid-cols-4 gap-1.5">
               {suggestions.map((c) => (
@@ -247,7 +247,7 @@ export function StrokeStage({ vocab }: { vocab: VocabRow[] }) {
                   onClick={() => setChar(c)}
                   className={cn(
                     "zh grid h-12 place-items-center rounded-lg text-2xl transition-colors",
-                    c === current ? "bg-brand-600 text-white" : "bg-ink-800 text-white hover:bg-ink-700",
+                    c === current ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-foreground hover:bg-classroom-hover",
                   )}
                 >
                   {c}

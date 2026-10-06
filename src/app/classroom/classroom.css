@@ -1,0 +1,36 @@
+/* Chỉ áp dụng trong Classroom; slide, video và giấy tập viết giữ màu gốc. */
+.classroom-theme {
+  color-scheme: dark;
+  --classroom-background: 16 21 39;
+  --classroom-canvas: 0 0 0;
+  --classroom-surface: 28 35 56;
+  --classroom-muted: 43 53 85;
+  --classroom-hover: 53 67 107;
+  --classroom-border: 53 67 107;
+  --classroom-border-muted: 43 53 85;
+  --classroom-foreground: 255 255 255;
+  --classroom-secondary: 197 209 232;
+  --classroom-muted-foreground: 159 177 212;
+  --classroom-faint: 114 137 186;
+  --classroom-accent: 148 181 253;
+  --classroom-warning: 252 165 165;
+  --classroom-success: 110 231 183;
+}
+
+.classroom-theme[data-classroom-theme="light"] {
+  color-scheme: light;
+  --classroom-background: 248 250 252;
+  --classroom-canvas: 241 245 249;
+  --classroom-surface: 255 255 255;
+  --classroom-muted: 226 232 240;
+  --classroom-hover: 203 213 225;
+  --classroom-border: 203 213 225;
+  --classroom-border-muted: 226 232 240;
+  --classroom-foreground: 15 23 42;
+  --classroom-secondary: 51 65 85;
+  --classroom-muted-foreground: 71 85 105;
+  --classroom-faint: 100 116 139;
+  --classroom-accent: 29 78 216;
+  --classroom-warning: 185 28 28;
+  --classroom-success: 4 120 87;
+}

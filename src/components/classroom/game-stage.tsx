@@ -58,10 +58,10 @@ export function GameStage({
 
   if (!vocab.length) {
     return (
-      <div className="grid h-full place-items-center rounded-2xl border border-ink-800 bg-ink-900 text-center text-ink-300">
+      <div className="grid h-full place-items-center rounded-2xl border border-classroom-border-muted bg-classroom-surface text-center text-classroom-muted-foreground">
         <div className="max-w-md p-8">
           <Gamepad2 className="mx-auto mb-3 h-10 w-10 opacity-60" />
-          <div className="font-semibold text-white">Chưa có từ vựng để chơi</div>
+          <div className="font-semibold text-classroom-foreground">Chưa có từ vựng để chơi</div>
           <p className="mt-1 text-sm">
             Gán bài học có từ vựng cho buổi (trang chi tiết buổi) là các trò chơi tự lấy từ của bài.
           </p>
@@ -72,21 +72,21 @@ export function GameStage({
 
   if (game === "menu") {
     return (
-      <div className="flex h-full flex-col justify-center gap-4 rounded-2xl border border-ink-800 bg-ink-900 p-8">
+      <div className="flex h-full flex-col justify-center gap-4 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-8">
         <div className="text-center">
-          <div className="text-lg font-bold text-white">Chọn trò chơi</div>
-          <p className="text-sm text-ink-300">{vocab.length} từ của bài đang dạy</p>
+          <div className="text-lg font-bold text-classroom-foreground">Chọn trò chơi</div>
+          <p className="text-sm text-classroom-muted-foreground">{vocab.length} từ của bài đang dạy</p>
         </div>
         <div className="grid gap-3 md:grid-cols-3">
           {GAMES.map((g) => (
             <button
               key={g.key}
               onClick={() => setGame(g.key)}
-              className="rounded-2xl border border-ink-700 bg-ink-800 p-5 text-left transition-colors hover:border-brand-500 hover:bg-ink-700"
+              className="rounded-2xl border border-classroom-border bg-classroom-muted p-5 text-left transition-colors hover:border-brand-500 hover:bg-classroom-hover"
             >
               <div className="text-3xl">{g.emoji}</div>
-              <div className="mt-2 text-base font-bold text-white">{g.title}</div>
-              <p className="mt-1 text-xs text-ink-300">{g.desc}</p>
+              <div className="mt-2 text-base font-bold text-classroom-foreground">{g.title}</div>
+              <p className="mt-1 text-xs text-classroom-muted-foreground">{g.desc}</p>
             </button>
           ))}
         </div>
@@ -97,10 +97,10 @@ export function GameStage({
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
       <div className="flex items-center gap-2">
-        <Button size="sm" variant="ghost" onClick={() => setGame("menu")} className="text-ink-200">
+        <Button size="sm" variant="ghost" onClick={() => setGame("menu")} className="text-classroom-secondary">
           ← Trò khác
         </Button>
-        <span className="text-sm font-bold text-white">
+        <span className="text-sm font-bold text-classroom-foreground">
           {GAMES.find((g) => g.key === game)?.title}
         </span>
       </div>
@@ -129,8 +129,8 @@ function AwardRow({
 }) {
   const [given, setGiven] = useState<string | null>(null);
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-ink-700 bg-ink-900 p-2">
-      <span className="px-1 text-xs font-semibold text-ink-300">{label}</span>
+    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-classroom-border bg-classroom-surface p-2">
+      <span className="px-1 text-xs font-semibold text-classroom-muted-foreground">{label}</span>
       {students.map((s) => (
         <button
           key={s.id}
@@ -141,11 +141,11 @@ function AwardRow({
           }}
           className={cn(
             "flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold transition-colors",
-            given === s.id ? "bg-gold-600 text-white" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
+            given === s.id ? "bg-gold-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
           )}
           title={`+${points} ★ cho ${s.name}`}
         >
-          <Avatar name={s.name} src={s.avatar ?? undefined} size={20} className="ring-ink-700" />
+          <Avatar name={s.name} src={s.avatar ?? undefined} size={20} className="ring-classroom-border" />
           {s.name.split(" ").slice(-1)[0]}
           {given === s.id && <Check className="h-3 w-3" />}
         </button>
@@ -194,21 +194,21 @@ function ChoiceGame({
 
   return (
     <div className="flex h-full flex-col gap-3">
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4 sm:gap-6 sm:p-6">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4 sm:gap-6 sm:p-6">
         {kind === "quick" ? (
           <div className="text-center">
-            <div className="text-xs font-semibold uppercase tracking-wide text-ink-400">
+            <div className="text-xs font-semibold uppercase tracking-wide text-classroom-muted-foreground">
               Chữ Hán nào có nghĩa
             </div>
-            <div className="mt-2 text-3xl font-extrabold text-white sm:text-4xl">{answer.meaning}</div>
+            <div className="mt-2 text-3xl font-extrabold text-classroom-foreground sm:text-4xl">{answer.meaning}</div>
           </div>
         ) : (
           <button
             onClick={speak}
-            className="flex flex-col items-center gap-2 rounded-2xl bg-ink-800 px-8 py-5 hover:bg-ink-700 sm:px-10 sm:py-6"
+            className="flex flex-col items-center gap-2 rounded-2xl bg-classroom-muted px-8 py-5 hover:bg-classroom-hover sm:px-10 sm:py-6"
           >
-            <Volume2 className="h-10 w-10 text-brand-300" />
-            <span className="text-sm font-semibold text-ink-200">Nghe lại</span>
+            <Volume2 className="h-10 w-10 text-classroom-accent" />
+            <span className="text-sm font-semibold text-classroom-secondary">Nghe lại</span>
           </button>
         )}
 
@@ -223,17 +223,17 @@ function ChoiceGame({
                 className={cn(
                   "zh rounded-2xl border-2 px-2 py-4 text-4xl font-bold transition-colors sm:py-6 sm:text-5xl",
                   !show
-                    ? "border-ink-700 bg-ink-800 text-white hover:border-brand-500"
+                    ? "border-classroom-border bg-classroom-muted text-classroom-foreground hover:border-brand-500"
                     : isAnswer
-                      ? "border-emerald-500 bg-emerald-600/20 text-emerald-200"
+                      ? "border-emerald-500 bg-emerald-600/20 text-classroom-success"
                       : picked === o.id
-                        ? "border-gold-600 bg-gold-600/20 text-gold-200"
-                        : "border-ink-800 bg-ink-900 text-ink-500",
+                        ? "border-gold-600 bg-gold-600/20 text-classroom-warning"
+                        : "border-classroom-border-muted bg-classroom-surface text-classroom-faint",
                 )}
               >
                 {o.hanzi}
                 {show && isAnswer && (
-                  <div className="mt-1 text-sm font-semibold text-emerald-300">
+                  <div className="mt-1 text-sm font-semibold text-classroom-success">
                     {o.pinyin} · {o.meaning}
                   </div>
                 )}
@@ -242,7 +242,7 @@ function ChoiceGame({
           })}
         </div>
 
-        <div className="flex items-center gap-3 text-sm text-ink-300">
+        <div className="flex items-center gap-3 text-sm text-classroom-muted-foreground">
           <span>
             Đúng {score.right}/{score.total}
           </span>
@@ -320,7 +320,7 @@ function MemoryGame({
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm text-ink-300">Số cặp:</span>
+        <span className="text-sm text-classroom-muted-foreground">Số cặp:</span>
         {[4, 6, 8].map((n) => (
           <button
             key={n}
@@ -333,13 +333,13 @@ function MemoryGame({
             }}
             className={cn(
               "rounded-lg px-3 py-1.5 text-sm font-semibold",
-              size === n ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+              size === n ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
             )}
           >
             {n}
           </button>
         ))}
-        <span className="ml-2 text-sm text-ink-300">Lượt lật: {moves}</span>
+        <span className="ml-2 text-sm text-classroom-muted-foreground">Lượt lật: {moves}</span>
         <Button
           size="sm"
           variant="secondary"
@@ -355,9 +355,9 @@ function MemoryGame({
         </Button>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4">
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4">
         {done && (
-          <div className="mb-3 rounded-xl border border-emerald-600/50 bg-emerald-600/10 p-3 text-center text-sm font-semibold text-emerald-200">
+          <div className="mb-3 rounded-xl border border-emerald-600/50 bg-emerald-600/10 p-3 text-center text-sm font-semibold text-classroom-success">
             Hoàn thành sau {moves} lượt lật! Thưởng ★ cho đội thắng ở hàng dưới.
           </div>
         )}
@@ -371,10 +371,10 @@ function MemoryGame({
                 className={cn(
                   "flex h-20 items-center justify-center rounded-2xl border-2 p-1.5 text-center transition-all sm:h-24 sm:p-2",
                   matched.includes(c.pairId)
-                    ? "border-emerald-500 bg-emerald-600/15 text-emerald-200"
+                    ? "border-emerald-500 bg-emerald-600/15 text-classroom-success"
                     : isOpen
-                      ? "border-brand-500 bg-ink-800 text-white"
-                      : "border-ink-700 bg-ink-800 text-ink-600 hover:border-brand-500",
+                      ? "border-brand-500 bg-classroom-muted text-classroom-foreground"
+                      : "border-classroom-border bg-classroom-muted text-classroom-faint hover:border-brand-500",
                 )}
               >
                 {isOpen ? (
@@ -412,10 +412,10 @@ export function LeaderboardStage({
 
   if (!rows.some((r) => r.points !== 0)) {
     return (
-      <div className="grid h-full place-items-center rounded-2xl border border-ink-800 bg-ink-900 text-center text-ink-300">
+      <div className="grid h-full place-items-center rounded-2xl border border-classroom-border-muted bg-classroom-surface text-center text-classroom-muted-foreground">
         <div className="max-w-sm p-8">
           <div className="text-4xl">🏆</div>
-          <div className="mt-2 font-semibold text-white">Chưa có điểm nào trong buổi</div>
+          <div className="mt-2 font-semibold text-classroom-foreground">Chưa có điểm nào trong buổi</div>
           <p className="mt-1 text-sm">Chạm học viên ở cột bên phải để cộng ★, bảng này sẽ hiện ngay.</p>
         </div>
       </div>
@@ -423,20 +423,20 @@ export function LeaderboardStage({
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4 rounded-2xl border border-ink-800 bg-ink-900 p-6">
+    <div className="flex h-full min-h-0 flex-col gap-4 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-6">
       <div className="grid gap-3 sm:grid-cols-3">
         {top.map((s, i) => (
           <div
             key={s.id}
             className={cn(
               "flex flex-col items-center rounded-2xl border-2 p-4",
-              i === 0 ? "border-gold-500 bg-gold-600/15" : "border-ink-700 bg-ink-800",
+              i === 0 ? "border-gold-500 bg-gold-600/15" : "border-classroom-border bg-classroom-muted",
             )}
           >
             <div className="text-4xl">{medals[i]}</div>
-            <Avatar name={s.name} src={s.avatar ?? undefined} size={56} className="mt-2 ring-ink-700" />
-            <div className="mt-2 text-center text-sm font-bold text-white">{s.name}</div>
-            <div className="mt-1 text-2xl font-extrabold text-gold-300">{s.points} ★</div>
+            <Avatar name={s.name} src={s.avatar ?? undefined} size={56} className="mt-2 ring-classroom-border" />
+            <div className="mt-2 text-center text-sm font-bold text-classroom-foreground">{s.name}</div>
+            <div className="mt-1 text-2xl font-extrabold text-classroom-warning">{s.points} ★</div>
           </div>
         ))}
       </div>
@@ -444,11 +444,11 @@ export function LeaderboardStage({
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="space-y-1.5">
           {rest.map((s, i) => (
-            <div key={s.id} className="flex items-center gap-3 rounded-xl bg-ink-800 px-3 py-2">
-              <span className="w-6 text-center text-sm font-bold text-ink-400">{i + 4}</span>
-              <Avatar name={s.name} src={s.avatar ?? undefined} size={28} className="ring-ink-700" />
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white">{s.name}</span>
-              <span className="text-sm font-extrabold tabular-nums text-ink-200">{s.points} ★</span>
+            <div key={s.id} className="flex items-center gap-3 rounded-xl bg-classroom-muted px-3 py-2">
+              <span className="w-6 text-center text-sm font-bold text-classroom-muted-foreground">{i + 4}</span>
+              <Avatar name={s.name} src={s.avatar ?? undefined} size={28} className="ring-classroom-border" />
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-classroom-foreground">{s.name}</span>
+              <span className="text-sm font-extrabold tabular-nums text-classroom-secondary">{s.points} ★</span>
             </div>
           ))}
         </div>

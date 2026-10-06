@@ -37,6 +37,7 @@ import { GameStage, LeaderboardStage } from "@/components/classroom/game-stage";
 import { StrokeStage } from "@/components/classroom/stroke-stage";
 import { WhiteboardStage } from "@/components/classroom/whiteboard";
 import { WrapUpModal } from "@/components/classroom/wrap-up-modal";
+import { ClassroomThemeToggle } from "@/components/classroom/theme-provider";
 import { cn } from "@/lib/utils";
 import {
   ATTENDANCE_LABELS,
@@ -466,15 +467,15 @@ export default function ClassroomPage() {
 
   if (session.loading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-ink-950 text-ink-200">Đang mở lớp…</div>
+      <div className="grid min-h-screen place-items-center bg-classroom-background text-classroom-secondary">Đang mở lớp…</div>
     );
   }
   if (!session.data) {
     return (
-      <div className="grid min-h-screen place-items-center bg-ink-950 p-6 text-center text-ink-200">
+      <div className="grid min-h-screen place-items-center bg-classroom-background p-6 text-center text-classroom-secondary">
         <div>
           <p>Không mở được buổi học này (hoặc bạn không phụ trách buổi).</p>
-          <Link href={home} className="mt-3 inline-block font-semibold text-brand-300">
+          <Link href={home} className="mt-3 inline-block font-semibold text-classroom-accent">
             ← Về trang chủ
           </Link>
         </div>
@@ -497,18 +498,21 @@ export default function ClassroomPage() {
   /* ---------- Màn điểm danh đầu giờ ---------- */
   if (phase === "checkin") {
     return (
-      <div className="min-h-screen animate-fade-in bg-ink-950 px-6 py-8 text-white">
+      <div className="min-h-screen animate-fade-in bg-classroom-background px-6 py-8 text-classroom-foreground">
         <div className="mx-auto max-w-5xl">
-          <Link
-            href={s.class ? `/teacher/classes/${s.class.id}` : home}
-            className="inline-flex items-center gap-1.5 text-sm text-ink-300 hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" /> Thoát
-          </Link>
+          <div className="flex items-center justify-between gap-3">
+            <Link
+              href={s.class ? `/teacher/classes/${s.class.id}` : home}
+              className="inline-flex items-center gap-1.5 text-sm text-classroom-muted-foreground hover:text-classroom-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" /> Thoát
+            </Link>
+            <ClassroomThemeToggle />
+          </div>
           <h1 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">
             {sessionClassLabel(s)} — điểm danh đầu giờ
           </h1>
-          <p className="mt-1 text-ink-300">
+          <p className="mt-1 text-classroom-muted-foreground">
             {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")} ·{" "}
             {s.start_time.slice(0, 5)}–{s.end_time.slice(0, 5)}
             {s.room ? ` · Phòng ${s.room.name}` : ""} · {students.length} học viên
@@ -542,17 +546,17 @@ export default function ClassroomPage() {
                   className={cn(
                     "rounded-2xl border p-3 transition-colors",
                     !cur
-                      ? "border-ink-700 bg-ink-900"
+                      ? "border-classroom-border bg-classroom-surface"
                       : absent
                         ? "border-gold-600/60 bg-gold-600/10"
                         : "border-emerald-600/60 bg-emerald-600/10",
                   )}
                 >
                   <div className="flex items-center gap-3">
-                    <Avatar name={st.name} src={st.avatar ?? undefined} size={40} className="ring-ink-700" />
+                    <Avatar name={st.name} src={st.avatar ?? undefined} size={40} className="ring-classroom-border" />
                     <div className="min-w-0 flex-1">
                       <div className="truncate font-semibold">{st.name}</div>
-                      <div className="text-xs text-ink-300">
+                      <div className="text-xs text-classroom-muted-foreground">
                         {st.makeup ? "Học bù buổi này" : cur ? ATTENDANCE_LABELS[cur] : "Chưa điểm danh"}
                       </div>
                     </div>
@@ -564,7 +568,7 @@ export default function ClassroomPage() {
                         onClick={() => setStatus(st.id, v)}
                         className={cn(
                           "rounded-lg px-2 py-1.5 text-xs font-semibold",
-                          cur === v ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+                          cur === v ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
                         )}
                       >
                         {ATTENDANCE_LABELS[v]}
@@ -582,7 +586,7 @@ export default function ClassroomPage() {
 
   /* ---------- Màn dạy ---------- */
   return (
-    <div ref={rootRef} className="relative flex h-[100dvh] animate-fade-in flex-col overflow-hidden bg-black text-white">
+    <div ref={rootRef} className="relative flex h-[100dvh] animate-fade-in flex-col overflow-hidden bg-classroom-canvas text-classroom-foreground">
       {/*
         Topbar gom hết điều khiển: thông tin buổi, các nút nguồn slide (do
         SlideStage cắm vào qua portal), đồng hồ và danh sách học viên. Ở chế độ
@@ -590,13 +594,13 @@ export default function ClassroomPage() {
         chiếm trọn màn hình.
       */}
       {!presenting && (
-        <header className="relative z-30 flex shrink-0 items-center gap-2 border-b border-ink-800 bg-ink-900 px-2 py-2 sm:gap-3 sm:px-3">
-          <Link href={home} className="shrink-0 text-ink-300 hover:text-white" title="Thoát lớp">
+        <header className="relative z-30 flex shrink-0 items-center gap-2 border-b border-classroom-border-muted bg-classroom-surface px-2 py-2 sm:gap-3 sm:px-3">
+          <Link href={home} className="shrink-0 text-classroom-muted-foreground hover:text-classroom-foreground" title="Thoát lớp">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div className="hidden min-w-0 max-w-[16rem] shrink md:block">
             <div className="truncate text-sm font-bold">{sessionClassLabel(s)}</div>
-            <div className="truncate text-[11px] text-ink-400">
+            <div className="truncate text-[11px] text-classroom-muted-foreground">
               {WEEKDAY_LABELS[d.getDay()]} {d.toLocaleDateString("vi-VN")} · {s.start_time.slice(0, 5)}–
               {s.end_time.slice(0, 5)}
               {s.session_no ? ` · Buổi ${s.session_no}` : ""}
@@ -607,10 +611,11 @@ export default function ClassroomPage() {
           <div ref={setControlsHost} className="flex min-w-0 items-center gap-2" />
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
+            <ClassroomThemeToggle />
             {timer.running && overlay !== "timer" && (
               <button
                 onClick={() => setOverlay("timer")}
-                className="rounded-lg bg-gold-600/20 px-2.5 py-1 font-mono text-sm font-bold tabular-nums text-gold-300 hover:bg-gold-600/30"
+                className="rounded-lg bg-gold-600/20 px-2.5 py-1 font-mono text-sm font-bold tabular-nums text-classroom-warning hover:bg-gold-600/30"
                 title="Đồng hồ đang chạy — bấm để mở lại"
               >
                 ⏱ {String(Math.floor(timer.left / 60)).padStart(2, "0")}:
@@ -618,11 +623,11 @@ export default function ClassroomPage() {
               </button>
             )}
             {pendingCount > 0 && (
-              <span className="hidden items-center gap-1 text-xs text-gold-300 sm:flex">
+              <span className="hidden items-center gap-1 text-xs text-classroom-warning sm:flex">
                 <WifiOff className="h-3.5 w-3.5" /> {pendingCount} chờ đồng bộ
               </span>
             )}
-            <div className="hidden rounded-lg bg-ink-800 px-3 py-1.5 font-mono text-sm tabular-nums text-brand-200 sm:block">
+            <div className="hidden rounded-lg bg-classroom-muted px-3 py-1.5 font-mono text-sm tabular-nums text-classroom-accent sm:block">
               {clock}
             </div>
 
@@ -634,8 +639,8 @@ export default function ClassroomPage() {
                 className={cn(
                   "inline-flex h-9 items-center gap-1.5 rounded-lg border px-2.5 text-[13px] font-semibold transition-colors",
                   rosterOpen
-                    ? "border-brand-500 bg-brand-600/20 text-white"
-                    : "border-ink-700 bg-ink-900 text-ink-100 hover:bg-ink-800",
+                    ? "border-brand-500 bg-brand-600/20 text-classroom-foreground"
+                    : "border-classroom-border bg-classroom-surface text-classroom-secondary hover:bg-classroom-muted",
                 )}
                 title="Danh sách học viên · cộng ★"
               >
@@ -777,7 +782,7 @@ export default function ClassroomPage() {
         {/* Thanh công cụ nổi: đặt đè lên slide, không chia cột/chia hàng với khung chiếu */}
         {!presenting && (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-            <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-1 rounded-2xl border border-ink-700 bg-ink-900/90 p-1.5 shadow-soft backdrop-blur">
+            <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-1 rounded-2xl border border-classroom-border bg-classroom-surface/90 p-1.5 shadow-soft backdrop-blur">
               {TOOLS.map((t) => (
                 <button
                   key={t.key}
@@ -786,7 +791,7 @@ export default function ClassroomPage() {
                     "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-2.5 py-2 text-[13px] font-semibold transition-colors",
                     (t.key === "slide" ? overlay === null : overlay === t.key)
                       ? "bg-brand-600 text-white"
-                      : "text-ink-200 hover:bg-ink-800",
+                      : "text-classroom-secondary hover:bg-classroom-muted",
                   )}
                   title={`${t.label} · phím tắt ${t.hotkey}`}
                 >
@@ -795,12 +800,12 @@ export default function ClassroomPage() {
                 </button>
               ))}
 
-              <span className="mx-1 hidden h-6 w-px bg-ink-700 sm:block" />
+              <span className="mx-1 hidden h-6 w-px bg-classroom-hover sm:block" />
 
               <button
                 onClick={undo}
                 disabled={points.length === 0}
-                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-ink-200 hover:bg-ink-800 disabled:opacity-40"
+                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-classroom-secondary hover:bg-classroom-muted disabled:opacity-40"
                 title="Hoàn tác lần cộng điểm gần nhất"
               >
                 <Undo2 className="h-4 w-4" />
@@ -809,7 +814,7 @@ export default function ClassroomPage() {
 
               <button
                 onClick={togglePresenting}
-                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-ink-200 hover:bg-ink-800"
+                className="flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-classroom-secondary hover:bg-classroom-muted"
                 title="Chế độ trình chiếu — ẩn hết thanh công cụ, slide full màn hình (Esc để thoát)"
               >
                 <Maximize2 className="h-4 w-4" />
@@ -821,8 +826,8 @@ export default function ClassroomPage() {
                   data-more-toggle
                   onClick={() => setMoreOpen((v) => !v)}
                   className={cn(
-                    "grid h-9 w-9 place-items-center rounded-xl text-ink-200 hover:bg-ink-800",
-                    moreOpen && "bg-ink-800 text-white",
+                    "grid h-9 w-9 place-items-center rounded-xl text-classroom-secondary hover:bg-classroom-muted",
+                    moreOpen && "bg-classroom-muted text-classroom-foreground",
                   )}
                   title="Thêm"
                   aria-label="Thêm tuỳ chọn"
@@ -832,7 +837,7 @@ export default function ClassroomPage() {
                 {moreOpen && (
                   <div
                     data-more-menu
-                    className="absolute bottom-full right-0 z-50 mb-2 w-64 rounded-xl border border-ink-700 bg-ink-900 p-1 shadow-soft"
+                    className="absolute bottom-full right-0 z-50 mb-2 w-64 rounded-xl border border-classroom-border bg-classroom-surface p-1 shadow-soft"
                   >
                     <MoreItem
                       icon={fullscreen ? Minimize2 : Maximize2}
@@ -850,9 +855,9 @@ export default function ClassroomPage() {
                         setMoreOpen(false);
                       }}
                     />
-                    <div className="px-3 py-2 text-[11px] leading-relaxed text-ink-400">
+                    <div className="px-3 py-2 text-[11px] leading-relaxed text-classroom-muted-foreground">
                       Phím 1–8 mở công cụ · Esc đóng công cụ / thoát trình chiếu · mở
-                      <b className="text-ink-200"> Học viên</b> trên thanh trên để cộng ★.
+                      <b className="text-classroom-secondary"> Học viên</b> trên thanh trên để cộng ★.
                     </div>
                   </div>
                 )}
@@ -865,7 +870,7 @@ export default function ClassroomPage() {
         {presenting && (
           <button
             onClick={togglePresenting}
-            className="absolute bottom-4 right-4 z-30 inline-flex items-center gap-1.5 rounded-xl border border-ink-700 bg-ink-900/70 px-3 py-2 text-xs font-semibold text-ink-200 opacity-25 backdrop-blur transition-opacity hover:opacity-100"
+            className="absolute bottom-4 right-4 z-30 inline-flex items-center gap-1.5 rounded-xl border border-classroom-border bg-classroom-surface/70 px-3 py-2 text-xs font-semibold text-classroom-secondary opacity-25 backdrop-blur transition-opacity hover:opacity-100"
             title="Thoát chế độ trình chiếu (Esc)"
           >
             <Minimize2 className="h-4 w-4" /> Thoát trình chiếu
@@ -908,9 +913,9 @@ function MoreItem({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-ink-100 hover:bg-ink-800"
+      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-classroom-secondary hover:bg-classroom-muted"
     >
-      <Icon className="h-4 w-4 shrink-0 text-ink-300" /> {label}
+      <Icon className="h-4 w-4 shrink-0 text-classroom-muted-foreground" /> {label}
     </button>
   );
 }
@@ -943,21 +948,21 @@ function ToolOverlay({
     <div
       className={cn(
         "absolute inset-0 z-20 flex flex-col p-2 pb-20 backdrop-blur-sm sm:p-4 sm:pb-20",
-        "bg-ink-950/80",
+        "bg-classroom-background/80",
         !open && "hidden",
       )}
     >
       <div
         className={cn(
-          "mx-auto flex min-h-0 w-full flex-1 flex-col rounded-2xl border border-ink-700 bg-ink-950/95 shadow-soft",
+          "mx-auto flex min-h-0 w-full flex-1 flex-col rounded-2xl border border-classroom-border bg-classroom-background/95 shadow-soft",
           wide ? "max-w-6xl" : "max-w-4xl",
         )}
       >
-        <div className="flex items-center justify-between border-b border-ink-800 px-4 py-2">
-          <span className="text-sm font-bold text-white">{title}</span>
+        <div className="flex items-center justify-between border-b border-classroom-border-muted px-4 py-2">
+          <span className="text-sm font-bold text-classroom-foreground">{title}</span>
           <button
             onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-lg bg-ink-800 text-ink-200 hover:bg-ink-700"
+            className="grid h-8 w-8 place-items-center rounded-lg bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover"
             title="Đóng (Esc)"
           >
             <X className="h-4 w-4" />
@@ -986,13 +991,13 @@ function AnsweringBar({
 }) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-20 z-40 flex justify-center px-4">
-      <div className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-2xl border border-gold-500/60 bg-ink-900/95 px-4 py-2.5 shadow-soft backdrop-blur">
+      <div className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-2xl border border-gold-500/60 bg-classroom-surface/95 px-4 py-2.5 shadow-soft backdrop-blur">
         <Avatar name={student.name} src={student.avatar ?? undefined} size={34} className="ring-gold-500" />
         <div className="mr-2">
-          <div className="text-[11px] font-semibold uppercase tracking-wide text-gold-300">
+          <div className="text-[11px] font-semibold uppercase tracking-wide text-classroom-warning">
             🎤 Đang trả lời
           </div>
-          <div className="text-sm font-bold text-white">{student.name}</div>
+          <div className="text-sm font-bold text-classroom-foreground">{student.name}</div>
         </div>
         <Button size="sm" variant="gold" onClick={() => onAward(2, "bonus")}>
           Trả lời tốt +2
@@ -1002,13 +1007,13 @@ function AnsweringBar({
         </Button>
         <button
           onClick={onSkip}
-          className="rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
+          className="rounded-lg bg-classroom-muted px-3 py-1.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover"
         >
           Chưa trả lời được
         </button>
         <button
           onClick={onAgain}
-          className="rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
+          className="rounded-lg bg-classroom-muted px-3 py-1.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover"
         >
           Gọi bạn khác
         </button>
@@ -1039,34 +1044,34 @@ function ExternalPresentPanel({
     .slice(0, 5);
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4 sm:p-6">
+    <div className="flex h-full flex-col gap-4 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4 sm:p-6">
       <div>
-        <div className="flex items-center gap-2 text-lg font-bold text-white">
-          <MonitorOff className="h-5 w-5 text-brand-300" /> Đang chiếu bằng phần mềm ngoài
+        <div className="flex items-center gap-2 text-lg font-bold text-classroom-foreground">
+          <MonitorOff className="h-5 w-5 text-classroom-accent" /> Đang chiếu bằng phần mềm ngoài
         </div>
-        <p className="mt-1 max-w-2xl text-sm text-ink-300">
+        <p className="mt-1 max-w-2xl text-sm text-classroom-muted-foreground">
           Mở slide bằng PowerPoint trên máy (hoặc nút “Cửa sổ trình chiếu”) rồi kéo sang màn
           hình máy chiếu — hiệu ứng, hoạt ảnh giữ nguyên. Cửa sổ này để trên laptop, thu nhỏ
           lại vẫn dùng được: gọi tên, cộng điểm, bấm giờ, chốt buổi.
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 rounded-xl border border-ink-800 bg-ink-950 p-4">
-        <div className="text-xs font-semibold uppercase tracking-wide text-ink-400">
+      <div className="min-h-0 flex-1 rounded-xl border border-classroom-border-muted bg-classroom-background p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-classroom-muted-foreground">
           Bảng ★ buổi này
         </div>
         {top.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-400">
+          <p className="mt-3 text-sm text-classroom-muted-foreground">
             Chưa cộng điểm cho ai — mở nút “Học viên” trên thanh trên rồi chạm tên là cộng.
           </p>
         ) : (
           <div className="mt-3 space-y-2">
             {top.map((s, i) => (
               <div key={s.id} className="flex items-center gap-3">
-                <span className="w-5 text-center text-sm font-bold text-ink-400">{i + 1}</span>
-                <Avatar name={s.name} src={s.avatar ?? undefined} size={30} className="ring-ink-700" />
-                <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white">{s.name}</span>
-                <span className="rounded-lg bg-gold-600/20 px-2 py-1 text-sm font-extrabold tabular-nums text-gold-300">
+                <span className="w-5 text-center text-sm font-bold text-classroom-muted-foreground">{i + 1}</span>
+                <Avatar name={s.name} src={s.avatar ?? undefined} size={30} className="ring-classroom-border" />
+                <span className="min-w-0 flex-1 truncate text-sm font-semibold text-classroom-foreground">{s.name}</span>
+                <span className="rounded-lg bg-gold-600/20 px-2 py-1 text-sm font-extrabold tabular-nums text-classroom-warning">
                   {s.points} ★
                 </span>
               </div>

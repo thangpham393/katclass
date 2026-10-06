@@ -263,7 +263,7 @@ export function SlideStage({
   const hasDecks = Boolean(sessionSlide) || withSlide.length > 0 || decks.length > 0;
 
   const btn =
-    "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-ink-700 bg-ink-900 px-2.5 text-[13px] font-semibold text-ink-100 transition-colors hover:bg-ink-800";
+    "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-classroom-border bg-classroom-surface px-2.5 text-[13px] font-semibold text-classroom-secondary transition-colors hover:bg-classroom-muted";
 
   const controls = (
     <div className="flex items-center gap-2">
@@ -274,12 +274,12 @@ export function SlideStage({
             className={cn(btn, "max-w-[16rem]")}
             title="Chọn slide đang chiếu"
           >
-            <Presentation className="h-4 w-4 shrink-0 text-brand-300" />
+            <Presentation className="h-4 w-4 shrink-0 text-classroom-accent" />
             <span className="truncate">{deckLabel}</span>
             <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
           </button>
           {menu === "deck" && (
-            <div className="absolute left-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-ink-700 bg-ink-900 p-1 shadow-soft">
+            <div className="absolute left-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-classroom-border bg-classroom-surface p-1 shadow-soft">
               {decks.map((d) => (
                 <DeckItem
                   key={d.id}
@@ -322,7 +322,7 @@ export function SlideStage({
       <div className="relative">
         <button
           onClick={() => setMenu((m) => (m === "link" ? null : "link"))}
-          className={cn(btn, menu === "link" && "bg-ink-800")}
+          className={cn(btn, menu === "link" && "bg-classroom-muted")}
           title="Dán link Google Slides / Drive / Canva / YouTube để chiếu ngay"
         >
           <LinkIcon className="h-4 w-4" />
@@ -330,7 +330,7 @@ export function SlideStage({
           <span className="lg:hidden">Dán link</span>
         </button>
         {menu === "link" && (
-          <div className="absolute left-0 top-full z-50 mt-2 w-80 rounded-xl border border-ink-700 bg-ink-900 p-3 shadow-soft">
+          <div className="absolute left-0 top-full z-50 mt-2 w-80 rounded-xl border border-classroom-border bg-classroom-surface p-3 shadow-soft">
             <input
               autoFocus
               value={adhoc}
@@ -343,7 +343,7 @@ export function SlideStage({
                 }
               }}
               placeholder="Dán link Google Slides / Drive / Canva / YouTube…"
-              className="h-9 w-full rounded-lg border border-ink-700 bg-ink-950 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              className="h-9 w-full rounded-lg border border-classroom-border bg-classroom-background px-3 text-sm text-classroom-foreground placeholder:text-classroom-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             />
             <div className="mt-2 flex items-center gap-2">
               <Button
@@ -363,7 +363,7 @@ export function SlideStage({
                     setAdhocUrl("");
                     setAdhoc("");
                   }}
-                  className="rounded-lg bg-ink-800 px-2.5 py-1.5 text-xs font-semibold text-ink-200 hover:bg-ink-700"
+                  className="rounded-lg bg-classroom-muted px-2.5 py-1.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover"
                 >
                   Bỏ link
                 </button>
@@ -396,7 +396,7 @@ export function SlideStage({
 
       <button
         onClick={sharing ? stopShare : startShare}
-        className={cn(btn, sharing && "border-gold-500/60 bg-gold-600/20 text-gold-200")}
+        className={cn(btn, sharing && "border-gold-500/60 bg-gold-600/20 text-classroom-warning")}
         title="Chiếu bằng PowerPoint trên máy rồi soi cửa sổ đó vào đây — giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên"
       >
         <MonitorUp className="h-4 w-4" />
@@ -406,7 +406,7 @@ export function SlideStage({
   );
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-black">
+    <div className="relative h-full w-full overflow-hidden bg-classroom-canvas">
       {/* Ô chọn file dùng chung cho nút trên topbar và nút gợi ý giữa khung */}
       <input
         ref={fileInput}
@@ -426,14 +426,14 @@ export function SlideStage({
       ) : sharing ? (
         <>
           <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-contain" />
-          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-ink-950/70 px-3 py-1.5 text-xs text-ink-200 backdrop-blur">
-            <span className="font-semibold text-gold-300">● Đang soi màn hình máy tính</span>
-            <span className="hidden text-ink-400 sm:inline">
+          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-classroom-background/70 px-3 py-1.5 text-xs text-classroom-secondary backdrop-blur">
+            <span className="font-semibold text-classroom-warning">● Đang soi màn hình máy tính</span>
+            <span className="hidden text-classroom-muted-foreground sm:inline">
               Bấm chuyển slide ngay trên PowerPoint (hoặc bút trình chiếu) — hình ở đây tự cập nhật.
             </span>
             <button
               onClick={stopShare}
-              className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+              className="ml-auto inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold hover:bg-classroom-hover"
             >
               <X className="h-3.5 w-3.5" /> Dừng
             </button>
@@ -461,14 +461,14 @@ export function SlideStage({
               <img src={local.urls[page]} alt={`Slide ${page + 1}`} className="h-full w-full object-contain" />
             </div>
           )}
-          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-ink-950/70 px-3 py-1.5 text-xs text-ink-200 backdrop-blur">
-            <span className="truncate font-semibold text-white">{local.name}</span>
+          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-classroom-background/70 px-3 py-1.5 text-xs text-classroom-secondary backdrop-blur">
+            <span className="truncate font-semibold text-classroom-foreground">{local.name}</span>
             {local.kind === "images" && (
               <span className="flex items-center gap-1">
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                  className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -478,25 +478,25 @@ export function SlideStage({
                 <button
                   onClick={() => setPage((p) => Math.min(local.urls.length - 1, p + 1))}
                   disabled={page >= local.urls.length - 1}
-                  className="grid h-7 w-7 place-items-center rounded-md bg-ink-800 hover:bg-ink-700 disabled:opacity-40"
+                  className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
-                <span className="hidden text-ink-400 sm:inline">· phím ← →</span>
+                <span className="hidden text-classroom-muted-foreground sm:inline">· phím ← →</span>
               </span>
             )}
             <button
               onClick={closeLocal}
-              className="ml-auto inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold hover:bg-ink-700"
+              className="ml-auto inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold hover:bg-classroom-hover"
             >
               <X className="h-3.5 w-3.5" /> Đóng file
             </button>
           </div>
         </>
       ) : url && blocked ? (
-        <div className="grid h-full place-items-center p-8 text-center text-ink-300">
+        <div className="grid h-full place-items-center p-8 text-center text-classroom-muted-foreground">
           <div className="max-w-lg">
-            <div className="mb-2 text-lg font-bold text-white">Nguồn này chặn nhúng</div>
+            <div className="mb-2 text-lg font-bold text-classroom-foreground">Nguồn này chặn nhúng</div>
             <p className="text-sm leading-relaxed">{blocked}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               <Button
@@ -522,16 +522,16 @@ export function SlideStage({
           title="Slide bài học"
         />
       ) : (
-        <div className="grid h-full place-items-center p-8 text-center text-ink-300">
+        <div className="grid h-full place-items-center p-8 text-center text-classroom-muted-foreground">
           <div>
             <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
-            <div className="font-semibold text-white">Buổi này chưa có slide</div>
+            <div className="font-semibold text-classroom-foreground">Buổi này chưa có slide</div>
             <p className="mx-auto mt-1 max-w-md text-sm">
               Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
-              Slides / Drive / Canva / YouTube bằng nút <b className="text-white">Dán link</b> trên
-              thanh trên, bấm <b className="text-white">Nhận màn hình</b> để soi cửa sổ PowerPoint
+              Slides / Drive / Canva / YouTube bằng nút <b className="text-classroom-foreground">Dán link</b> trên
+              thanh trên, bấm <b className="text-classroom-foreground">Nhận màn hình</b> để soi cửa sổ PowerPoint
               đang chạy trên máy (giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên), hoặc{" "}
-              <b className="text-white">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
+              <b className="text-classroom-foreground">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
             </p>
           </div>
         </div>
@@ -550,12 +550,12 @@ export function SlideStage({
       {isGoogle && !local && !deck && !sharing && controlsHost && (
         <div className="absolute bottom-3 left-3 z-10 max-w-[min(30rem,90vw)]">
           {helpOpen ? (
-            <div className="rounded-xl border border-ink-700 bg-ink-950/95 p-3 text-[11px] text-ink-300 shadow-soft backdrop-blur">
+            <div className="rounded-xl border border-classroom-border bg-classroom-background/95 p-3 text-[11px] text-classroom-muted-foreground shadow-soft backdrop-blur">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-ink-100">Không hiện được slide?</span>
+                <span className="font-semibold text-classroom-secondary">Không hiện được slide?</span>
                 <button
                   onClick={() => setHelpOpen(false)}
-                  className="ml-auto grid h-6 w-6 place-items-center rounded-md bg-ink-800 hover:bg-ink-700"
+                  className="ml-auto grid h-6 w-6 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>
@@ -570,7 +570,7 @@ export function SlideStage({
                     }}
                     className={cn(
                       "rounded-md px-2 py-1 font-semibold",
-                      mode === m ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-200 hover:bg-ink-700",
+                      mode === m ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
                     )}
                   >
                     {EMBED_MODE_LABELS[m]}
@@ -578,7 +578,7 @@ export function SlideStage({
                 ))}
                 <button
                   onClick={() => setReloadKey((k) => k + 1)}
-                  className="inline-flex items-center gap-1 rounded-md bg-ink-800 px-2 py-1 font-semibold text-ink-200 hover:bg-ink-700"
+                  className="inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold text-classroom-secondary hover:bg-classroom-hover"
                 >
                   <RotateCcw className="h-3 w-3" /> Tải lại
                 </button>
@@ -592,7 +592,7 @@ export function SlideStage({
           ) : (
             <button
               onClick={() => setHelpOpen(true)}
-              className="rounded-lg border border-ink-700 bg-ink-950/80 px-2.5 py-1.5 text-[11px] font-semibold text-ink-300 backdrop-blur hover:text-white"
+              className="rounded-lg border border-classroom-border bg-classroom-background/80 px-2.5 py-1.5 text-[11px] font-semibold text-classroom-muted-foreground backdrop-blur hover:text-classroom-foreground"
             >
               Không hiện được slide?
             </button>
@@ -610,7 +610,7 @@ function DeckItem({ label, active, onClick }: { label: string; active: boolean; 
       onClick={onClick}
       className={cn(
         "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold",
-        active ? "bg-brand-600 text-white" : "text-ink-100 hover:bg-ink-800",
+        active ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted",
       )}
     >
       <span className="truncate">{label}</span>
@@ -689,36 +689,36 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
         </Button>
         {(hidden || hidePinyin) && (
           <>
-            <span className="text-sm text-ink-300">Bấm thẻ để lật</span>
+            <span className="text-sm text-classroom-muted-foreground">Bấm thẻ để lật</span>
             {revealed.size > 0 && (
               <button
                 onClick={() => setRevealed(new Set())}
-                className="text-xs font-semibold text-ink-300 hover:text-white"
+                className="text-xs font-semibold text-classroom-muted-foreground hover:text-classroom-foreground"
               >
                 Úp lại hết
               </button>
             )}
           </>
         )}
-        <span className="text-sm text-ink-300">{list.length} từ</span>
+        <span className="text-sm text-classroom-muted-foreground">{list.length} từ</span>
         <div className="ml-auto flex items-center gap-2">
-          <Search className="h-4 w-4 text-ink-400" />
+          <Search className="h-4 w-4 text-classroom-muted-foreground" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Tra nhanh cả kho từ (hán tự / pinyin / nghĩa)…"
-            className="h-9 w-72 rounded-lg border border-ink-700 bg-ink-900 px-3 text-sm text-white placeholder:text-ink-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+            className="h-9 w-72 rounded-lg border border-classroom-border bg-classroom-surface px-3 text-sm text-classroom-foreground placeholder:text-classroom-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           />
           {query && (
-            <button onClick={() => setQuery("")} className="text-xs font-semibold text-ink-300 hover:text-white">
+            <button onClick={() => setQuery("")} className="text-xs font-semibold text-classroom-muted-foreground hover:text-classroom-foreground">
               Về từ của bài
             </button>
           )}
         </div>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-ink-800 bg-ink-900 p-4">
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4">
         {list.length === 0 && (
-          <div className="grid h-full place-items-center text-center text-sm text-ink-300">
+          <div className="grid h-full place-items-center text-center text-sm text-classroom-muted-foreground">
             {searching
               ? "Đang tra…"
               : query
@@ -735,10 +735,10 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
               <button
                 key={v.id}
                 onClick={() => (hidden || hidePinyin) && toggle(v.id)}
-                className="rounded-2xl border border-ink-700 bg-ink-800 p-4 text-left transition-colors hover:border-brand-500"
+                className="rounded-2xl border border-classroom-border bg-classroom-muted p-4 text-left transition-colors hover:border-brand-500"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div className="zh text-4xl font-bold leading-tight text-white">{v.hanzi}</div>
+                  <div className="zh text-4xl font-bold leading-tight text-classroom-foreground">{v.hanzi}</div>
                   <span
                     role="button"
                     tabIndex={0}
@@ -747,7 +747,7 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
                       speakZh(v.hanzi);
                     }}
                     onKeyDown={(e) => e.key === "Enter" && speakZh(v.hanzi)}
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink-700 text-ink-100 hover:bg-brand-600"
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-classroom-hover text-classroom-secondary hover:bg-brand-600 hover:text-white"
                   >
                     <Volume2 className="h-4 w-4" />
                   </span>
@@ -755,16 +755,16 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
                 <div
                   className={cn(
                     "mt-1 text-sm font-semibold",
-                    showPinyin ? "text-brand-300" : "select-none text-ink-500 blur-sm",
+                    showPinyin ? "text-classroom-accent" : "select-none text-classroom-faint blur-sm",
                   )}
                 >
                   {showPinyin ? v.pinyin : "••••••"}
                 </div>
-                <div className={cn("mt-1 text-sm", show ? "text-ink-100" : "select-none blur-sm")}>
+                <div className={cn("mt-1 text-sm", show ? "text-classroom-secondary" : "select-none blur-sm")}>
                   {show ? v.meaning : "••••••"}
                 </div>
                 {show && v.example && (
-                  <div className="zh mt-2 border-t border-ink-700 pt-2 text-xs text-ink-300">
+                  <div className="zh mt-2 border-t border-classroom-border pt-2 text-xs text-classroom-muted-foreground">
                     {v.example.zh}
                   </div>
                 )}
@@ -838,17 +838,17 @@ export function RandomStage({
   const shown = display ?? null;
 
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-6 rounded-2xl border border-ink-800 bg-ink-900 p-8">
+    <div className="flex h-full flex-col items-center justify-center gap-6 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-8">
       <div className="flex items-center gap-3 text-sm">
-        <label className="flex cursor-pointer items-center gap-2 text-ink-200">
+        <label className="flex cursor-pointer items-center gap-2 text-classroom-secondary">
           <input type="checkbox" checked={fair} onChange={(e) => setFair(e.target.checked)} className="h-4 w-4" />
           Gọi công bằng (chưa ai bị gọi hai lần)
         </label>
-        <span className="text-ink-400">
+        <span className="text-classroom-muted-foreground">
           Đã gọi {called.length}/{students.length}
         </span>
         {called.length > 0 && (
-          <button onClick={() => setCalled([])} className="inline-flex items-center gap-1 text-ink-300 hover:text-white">
+          <button onClick={() => setCalled([])} className="inline-flex items-center gap-1 text-classroom-muted-foreground hover:text-classroom-foreground">
             <RotateCcw className="h-3.5 w-3.5" /> làm mới
           </button>
         )}
@@ -857,7 +857,7 @@ export function RandomStage({
       <div
         className={cn(
           "grid min-h-[220px] w-full max-w-2xl place-items-center rounded-3xl border-2 px-6 py-10 text-center transition-colors",
-          winner ? "border-gold-500 bg-gold-600/10" : "border-ink-700 bg-ink-950",
+          winner ? "border-gold-500 bg-gold-600/10" : "border-classroom-border bg-classroom-background",
         )}
       >
         {shown ? (
@@ -865,15 +865,15 @@ export function RandomStage({
             <div
               className={cn(
                 "text-6xl font-extrabold tracking-tight",
-                winner ? "text-gold-300" : "text-white opacity-70",
+                winner ? "text-classroom-warning" : "text-classroom-foreground opacity-70",
               )}
             >
               {shown.name}
             </div>
-            {winner && <div className="mt-2 text-lg text-ink-200">mời em phát biểu 🎤</div>}
+            {winner && <div className="mt-2 text-lg text-classroom-secondary">mời em phát biểu 🎤</div>}
           </div>
         ) : (
-          <div className="text-2xl font-semibold text-ink-400">Bấm quay để gọi tên</div>
+          <div className="text-2xl font-semibold text-classroom-muted-foreground">Bấm quay để gọi tên</div>
         )}
       </div>
 
@@ -882,7 +882,7 @@ export function RandomStage({
           <Dices className="h-5 w-5" /> {spinning ? "Đang quay…" : winner ? "Quay bạn khác" : "Quay chọn học viên"}
         </Button>
         {winner && (
-          <span className="text-sm text-ink-300">Cho điểm ở thanh “đang trả lời” phía dưới màn hình →</span>
+          <span className="text-sm text-classroom-muted-foreground">Cho điểm ở thanh “đang trả lời” phía dưới màn hình →</span>
         )}
       </div>
     </div>
@@ -943,11 +943,11 @@ export function TimerStage({
   const danger = left <= 10 && left > 0;
 
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-8 rounded-2xl border border-ink-800 bg-ink-900 p-8">
+    <div className="flex h-full flex-col items-center justify-center gap-8 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-8">
       <div
         className={cn(
           "font-display text-[8rem] font-extrabold leading-none tabular-nums transition-colors sm:text-[12rem]",
-          left === 0 ? "text-gold-500" : danger ? "animate-pulse text-gold-400" : "text-white",
+          left === 0 ? "text-gold-500" : danger ? "animate-pulse text-classroom-warning" : "text-classroom-foreground",
         )}
       >
         {mm}:{ss}
@@ -959,7 +959,7 @@ export function TimerStage({
             onClick={() => pick(p)}
             className={cn(
               "rounded-lg px-4 py-2 text-sm font-semibold",
-              total === p ? "bg-brand-600 text-white" : "bg-ink-800 text-ink-100 hover:bg-ink-700",
+              total === p ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
             )}
           >
             {p < 60 ? `${p}s` : `${p / 60}′`}
@@ -973,7 +973,7 @@ export function TimerStage({
             const m = Number(e.target.value);
             if (m > 0) pick(m * 60);
           }}
-          className="h-10 w-24 rounded-lg border border-ink-700 bg-ink-950 px-3 text-sm text-white placeholder:text-ink-400"
+          className="h-10 w-24 rounded-lg border border-classroom-border bg-classroom-background px-3 text-sm text-classroom-foreground placeholder:text-classroom-muted-foreground"
         />
       </div>
       <div className="flex gap-2">
