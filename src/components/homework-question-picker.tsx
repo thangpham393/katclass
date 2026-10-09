@@ -13,6 +13,9 @@ import { fetchQuestions, questionPreview, QUESTION_TYPE_LABELS, type QuestionRow
 import { fetchTextbooks, fetchTextbookLessons, type TextbookLessonRow } from "@/lib/db-library";
 import { useLoad } from "@/lib/use-load";
 import { cn } from "@/lib/utils";
+import { WorkbookQuestionList } from "./workbook-question-list";
+import { sourceQuestionLabel } from "@/lib/question-order";
+import { QuestionDialogue } from "./question-dialogue";
 
 interface PickerProps {
   textbookId: string;
@@ -166,7 +169,7 @@ function LessonQuestions({ lesson, ...props }: PickerProps & { lesson: TextbookL
             {selectedInLesson > 0 && <Button type="button" size="sm" variant="outline" onClick={() => props.onRemove(rows.map(q => q.id))}>Bỏ chọn bài này</Button>}
           </div>
           <div className="max-h-96 space-y-2 overflow-y-auto pr-1">
-            {visible.map(q => (
+            <WorkbookQuestionList questions={visible} navigation={false} prefix="picker" renderQuestion={(q, i) => (
               <button key={q.id} type="button" aria-pressed={picked.has(q.id)} onClick={() => picked.has(q.id) ? props.onRemove([q.id]) : props.onAdd([q], lesson)}
                 className={cn("flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors", picked.has(q.id) ? "border-brand-500 bg-brand-50/50" : "hover:border-brand-300")}>
                 <span className={cn("mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border", picked.has(q.id) && "border-brand-600 bg-brand-600 text-white")}>
@@ -174,10 +177,11 @@ function LessonQuestions({ lesson, ...props }: PickerProps & { lesson: TextbookL
                 </span>
                 <div className="min-w-0 flex-1">
                   <Badge variant="outline" className="mb-1 text-[10px]">{QUESTION_TYPE_LABELS[q.type]}</Badge>
-                  <div className="zh whitespace-pre-wrap break-words text-sm">{questionPreview(q) || "(chưa có đề bài)"}</div>
+                  <span className="ml-2 text-xs text-muted-foreground">{sourceQuestionLabel(q, i)}</span>
+                  <div className="zh break-words text-sm"><QuestionDialogue text={questionPreview(q) || "(chưa có đề bài)"} /></div>
                 </div>
               </button>
-            ))}
+            )} />
           </div>
         </>
       )}

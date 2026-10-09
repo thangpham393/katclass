@@ -38,6 +38,15 @@ export interface ReadingItem {
 }
 
 export interface QuestionContent {
+  source?: {
+    file: string;
+    sha256?: string;
+    unit?: number;
+    section?: number;
+    section_title?: string;
+    numbers?: number[];
+    [key: string]: unknown;
+  };
   image?: { url: string; alt: string };
   option_images?: ({ url: string; alt: string } | null)[];
   left_images?: ({ url: string; alt: string } | null)[];

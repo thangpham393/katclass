@@ -2,16 +2,23 @@
 
 import { createContext, useContext } from "react";
 import type { QuestionContent } from "@/lib/question-schema";
-import { pinyinSegments } from "@/lib/question-pinyin";
+import { alignPinyin, pinyinSegments, textWithoutEmbeddedPinyin } from "@/lib/question-pinyin";
 
 export const QuestionPinyinContext = createContext<{ show: boolean; dictionary?: Record<string, string> }>({ show: false });
 
 export function QuestionText({ text }: { text?: string }) {
   const { show, dictionary } = useContext(QuestionPinyinContext);
   if (!text) return null;
-  if (!show) return <>{text}</>;
-  return <>{pinyinSegments(text, dictionary).map((part, i) => part.pinyin
-    ? <ruby key={i}>{part.text}<rt className="font-sans text-[0.6em] font-normal text-muted-foreground">{part.pinyin}</rt></ruby>
+  if (!show) return <>{textWithoutEmbeddedPinyin(text)}</>;
+  const parts = pinyinSegments(text, dictionary).flatMap(part => {
+    if (!part.pinyin) return [part];
+    const characters = [...part.text];
+    const syllables = alignPinyin(part.pinyin, characters.length);
+    return syllables && characters.every(c => /[\u3400-\u9fff]/u.test(c))
+      ? characters.map((character, i) => ({ text: character, pinyin: syllables[i] })) : [part];
+  });
+  return <>{parts.map((part, i) => part.pinyin
+    ? <ruby key={i} className="question-ruby">{part.text}<rt className="font-sans text-[0.6em] font-normal text-muted-foreground">{part.pinyin}</rt></ruby>
     : <span key={i}>{part.text}</span>)}</>;
 }
 

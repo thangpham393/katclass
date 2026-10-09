@@ -267,3 +267,7 @@
     opacity: 0 !important;
   }
 }
+
+/* Pinyin stays above the corresponding Hanzi, including mobile browsers. */
+.question-ruby { ruby-position: over; ruby-align: center; line-height: 2.1; padding-inline: 0.12em; }
+.question-ruby rt { text-align: center; line-height: 1.2; user-select: none; }

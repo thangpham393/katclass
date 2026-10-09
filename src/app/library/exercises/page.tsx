@@ -1,4 +1,7 @@
 "use client";
+import { WorkbookQuestionList } from "@/components/workbook-question-list";
+import { QuestionDialogue } from "@/components/question-dialogue";
+import { sourceQuestionLabel } from "@/lib/question-order";
 import { QuestionVisualPreview } from "@/components/question-visuals";
 
 import { useMemo, useRef, useState } from "react";
@@ -333,13 +336,13 @@ function ExercisePreviewModal({
               Bài này chưa có bài tập.
             </div>
           ) : (
-            questions.data!.map((x, i) => (
+            <WorkbookQuestionList questions={questions.data!} navigation={false} prefix="preview" renderQuestion={(x, i) => (
               <div key={x.id} className="rounded-xl border bg-card p-2.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-muted-foreground">Câu {i + 1}</span>
+                  <span className="text-xs font-semibold text-muted-foreground">{sourceQuestionLabel(x, i)}</span>
                   <Badge variant="muted">{QUESTION_TYPE_LABELS[x.type]}</Badge>
                 </div>
-                <div className="zh mt-1.5 text-sm">{questionPreview(x)}</div>
+                <div className="zh mt-1.5 text-sm"><QuestionDialogue text={questionPreview(x)} /></div>
 <QuestionVisualPreview content={x.content} />
                 {showAnswers && (
                   <div className="mt-1.5 text-xs font-semibold text-emerald-700">
@@ -347,7 +350,7 @@ function ExercisePreviewModal({
                   </div>
                 )}
               </div>
-            ))
+            )} />
           )}
         </div>
       </div>

@@ -59,7 +59,7 @@ export default function QuestionBankPage() {
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Ngân hàng câu hỏi</h1>
           <p className="mt-1 text-muted-foreground">
-            Câu hỏi tự chấm dùng chung — chọn từ đây khi giao bài tập. Học viên không bao giờ thấy đáp án.
+            Câu hỏi dùng chung để giao bài tập. Học viên xem đáp án và giải thích sau khi nộp bài.
           </p>
         </div>
         <Button onClick={() => setEditing("new")}>

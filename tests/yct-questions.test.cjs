@@ -9,7 +9,7 @@ test('Pinyin is suppressed wherever it gives away the exercise',()=>{
 });
 test('Ruby annotations can be toggled without changing the Hanzi',()=>{
  const rendered=show=>renderToStaticMarkup(React.createElement(QuestionPinyinContext.Provider,{value:{show}},React.createElement(QuestionText,{text:'你好！'})));
- assert.match(rendered(true),/<ruby>/);assert.match(rendered(true),/<rt/);assert.equal(rendered(false),'你好！');
+ assert.match(rendered(true),/<ruby(?:\s[^>]*)?>/);assert.match(rendered(true),/<rt/);assert.equal(rendered(false),'你好！');
 });
 test('Picture choices keep alignment and reject invalid asset references',()=>{
  const q={type:'multiple_choice',content:{options:['Tranh A','Tranh B'],option_images:[{url:'https://example.com/a.webp',alt:'Tranh A'},null]},answer:'A'};validateQuestionDefinition(q);

@@ -23,11 +23,13 @@
  * - multi_matching: content.columns = hai cột Pinyin/nghĩa;
  *     answer = { "<hàng>:<cột>": "<chữ cái lựa chọn>" }
  * - reorder với require_pinyin: answer = { hanzi, pinyin, order: JSON.stringify(tokens) }
- * Câu viết chuẩn hóa khoảng trắng, dấu câu, Unicode; giữ thanh điệu Pinyin.
+ * Câu viết chuẩn hóa khoảng trắng, dấu câu, Unicode; Pinyin không bắt buộc dấu thanh.
  * Bài nối / đọc hiểu và hai phần Hán-Pinyin chấm từng mục.
  */
 
 import { getSupabase } from "./supabase";
+import { sortWorkbookQuestions } from "./question-order";
+import type { HomeworkReview } from "./homework-review";
 import type { CourseRow } from "./db";
 
 /* ============ Từ vựng ============ */
@@ -358,7 +360,7 @@ export async function fetchQuestions(filter?: {
     const { data, error } = await query;
     if (error) throw error;
     rows.push(...data as unknown as QuestionRow[]);
-    if (data.length < pageSize) return rows;
+    if (data.length < pageSize) return sortWorkbookQuestions(rows);
   }
 }
 
@@ -378,6 +380,13 @@ export async function fetchQuestionAnswers(questionIds: string[]): Promise<Recor
   return map;
 }
 
+/** Explanations share the private answer table; students receive them only after submission. */
+export async function fetchQuestionExplanation(questionId: string): Promise<string | null> {
+  const { data, error } = await getSupabase().from("question_answers").select("explanation").eq("question_id", questionId).maybeSingle();
+  if (error) throw error;
+  return data?.explanation ?? null;
+}
+
 export interface QuestionInput {
   type: QuestionType;
   content: QuestionContent;
@@ -389,6 +398,7 @@ export async function createQuestion(
   input: QuestionInput,
   answer: QuestionAnswer,
   createdBy: string,
+  explanation?: string,
 ): Promise<string> {
   validateQuestionDefinition({ ...input, answer });
   const supabase = getSupabase();
@@ -400,7 +410,7 @@ export async function createQuestion(
   if (error) throw error;
   const { error: ansErr } = await supabase
     .from("question_answers")
-    .insert({ question_id: data.id, answer });
+    .insert({ question_id: data.id, answer, ...(explanation !== undefined ? { explanation: explanation.trim() || null } : {}) });
   if (ansErr) {
     // Đáp án không lưu được → xóa câu hỏi mồ côi rồi báo lỗi
     await supabase.from("questions").delete().eq("id", data.id);
@@ -409,14 +419,14 @@ export async function createQuestion(
   return data.id as string;
 }
 
-export async function updateQuestion(id: string, input: Partial<QuestionInput>, answer: QuestionAnswer) {
+export async function updateQuestion(id: string, input: Partial<QuestionInput>, answer: QuestionAnswer, explanation?: string) {
   if (input.type && input.content) validateQuestionDefinition({ type: input.type, content: input.content, answer });
   const supabase = getSupabase();
   const { error } = await supabase.from("questions").update(input).eq("id", id);
   if (error) throw error;
   const { error: ansErr } = await supabase
     .from("question_answers")
-    .upsert({ question_id: id, answer }, { onConflict: "question_id" });
+    .upsert({ question_id: id, answer, ...(explanation !== undefined ? { explanation: explanation.trim() || null } : {}) }, { onConflict: "question_id" });
   if (ansErr) throw ansErr;
 }
 
@@ -543,7 +553,7 @@ export async function fetchHomework(id: string): Promise<HomeworkDetail | null> 
     .sort((a, b) => a.sort - b.sort)
     .map((hq) => hq.question)
     .filter(Boolean);
-  return { ...rest, questions };
+  return { ...rest, questions: rest.kind === "test" ? questions : sortWorkbookQuestions(questions) };
 }
 
 export async function createHomework(input: {
@@ -567,12 +577,24 @@ export async function createHomework(input: {
     if (error) throw error;
     return data as string;
   }
+  let orderedIds = question_ids;
+  if (hw.kind !== "test" && question_ids.length) {
+    const selected: QuestionRow[] = [];
+    for (let offset = 0; offset < question_ids.length; offset += 100) {
+      const { data: rows, error: readError } = await supabase.from("questions").select(QUESTION_SELECT).in("id", question_ids.slice(offset, offset + 100));
+      if (readError) throw readError;
+      selected.push(...rows as unknown as QuestionRow[]);
+    }
+    const byId = new Map(selected.map(q => [q.id, q]));
+    if (question_ids.some(id => !byId.has(id))) throw new Error("Một số câu hỏi không còn trong kho. Vui lòng chọn lại bài tập.");
+    orderedIds = sortWorkbookQuestions(question_ids.map(id => byId.get(id)!)).map(q => q.id);
+  }
   const { data, error } = await supabase.from("homeworks").insert(hw).select("id").single();
   if (error) throw error;
   if (question_ids.length) {
     const { error: qErr } = await supabase
       .from("homework_questions")
-      .insert(question_ids.map((question_id, i) => ({ homework_id: data.id, question_id, sort: i })));
+      .insert(orderedIds.map((question_id, i) => ({ homework_id: data.id, question_id, sort: i })));
     if (qErr) {
       await supabase.from("homeworks").delete().eq("id", data.id);
       throw qErr;
@@ -641,6 +663,13 @@ export async function submitHomework(
   });
   if (error) throw error;
   return data as SubmissionLite;
+}
+
+/** The server releases only the signed-in student's submitted review. */
+export async function fetchMyHomeworkReview(homeworkId: string): Promise<HomeworkReview> {
+  const { data, error } = await getSupabase().rpc("get_homework_review", { hw_id: homeworkId });
+  if (error) throw error;
+  return data as HomeworkReview;
 }
 
 /* ============ Bài kiểm tra có giờ (migration 0017) ============ */

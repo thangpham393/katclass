@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
@@ -9,6 +9,8 @@ import { ErrorNote } from "@/components/ui/loading";
 import { QuestionVisualPreview } from "@/components/question-visuals";
 import { useAuth } from "@/components/auth/auth-provider";
 import { dbErrorMessage } from "@/lib/db";
+import { useLoad } from "@/lib/use-load";
+import { fetchQuestionExplanation } from "@/lib/db-content";
 import { createQuestion, updateQuestion, shuffleTokens, CHOICE_LETTERS, MATCHING_LETTERS, readTokenOrder, QUESTION_TYPE_LABELS, type LessonRow, type QuestionAnswer, type QuestionContent, type QuestionRow, type QuestionType } from "@/lib/db-content";
 export function QuestionModal({
   question,
@@ -24,6 +26,9 @@ export function QuestionModal({
   onSaved: () => void;
 }) {
   const { user } = useAuth();
+  const explanationLoad = useLoad(() => question ? fetchQuestionExplanation(question.id) : Promise.resolve(null), [question?.id]);
+  const [explanation, setExplanation] = useState("");
+  useEffect(() => { setExplanation(explanationLoad.data ?? ""); }, [explanationLoad.data]);
   const [type, setType] = useState<QuestionType>(question?.type ?? "multiple_choice");
   const [lessonId, setLessonId] = useState(question?.lesson_id ?? "");
   const [imageUrl, setImageUrl] = useState(question?.content.image?.url ?? "");
@@ -201,8 +206,8 @@ export function QuestionModal({
         image: imageUrl.trim() ? { url: imageUrl.trim(), alt: imageAlt.trim() } : undefined,
         pinyin_mode: pinyinMode, response_mode: type === "essay" ? responseMode : undefined,
       }, lesson_id: lessonId || null };
-      if (question) await updateQuestion(question.id, input, ans);
-      else await createQuestion(input, ans, user.id);
+      if (question) await updateQuestion(question.id, input, ans, explanationLoad.error ? undefined : explanation);
+      else await createQuestion(input, ans, user.id, explanation);
       onSaved();
     } catch (err) {
       setError(dbErrorMessage(err));
@@ -451,9 +456,13 @@ export function QuestionModal({
           </div>
         )}
 
+        <Field label="Giải thích đáp án" hint="Chỉ hiện khi học viên đã nộp bài. Giải thích cách chọn đáp án, ngữ pháp hoặc lỗi thường gặp.">
+          <Textarea rows={3} value={explanation} onChange={e => setExplanation(e.target.value)} disabled={explanationLoad.loading || Boolean(explanationLoad.error)} placeholder="Ví dụ: 接 dùng với nghĩa đón người tại sân bay…" />
+        </Field>
+        {explanationLoad.error && <ErrorNote message={`Chưa tải được giải thích: ${explanationLoad.error}`} />}
         <div className="flex justify-end gap-2 pt-1">
           <Button type="button" variant="outline" onClick={onClose}>Hủy</Button>
-          <Button type="submit" disabled={saving}>
+          <Button type="submit" disabled={saving || explanationLoad.loading}>
             {saving ? "Đang lưu..." : question ? "Lưu thay đổi" : "Tạo câu hỏi"}
           </Button>
         </div>

@@ -1,7 +1,10 @@
 "use client";
 
-import { QuestionImage, QuestionText, QuestionPinyinContext } from "@/components/question-visuals";
+import { QuestionImage, QuestionPinyinContext } from "@/components/question-visuals";
 import { QuestionInput } from "@/components/question-player-input";
+import { HomeworkReviewPanel } from "@/components/homework-review";
+import { WorkbookQuestionList } from "@/components/workbook-question-list";
+import { sourceQuestionLabel } from "@/lib/question-order";
 import { pinyinAllowed } from "@/lib/question-pinyin";
 
 import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
@@ -52,7 +55,7 @@ export default function StudentHomeworkPlayerPage() {
   const [submitting, setSubmitting] = useState(false);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ score: number | null } | null>(null);
+  const [result, setResult] = useState<{ score: number | null; autoScore: number | null } | null>(null);
   const [redo, setRedo] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const autoSubmitted = useRef(false);
@@ -89,7 +92,7 @@ export default function StudentHomeworkPlayerPage() {
     setError(null);
     try {
       const sub = await submitHomework(homeworkId, current);
-      setResult({ score: sub.score });
+      setResult({ score: sub.score, autoScore: sub.auto_score });
       setRedo(false);
       submission.reload();
     } catch (e) {
@@ -109,15 +112,13 @@ export default function StudentHomeworkPlayerPage() {
   }, [now, deadline, isTest, !!submission.data, !!result]);
 
   async function handleSubmit() {
+    if (submitting) return;
     if (answeredCount < questions.length) {
       if (isTest) {
         // Kiểm tra chỉ nộp 1 lần — cho nộp thiếu nhưng phải xác nhận
         if (!confirm(`Bạn còn ${questions.length - answeredCount} câu chưa trả lời. Nộp bài luôn? (Không làm lại được)`)) {
           return;
         }
-      } else {
-        setError(`Bạn còn ${questions.length - answeredCount} câu chưa trả lời.`);
-        return;
       }
     } else if (isTest) {
       if (!confirm("Nộp bài kiểm tra? Bài kiểm tra chỉ được nộp một lần.")) return;
@@ -157,10 +158,10 @@ export default function StudentHomeworkPlayerPage() {
   const existing = submission.data;
 
   // Màn kết quả: vừa nộp xong, hoặc đã nộp từ trước và chưa bấm "Làm lại"
-  const showScore = result ?? (existing && !redo ? { score: existing.score } : null);
+  const showScore = result ?? (existing && !redo ? { score: existing.score, autoScore: existing.auto_score } : null);
   if (showScore && questions.length > 0) {
     return (
-      <div className="mx-auto max-w-xl space-y-6">
+      <div className="mx-auto max-w-3xl space-y-6">
         <Link
           href="/student/homework"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -185,9 +186,17 @@ export default function StudentHomeworkPlayerPage() {
             {showScore.score ?? "—"}
           </div>
           <div className="mt-1 text-sm text-muted-foreground">/ 10 điểm</div>
+          {showScore.score == null && showScore.autoScore != null && <p className="mt-3 text-sm text-muted-foreground">Điểm phần tự chấm: <b className="text-foreground">{showScore.autoScore}/10</b> · Giáo viên sẽ chốt điểm toàn bài sau khi chấm phần viết.</p>}
           <ManualHomeworkChecklist homeworkId={hw.id} studentId={studentId}
             tasks={hw.manual_tasks} teacherNote={hw.teacher_note} />
           <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {hw.kind !== "test" && (
+              <Button variant="secondary" disabled={!existing} onClick={() => {
+                setResult(null);
+                setAnswers(existing?.answers ?? {});
+                setRedo(true);
+              }}>Tiếp tục / sửa bài đã nộp</Button>
+            )}
             {hw.kind !== "test" && (
               <Button
                 variant="outline"
@@ -205,6 +214,10 @@ export default function StudentHomeworkPlayerPage() {
             </Link>
           </div>
         </div>
+        <Button type="button" variant="outline" aria-pressed={showPinyin} onClick={() => setShowPinyin(current => !current)}>
+          {showPinyin ? "Ẩn phiên âm" : "Hiện phiên âm"}
+        </Button>
+        <HomeworkReviewPanel key={existing?.submitted_at ?? "just-submitted"} homeworkId={hw.id} questions={questions} showPinyin={showPinyin} />
       </div>
     );
   }
@@ -316,7 +329,7 @@ export default function StudentHomeworkPlayerPage() {
         </div>
       </div>
 
-      {questions.some(q => ["YCT1", "YCT2", "YCT3"].includes(q.level ?? "") || q.tags.some(tag => /^yct[123]-/.test(tag))) && (
+      {questions.some(q => pinyinAllowed(q)) && (
         <Button type="button" variant="outline" aria-pressed={showPinyin} onClick={() => setShowPinyin(current => !current)}>
           {showPinyin ? "Ẩn phiên âm" : "Hiện phiên âm"}
         </Button>
@@ -357,17 +370,17 @@ export default function StudentHomeworkPlayerPage() {
         </Card>
       ) : (
         questions.length > 0 &&
-        <div className="space-y-4">
-          {questions.map((q, i) => (
+        <WorkbookQuestionList questions={questions} renderQuestion={(q, i) => (
             <Card key={q.id}>
               <CardContent className="p-4 sm:p-5 md:p-6">
-                <div className="mb-3 flex items-center gap-2">
+                <div className="mb-4 flex flex-wrap items-center gap-2">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-600 text-xs font-bold text-white">
                     {i + 1}
                   </span>
                   <Badge variant="outline">{QUESTION_TYPE_LABELS[q.type]}</Badge>
+                  {q.content.source?.numbers?.length && <span className="text-xs text-muted-foreground">{sourceQuestionLabel(q, i)}</span>}
                 </div>
-                <QuestionPinyinContext.Provider value={{ show: showPinyin && (["YCT1", "YCT2", "YCT3"].includes(q.level ?? "") || q.tags.some(tag => /^yct[123]-/.test(tag))) && pinyinAllowed(q), dictionary: q.content.pinyin }}>
+                <QuestionPinyinContext.Provider value={{ show: showPinyin && pinyinAllowed(q), dictionary: q.content.pinyin }}>
                 {q.content.response_mode !== "drawing" && <QuestionImage image={q.content.image} className="mb-3" />}
                 <QuestionInput
                   question={q}
@@ -377,8 +390,7 @@ export default function StudentHomeworkPlayerPage() {
                 </QuestionPinyinContext.Provider>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          )} />
       )}
 
       {error && <ErrorNote message={error} />}
@@ -399,8 +411,9 @@ export default function StudentHomeworkPlayerPage() {
               </span>
             )}
             <span className="text-sm text-muted-foreground">
-              Đã trả lời <b className="text-foreground">{answeredCount}</b>/{questions.length} câu
+              Đã hoàn thành <b className="text-foreground">{answeredCount}</b>/{questions.length} câu
             </span>
+            <span className="text-xs text-muted-foreground">Có thể nộp dù còn câu bỏ trống; phần đã làm vẫn được chấm.</span>
           </div>
           <Button size="lg" className="ml-auto shrink-0" disabled={submitting} onClick={handleSubmit}>
             <Send className="h-4 w-4" />
