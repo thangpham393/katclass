@@ -1,0 +1,150 @@
+{
+  "mode": "plan",
+  "payload_sha256": "805c9e8b1a3c34f04d0b1566f0325265570f119923dc90102c2041fe745b2495",
+  "records": 741,
+  "new_records": 0,
+  "missing_answers": 0,
+  "refreshed_crops": 0,
+  "assets": 585,
+  "lessons": [
+    {
+      "level": "YCT1",
+      "unit": 1,
+      "title": "Xin chào!",
+      "records": 38
+    },
+    {
+      "level": "YCT1",
+      "unit": 2,
+      "title": "Bạn tên gì?",
+      "records": 31
+    },
+    {
+      "level": "YCT1",
+      "unit": 3,
+      "title": "Ông ấy là ai?",
+      "records": 26
+    },
+    {
+      "level": "YCT1",
+      "unit": 4,
+      "title": "Nhà mình có bốn người.",
+      "records": 30
+    },
+    {
+      "level": "YCT1",
+      "unit": 5,
+      "title": "Mình sáu tuổi.",
+      "records": 25
+    },
+    {
+      "level": "YCT1",
+      "unit": 6,
+      "title": "Bạn cao thật đấy!",
+      "records": 26
+    },
+    {
+      "level": "YCT1",
+      "unit": 7,
+      "title": "Đây là con chó của ai?",
+      "records": 33
+    },
+    {
+      "level": "YCT1",
+      "unit": 8,
+      "title": "Mẹ đi đến cửa hàng.",
+      "records": 29
+    },
+    {
+      "level": "YCT1",
+      "unit": 9,
+      "title": "Hôm nay là thứ mấy?",
+      "records": 52
+    },
+    {
+      "level": "YCT1",
+      "unit": 10,
+      "title": "Bây giờ là mấy giờ?",
+      "records": 31
+    },
+    {
+      "level": "YCT1",
+      "unit": 11,
+      "title": "Con ăn gì?",
+      "records": 33
+    },
+    {
+      "level": "YCT2",
+      "unit": 1,
+      "title": "Mình có thể ngồi ở đây được không?",
+      "records": 27
+    },
+    {
+      "level": "YCT2",
+      "unit": 2,
+      "title": "Buổi sáng cậu thức dậy lúc mấy giờ?",
+      "records": 33
+    },
+    {
+      "level": "YCT2",
+      "unit": 3,
+      "title": "Bút chì của chị đâu?",
+      "records": 31
+    },
+    {
+      "level": "YCT2",
+      "unit": 4,
+      "title": "Trong cặp có hai quyển sách.",
+      "records": 28
+    },
+    {
+      "level": "YCT2",
+      "unit": 5,
+      "title": "Chị có biết nấu ăn không?",
+      "records": 36
+    },
+    {
+      "level": "YCT2",
+      "unit": 6,
+      "title": "Một cái bánh bao có giá bao nhiêu?",
+      "records": 37
+    },
+    {
+      "level": "YCT2",
+      "unit": 7,
+      "title": "Hôm nay nóng hơn hôm qua.",
+      "records": 38
+    },
+    {
+      "level": "YCT2",
+      "unit": 8,
+      "title": "Martin lớn hơn con ba tuổi.",
+      "records": 36
+    },
+    {
+      "level": "YCT2",
+      "unit": 9,
+      "title": "Hôm nay con đã làm gì?",
+      "records": 31
+    },
+    {
+      "level": "YCT2",
+      "unit": 10,
+      "title": "Con bị sao thế?",
+      "records": 38
+    },
+    {
+      "level": "YCT2",
+      "unit": 11,
+      "title": "Mình đã đến Bắc Kinh một năm rồi.",
+      "records": 36
+    },
+    {
+      "level": "YCT2",
+      "unit": 12,
+      "title": "Ôn tập",
+      "records": 16
+    }
+  ],
+  "backup": "tools/yct-import/work/before-20261009T053800401272Z.json"
+}

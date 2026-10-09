@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "viewports": [
+    390,
+    1280
+  ],
+  "checks": [
+    "Pinyin default and toggle",
+    "No Pinyin on answer-revealing questions",
+    "Image legend rendered once",
+    "Matching answer selection",
+    "Listening labels remain hidden",
+    "Drawing response saved",
+    "Audio response preview",
+    "Paragraph ordering",
+    "No horizontal overflow",
+    "No browser exceptions"
+  ]
+}

@@ -1,0 +1,179 @@
+[
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 34,
+      "unit": 11,
+      "section": "0-034-2",
+      "numbers": [
+        1
+      ],
+      "format": "pinyin"
+    },
+    "before": "Chữ Hán 面条 và 喝 đặt nhầm hàng",
+    "after": "喝 ở hàng 3; 面条 ở hàng 4",
+    "reason": "Các lựa chọn phiên âm bị đổi hàng; khôi phục chữ Hán tương ứng."
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 67,
+      "unit": 4,
+      "section": "0-067-1",
+      "numbers": [
+        1
+      ],
+      "format": "choice"
+    },
+    "before": "你的名字（trong câu nói về chó）",
+    "after": "它的名字",
+    "reason": "Đại từ được đối chiếu với ngữ cảnh con chó."
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 47,
+      "unit": 6,
+      "section": "1-047-1",
+      "numbers": [
+        1
+      ],
+      "format": "reading"
+    },
+    "before": "Đại từ/tên người không nhất quán",
+    "after": "她 / 王明",
+    "reason": "Đối chiếu nhân vật và tên trong đoạn đọc."
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 56,
+      "unit": 7,
+      "section": "1-056-1",
+      "numbers": [
+        1
+      ],
+      "format": "reading"
+    },
+    "before": "Đại từ/tên người không nhất quán",
+    "after": "她 / 王明",
+    "reason": "Đối chiếu nhân vật và tên trong đoạn đọc."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 6,
+      "unit": 5,
+      "section": "2-006-2",
+      "numbers": [
+        1
+      ],
+      "format": "matching_text"
+    },
+    "before": "Nghĩa tiếng Việt bị sao chép lệch hoặc chưa đúng",
+    "after": "Không ngon.|Nấu cơm.|Tôi là bác sĩ.|Không biết nấu cơm.|Ăn bánh bao.",
+    "reason": "Đối chiếu nghĩa với chữ Hán; giữ cặp từ tương ứng duy nhất."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 14,
+      "unit": 6,
+      "section": "2-014-2",
+      "numbers": [
+        1
+      ],
+      "format": "matching_text"
+    },
+    "before": "Nghĩa tiếng Việt bị sao chép lệch hoặc chưa đúng",
+    "after": "Một ly trà bao nhiêu tiền?|Tôi muốn đi mua cái ly.|Tôi muốn ăn bánh bao.",
+    "reason": "Đối chiếu nghĩa với chữ Hán; giữ cặp từ tương ứng duy nhất."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 48,
+      "unit": 10,
+      "section": "2-048-1",
+      "numbers": [
+        1
+      ],
+      "format": "triple"
+    },
+    "before": "Phiên âm không có từ tương ứng trong cột chữ Hán",
+    "after": [
+      "qǐchuáng",
+      "yīyuàn",
+      "jiǎo",
+      "téng",
+      "xuéxiào"
+    ],
+    "reason": "Khôi phục phiên âm duy nhất bị thiếu theo chữ Hán và tranh."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 48,
+      "unit": 10,
+      "section": "2-048-2",
+      "numbers": [
+        1
+      ],
+      "format": "matching_text"
+    },
+    "before": "Nghĩa tiếng Việt bị sao chép lệch hoặc chưa đúng",
+    "after": "Bị làm sao?|Bệnh viện.|Trường học.|Bị đau.|Bàn chân.",
+    "reason": "Đối chiếu nghĩa với chữ Hán; giữ cặp từ tương ứng duy nhất."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 67,
+      "unit": 12,
+      "section": "2-067-1",
+      "numbers": [
+        1
+      ],
+      "format": "matching_text"
+    },
+    "before": "Xin lỗi (lặp), thiếu nghĩa 厨师",
+    "after": "Đầu bếp",
+    "reason": "Nghĩa duy nhất thiếu trong cột; thay mục sao chép trùng."
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 70,
+      "unit": 12,
+      "section": "2-070-1",
+      "numbers": [
+        1
+      ],
+      "format": "triple"
+    },
+    "before": "Phiên âm không có từ tương ứng trong cột chữ Hán",
+    "after": [
+      "qián",
+      "bāozi",
+      "yǔ",
+      "shuìjiào",
+      "yīshēng",
+      "bīngshuǐ",
+      "chúshī",
+      "qǐchuáng",
+      "zhuōzi",
+      "shūbāo"
+    ],
+    "reason": "Khôi phục phiên âm duy nhất bị thiếu theo chữ Hán và tranh."
+  }
+]

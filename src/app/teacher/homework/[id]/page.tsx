@@ -1,5 +1,8 @@
 "use client";
 
+import { ManualResponsePreview } from "@/components/question-manual-response";
+import { QuestionVisualPreview } from "@/components/question-visuals";
+
 import { ManualHomeworkChecklist } from "@/components/manual-homework-checklist";
 
 import { useState } from "react";
@@ -207,7 +210,8 @@ export default function TeacherHomeworkDetailPage() {
                             const model = essayModels.data?.[q.id];
                             return <div key={q.id} className="rounded-lg border p-3 text-sm">
                               <p className="mb-2 font-semibold whitespace-pre-wrap">{q.content.prompt}</p>
-                              <p className="zh whitespace-pre-wrap rounded bg-muted/40 p-2">{typeof response === "string" && response.trim() ? response : "Chưa có bài viết."}</p>
+                              <QuestionVisualPreview content={q.content} />
+                              <ManualResponsePreview value={response} />
                               {essayModels.error ? <ErrorNote message={essayModels.error} /> : <details className="mt-2"><summary className="cursor-pointer text-muted-foreground">Bài mẫu tham khảo</summary><p className="zh mt-2 whitespace-pre-wrap">{Array.isArray(model) ? model.join("\n\n") : typeof model === "string" ? model : "Đang tải…"}</p></details>}
                             </div>;
                           })}

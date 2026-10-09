@@ -1,0 +1,347 @@
+[
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 1,
+    "lesson_id": "1707ca3c-53dc-4018-8ad3-c1e869a84285",
+    "system_title": "Xin chào!",
+    "system_title_zh": "你好！",
+    "source_title_zh": "你好！",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      6,
+      12
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 2,
+    "lesson_id": "58fe8548-d498-4091-ae0b-1aaa8029e9d1",
+    "system_title": "Bạn tên gì?",
+    "system_title_zh": "你叫什么？",
+    "source_title_zh": "你叫什么？",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      14,
+      19
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 3,
+    "lesson_id": "05c0cb8d-981a-446c-9b99-329ed8efc55d",
+    "system_title": "Ông ấy là ai?",
+    "system_title_zh": "他是谁？",
+    "source_title_zh": "他是谁？",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      21,
+      26
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 4,
+    "lesson_id": "950e9b56-3a16-4768-ae77-702e9cf7402d",
+    "system_title": "Nhà mình có bốn người.",
+    "system_title_zh": "我家有四口人。",
+    "source_title_zh": "我家有四口人",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      28,
+      33
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 5,
+    "lesson_id": "1348ecfb-7e40-4d79-9f1b-4e4359c48228",
+    "system_title": "Mình sáu tuổi.",
+    "system_title_zh": "我6岁。",
+    "source_title_zh": "我6岁",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      35,
+      40
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 6,
+    "lesson_id": "ebfb7085-06be-4077-bf49-096b197fe463",
+    "system_title": "Bạn cao thật đấy!",
+    "system_title_zh": "你的个子真高！",
+    "source_title_zh": "你的个子真高！",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      42,
+      48
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 7,
+    "lesson_id": "b04316f0-f7b6-411d-956e-6506a616d240",
+    "system_title": "Đây là con chó của ai?",
+    "system_title_zh": "这是谁的狗？",
+    "source_title_zh": "这是谁的狗？",
+    "source_file": "YCT1 từ bài 1 tới bài 7.pdf",
+    "source_sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+    "physical_pages": [
+      50,
+      58
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 8,
+    "lesson_id": "14df84e9-a7b2-4fab-a755-c8d2aac225d1",
+    "system_title": "Mẹ đi đến cửa hàng.",
+    "system_title_zh": "我去商店。",
+    "source_title_zh": "我去商店",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      6,
+      12
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 9,
+    "lesson_id": "903a46d9-212e-440b-9f48-4b72f93144fb",
+    "system_title": "Hôm nay là thứ mấy?",
+    "system_title_zh": "今天星期几？",
+    "source_title_zh": "今天星期几",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      14,
+      21
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 10,
+    "lesson_id": "d0b80c51-3ebf-4463-a0e8-30579dd81a6a",
+    "system_title": "Bây giờ là mấy giờ?",
+    "system_title_zh": "现在几点？",
+    "source_title_zh": "现在几点？",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      23,
+      30
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct1-standard",
+    "unit": 11,
+    "lesson_id": "40111410-b424-4ee9-a2c7-bf6b1d7a8c87",
+    "system_title": "Con ăn gì?",
+    "system_title_zh": "你吃什么？",
+    "source_title_zh": "你吃什么？",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      32,
+      38
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 1,
+    "lesson_id": "854900b4-eac8-489a-9b9a-23016f04a4b6",
+    "system_title": "Mình có thể ngồi ở đây được không?",
+    "system_title_zh": "我可以坐这儿吗？",
+    "source_title_zh": "我可以坐在这儿吗？",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      40,
+      46
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 2,
+    "lesson_id": "a4307bfa-4ccf-4c80-ac79-4fbe0a498992",
+    "system_title": "Buổi sáng cậu thức dậy lúc mấy giờ?",
+    "system_title_zh": "你早上几点起床？",
+    "source_title_zh": "你早上几点起床？",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      48,
+      55
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 3,
+    "lesson_id": "edfae9a5-ba27-43b1-9d3f-6ee096630218",
+    "system_title": "Bút chì của chị đâu?",
+    "system_title_zh": "你的铅笔呢？",
+    "source_title_zh": "你的铅笔呢？",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      57,
+      63
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 4,
+    "lesson_id": "127aeb29-ad73-44c4-9983-cb8602d6d97f",
+    "system_title": "Trong cặp có hai quyển sách.",
+    "system_title_zh": "书包里有两本书。",
+    "source_title_zh": "书包里有两本书",
+    "source_file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+    "source_sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+    "physical_pages": [
+      65,
+      70
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 5,
+    "lesson_id": "10787153-f6b1-4d8c-9735-ad2cbc9ffcb2",
+    "system_title": "Chị có biết nấu ăn không?",
+    "system_title_zh": "你会不会做饭？",
+    "source_title_zh": "你会不会做饭？",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      6,
+      12
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 6,
+    "lesson_id": "17a922bc-d7aa-4016-8330-90359459aafd",
+    "system_title": "Một cái bánh bao có giá bao nhiêu?",
+    "system_title_zh": "包子多少钱一个？",
+    "source_title_zh": "包子多少钱一个？",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      14,
+      20
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 7,
+    "lesson_id": "34068420-10ab-4a53-a35d-2614d746254a",
+    "system_title": "Hôm nay nóng hơn hôm qua.",
+    "system_title_zh": "今天比昨天热。",
+    "source_title_zh": "今天比昨天热",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      22,
+      29
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 8,
+    "lesson_id": "4c833647-f083-4c01-9241-ba7ab053d384",
+    "system_title": "Martin lớn hơn con ba tuổi.",
+    "system_title_zh": "马丁比我大三岁。",
+    "source_title_zh": "马丁比我大三岁",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      31,
+      38
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 9,
+    "lesson_id": "d051ed89-dcea-4b3f-b47e-b8525c05bb02",
+    "system_title": "Hôm nay con đã làm gì?",
+    "system_title_zh": "你今天做什么了？",
+    "source_title_zh": "你今天做什么了？",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      40,
+      46
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 10,
+    "lesson_id": "d9e63e93-ec26-4e72-b26d-0f80a7b55f3a",
+    "system_title": "Con bị sao thế?",
+    "system_title_zh": "你怎么了？",
+    "source_title_zh": "你怎么了？",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      48,
+      55
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 11,
+    "lesson_id": "b6939896-6cc2-4d6b-bd28-82631d1839a2",
+    "system_title": "Mình đã đến Bắc Kinh một năm rồi.",
+    "system_title_zh": "我来北京一年了。",
+    "source_title_zh": "我来北京一年了",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      57,
+      65
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  },
+  {
+    "textbook_code": "yct2-standard",
+    "unit": 12,
+    "lesson_id": "8cde116f-e397-4db0-bd58-268a87fb6332",
+    "system_title": "Ôn tập",
+    "system_title_zh": "复习",
+    "source_title_zh": "综合复习",
+    "source_file": "YCT2 bài 5 tới bài 11.pdf",
+    "source_sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+    "physical_pages": [
+      67,
+      73
+    ],
+    "mapping_basis": "Đối chiếu tiêu đề tiếng Việt và nội dung bài; số bài trong từng PDF được đánh lại từ 1."
+  }
+]

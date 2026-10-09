@@ -15,7 +15,7 @@ export type QuestionType =
 export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
   translation: "Dịch câu",
   sentence_correction: "Sửa lỗi câu",
-  essay: "Viết đoạn văn · GV chấm",
+  essay: "Viết / nói / vẽ · GV chấm",
   hanzi_pinyin: "Viết chữ Hán và Pinyin",
   multi_matching: "Nối chữ Hán – Pinyin – nghĩa",
   reading: "Đọc hiểu",
@@ -31,15 +31,25 @@ export const CHOICE_LETTERS = ["A", "B", "C", "D", "E", "F"];
 export const MATCHING_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 export interface ReadingItem {
+  image?: { url: string; alt: string };
   prompt: string;
   type: "multiple_choice" | "short_answer";
   options?: string[];
 }
 
 export interface QuestionContent {
+  image?: { url: string; alt: string };
+  option_images?: ({ url: string; alt: string } | null)[];
+  left_images?: ({ url: string; alt: string } | null)[];
+  /** Matching by listening: the left labels remain available to staff. */
+  left_tts?: string[];
+  right_images?: ({ url: string; alt: string } | null)[];
+  pinyin_mode?: "auto" | "hidden";
+  pinyin?: Record<string, string>;
+  response_mode?: "text" | "drawing" | "oral" | "ordering";
   target_language?: "zh" | "vi";
   /** Các cột cần nối; khóa đáp án là row:column, giá trị là a, b, c… */
-  columns?: { label: string; options: string[] }[];
+  columns?: { label: string; options: string[]; images?: ({ url: string; alt: string } | null)[] }[];
   /** Sắp xếp câu có thêm ô viết Pinyin. Đáp án chứa hanzi, pinyin, order (JSON). */
   require_pinyin?: boolean;
   items?: ReadingItem[];
@@ -78,6 +88,10 @@ export function questionAnswerPreview(q: { type: QuestionType; content: Question
 
 export function questionIsAnswered(q: { type: QuestionType; content: QuestionContent }, answer: QuestionAnswer | undefined): boolean {
   if (answer === undefined) return false;
+  if (q.type === "essay" && q.content.response_mode === "ordering") {
+    const order = typeof answer === "string" ? readTokenOrder(answer) : [];
+    return order.length === q.content.tokens?.length && [...order].sort().join("\u0000") === [...(q.content.tokens ?? [])].sort().join("\u0000");
+  }
   const map = typeof answer === "object" && !Array.isArray(answer) ? answer : {};
   if (q.type === "hanzi_pinyin" || (q.type === "reorder" && q.content.require_pinyin)) {
     return Boolean(map.hanzi?.trim() && map.pinyin?.trim()) &&
@@ -110,6 +124,21 @@ export function validateQuestionDefinition(q: { type: QuestionType; content: Que
   const map = typeof a === "object" && a !== null && !Array.isArray(a) ? a : {};
   const pair = () => { if (!map.hanzi?.trim() || !map.pinyin?.trim()) fail("Cần đủ đáp án chữ Hán và Pinyin."); };
   if (!c || !QUESTION_TYPE_LABELS[type]) fail("Dạng câu hỏi không hợp lệ.");
+  const checkImage = (image: unknown) => {
+    if (image === null || image === undefined) return;
+    const value = image as { url?: string; alt?: string };
+    if (typeof value.url !== "string" || !/^https:\/\//.test(value.url) || typeof value.alt !== "string" || !value.alt.trim()) fail("Ảnh cần URL HTTPS và mô tả.");
+  };
+  checkImage(c.image);
+  for (const [images, texts] of [[c.option_images,c.options],[c.left_images,c.left],[c.right_images,c.right], ...(c.columns ?? []).map(col => [col.images,col.options])] as [QuestionContent["option_images"], string[] | undefined][]) {
+    if (images !== undefined && (!Array.isArray(images) || images.length !== texts?.length)) fail("Số hình ảnh không khớp số lựa chọn.");
+    images?.forEach(checkImage);
+  }
+  c.items?.forEach(item => checkImage(item.image));
+  if (c.left_tts !== undefined && (type !== "matching" || !strings(c.left_tts) || c.left_tts.length !== c.left?.length)) fail("Nội dung nghe không khớp số mục nối.");
+  if (c.pinyin_mode !== undefined && !["auto","hidden"].includes(c.pinyin_mode)) fail("Chế độ phiên âm không hợp lệ.");
+  if (c.response_mode !== undefined && (type !== "essay" || !["text","drawing","oral","ordering"].includes(c.response_mode))) fail("Cách nộp bài không hợp lệ.");
+  if (c.response_mode === "ordering" && (!strings(c.tokens) || c.tokens.length < 2)) fail("Cần ít nhất hai câu để sắp xếp đoạn văn.");
   if (type === "translation" || type === "sentence_correction" || type === "essay") {
     if (!c.prompt?.trim() || !strings(a)) fail(type === "essay" ? "Cần đề bài và bài mẫu tham khảo." : type === "sentence_correction" ? "Cần câu cần sửa và danh sách câu đúng được chấp nhận." : "Cần câu cần dịch và danh sách bản dịch được chấp nhận.");
     if (c.target_language !== undefined && !["zh", "vi"].includes(c.target_language)) fail("Ngôn ngữ trả lời không hợp lệ.");

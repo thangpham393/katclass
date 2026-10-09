@@ -1,0 +1,2286 @@
+{
+  "sources": [
+    {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2"
+    },
+    {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9"
+    },
+    {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94"
+    }
+  ],
+  "payload_sha256": "805c9e8b1a3c34f04d0b1566f0325265570f119923dc90102c2041fe745b2495",
+  "sections": [
+    {
+      "section": "0-006-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-006-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-007-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-007-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-008-1",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "0-008-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-008-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-009-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-009-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-010-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-010-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-011-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "0-011-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-012-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-012-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-014-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-015-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-015-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-016-1",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "0-016-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-017-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-018-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-018-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-019-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-019-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-020-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-020-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-021-1",
+      "status": "heading",
+      "reason": "Tiêu đề chung của phần tháng và năm."
+    },
+    {
+      "section": "0-021-2",
+      "status": "reviewed",
+      "records": 16,
+      "pending_records": 0
+    },
+    {
+      "section": "0-021-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-023-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-023-2",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 0
+    },
+    {
+      "section": "0-024-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-024-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-025-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-025-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-025-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-026-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-026-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-027-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-027-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-028-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 1
+    },
+    {
+      "section": "0-029-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-029-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-030-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-030-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-032-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-032-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-033-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-034-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-034-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-035-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-035-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-036-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-036-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-037-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-037-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-038-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "0-038-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-040-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-040-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-041-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-041-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-042-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-042-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-043-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-043-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-044-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-044-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-045-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-045-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-046-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "0-046-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-048-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-048-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-049-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-049-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-050-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "0-050-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-051-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-051-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-052-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-052-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-053-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-054-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 1
+    },
+    {
+      "section": "0-054-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-055-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "0-055-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-057-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-057-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-058-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-058-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-059-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-059-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "0-060-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-060-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-061-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-061-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-062-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-062-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-063-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "0-063-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-065-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-065-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-066-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-066-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-067-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "0-067-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-068-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-068-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-069-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-069-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-070-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "0-070-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-006-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-007-1",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "1-008-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-008-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-009-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-009-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-009-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-010-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-010-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-011-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-011-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-012-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 2
+    },
+    {
+      "section": "1-012-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-014-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-014-2",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 0
+    },
+    {
+      "section": "1-015-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-015-2",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 0
+    },
+    {
+      "section": "1-016-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-016-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-017-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-017-2",
+      "status": "reviewed",
+      "records": 2,
+      "pending_records": 0
+    },
+    {
+      "section": "1-018-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-018-2",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 2
+    },
+    {
+      "section": "1-019-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-019-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-021-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-021-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-022-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-022-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-022-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-023-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-023-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-024-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-024-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-025-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-025-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 1
+    },
+    {
+      "section": "1-026-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-026-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-028-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-028-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-029-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-029-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "1-030-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 1
+    },
+    {
+      "section": "1-030-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-030-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-031-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-031-2",
+      "status": "reviewed",
+      "records": 2,
+      "pending_records": 0
+    },
+    {
+      "section": "1-032-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-033-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-033-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-035-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-035-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-036-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-037-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-037-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-038-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-038-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-039-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-039-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-040-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 1
+    },
+    {
+      "section": "1-040-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-042-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-042-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-043-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-043-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-044-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-044-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-045-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-046-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-046-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-047-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-048-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-048-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-050-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-050-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "1-051-1",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "1-051-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "1-052-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-052-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-053-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-054-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "1-054-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-055-1",
+      "status": "reference",
+      "reason": "Từ vựng mở rộng; không phải câu hỏi có đáp án."
+    },
+    {
+      "section": "1-055-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-056-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-057-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-058-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "1-058-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-006-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-006-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-007-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-007-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "2-008-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-008-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-008-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-009-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-009-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-010-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-010-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-011-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-011-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-012-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-012-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-014-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-015-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-015-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-016-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-016-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-017-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-017-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-018-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-018-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-019-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-019-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-019-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-020-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-020-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-022-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-022-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-023-1",
+      "status": "reviewed",
+      "records": 7,
+      "pending_records": 0
+    },
+    {
+      "section": "2-023-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-024-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-024-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 1
+    },
+    {
+      "section": "2-025-1",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 1
+    },
+    {
+      "section": "2-025-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-026-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-026-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "2-027-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-027-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-028-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-028-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-029-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-029-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-031-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-031-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-032-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-032-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-033-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-033-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-033-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-034-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-034-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-035-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-035-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-036-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-036-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-037-1",
+      "status": "reviewed",
+      "records": 3,
+      "pending_records": 1
+    },
+    {
+      "section": "2-038-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-040-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-040-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-041-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-041-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-042-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-042-2",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 1
+    },
+    {
+      "section": "2-042-3",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-043-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-043-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-044-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-044-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-045-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-046-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-048-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-048-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-049-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-049-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-050-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-050-2",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-051-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-051-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-052-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-052-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-053-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-053-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-054-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-055-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-055-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-057-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-057-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-058-1",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "2-058-2",
+      "status": "reviewed",
+      "records": 6,
+      "pending_records": 0
+    },
+    {
+      "section": "2-059-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-060-1",
+      "status": "reviewed",
+      "records": 5,
+      "pending_records": 0
+    },
+    {
+      "section": "2-060-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-061-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-061-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-062-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-062-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-063-1",
+      "status": "reviewed",
+      "records": 4,
+      "pending_records": 0
+    },
+    {
+      "section": "2-064-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-065-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-065-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-067-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-068-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-069-1",
+      "status": "continuation",
+      "parent": "2-068-1"
+    },
+    {
+      "section": "2-069-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-070-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-071-1",
+      "status": "reviewed",
+      "records": 8,
+      "pending_records": 0
+    },
+    {
+      "section": "2-072-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-072-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-073-1",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-073-2",
+      "status": "reviewed",
+      "records": 1,
+      "pending_records": 0
+    },
+    {
+      "section": "2-014-1",
+      "status": "pending"
+    }
+  ],
+  "lessons": [
+    {
+      "level": "YCT1",
+      "unit": 1,
+      "title": "Xin chào!",
+      "lesson_id": "1707ca3c-53dc-4018-8ad3-c1e869a84285",
+      "records": 38,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 11,
+        "reorder": 5,
+        "pinyin_choice": 5,
+        "essay": 4,
+        "matching": 2,
+        "translation": 5,
+        "multiple_choice": 5
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 2,
+      "title": "Bạn tên gì?",
+      "lesson_id": "58fe8548-d498-4091-ae0b-1aaa8029e9d1",
+      "records": 31,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 8,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "essay": 2,
+        "matching": 2,
+        "translation": 5,
+        "multiple_choice": 3
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 3,
+      "title": "Ông ấy là ai?",
+      "lesson_id": "05c0cb8d-981a-446c-9b99-329ed8efc55d",
+      "records": 26,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 5,
+        "pinyin_choice": 4,
+        "essay": 4,
+        "reorder": 4,
+        "matching": 2,
+        "reading": 1,
+        "translation": 5
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 4,
+      "title": "Nhà mình có bốn người.",
+      "lesson_id": "950e9b56-3a16-4768-ae77-702e9cf7402d",
+      "records": 30,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 11,
+        "reorder": 4,
+        "pinyin_choice": 4,
+        "essay": 3,
+        "matching": 2,
+        "multiple_choice": 5
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 5,
+      "title": "Mình sáu tuổi.",
+      "lesson_id": "1348ecfb-7e40-4d79-9f1b-4e4359c48228",
+      "records": 25,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 4,
+        "reading": 1,
+        "reorder": 4,
+        "pinyin_choice": 5,
+        "essay": 3,
+        "multiple_choice": 5,
+        "matching": 2
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 6,
+      "title": "Bạn cao thật đấy!",
+      "lesson_id": "ebfb7085-06be-4077-bf49-096b197fe463",
+      "records": 26,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "fill_blank": 4,
+        "reorder": 4,
+        "essay": 3,
+        "reading": 1,
+        "multiple_choice": 5
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 7,
+      "title": "Đây là con chó của ai?",
+      "lesson_id": "b04316f0-f7b6-411d-956e-6506a616d240",
+      "records": 33,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 8,
+        "pinyin_choice": 6,
+        "reorder": 5,
+        "essay": 5,
+        "matching": 2,
+        "multiple_choice": 5,
+        "reading": 1
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 8,
+      "title": "Mẹ đi đến cửa hàng.",
+      "lesson_id": "14df84e9-a7b2-4fab-a755-c8d2aac225d1",
+      "records": 29,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 5,
+        "reorder": 4,
+        "pinyin_choice": 6,
+        "essay": 6,
+        "matching": 2,
+        "multiple_choice": 5
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 9,
+      "title": "Hôm nay là thứ mấy?",
+      "lesson_id": "903a46d9-212e-440b-9f48-4b72f93144fb",
+      "records": 52,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 4,
+        "reorder": 5,
+        "pinyin_choice": 6,
+        "sentence_correction": 5,
+        "reading": 1,
+        "essay": 3,
+        "multiple_choice": 9,
+        "matching": 2,
+        "translation": 16
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 10,
+      "title": "Bây giờ là mấy giờ?",
+      "lesson_id": "d0b80c51-3ebf-4463-a0e8-30579dd81a6a",
+      "records": 31,
+      "types": {
+        "multi_matching": 1,
+        "fill_blank": 7,
+        "translation": 4,
+        "essay": 7,
+        "matching": 2,
+        "multiple_choice": 9,
+        "reading": 1
+      }
+    },
+    {
+      "level": "YCT1",
+      "unit": 11,
+      "title": "Con ăn gì?",
+      "lesson_id": "40111410-b424-4ee9-a2c7-bf6b1d7a8c87",
+      "records": 33,
+      "types": {
+        "multi_matching": 1,
+        "matching": 2,
+        "reorder": 4,
+        "fill_blank": 4,
+        "pinyin_choice": 5,
+        "essay": 3,
+        "multiple_choice": 10,
+        "listening": 4
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 1,
+      "title": "Mình có thể ngồi ở đây được không?",
+      "lesson_id": "854900b4-eac8-489a-9b9a-23016f04a4b6",
+      "records": 27,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "fill_blank": 1,
+        "essay": 4,
+        "multiple_choice": 8
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 2,
+      "title": "Buổi sáng cậu thức dậy lúc mấy giờ?",
+      "lesson_id": "a4307bfa-4ccf-4c80-ac79-4fbe0a498992",
+      "records": 33,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "multiple_choice": 9,
+        "essay": 4,
+        "fill_blank": 5,
+        "reading": 1
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 3,
+      "title": "Bút chì của chị đâu?",
+      "lesson_id": "edfae9a5-ba27-43b1-9d3f-6ee096630218",
+      "records": 31,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 4,
+        "reorder": 5,
+        "fill_blank": 5,
+        "multiple_choice": 9,
+        "essay": 4
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 4,
+      "title": "Trong cặp có hai quyển sách.",
+      "lesson_id": "127aeb29-ad73-44c4-9983-cb8602d6d97f",
+      "records": 28,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "multiple_choice": 10,
+        "essay": 4
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 5,
+      "title": "Chị có biết nấu ăn không?",
+      "lesson_id": "10787153-f6b1-4d8c-9735-ad2cbc9ffcb2",
+      "records": 36,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "reorder": 4,
+        "fill_blank": 5,
+        "essay": 5,
+        "translation": 4,
+        "multiple_choice": 9
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 6,
+      "title": "Một cái bánh bao có giá bao nhiêu?",
+      "lesson_id": "17a922bc-d7aa-4016-8330-90359459aafd",
+      "records": 37,
+      "types": {
+        "matching": 3,
+        "pinyin_choice": 5,
+        "fill_blank": 5,
+        "reorder": 5,
+        "essay": 5,
+        "multiple_choice": 9,
+        "translation": 5
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 7,
+      "title": "Hôm nay nóng hơn hôm qua.",
+      "lesson_id": "34068420-10ab-4a53-a35d-2614d746254a",
+      "records": 38,
+      "types": {
+        "multi_matching": 1,
+        "essay": 7,
+        "pinyin_choice": 7,
+        "reorder": 5,
+        "fill_blank": 5,
+        "multiple_choice": 7,
+        "matching": 2,
+        "translation": 4
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 8,
+      "title": "Martin lớn hơn con ba tuổi.",
+      "lesson_id": "4c833647-f083-4c01-9241-ba7ab053d384",
+      "records": 36,
+      "types": {
+        "multi_matching": 1,
+        "matching": 2,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "fill_blank": 5,
+        "essay": 6,
+        "translation": 4,
+        "multiple_choice": 8
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 9,
+      "title": "Hôm nay con đã làm gì?",
+      "lesson_id": "d051ed89-dcea-4b3f-b47e-b8525c05bb02",
+      "records": 31,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "reorder": 5,
+        "essay": 4,
+        "multiple_choice": 8,
+        "fill_blank": 5
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 10,
+      "title": "Con bị sao thế?",
+      "lesson_id": "d9e63e93-ec26-4e72-b26d-0f80a7b55f3a",
+      "records": 38,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 5,
+        "fill_blank": 5,
+        "multiple_choice": 14,
+        "reorder": 5,
+        "essay": 5
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 11,
+      "title": "Mình đã đến Bắc Kinh một năm rồi.",
+      "lesson_id": "b6939896-6cc2-4d6b-bd28-82631d1839a2",
+      "records": 36,
+      "types": {
+        "multi_matching": 1,
+        "matching": 3,
+        "pinyin_choice": 6,
+        "fill_blank": 6,
+        "reorder": 5,
+        "multiple_choice": 9,
+        "essay": 6
+      }
+    },
+    {
+      "level": "YCT2",
+      "unit": 12,
+      "title": "Ôn tập",
+      "lesson_id": "8cde116f-e397-4db0-bd58-268a87fb6332",
+      "records": 16,
+      "types": {
+        "multi_matching": 2,
+        "essay": 6,
+        "listening": 8
+      }
+    }
+  ],
+  "asset_count": 585,
+  "pending_records": 24
+}

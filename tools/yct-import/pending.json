@@ -1,0 +1,732 @@
+[
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 7,
+      "unit": 8,
+      "section": "0-007-1",
+      "numbers": [
+        2
+      ],
+      "format": "reorder"
+    },
+    "reason": "Các khối chữ trong nguồn thiếu hoặc dư từ; không tạo được câu chắc chắn.",
+    "printed_text": [
+      "Sap xep caic tir sau thanh cau hoan chinh",
+      "1. 去 / 他们/ 我们/学校/商店/去/，",
+      "2.在 / 头发/很/长/的",
+      "3. 喜欢/你们/中国/去/吗/？",
+      "4. 在/不/我/学校/ 我/家/在/，",
+      "5.学校 /你们/的/哪儿/在/？"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 19,
+      "unit": 9,
+      "section": "0-019-1",
+      "numbers": [
+        4
+      ],
+      "format": "odd"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Tim va khoanh tir khac logi voi nhimg tir con lai",
+      "商店",
+      "学校",
+      "1.",
+      "医院",
+      "明天",
+      "2.",
+      "猫",
+      "狗",
+      "看",
+      "熊猫",
+      "3. 星期三",
+      "生日",
+      "星期五",
+      "星期天",
+      "年",
+      "4.",
+      "月",
+      "号",
+      "岁",
+      "妹妹",
+      "5.",
+      "她",
+      "哥哥",
+      "爸爸"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 27,
+      "unit": 10,
+      "section": "0-027-2",
+      "numbers": [
+        4
+      ],
+      "format": "odd"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Tim va khoanh tir khaic loai voi nhirng tir con lai",
+      "1. 早上 晚上",
+      "上午",
+      "午饭",
+      "2. 点",
+      "分",
+      "早",
+      "秒",
+      "北京",
+      "明天",
+      "纽约",
+      "上海",
+      "3.",
+      "4.",
+      "眼睛",
+      "膝盖",
+      "头发鼻子",
+      "5.",
+      "个子",
+      "小",
+      "长大",
+      "26"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 28,
+      "unit": 10,
+      "section": "0-028-1",
+      "numbers": [
+        1
+      ],
+      "format": "reading"
+    },
+    "reason": "Bài đọc hỗ trợ hơn một lựa chọn đúng.",
+    "printed_text": [
+      "Doc hieu va chon dap an ding",
+      "张东：我们明天几点见？",
+      "王刚：早上八点吧，不太早。",
+      "张东：八点我要去商店。",
+      "王刚：下午四点，好吗？",
+      "张东：四点我还在学校学习。",
+      "王刚：星期四早上八点，怎么样？",
+      "张东：好的。",
+      "张东",
+      "1.张东明天要做什么？",
+      "王刚",
+      "A. 去商店",
+      "B. 睡觉",
+      "C. 去学校",
+      "2.他们什么时候见？",
+      "A.星期四早上八点",
+      "B. 星期四晚上八点",
+      "C.星期四下午四点",
+      "27"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 33,
+      "unit": 11,
+      "section": "0-033-1",
+      "numbers": [
+        5
+      ],
+      "format": "reorder"
+    },
+    "reason": "Các khối chữ trong nguồn thiếu hoặc dư từ; không tạo được câu chắc chắn.",
+    "printed_text": [
+      "Sap xep cac tir sau thanh cau hoan chinh",
+      "1.喝/你/我/什么/，/茶/喝/？",
+      "2. 谁 / 这 / 蛋糕/的/是/生日/？",
+      "3. 爱 / 我/寿司/ 吃/比萨/不/吃/，/",
+      "我/呢/爱/，1你/？",
+      "4. 生日 / 我们/是/ 妈妈/吃/今天1,/",
+      "的/面条",
+      "5.我/明天/ 可乐/今天/吃/喝1，/",
+      "米饭/喝/吃/，/喝/ 面条/ 冰水",
+      "32"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 54,
+      "unit": 2,
+      "section": "0-054-1",
+      "numbers": [
+        3
+      ],
+      "format": "true_false"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Ding （V） hay Sai （x）",
+      "V",
+      "X",
+      "1.你几点睡觉？",
+      "2.我今天晚上睡觉九点。",
+      "3.他晚上八点吃早饭。",
+      "4.妈妈今天六点起床。",
+      "5.明天七点爸爸去上班。",
+      "6.哥哥星期几去中国？"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 58,
+      "unit": 3,
+      "section": "0-058-1",
+      "numbers": [
+        4
+      ],
+      "format": "pinyin"
+    },
+    "reason": "Có hai lựa chọn phiên âm in giống nhau; không có đáp án duy nhất.",
+    "printed_text": [
+      "Khoanh tron phien am ding ciia cac Han tu sau：",
+      "书包",
+      "A.shubao",
+      "B.shibao",
+      "C.shibao",
+      "电视",
+      "A. dianshi",
+      "B.dianshi",
+      "C.dianhua",
+      "A. fangjian",
+      "B. fangjian",
+      "C.fangjian",
+      "房间",
+      "铅笔",
+      "A.qianbi",
+      "B.qianbi",
+      "C.qianbi",
+      "桌子",
+      "A.zhuozi",
+      "B.zhuozhi",
+      "C.zhuozi"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT 1 bài 8 tới YCT 2 bài 4.pdf",
+      "sha256": "8d9bd5cb0fca437c45641e0964a217cc873532b0057ca27991c76a90252608d2",
+      "page": 59,
+      "unit": 3,
+      "section": "0-059-2",
+      "numbers": [
+        2
+      ],
+      "format": "odd"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Tim va khoanh tir khac logi voi nhimng tir con lai",
+      "1. 一点",
+      "七点",
+      "十点",
+      "几点",
+      "房间",
+      "电视",
+      "学校",
+      "桌子",
+      "2.",
+      "3.",
+      "上面",
+      "见面",
+      "左边",
+      "右边",
+      "4.",
+      "起床",
+      "睡觉",
+      "吃饭",
+      "椅子",
+      "茶",
+      "咖啡",
+      "可乐",
+      "说话",
+      "59"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 12,
+      "unit": 1,
+      "section": "1-012-1",
+      "numbers": [
+        3
+      ],
+      "format": "listen"
+    },
+    "reason": "Hình mục tiêu bị thiếu hoặc trùng; không xác định được hình duy nhất.",
+    "printed_text": [
+      "Giao vien doc, hgc sinh khoanh hinh",
+      "Bye",
+      "10",
+      "好",
+      "你",
+      "吗",
+      "我",
+      "老师"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 12,
+      "unit": 1,
+      "section": "1-012-1",
+      "numbers": [
+        4
+      ],
+      "format": "listen"
+    },
+    "reason": "Hình mục tiêu bị thiếu hoặc trùng; không xác định được hình duy nhất.",
+    "printed_text": [
+      "Giao vien doc, hgc sinh khoanh hinh",
+      "Bye",
+      "10",
+      "好",
+      "你",
+      "吗",
+      "我",
+      "老师"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 18,
+      "unit": 2,
+      "section": "1-018-2",
+      "numbers": [
+        2
+      ],
+      "format": "true_false"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Ding （V） hay Sai （x）",
+      "X",
+      "1.你叫什么名字？",
+      "UCATION",
+      "2.我认识你不。",
+      "育学",
+      "3.认识我很高兴！",
+      "4.我叫张龙。",
+      "5.你认识吗他？",
+      "？",
+      "？",
+      "？",
+      "17"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 18,
+      "unit": 2,
+      "section": "1-018-2",
+      "numbers": [
+        3
+      ],
+      "format": "true_false"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Ding （V） hay Sai （x）",
+      "X",
+      "1.你叫什么名字？",
+      "UCATION",
+      "2.我认识你不。",
+      "育学",
+      "3.认识我很高兴！",
+      "4.我叫张龙。",
+      "5.你认识吗他？",
+      "？",
+      "？",
+      "？",
+      "17"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 25,
+      "unit": 3,
+      "section": "1-025-2",
+      "numbers": [
+        5
+      ],
+      "format": "listen"
+    },
+    "reason": "Hình mục tiêu bị thiếu hoặc trùng; không xác định được hình duy nhất.",
+    "printed_text": [
+      "Giao vien doc, hgc sinh khoanh hinh",
+      "EDUCATION",
+      "（WHERE",
+      "WAHAHPA",
+      "JHERE",
+      "人",
+      "哪",
+      "中国",
+      "他",
+      "国",
+      "24"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 29,
+      "unit": 4,
+      "section": "1-029-2",
+      "numbers": [
+        4
+      ],
+      "format": "pinyin"
+    },
+    "reason": "Có hai lựa chọn phiên âm in giống nhau; không có đáp án duy nhất.",
+    "printed_text": [
+      "Khoanh tron phien am ding cia cac Han ty sau：",
+      "口",
+      "A.kou",
+      "B.kou",
+      "C.kbu",
+      "A.baba",
+      "B.baba",
+      "C.baba",
+      "爸爸",
+      "没有",
+      "A.meiyou",
+      "B.meiyou C.meiyou",
+      "和",
+      "A.he",
+      "B.he",
+      "C.h",
+      "A.ji",
+      "B.ji",
+      "C.ji",
+      "28"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 30,
+      "unit": 4,
+      "section": "1-030-1",
+      "numbers": [
+        2
+      ],
+      "format": "fill"
+    },
+    "reason": "Có nhiều từ trong ngân hàng từ điền được; đề thiếu ngữ cảnh phân biệt.",
+    "printed_text": [
+      "Dien vao cha trong",
+      "家",
+      "口",
+      "哥哥",
+      "那",
+      "是",
+      "和；",
+      "我",
+      "1. 我",
+      "有四口人。",
+      "2.",
+      "家有三口人。",
+      "3.这",
+      "我爸爸。",
+      "4.那是我",
+      "。",
+      "5.你家有几人？",
+      "6.我，爸爸、妈妈_",
+      "妹妹。"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 40,
+      "unit": 5,
+      "section": "1-040-1",
+      "numbers": [
+        4
+      ],
+      "format": "listen"
+    },
+    "reason": "Hình mục tiêu bị thiếu hoặc trùng; không xác định được hình duy nhất.",
+    "printed_text": [
+      "Giao vien doc, hgc sinh khoanh hinh",
+      "爷爷",
+      "弟弟",
+      "姐姐",
+      "妈妈",
+      "奶奶"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT1 từ bài 1 tới bài 7.pdf",
+      "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+      "page": 51,
+      "unit": 7,
+      "section": "1-051-2",
+      "numbers": [
+        2
+      ],
+      "format": "fill"
+    },
+    "reason": "Có nhiều từ trong ngân hàng từ điền được; đề thiếu ngữ cảnh phân biệt.",
+    "printed_text": [
+      "Dien vao cha trong",
+      "谁",
+      "它",
+      "属",
+      "那",
+      "鸟",
+      "眼睛",
+      "可爱",
+      "1.这是",
+      "的狗？",
+      "是妈妈的猫。",
+      "2.",
+      "3.这是明明的狗，它真",
+      "。",
+      "4.我今年九岁，我 鸡。",
+      "5. 小猫的",
+      "真漂亮。",
+      "50"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 7,
+      "unit": 5,
+      "section": "2-007-2",
+      "numbers": [
+        3
+      ],
+      "format": "reorder"
+    },
+    "reason": "Các khối chữ trong nguồn thiếu hoặc dư từ; không tạo được câu chắc chắn.",
+    "printed_text": [
+      "Sap xep cac tir sau thanh cau hoan chinh",
+      "1.我/面条/喜欢/不/吃/喜欢/米饭/，/吃",
+      "2我/包子/妈妈/真/是1.1厨师1./她/好吃/会/做",
+      "3. 我/ 是/爱/医生/很/爸爸",
+      "4.我/明天/去/我/学校/./不/ 在家/吃/吃/早饭",
+      "5.这/./是/好吃/我/不/姐姐/包子/做/好吃/的？",
+      "6"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 14,
+      "unit": 6,
+      "section": "2-014-1",
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "format": "triple"
+    },
+    "reason": "Các cột chữ Hán, phiên âm và hình ảnh bị sao chép lệch; chưa đủ căn cứ khôi phục.",
+    "printed_text": [
+      "Noi cho Han voi phien am va hinh anh phirhgp",
+      "做",
+      "qian：",
+      "包子",
+      "cha！",
+      "厨师",
+      "hua",
+      "医生",
+      "mai",
+      "吃",
+      "beizi"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 24,
+      "unit": 7,
+      "section": "2-024-2",
+      "numbers": [
+        1
+      ],
+      "format": "fill"
+    },
+    "reason": "Có nhiều từ trong ngân hàng từ điền được; đề thiếu ngữ cảnh phân biệt.",
+    "printed_text": [
+      "Dien vao cha trong",
+      "谁",
+      "比-",
+      "好喝。",
+      "1.-",
+      "热水；",
+      "2.冬天比",
+      "冷，我很喜欢。",
+      "春天",
+      "3. 你觉得我的汉语",
+      "？",
+      "4.这杯茶好喝不",
+      "-？",
+      "北京",
+      "5. 你们两个人",
+      "的头发长？",
+      "冰水",
+      "6.纽约今天很冷，",
+      "今天很热。",
+      "怎么样",
+      "好喝",
+      "23"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 25,
+      "unit": 7,
+      "section": "2-025-1",
+      "numbers": [
+        2
+      ],
+      "format": "choice"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Chon dap an ding",
+      "1. 我觉得今天天气有点（",
+      "）。",
+      "A. 很热",
+      "B.冷",
+      "C. 好吃",
+      "2.你喜欢喝（____）吗？",
+      "A.可以。",
+      "B.不客气。",
+      "C.没关系。",
+      "3.北京今天天气（_----_）？",
+      "A. 怎么",
+      "B.怎么样",
+      "C.什么",
+      "4.今天比（__---）冷。",
+      "A. 今天",
+      "B. 天气",
+      "C.昨天"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 26,
+      "unit": 7,
+      "section": "2-026-2",
+      "numbers": [
+        4
+      ],
+      "format": "true_false"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Ding （v） hay Sai （x）",
+      "X",
+      "1.我不喜欢喝热水。",
+      "2.纽约的天气比北京太冷。",
+      "3.姐姐比我聪明。",
+      "4.我觉得热水比冰水好吃。",
+      "5.我很喜欢冷冷的天气。",
+      "25"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 37,
+      "unit": 8,
+      "section": "2-037-1",
+      "numbers": [
+        3
+      ],
+      "format": "choice"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Chon dap an ding",
+      "1.妈妈比我大得多。",
+      "A. Me lon tuoi hon toi.",
+      "B. Me lom tu6i hon toi nhieu.",
+      "C. Toi nho tubi hon me.",
+      "2.苏珊和马丁是同学，他们是小学生。",
+      "A. Susan va Martin la ban hoc, ho la hoc sinh tieu hoc.",
+      "B. Susan va Martin la ban tot, hoc la ban hoc.",
+      "C. Susan va Martin la hoc sinh tieu hoc.",
+      "3.妈妈三十六岁，爸爸也三十六岁。",
+      "A. Me 36 tuoi, ba toi 35 tuoi.",
+      "B. Me 35 tu6i, ba cing 35 tubi.",
+      "C. Me 35 tu6i, ba cing 36 tuoi.",
+      "36"
+    ]
+  },
+  {
+    "source": {
+      "file": "YCT2 bài 5 tới bài 11.pdf",
+      "sha256": "04c6c47d1ff9f16746df6cc1c9633dea9b43ccb22bb387816a7cce085043fc94",
+      "page": 42,
+      "unit": 9,
+      "section": "2-042-2",
+      "numbers": [
+        4
+      ],
+      "format": "true_false"
+    },
+    "reason": "Đề không đủ ngữ cảnh hoặc thiếu lựa chọn đúng duy nhất.",
+    "printed_text": [
+      "Ding （V） hay Sai （x）",
+      "×",
+      "1.我没有喝冰水有吗？",
+      "2.这是一个苹果，那是一个香蕉。",
+      "3.我喝了一杯牛奶。",
+      "KAT",
+      "4.我吃了早饭，还喝了冰淇淋。",
+      "汾",
+      "5.你今天吃了什么东西？"
+    ]
+  }
+]

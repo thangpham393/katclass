@@ -1,4 +1,5 @@
 "use client";
+import { QuestionVisualPreview } from "@/components/question-visuals";
 
 import { useState } from "react";
 import { HelpCircle, Pencil, Plus, Trash2 } from "lucide-react";
@@ -114,6 +115,7 @@ export default function QuestionBankPage() {
                 </Badge>
                 <div className="min-w-0 flex-1">
                   <div className="zh truncate text-sm font-medium">{questionPreview(q) || "(chưa có đề bài)"}</div>
+<QuestionVisualPreview content={q.content} />
                   <div className="truncate text-xs text-muted-foreground">
                     Đáp án: <b>{questionAnswerPreview(q, answers.data?.[q.id])}</b>
                     {q.lesson && <> · {q.lesson.unit != null ? `Bài ${q.lesson.unit}: ` : ""}{q.lesson.title}</>}

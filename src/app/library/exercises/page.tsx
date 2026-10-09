@@ -1,4 +1,5 @@
 "use client";
+import { QuestionVisualPreview } from "@/components/question-visuals";
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -339,6 +340,7 @@ function ExercisePreviewModal({
                   <Badge variant="muted">{QUESTION_TYPE_LABELS[x.type]}</Badge>
                 </div>
                 <div className="zh mt-1.5 text-sm">{questionPreview(x)}</div>
+<QuestionVisualPreview content={x.content} />
                 {showAnswers && (
                   <div className="mt-1.5 text-xs font-semibold text-emerald-700">
                     Đáp án: {questionAnswerPreview(x, answers.data?.[x.id])}
