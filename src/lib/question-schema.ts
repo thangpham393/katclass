@@ -42,7 +42,7 @@ export interface QuestionContent {
     file: string;
     sha256?: string;
     unit?: number;
-    section?: number;
+    section?: number | string;
     section_title?: string;
     numbers?: number[];
     [key: string]: unknown;

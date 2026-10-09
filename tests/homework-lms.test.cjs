@@ -8,23 +8,37 @@ const {QuestionText,QuestionPinyinContext}=require('../src/components/question-v
 const {alignPinyin,textWithoutEmbeddedPinyin}=require('../src/lib/question-pinyin.ts');
 const {reviewStatus,reviewAnswerText}=require('../src/lib/homework-review.ts');
 const q=(id,unit,section,number,type='multiple_choice',file='source.pdf')=>({id,type,lesson_id:`lesson-${unit}`,lesson:{unit,title:`Bài ${unit}`,textbook_id:'book'},content:{source:{unit,section,numbers:[number],file}}});
-test('Question ordering follows lesson, source section and source number, while retaining mixed types in one source section',()=>{
- const input=[q('b',2,1,1),q('d',1,2,11),q('c',1,1,2,'pinyin_choice'),q('a',1,1,1)];
- assert.deepEqual(sortWorkbookQuestions(input).map(q=>q.id),['a','c','d','b']);assert.deepEqual(input.map(q=>q.id),['b','d','c','a']);
- const groups=workbookSections(sortWorkbookQuestions(input));assert.equal(groups.length,3);assert.deepEqual(groups[0].questions.map(q=>q.id),['a','c']);
- assert.deepEqual(workbookSections(input).flatMap(s=>s.questions).map(q=>q.id),input.map(q=>q.id),'Explicit test order remains unchanged');
+test('Exercise types stay together across source sections, PDFs and lessons',()=>{
+ const input=[q('b',2,1,1),q('d',1,2,11,'fill_blank'),q('c',1,1,2,'pinyin_choice'),q('a',1,1,1)];
+ assert.deepEqual(sortWorkbookQuestions(input).map(q=>q.id),['a','b','c','d']);assert.deepEqual(input.map(q=>q.id),['b','d','c','a']);
+ const groups=workbookSections(input);assert.equal(groups.length,3);assert.deepEqual(groups[0].questions.map(q=>q.id),['a','b']);
+ assert(groups.every(group=>group.questions.every(q=>q.type===group.key)));
+ const files=[q('1',1,1,1,'multiple_choice','a.pdf'),q('2',1,1,1,'fill_blank','b.pdf'),q('3',1,1,2,'multiple_choice','c.pdf')];
+ assert.deepEqual(workbookSections(files).map(g=>g.questions.map(q=>q.id)),[['1','3'],['2']]);
 });
-test('Legacy questions group by type and stable question order; different PDFs never interleave',()=>{
+test('Legacy source codes from the reported 31-question assignment cannot create singleton sections or a navigation wall',()=>{
+ const types=['translation','fill_blank','matching','reorder','pinyin_choice','multiple_choice','essay'];
+ const input=Array.from({length:31},(_,i)=>q(`q${i}`,2,`1-${String(14+i%6).padStart(3,'0')}-${i%2+1}`,i+1,types[i%types.length],`page-${i}.pdf`));
+ const groups=workbookSections(input);assert.equal(groups.length,7);assert.equal(groups.reduce((n,g)=>n+g.questions.length,0),31);
+ assert.equal(new Set(groups.map(g=>g.key)).size,7);assert(groups.every(g=>g.questions.length>=4));
+ assert(groups.every(g=>!g.title.includes('1-0')));
+ const {WorkbookQuestionList}=require('../src/components/workbook-question-list.tsx');
+ const html=renderToStaticMarkup(React.createElement(WorkbookQuestionList,{questions:input,renderQuestion:q=>React.createElement('div',{key:q.id,'data-question':q.id},q.id)}));
+ assert.equal((html.match(/<section /g)??[]).length,7);assert.equal((html.match(/data-question=/g)??[]).length,31);
+ assert(!html.includes('<nav'));assert(!html.includes('Các phần trong bài'));assert(!html.includes('Phần 1-'));
+});
+test('Natural source order handles numeric and string section identifiers within each type',()=>{
+ const input=[q('10',1,'1-010-2',10),q('2',1,'1-002-1',2),q('1',1,'1-002-1',1)];
+ assert.deepEqual(sortWorkbookQuestions(input).map(q=>q.id),['1','2','10']);
  const legacy=[{id:'1',type:'fill_blank',content:{}},{id:'2',type:'multiple_choice',content:{}},{id:'3',type:'fill_blank',content:{}}];
  assert.deepEqual(sortWorkbookQuestions(legacy).map(q=>q.id),['2','1','3']);
- const files=[q('1',1,1,1,'multiple_choice','a.pdf'),q('2',1,1,1,'multiple_choice','b.pdf'),q('3',1,1,2,'multiple_choice','a.pdf')];
- assert.deepEqual(sortWorkbookQuestions(files).map(q=>q.id),['1','3','2']);
 });
-test('All source-tagged HSK payloads recover their section/number order after a deterministic scramble',()=>{
+test('All source-tagged HSK payloads group each type once and retain deterministic source order',()=>{
  for(const filename of fs.readdirSync('supabase/library').filter(f=>f.includes('hsk')&&f.endsWith('.json'))){
   const payload=JSON.parse(fs.readFileSync(path.join('supabase/library',filename)));const input=payload.lessons.flatMap(l=>(l.questions??[]).filter(q=>q.content.source).map((q,i)=>({...q,id:`${l.unit}-${i}`,lesson_id:`${filename}-${l.unit}`,lesson:{unit:l.unit,title:l.title,textbook_id:filename}})));
   const scrambled=input.slice().reverse();const sorted=sortWorkbookQuestions(scrambled);
   assert.deepEqual(sorted.map(q=>q.id),sortWorkbookQuestions(input).map(q=>q.id),filename);
+  const groups=workbookSections(scrambled);assert.equal(groups.length,new Set(input.map(q=>q.type)).size,filename);assert(groups.every(g=>g.questions.every(q=>q.type===g.key)),filename);
  }
 });
 test('Flat source dialogues render as separate turns and retain blank locations and instruction',()=>{

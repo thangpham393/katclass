@@ -169,7 +169,7 @@ function LessonQuestions({ lesson, ...props }: PickerProps & { lesson: TextbookL
             {selectedInLesson > 0 && <Button type="button" size="sm" variant="outline" onClick={() => props.onRemove(rows.map(q => q.id))}>Bỏ chọn bài này</Button>}
           </div>
           <div className="max-h-96 space-y-2 overflow-y-auto pr-1">
-            <WorkbookQuestionList questions={visible} navigation={false} prefix="picker" renderQuestion={(q, i) => (
+            <WorkbookQuestionList questions={visible} prefix="picker" renderQuestion={(q, i) => (
               <button key={q.id} type="button" aria-pressed={picked.has(q.id)} onClick={() => picked.has(q.id) ? props.onRemove([q.id]) : props.onAdd([q], lesson)}
                 className={cn("flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors", picked.has(q.id) ? "border-brand-500 bg-brand-50/50" : "hover:border-brand-300")}>
                 <span className={cn("mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border", picked.has(q.id) && "border-brand-600 bg-brand-600 text-white")}>

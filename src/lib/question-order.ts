@@ -8,59 +8,55 @@ interface OrderedQuestion {
   lesson?: { unit: number | null; title: string; textbook_id: string | null } | null;
 }
 
-const typeOrder = Object.keys(QUESTION_TYPE_LABELS);
+const typeOrder: QuestionType[] = [
+  "multiple_choice", "pinyin_choice", "listening", "fill_blank", "matching", "multi_matching",
+  "reorder", "hanzi_pinyin", "translation", "sentence_correction", "reading", "essay",
+];
+const collator = new Intl.Collator("vi", { numeric: true });
 function lessonKey(q: OrderedQuestion) { return q.lesson_id ?? `unit:${q.content.source?.unit ?? ""}`; }
-function fileKey(q: OrderedQuestion) { return q.content.source?.sha256 ?? q.content.source?.file ?? ""; }
-function sectionKey(q: OrderedQuestion) {
-  return `${lessonKey(q)}:${fileKey(q)}:${q.content.source?.section ?? q.type}`;
+function fileKey(q: OrderedQuestion) { return q.content.source?.file ?? q.content.source?.sha256 ?? ""; }
+function firstNumber(q: OrderedQuestion) {
+  const numbers = q.content.source?.numbers?.filter(n => typeof n === "number" && Number.isFinite(n)) ?? [];
+  return numbers.length ? Math.min(...numbers) : 0;
 }
 
-/** Source order, independent of insertion time or random UUID. Stable within legacy types. */
+/** Keep every exercise type together; source metadata only orders questions inside that type. */
 export function sortWorkbookQuestions<T extends OrderedQuestion>(questions: readonly T[]): T[] {
-  const lessons = new Map<string, T[]>();
-  for (const q of questions) {
-    const key = lessonKey(q);
-    if (!lessons.has(key)) lessons.set(key, []);
-    lessons.get(key)!.push(q);
-  }
-  const textbooks = new Map<string, T[][]>();
-  for (const pack of lessons.values()) {
-    const key = pack[0].lesson?.textbook_id ?? "";
-    if (!textbooks.has(key)) textbooks.set(key, []);
-    textbooks.get(key)!.push(pack);
-  }
-  const packs = [...textbooks.values()].flatMap(packs => packs.sort((a, b) =>
-    (a[0].lesson?.unit ?? a[0].content.source?.unit ?? 0) - (b[0].lesson?.unit ?? b[0].content.source?.unit ?? 0)));
-  return packs.flatMap(pack => {
-    const files = new Map<string, T[]>();
-    for (const q of pack) {
-      const key = fileKey(q);
-      if (!files.has(key)) files.set(key, []);
-      files.get(key)!.push(q);
-    }
-    return [...files.values()].flatMap(file => file.slice().sort((a, b) => {
-      const sa = a.content.source, sb = b.content.source;
-      const section = (sa?.section ?? typeOrder.indexOf(a.type)) - (sb?.section ?? typeOrder.indexOf(b.type));
-      if (section) return section;
-      return Math.min(...(sa?.numbers?.length ? sa.numbers : [0])) - Math.min(...(sb?.numbers?.length ? sb.numbers : [0]));
-    }));
+  return questions.slice().sort((a, b) => {
+    const type = typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type);
+    if (type) return type;
+    const textbook = collator.compare(a.lesson?.textbook_id ?? "", b.lesson?.textbook_id ?? "");
+    if (textbook) return textbook;
+    const unit = (a.lesson?.unit ?? a.content.source?.unit ?? 0) - (b.lesson?.unit ?? b.content.source?.unit ?? 0);
+    if (unit) return unit;
+    const lesson = collator.compare(lessonKey(a), lessonKey(b));
+    if (lesson) return lesson;
+    const file = collator.compare(fileKey(a), fileKey(b));
+    if (file) return file;
+    const section = collator.compare(String(a.content.source?.section ?? ""), String(b.content.source?.section ?? ""));
+    return section || firstNumber(a) - firstNumber(b);
   });
 }
 
-/** Contiguous groups also preserve the explicit order of timed test templates. */
+/** A single visible section per type, even when metadata describes many source PDFs/sections. */
 export function workbookSections<T extends OrderedQuestion>(questions: readonly T[]) {
   const sections: { key: string; title: string; lesson: string; questions: T[]; start: number }[] = [];
-  questions.forEach((q, i) => {
-    const key = sectionKey(q);
+  for (const q of sortWorkbookQuestions(questions)) {
     const previous = sections[sections.length - 1];
-    if (previous?.key === key) { previous.questions.push(q); return; }
-    const source = q.content.source;
-    const types = [...new Set(questions.filter(x => sectionKey(x) === key).map(x => QUESTION_TYPE_LABELS[x.type]))];
-    sections.push({ key, start: i, questions: [q],
-      title: source?.section_title || (source?.section != null ? `Phần ${source.section} · ${types.join(" / ")}` : QUESTION_TYPE_LABELS[q.type]),
-      lesson: q.lesson ? `${q.lesson.unit != null ? `Bài ${q.lesson.unit} · ` : ""}${q.lesson.title}` : source?.unit != null ? `Bài ${source.unit}` : "",
-    });
-  });
+    if (previous?.key === q.type) { previous.questions.push(q); continue; }
+    sections.push({ key: q.type, title: QUESTION_TYPE_LABELS[q.type], lesson: "", questions: [q], start: 0 });
+  }
+  let start = 0;
+  for (const section of sections) {
+    section.start = start;
+    start += section.questions.length;
+    const lessonIds = new Set(section.questions.map(lessonKey));
+    if (lessonIds.size === 1) {
+      const q = section.questions[0];
+      section.lesson = q.lesson ? `${q.lesson.unit != null ? `Bài ${q.lesson.unit} · ` : ""}${q.lesson.title}`
+        : q.content.source?.unit != null ? `Bài ${q.content.source.unit}` : "";
+    }
+  }
   return sections;
 }
 

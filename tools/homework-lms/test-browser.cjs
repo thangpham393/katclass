@@ -6,15 +6,31 @@ const port=3110;const origin=`http://127.0.0.1:${port}`;
 const root=path.resolve('src/app/homework-verification');assert(!fs.existsSync(root),'Refuse to replace existing route');fs.mkdirSync(path.join(root,'[id]'),{recursive:true});
 fs.writeFileSync(path.join(root,'[id]/page.tsx'),'// GENERATED LMS BROWSER VERIFICATION ONLY\nexport {default} from "@/app/student/homework/[id]/page";\n');
 const work=path.resolve('tools/homework-lms/work');fs.mkdirSync(work,{recursive:true});
-const q=(id,type,content,section,number)=>({id,type,content:{...content,source:{file:'fixture.pdf',unit:1,section,numbers:[number]}},level:'HSK3',tags:[],lesson_id:'lesson-1',lesson:{id:'lesson-1',title:'Luyện tập hội thoại',unit:1,textbook_id:'textbook-1'},created_at:''});
+const q=(id,type,content,section,number)=>({id,type,content:{...content,source:{file:`fixture-${id}.pdf`,unit:1,section,numbers:[number]}},level:'HSK3',tags:[],lesson_id:'lesson-1',lesson:{id:'lesson-1',title:'Luyện tập hội thoại',unit:1,textbook_id:'textbook-1'},created_at:''});
 const qs=[
- q('q1','multiple_choice',{prompt:'你____什么名字？ nǐ ___ shénme míngzi?',options:['是 shì','叫 jiào','人 rén','吗 ma']},1,2),
- q('q2','fill_blank',{prompt:'A:___你有什么打算？ B: 我打算去爬山。',hint:'Từ cho sẵn: 周末 · 复习 · 作业'},2,11),
- q('q3','fill_blank',{prompt:'A：你___什么？ B：我___茶。'},2,12),
+ q('q1','multiple_choice',{prompt:'你____什么名字？ nǐ ___ shénme míngzi?',options:['是 shì','叫 jiào','人 rén','吗 ma']},'1-018-2',2),
+ q('q2','fill_blank',{prompt:'A:___你有什么打算？ B: 我打算去爬山。',hint:'Từ cho sẵn: 周末 · 复习 · 作业'},'1-015-2',11),
+ q('q3','fill_blank',{prompt:'A：你___什么？ B：我___茶。'},'1-017-2',12),
  q('q4','hanzi_pinyin',{prompt:'Viết chữ Hán và Pinyin: vui vẻ'},3,21),
  q('q5','essay',{prompt:'Hoàn thành lời đáp của B, bắt đầu bằng 那.\nA: 周末我不想去商店买东西。 B:',target_language:'zh'},4,31),
- q('q6','multiple_choice',{prompt:'A: 你好吗？ B: 我很好，谢谢！',options:['Đúng','Sai']},5,40),
+ q('q6','multiple_choice',{prompt:'A: 你好吗？ B: 我很好，谢谢！',options:['Đúng','Sai']},'1-018-2',40),
 ];
+const groupingExamples=[
+ ['essay',{prompt:'Viết lời giới thiệu bản thân.'}],
+ ['fill_blank',{prompt:'我___汉语。',hint:'Từ cho sẵn: 学习 · 老师'}],
+ ['multiple_choice',qs[0].content],
+ ['translation',{prompt:'Dịch sang tiếng Trung: Tôi là học sinh.'}],
+ ['reorder',{tokens:['汉语','我','学习','。']}],
+ ['matching',{left:['你好','谢谢'],right:['Cảm ơn','Xin chào']}],
+ ['pinyin_choice',{hanzi:'老师',options:['lǎoshī','làoshì']}],
+ ['multi_matching',{left:['你','好'],columns:[{label:'Pinyin',options:['nǐ','hǎo']},{label:'Nghĩa',options:['tốt','bạn']}]}],
+];
+const grouping31=Array.from({length:31},(_,i)=>{
+ const [type,content]=groupingExamples[i%groupingExamples.length];
+ const row=q(`group-${i}`,type,content,`1-${String(14+i%6).padStart(3,'0')}-${i%2+1}`,i+1);
+ row.content.source.unit=2;row.lesson={...row.lesson,unit:2,title:'Bạn tên gì?'};
+ return row;
+});
 const expected=['B',['周末'],['喝','喝'],{hanzi:'快乐',pinyin:'kuàilè'},['Bài mẫu không được lộ cho học viên'],'A'];
 let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
 (async()=>{
@@ -42,7 +58,7 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
   if(route.request().method()==='OPTIONS'){await route.fulfill({status:200,headers:{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'*'}});return;}
   if(url.pathname.endsWith('/profiles'))result={id:user.id,name:'Học viên kiểm thử',email:user.email,role:'student',avatar:null,branch_id:null};
   else if(url.pathname.endsWith('/role_permissions'))result=[];
-  else if(url.pathname.endsWith('/homeworks'))result={id:'fixture',title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:qs.slice().reverse().map((question,i)=>({sort:i,question}))};
+  else if(url.pathname.endsWith('/homeworks'))result={id:'fixture',title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:(url.searchParams.get('id')==='eq.grouping31'?grouping31:qs).slice().reverse().map((question,i)=>({sort:i,question}))};
   else if(url.pathname.endsWith('/submissions'))result=sub;
   else if(url.pathname.endsWith('/rpc/submit_homework')){
    const answers=route.request().postDataJSON().my_answers;posts.push(answers);const details=[];
@@ -56,15 +72,19 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(result),headers:{'Access-Control-Allow-Origin':'*'}});
  });
  const initialSubmission=page.waitForResponse(r=>r.url().includes('/fixture/rest/v1/submissions'));
- await page.goto(origin+'/homework-verification/fixture');await initialSubmission;await page.getByRole('heading',{name:'HSK · Luyện tập theo từng phần'}).waitFor();await page.getByText('Phần 1 · Trắc nghiệm',{exact:true}).waitFor();
- const cards=page.locator('[id^="exercise-section-"]');await cards.first().waitFor();assert.equal(await cards.count(),5);
+ await page.goto(origin+'/homework-verification/fixture');await initialSubmission;await page.getByRole('heading',{name:'HSK · Luyện tập theo từng phần'}).waitFor();await page.getByRole('heading',{name:'Trắc nghiệm',exact:true}).waitFor();
+ const cards=page.locator('[id^="exercise-section-"]');await cards.first().waitFor();assert.equal(await cards.count(),4);
+ assert.equal(await page.getByRole('navigation',{name:'Các phần trong bài tập'}).count(),0);
+ assert.equal(await cards.nth(0).getByRole('button').count(),6,'All multiple-choice questions are contiguous');
+ assert.equal(await cards.nth(1).locator('input').count(),3,'All fill-blank questions are contiguous across different PDFs/codes');
+ assert(!((await page.locator('body').textContent()).includes('Phần 1-')));
  assert.match(await cards.first().textContent(),/Câu 2 trong đề/);assert(!((await cards.first().textContent()).includes('nǐ ___ shénme míngzi?')));
- const dialogue=page.getByRole('group',{name:'Hội thoại'});assert.equal(await dialogue.count(),4);assert.equal(await dialogue.nth(0).locator('input').count(),1);assert.equal(await dialogue.nth(1).locator('input').count(),2);
+ const dialogue=page.getByRole('group',{name:'Hội thoại'});assert.equal(await dialogue.count(),4);assert.equal(await dialogue.nth(1).locator('input').count(),1);assert.equal(await dialogue.nth(2).locator('input').count(),2);
  await page.getByLabel('Chỗ trống 1',{exact:true}).first().fill('周末');await page.getByLabel('Bài viết',{exact:true}).fill('那我们在家看电视吧。');
  const ruby=page.locator('ruby').first();assert.equal(await ruby.evaluate(e=>getComputedStyle(e).rubyPosition),'over');
  await page.screenshot({path:path.join(work,'player-mobile.png'),fullPage:true});
  await page.getByRole('button',{name:'Ẩn phiên âm',exact:true}).click();assert.equal(await page.locator('ruby').count(),0);await page.getByRole('button',{name:'Hiện phiên âm',exact:true}).click();
- await page.getByRole('button',{name:'Nộp bài',exact:true}).click();await page.getByRole('heading',{name:'Xem lại bài làm',exact:true}).waitFor();assert.equal(posts.length,1);assert.equal(Object.keys(posts[0]).length,2,'Incomplete homework submitted');
+ await page.getByRole('button',{name:'Nộp bài',exact:true}).click();await page.getByRole('heading',{name:'Xem lại bài làm',exact:true}).waitFor();assert.equal(await page.locator('[id^="review-section-"]').count(),4);assert.equal(posts.length,1);assert.equal(Object.keys(posts[0]).length,2,'Incomplete homework submitted');
  await page.getByText('Giải thích',{exact:true}).waitFor();assert(!((await page.locator('body').textContent()).includes('Bài mẫu không được lộ')));assert.equal(await page.locator('#review-section-0 input:enabled').count(),0);
  await page.getByRole('button',{name:/Cần xem lại/}).click();assert(!((await page.locator('[id^="review-section-"]').allTextContents()).join(' ')).includes('Câu 11 trong đề'));
  await page.getByRole('button',{name:'Tất cả',exact:true}).click();await page.screenshot({path:path.join(work,'review-mobile.png'),fullPage:true});
@@ -72,5 +92,18 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
  await page.reload();await page.getByRole('heading',{name:'Xem lại bài làm',exact:true}).waitFor();
  await page.getByRole('button',{name:'Tiếp tục / sửa bài đã nộp',exact:true}).click();assert.equal(await page.getByLabel('Chỗ trống 1',{exact:true}).first().inputValue(),'周末');assert.equal(await page.getByLabel('Bài viết',{exact:true}).inputValue(),'那我们在家看电视吧。');
  await page.setViewportSize({width:1280,height:900});await page.screenshot({path:path.join(work,'player-desktop.png'),fullPage:true});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Desktop overflow');assert.deepEqual(errors,[]);
- await db.close();console.log('PASS: actual player at 390px and 1280px, source order, dialogue turns/inline answers, ruby above Hanzi, incomplete submission, review/filter/reload, continue editing, no browser exceptions or horizontal overflow');
+ sub=null;
+ const groupingSubmission=page.waitForResponse(r=>r.url().includes('/fixture/rest/v1/submissions'));
+ await page.goto(origin+'/homework-verification/grouping31');await groupingSubmission;
+ await page.waitForFunction(()=>document.querySelectorAll('[id^="exercise-section-"]').length===8);
+ assert.equal(await page.locator('[id^="exercise-section-"] > div').count(),31,'Every assigned question appears once');
+ assert.equal(new Set(await page.locator('[id^="exercise-section-"] > header > h2').allTextContents()).size,8,'One heading per exercise type');
+ assert.equal(await page.getByRole('navigation',{name:'Các phần trong bài tập'}).count(),0);
+ await page.screenshot({path:path.join(work,'grouping31-desktop.png'),fullPage:true});
+ await page.screenshot({path:path.join(work,'grouping31-desktop-top.png')});
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:path.join(work,'grouping31-mobile.png'),fullPage:true});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'31-question mobile overflow');
+ assert.deepEqual(errors,[]);
+ await db.close();console.log('PASS: actual player at 390px and 1280px, grouped types across source PDFs/string section codes, no navigation wall, dialogue turns/inline answers, ruby above Hanzi, incomplete submission, review/filter/reload, continue editing, no browser exceptions or horizontal overflow');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)server.kill('SIGTERM');const file=path.join(root,'[id]/page.tsx');if(fs.existsSync(file)&&fs.readFileSync(file,'utf8').includes('GENERATED LMS BROWSER VERIFICATION ONLY')){fs.unlinkSync(file);fs.rmdirSync(path.join(root,'[id]'));fs.rmdirSync(root);}});

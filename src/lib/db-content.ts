@@ -553,7 +553,7 @@ export async function fetchHomework(id: string): Promise<HomeworkDetail | null> 
     .sort((a, b) => a.sort - b.sort)
     .map((hq) => hq.question)
     .filter(Boolean);
-  return { ...rest, questions: rest.kind === "test" ? questions : sortWorkbookQuestions(questions) };
+  return { ...rest, questions: sortWorkbookQuestions(questions) };
 }
 
 export async function createHomework(input: {

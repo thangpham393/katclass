@@ -336,7 +336,7 @@ function ExercisePreviewModal({
               Bài này chưa có bài tập.
             </div>
           ) : (
-            <WorkbookQuestionList questions={questions.data!} navigation={false} prefix="preview" renderQuestion={(x, i) => (
+            <WorkbookQuestionList questions={questions.data!} prefix="preview" renderQuestion={(x, i) => (
               <div key={x.id} className="rounded-xl border bg-card p-2.5">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold text-muted-foreground">{sourceQuestionLabel(x, i)}</span>
