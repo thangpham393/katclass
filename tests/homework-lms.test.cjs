@@ -47,6 +47,31 @@ test('Flat source dialogues render as separate turns and retain blank locations 
  assert.equal(parseDialogue('选择正确答案：你好吗？'),null);assert.equal(parseDialogue('Từ 周末 có nghĩa là:'),null);assert.equal(parseDialogue('A：你好！B：你好！')?.turns.length,2);
  const html=renderToStaticMarkup(React.createElement(QuestionDialogue,{text}));assert.match(html,/aria-label="Hội thoại"/);assert.equal((html.match(/aria-label="Người nói/g)??[]).length,3);
 });
+test('Unlabelled workbook dialogues retain source turns, consecutive sentences and inline blank numbering',()=>{
+ const {QuestionInput}=require('../src/components/question-player-input.tsx');
+ const lessons=JSON.parse(fs.readFileSync('supabase/library/yct-workbooks.json')).lessons;
+ const dialogues=lessons.flatMap(l=>l.questions).filter(q=>q.type==='fill_blank'&&q.content.source?.format==='dialogue');
+ assert.equal(dialogues.length,4);
+ for(const question of dialogues){
+  const lines=question.content.prompt.split('\n');const d=parseDialogue(question.content.prompt);
+  assert.equal(d.instruction,lines[0]);assert.deepEqual(d.turns.map(t=>t.text),lines.slice(1));
+  assert.deepEqual(d.turns.map(t=>t.speaker),lines.slice(1).map((_,i)=>i%2?'B':'A'));
+  const blanks=question.content.prompt.split('___').length-1;
+  const html=renderToStaticMarkup(React.createElement(QuestionInput,{question,value:Array.from({length:blanks},(_,i)=>`answer-${i+1}`),onChange:()=>{}}));
+  assert.match(html,/aria-label="Hội thoại"/);assert.equal((html.match(/aria-label="Người nói/g)??[]).length,lines.length-1);
+  for(let i=1;i<=blanks;i++)assert.match(html,new RegExp(`aria-label="Chỗ trống ${i}"[^>]*value="answer-${i}"`));
+ }
+ const first=dialogues[0];const d=parseDialogue(first.content.prompt);
+ assert.equal(d.turns[1].text,'我___张龙。你呢？');assert.equal(d.turns.length,4);
+});
+test('Dialogue titles alone and ordinary multiline exercises never invent turns',()=>{
+ assert.equal(parseDialogue('Hoàn thành hội thoại. Viết đầy đủ các câu còn thiếu.'),null);
+ assert.equal(parseDialogue('Hoàn thành hội thoại:\n你好！'),null);
+ assert.equal(parseDialogue('Dịch các câu sau:\n你好！\n谢谢！'),null);
+ assert.equal(parseDialogue('Hoàn thành hội thoại: 你好！你好吗？我很好。'),null);
+ const d=parseDialogue('Hoàn thành hội thoại:\r\n\r\n你___她吗？\r\n我不认识她。她叫___？\r\n她叫李芳。她是我的老师。');
+ assert.equal(d.turns.length,3);assert.equal(d.turns[1].text,'我不认识她。她叫___？');
+});
 test('Embedded legacy pronunciation is moved above each character; hiding it keeps only original Hanzi',()=>{
  const text='你____什么名字？ nǐ ___ shénme míngzi?';assert.equal(textWithoutEmbeddedPinyin(text),'你____什么名字？');
  assert.deepEqual(alignPinyin('shénme míngzi',4),['shén','me','míng','zi']);assert.deepEqual(alignPinyin('nǚ lǜ',2),['nǚ','lǜ']);

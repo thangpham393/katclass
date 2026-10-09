@@ -31,6 +31,11 @@ const grouping31=Array.from({length:31},(_,i)=>{
  row.content.source.unit=2;row.lesson={...row.lesson,unit:2,title:'Bạn tên gì?'};
  return row;
 });
+// The exact two unlabelled dialogues reported by the user, including source newlines.
+const dialogueQs=JSON.parse(fs.readFileSync('supabase/library/yct-workbooks.json')).lessons.flatMap(l=>l.questions)
+ .filter(row=>row.type==='fill_blank'&&row.content.source?.unit===2&&row.content.source?.format==='dialogue')
+ .map((row,i)=>({...q(`dialogue-${i}`,row.type,row.content,row.content.source.section,i+1),level:'YCT1'}));
+assert.equal(dialogueQs.length,2);
 const expected=['B',['周末'],['喝','喝'],{hanzi:'快乐',pinyin:'kuàilè'},['Bài mẫu không được lộ cho học viên'],'A'];
 let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
 (async()=>{
@@ -58,7 +63,7 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
   if(route.request().method()==='OPTIONS'){await route.fulfill({status:200,headers:{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'*'}});return;}
   if(url.pathname.endsWith('/profiles'))result={id:user.id,name:'Học viên kiểm thử',email:user.email,role:'student',avatar:null,branch_id:null};
   else if(url.pathname.endsWith('/role_permissions'))result=[];
-  else if(url.pathname.endsWith('/homeworks'))result={id:'fixture',title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:(url.searchParams.get('id')==='eq.grouping31'?grouping31:qs).slice().reverse().map((question,i)=>({sort:i,question}))};
+  else if(url.pathname.endsWith('/homeworks'))result={id:'fixture',title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:(url.searchParams.get('id')==='eq.grouping31'?grouping31:url.searchParams.get('id')==='eq.dialogue'?dialogueQs:qs).slice().reverse().map((question,i)=>({sort:i,question}))};
   else if(url.pathname.endsWith('/submissions'))result=sub;
   else if(url.pathname.endsWith('/rpc/submit_homework')){
    const answers=route.request().postDataJSON().my_answers;posts.push(answers);const details=[];
@@ -104,6 +109,24 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:path.join(work,'grouping31-mobile.png'),fullPage:true});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'31-question mobile overflow');
+ const dialogueSubmission=page.waitForResponse(r=>r.url().includes('/fixture/rest/v1/submissions'));
+ await page.goto(origin+'/homework-verification/dialogue');await dialogueSubmission;
+ await page.getByRole('group',{name:'Hội thoại'}).nth(1).waitFor();
+ const sourceDialogues=page.getByRole('group',{name:'Hội thoại'});assert.equal(await sourceDialogues.count(),2);
+ for(let i=0;i<2;i++){
+  const group=sourceDialogues.nth(i);const turns=group.locator(':scope > div');
+  assert.equal(await turns.count(),i===0?4:3,'Original source turns are preserved, including follow-up sentences');
+  for(const [j,count] of (i===0?[1,1,1,0]:[1,1,0]).entries())assert.equal(await turns.nth(j).locator('input').count(),count);
+  for(let j=0;j<(i===0?3:2);j++)await group.getByLabel(`Chỗ trống ${j+1}`,{exact:true}).fill(`答${i}-${j}`);
+  for(let j=0;j<(i===0?3:2);j++)assert.equal(await group.getByLabel(`Chỗ trống ${j+1}`,{exact:true}).inputValue(),`答${i}-${j}`,'Each blank updates its own answer index');
+ }
+ assert(await page.locator('ruby').count()>0,'Dialogue Hanzi retain pinyin above characters');
+ await page.screenshot({path:path.join(work,'unlabelled-dialogue-mobile.png'),fullPage:true});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Unlabelled dialogue mobile overflow');
+ await page.setViewportSize({width:1280,height:1600});
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ await page.screenshot({path:path.join(work,'unlabelled-dialogue-desktop.png')});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Unlabelled dialogue desktop overflow');
  assert.deepEqual(errors,[]);
- await db.close();console.log('PASS: actual player at 390px and 1280px, grouped types across source PDFs/string section codes, no navigation wall, dialogue turns/inline answers, ruby above Hanzi, incomplete submission, review/filter/reload, continue editing, no browser exceptions or horizontal overflow');
+ await db.close();console.log('PASS: actual player at 390px and 1280px, grouped types across source PDFs/string section codes, no navigation wall, labelled and exact unlabelled source dialogue turns/inline answer indices, ruby above Hanzi, incomplete submission, review/filter/reload, continue editing, no browser exceptions or horizontal overflow');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)server.kill('SIGTERM');const file=path.join(root,'[id]/page.tsx');if(fs.existsSync(file)&&fs.readFileSync(file,'utf8').includes('GENERATED LMS BROWSER VERIFICATION ONLY')){fs.unlinkSync(file);fs.rmdirSync(path.join(root,'[id]'));fs.rmdirSync(root);}});

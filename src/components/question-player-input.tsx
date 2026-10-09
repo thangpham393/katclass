@@ -261,7 +261,7 @@ function FillBlankInput({
 
   return (
     <div>
-      <div className="zh rounded-xl bg-muted/50 p-4 text-xl leading-loose">
+      <div className="zh whitespace-pre-wrap rounded-xl bg-muted/50 p-4 text-xl leading-loose">
         {dialogue ? <QuestionDialogue text={q.content.prompt ?? ""} renderTurn={(turn, i) =>
           renderBlanks(turn.text, dialogue.turns.slice(0, i).reduce((n, previous) => n + previous.text.split("___").length - 1, 0))} />
           : renderBlanks(q.content.prompt ?? "", 0)}
