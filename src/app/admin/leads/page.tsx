@@ -948,6 +948,7 @@ function InvoiceModal({
   const { branches, branchId: currentBranch } = useBranch();
   const [list, setList] = useState<InvoiceRow[] | null>(null);
   const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState<InvoiceRow | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(() => {
@@ -1008,6 +1009,14 @@ function InvoiceModal({
                       {INVOICE_STATUS_LABELS[invoiceStatus(inv)]}
                     </Badge>
                     <button
+                      onClick={() => setEditing(inv)}
+                      className="text-muted-foreground hover:text-foreground"
+                      aria-label="Sửa hoá đơn"
+                      title="Sửa hoá đơn"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                    <button
                       onClick={() => remove(inv.id)}
                       className="text-muted-foreground hover:text-destructive"
                       aria-label="Xóa hoá đơn"
@@ -1036,6 +1045,17 @@ function InvoiceModal({
         )}
       </div>
 
+      {editing && (
+        <InvoiceFormModal
+          target={{ kind: "invoice", invoice: editing }}
+          onClose={() => setEditing(null)}
+          onCreated={() => {
+            setEditing(null);
+            load();
+            onChanged();
+          }}
+        />
+      )}
       {creating && (
         <InvoiceFormModal
           target={{

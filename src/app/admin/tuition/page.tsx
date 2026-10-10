@@ -148,7 +148,11 @@ export default function AdminTuitionPage() {
         rows={invoices.data ?? []}
         loading={invoices.loading}
         error={invoices.error}
-        reload={invoices.reload}
+        reload={() => {
+          invoices.reload();
+          balances.reload();
+          monthTotal.reload();
+        }}
       />
 
       <Card>
@@ -283,6 +287,7 @@ function InvoicesCard({
   const { user } = useAuth();
   const [q, setQ] = useState("");
   const [editing, setEditing] = useState<InvoiceRow | null>(null);
+  const [collecting, setCollecting] = useState<InvoiceRow | null>(null);
   const [removing, setRemoving] = useState<InvoiceRow | null>(null);
   /** Id của tờ vừa chép / vừa nhắc — dùng để đổi biểu tượng trong 2 giây. */
   const [copied, setCopied] = useState<string | null>(null);
@@ -483,8 +488,11 @@ function InvoicesCard({
                           >
                             <FileDown className="h-3.5 w-3.5" />
                           </Link>
-                          <IconButton label="Sửa số tiền đã thu" onClick={() => setEditing(inv)}>
+                          <IconButton label="Sửa hoá đơn" onClick={() => setEditing(inv)}>
                             <Pencil className="h-3.5 w-3.5" />
+                          </IconButton>
+                          <IconButton label="Sửa số tiền đã thu" onClick={() => setCollecting(inv)}>
+                            <Wallet className="h-3.5 w-3.5" />
                           </IconButton>
                           <IconButton label="Xoá hoá đơn" onClick={() => setRemoving(inv)}>
                             <Trash2 className="h-3.5 w-3.5" />
@@ -515,12 +523,23 @@ function InvoicesCard({
       </CardContent>
 
       {editing && (
-        <CollectModal
-          invoice={editing}
-          userId={user?.id ?? null}
+        <InvoiceFormModal
+          target={{ kind: "invoice", invoice: editing }}
           onClose={() => setEditing(null)}
-          onSaved={() => {
+          onCreated={() => {
             setEditing(null);
+            reload();
+          }}
+        />
+      )}
+
+      {collecting && (
+        <CollectModal
+          invoice={collecting}
+          userId={user?.id ?? null}
+          onClose={() => setCollecting(null)}
+          onSaved={() => {
+            setCollecting(null);
             reload();
           }}
         />

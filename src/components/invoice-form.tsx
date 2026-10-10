@@ -39,9 +39,13 @@ import {
   fetchStudentParentName,
   invoiceTotal,
   lastBankInfo,
+  lineDiscount,
+  lineSubtotal,
   lineTotal,
   nextInvoiceNo,
+  updateInvoice,
   type InvoiceItem,
+  type InvoiceRow,
 } from "@/lib/db-invoices";
 import { fetchTemplate, saveTemplate } from "@/lib/db-leads";
 import { fetchSupplyItems, type SupplyItemRow } from "@/lib/db-supplies";
@@ -57,6 +61,7 @@ const EMPTY_ITEM: InvoiceItem = { name: "", qty: 1, price: 0, course_id: null };
 
 /** Khách của tờ hoá đơn: học viên đã ghi danh, hoặc một lead. */
 export type InvoiceTarget =
+  | { kind: "invoice"; invoice: InvoiceRow }
   | { kind: "student"; student?: ProfileRow | null }
   | {
       kind: "lead";
@@ -84,42 +89,45 @@ export function InvoiceFormModal({
 }: {
   target: InvoiceTarget;
   onClose: () => void;
-  /** Gọi sau khi tạo xong (đã đóng phần in biên lai). */
+  /** Gọi sau khi tạo hoặc sửa xong (đã đóng phần in biên lai). */
   onCreated: () => void;
 }) {
   const { user } = useAuth();
   const { branches, branchId: currentBranch } = useBranch();
+  const invoice = target.kind === "invoice" ? target.invoice : null;
 
   const [branchId, setBranchId] = useState(
-    (target.kind === "lead" ? target.branchId : null) ?? currentBranch ?? "",
+    invoice ? invoice.branch_id ?? "" : (target.kind === "lead" ? target.branchId : null) ?? currentBranch ?? "",
   );
-  const [invoiceNo, setInvoiceNo] = useState("");
+  const [invoiceNo, setInvoiceNo] = useState(invoice?.invoice_no ?? "");
   const [student, setStudent] = useState<ProfileRow | null>(
     target.kind === "student" ? (target.student ?? null) : null,
   );
   const [students, setStudents] = useState<ProfileRow[]>([]);
   /** Người đứng tên tờ hoá đơn — điền sẵn từ liên kết gia đình, sửa được. */
-  const [parentName, setParentName] = useState("");
+  const [parentName, setParentName] = useState(invoice?.customer_name ?? "");
+  const [studentName, setStudentName] = useState(invoice?.student_name ?? "");
+  const [phone, setPhone] = useState(invoice?.phone ?? "");
   const [courses, setCourses] = useState<CourseRow[]>([]);
   /** Học cụ còn bán — chọn một dòng là điền sẵn tên và giá bán. */
   const [supplies, setSupplies] = useState<SupplyItemRow[]>([]);
-  const [method, setMethod] = useState<PaymentMethod>("transfer");
-  const [issuedOn, setIssuedOn] = useState(todayISO());
-  const [dueOn, setDueOn] = useState("");
-  const [items, setItems] = useState<InvoiceItem[]>([{ ...EMPTY_ITEM }]);
+  const [method, setMethod] = useState<PaymentMethod>(invoice?.method ?? "transfer");
+  const [issuedOn, setIssuedOn] = useState(invoice?.issued_on ?? todayISO());
+  const [dueOn, setDueOn] = useState(invoice?.due_on ?? "");
+  const [items, setItems] = useState<InvoiceItem[]>(invoice?.items.map((item) => ({ ...item })) ?? [{ ...EMPTY_ITEM }]);
 
-  const [sessions, setSessions] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [perWeek, setPerWeek] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [endTouched, setEndTouched] = useState(false);
+  const [sessions, setSessions] = useState(invoice?.total_sessions == null ? "" : String(invoice.total_sessions));
+  const [startDate, setStartDate] = useState(invoice?.start_date ?? "");
+  const [perWeek, setPerWeek] = useState(invoice?.sessions_per_week == null ? "" : String(invoice.sessions_per_week));
+  const [endDate, setEndDate] = useState(invoice?.end_date ?? "");
+  const [endTouched, setEndTouched] = useState(!!invoice);
 
-  const [note, setNote] = useState("");
-  const [terms, setTerms] = useState("");
+  const [note, setNote] = useState(invoice?.note ?? "");
+  const [terms, setTerms] = useState(invoice?.terms ?? "");
   const [termsSaved, setTermsSaved] = useState(false);
-  const [bankInfo, setBankInfo] = useState("");
-  const [discount, setDiscount] = useState("0");
-  const [paid, setPaid] = useState("0");
+  const [bankInfo, setBankInfo] = useState(invoice?.bank_info ?? "");
+  const [discount, setDiscount] = useState(String(invoice?.discount ?? 0));
+  const [paid, setPaid] = useState(String(invoice?.paid_amount ?? 0));
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -130,16 +138,18 @@ export function InvoiceFormModal({
     let cancelled = false;
     const needStudents = target.kind === "student";
     Promise.all([
-      nextInvoiceNo(),
-      fetchTemplate("invoice_terms"),
+      invoice ? Promise.resolve(invoice.invoice_no) : nextInvoiceNo(),
+      invoice ? Promise.resolve({ body: invoice.terms ?? "" }) : fetchTemplate("invoice_terms"),
       fetchCourses(),
       needStudents ? fetchProfilesByRole("student") : Promise.resolve([] as ProfileRow[]),
       fetchSupplyItems().catch(() => [] as SupplyItemRow[]),
     ])
       .then(([no, tpl, courseList, studentList, supplyList]) => {
         if (cancelled) return;
-        setInvoiceNo(no);
-        setTerms(tpl.body);
+        if (!invoice) {
+          setInvoiceNo(no);
+          setTerms(tpl.body);
+        }
         setCourses(courseList);
         setStudents(studentList);
         setSupplies(supplyList.filter((s) => s.is_active));
@@ -165,6 +175,7 @@ export function InvoiceFormModal({
 
   /* Thông tin chuyển khoản của tờ gần nhất — chỉ điền khi người dùng chưa gõ. */
   useEffect(() => {
+    if (invoice) return;
     let cancelled = false;
     lastBankInfo(branchId || null)
       .then((info) => {
@@ -174,7 +185,7 @@ export function InvoiceFormModal({
     return () => {
       cancelled = true;
     };
-  }, [branchId]);
+  }, [branchId, invoice]);
 
   /* Ngày kết thúc tự suy ra, trừ khi người dùng đã tự sửa. */
   useEffect(() => {
@@ -182,14 +193,15 @@ export function InvoiceFormModal({
     setEndDate(estimateEnd(startDate, Number(sessions) || 0, Number(perWeek) || 0));
   }, [startDate, sessions, perWeek, endTouched]);
 
-  const subtotal = items.reduce((s, i) => s + lineTotal(i), 0);
+  const subtotal = items.reduce((s, i) => s + lineSubtotal(i), 0);
+  const lineDiscounts = items.reduce((s, i) => s + lineDiscount(i), 0);
   const discountNum = Number(discount) || 0;
   const total = invoiceTotal(items, discountNum);
   const paidNum = Number(paid) || 0;
   const debt = Math.max(0, total - paidNum);
   const sessionsNum = Number(sessions) || 0;
 
-  const studentId = target.kind === "lead" ? target.studentId : (student?.id ?? null);
+  const studentId = invoice ? invoice.student_id : target.kind === "lead" ? target.studentId : (student?.id ?? null);
   /** Chỉ học viên đã có hồ sơ mới sinh được gói buổi. */
   const makesPackage = !!studentId && sessionsNum > 0;
 
@@ -241,18 +253,51 @@ export function InvoiceFormModal({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user) return;
+    if (!user || saving) return;
     const filled = items.filter((i) => i.name.trim() || lineTotal(i) > 0);
     if (!branchId) return setError("Chọn trung tâm.");
     if (!invoiceNo.trim()) return setError("Nhập số hoá đơn.");
     if (target.kind === "student" && !student) return setError("Chọn học viên.");
+    if (invoice && !parentName.trim()) return setError("Nhập tên người đứng tên hoá đơn.");
+    if (!issuedOn) return setError("Nhập ngày hoá đơn.");
+    if (invoice?.package_id && sessionsNum <= 0) return setError("Hoá đơn đã có gói học cần ít nhất một buổi.");
     if (filled.length === 0) return setError("Thêm ít nhất một dòng nội dung.");
-    if (discountNum > subtotal) return setError("Giảm giá không được lớn hơn tổng học phí.");
+    for (const item of filled) {
+      const value = Number(item.discount_value) || 0;
+      if (value < 0 || (item.discount_type === "percent" ? value > 100 : value > lineSubtotal(item))) {
+        return setError("Giảm giá từng dòng phải từ 0 đến 100% hoặc không vượt thành tiền dòng đó.");
+      }
+    }
+    if (discountNum > subtotal - lineDiscounts) return setError("Giảm giá không được lớn hơn học phí còn lại sau giảm từng dòng.");
     if (paidNum > total) return setError("Số tiền đã thu không được lớn hơn tổng phải đóng.");
 
     setSaving(true);
     setError(null);
     try {
+      if (invoice) {
+        await updateInvoice(invoice.id, {
+          invoice_no: invoiceNo,
+          branch_id: branchId,
+          customer_name: parentName,
+          student_name: studentName,
+          phone,
+          issued_on: issuedOn,
+          due_on: dueOn || null,
+          method,
+          items: filled,
+          discount: discountNum,
+          paid_amount: paidNum,
+          note,
+          bank_info: bankInfo,
+          terms,
+          total_sessions: sessionsNum || null,
+          start_date: startDate || null,
+          sessions_per_week: Number(perWeek) || null,
+          end_date: endDate || null,
+        });
+        onCreated();
+        return;
+      }
       /* 1. Gói buổi: chỉ khi khách đã là học viên và có số buổi */
       let packageId: string | null = null;
       if (makesPackage && studentId) {
@@ -263,7 +308,7 @@ export function InvoiceFormModal({
           total_sessions: sessionsNum,
           price: subtotal,
           discount_percent: 0,
-          discount: discountNum,
+          discount: discountNum + lineDiscounts,
           start_date: startDate || issuedOn,
           note: note.trim() || null,
           created_by: user.id,
@@ -349,7 +394,7 @@ export function InvoiceFormModal({
   }
 
   return (
-    <Modal open onClose={onClose} title="Tạo hoá đơn" className="sm:max-w-3xl">
+    <Modal open onClose={() => !saving && onClose()} title={invoice ? `Sửa hoá đơn ${invoice.invoice_no}` : "Tạo hoá đơn"} className="sm:max-w-3xl">
       <form onSubmit={submit} className="space-y-5">
         {error && <ErrorNote message={error} />}
 
@@ -368,7 +413,19 @@ export function InvoiceFormModal({
             <Input value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} required />
           </Field>
 
-          {target.kind === "student" ? (
+          {invoice ? (
+            <>
+              <Field label="Phụ huynh (người đứng tên)" required>
+                <Input value={parentName} onChange={(e) => setParentName(e.target.value)} required />
+              </Field>
+              <Field label="Tên học viên trên hoá đơn">
+                <Input value={studentName} onChange={(e) => setStudentName(e.target.value)} />
+              </Field>
+              <Field label="Số điện thoại">
+                <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              </Field>
+            </>
+          ) : target.kind === "student" ? (
             <Field label="Học viên" required>
               <Select
                 value={student?.id ?? ""}
@@ -389,10 +446,10 @@ export function InvoiceFormModal({
           ) : (
             <Field label="Khách hàng">
               <div className="flex items-center gap-2.5 rounded-lg border bg-secondary/40 px-3 py-2">
-                <Avatar name={target.customerName} size={28} />
+                <Avatar name={target.kind === "lead" ? target.customerName : ""} size={28} />
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold">{target.customerName}</div>
-                  {target.studentName && (
+                  <div className="truncate text-sm font-semibold">{target.kind === "lead" && target.customerName}</div>
+                  {target.kind === "lead" && target.studentName && (
                     <div className="truncate text-xs text-muted-foreground">
                       Học viên: {target.studentName}
                     </div>
@@ -473,20 +530,52 @@ export function InvoiceFormModal({
                   <Input
                     className="w-16"
                     type="number"
-                    min={0}
+                    min={1}
                     value={it.qty}
                     onChange={(e) => patchItem(i, { qty: Number(e.target.value) })}
                     aria-label="Số lượng"
                   />
-                  <Input
-                    className="w-32"
-                    type="number"
-                    min={0}
-                    step={1000}
-                    value={it.price}
-                    onChange={(e) => patchItem(i, { price: Number(e.target.value) })}
-                    aria-label="Đơn giá"
-                  />
+                  <div className="grid w-full grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] items-end gap-2 sm:flex sm:w-auto">
+                    <Field label="Đơn giá">
+                      <Input
+                        className="w-full sm:w-32"
+                        type="number"
+                        min={0}
+                        step={1000}
+                        value={it.price}
+                        onChange={(e) => patchItem(i, { price: Number(e.target.value) })}
+                        aria-label="Đơn giá"
+                      />
+                    </Field>
+                    <Field label="Giảm giá">
+                      <div className="flex min-w-0 items-center gap-1.5">
+                        <Select
+                          value={it.discount_type ?? "cash"}
+                          onChange={(e) => patchItem(i, {
+                            discount_type: e.target.value as "percent" | "cash",
+                            discount_value: 0,
+                          })}
+                          aria-label={`Kiểu giảm giá dòng ${i + 1}`}
+                          className="pl-2 pr-6 text-xs sm:text-sm"
+                          wrapClassName="w-24 shrink-0 sm:w-28"
+                        >
+                          <option value="percent">Theo %</option>
+                          <option value="cash">Tiền mặt</option>
+                        </Select>
+                        <Input
+                          className="min-w-0 flex-1 sm:w-28 sm:flex-none"
+                          type="number"
+                          min={0}
+                          max={it.discount_type === "percent" ? 100 : lineSubtotal(it)}
+                          step={it.discount_type === "percent" ? 0.1 : 1}
+                          value={it.discount_value ?? 0}
+                          onChange={(e) => patchItem(i, { discount_value: Number(e.target.value) })}
+                          aria-label={`Giảm giá dòng ${i + 1}`}
+                        />
+                        <span className="text-xs text-muted-foreground">{it.discount_type === "percent" ? "%" : "₫"}</span>
+                      </div>
+                    </Field>
+                  </div>
                   <div className="ml-auto whitespace-nowrap text-sm font-semibold tabular-nums">
                     {fmtVND(lineTotal(it))}
                   </div>
@@ -595,9 +684,14 @@ export function InvoiceFormModal({
               <span className="font-semibold tabular-nums">{fmtVND(subtotal)}</span>
             </div>
             <div className="mt-3 flex items-center justify-between gap-3 text-sm">
-              <span className="text-muted-foreground">Giảm giá</span>
+              <span className="text-muted-foreground">Giảm giá từng dòng</span>
+              <span className="tabular-nums">− {fmtVND(lineDiscounts)}</span>
+            </div>
+            <div className="mt-3 flex items-center justify-between gap-3 text-sm">
+              <span className="text-muted-foreground">Giảm thêm toàn hoá đơn</span>
               <Input
                 className="w-36 text-right"
+                aria-label="Giảm thêm toàn hoá đơn"
                 type="number"
                 min={0}
                 step={1000}
@@ -613,6 +707,7 @@ export function InvoiceFormModal({
               <span className="text-muted-foreground">Đã thu</span>
               <Input
                 className="w-36 text-right"
+                aria-label="Đã thu"
                 type="number"
                 min={0}
                 step={1000}
@@ -630,7 +725,11 @@ export function InvoiceFormModal({
               <span className="tabular-nums">{fmtVND(debt)}</span>
             </div>
 
-            {makesPackage ? (
+            {invoice?.package_id ? (
+              <p className="mt-3 text-xs text-muted-foreground">
+                Lưu thay đổi sẽ cập nhật gói học hiện có và số tiền trên biên lai đi kèm.
+              </p>
+            ) : makesPackage ? (
               <p className="mt-3 text-xs text-muted-foreground">
                 Hoá đơn này sẽ tạo gói {sessionsNum} buổi cho học viên — điểm danh trừ buổi từ ngày
                 bắt đầu, tiền “Đã thu” ghi thành biên lai in được.
@@ -647,11 +746,11 @@ export function InvoiceFormModal({
         </div>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={saving}>
             Hủy
           </Button>
           <Button type="submit" disabled={saving}>
-            {saving ? "Đang tạo..." : "Tạo hoá đơn"}
+            {saving ? "Đang lưu..." : invoice ? "Lưu thay đổi" : "Tạo hoá đơn"}
           </Button>
         </div>
       </form>

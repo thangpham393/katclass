@@ -16,6 +16,9 @@ export interface InvoiceItem {
   qty: number;
   price: number;
   course_id?: string | null;
+  discount_type?: "percent" | "cash";
+  /** Discount on the entire line (qty × price), in percent or VND. */
+  discount_value?: number;
 }
 
 export interface InvoiceRow {
@@ -70,13 +73,27 @@ export interface InvoiceInput {
   package_id?: string | null;
 }
 
+/** Editing keeps the original customer links and updates the linked package/receipt atomically. */
+export type InvoiceUpdateInput = Omit<InvoiceInput, "lead_id" | "student_id" | "package_id">;
+
 const SELECT =
   "id, invoice_no, branch_id, lead_id, student_id, customer_name, student_name, phone, issued_on, due_on, method, items, discount, paid_amount, note, bank_info, terms, total_sessions, start_date, sessions_per_week, end_date, package_id, created_at";
 
 /* ============ Tính tiền ============ */
 
-export function lineTotal(item: InvoiceItem): number {
+export function lineSubtotal(item: InvoiceItem): number {
   return (Number(item.qty) || 0) * (Number(item.price) || 0);
+}
+
+export function lineDiscount(item: InvoiceItem): number {
+  const gross = lineSubtotal(item);
+  const value = Math.max(0, Number(item.discount_value) || 0);
+  return Math.min(gross, item.discount_type === "percent" ? Math.round(gross * value / 100) : value);
+}
+
+/** Net line amount after its own discount. Existing items have no line discount. */
+export function lineTotal(item: InvoiceItem): number {
+  return Math.max(0, lineSubtotal(item) - lineDiscount(item));
 }
 
 /** Tổng cần đóng = tiền hàng − giảm giá (không âm). */
@@ -194,6 +211,8 @@ export async function createInvoice(input: InvoiceInput, createdBy?: string | nu
           qty: Number(i.qty) || 0,
           price: Number(i.price) || 0,
           course_id: i.course_id ?? null,
+          discount_type: i.discount_type ?? "cash",
+          discount_value: Number(i.discount_value) || 0,
         })),
       discount: Number(input.discount) || 0,
       paid_amount: Number(input.paid_amount) || 0,
@@ -211,6 +230,31 @@ export async function createInvoice(input: InvoiceInput, createdBy?: string | nu
     .single();
   if (error) throw error;
   return (data as { id: string }).id;
+}
+
+export async function updateInvoice(id: string, input: InvoiceUpdateInput): Promise<void> {
+  const { error } = await getSupabase().rpc("update_invoice", {
+    p_invoice_id: id,
+    changes: {
+      ...input,
+      invoice_no: input.invoice_no.trim(),
+      customer_name: input.customer_name.trim(),
+      student_name: input.student_name?.trim() || null,
+      phone: input.phone?.trim() || null,
+      due_on: input.due_on || null,
+      items: input.items.filter((i) => i.name.trim() || lineTotal(i) > 0).map((i) => ({
+        ...i,
+        name: i.name.trim(),
+        course_id: i.course_id || null,
+      })),
+      note: input.note?.trim() || null,
+      bank_info: input.bank_info?.trim() || null,
+      terms: input.terms?.trim() || null,
+      start_date: input.start_date || null,
+      end_date: input.end_date || null,
+    },
+  });
+  if (error) throw error;
 }
 
 /**

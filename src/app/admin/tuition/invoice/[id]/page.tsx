@@ -10,14 +10,17 @@
  */
 
 import Link from "next/link";
+import { useState } from "react";
 import { useParams } from "next/navigation";
-import { ArrowLeft, Printer } from "lucide-react";
+import { ArrowLeft, Pencil, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { Logo } from "@/components/brand/logo";
 import { useLoad } from "@/lib/use-load";
 import { fmtVND, PAYMENT_METHOD_LABELS } from "@/lib/db-tuition";
-import { fetchInvoice, invoiceDebt, invoiceTotal, lineTotal } from "@/lib/db-invoices";
+import { fetchInvoice, invoiceDebt, invoiceTotal, lineTotal, lineSubtotal, lineDiscount } from "@/lib/db-invoices";
+import { InvoiceFormModal } from "@/components/invoice-form";
+import { useAuth } from "@/components/auth/auth-provider";
 
 function fmtDate(iso: string): string {
   return new Date(iso.slice(0, 10) + "T00:00:00").toLocaleDateString("vi-VN");
@@ -26,31 +29,41 @@ function fmtDate(iso: string): string {
 export default function InvoicePrintPage() {
   const { id } = useParams<{ id: string }>();
   const inv = useLoad(() => fetchInvoice(id), [id]);
+  const [editing, setEditing] = useState(false);
+  const { can } = useAuth();
 
   if (inv.loading) return <LoadingRows rows={5} />;
   if (inv.error) return <ErrorNote message={inv.error} />;
   if (!inv.data) return <ErrorNote message="Không tìm thấy hoá đơn này." />;
 
   const r = inv.data;
-  const subtotal = r.items.reduce((s, i) => s + lineTotal(i), 0);
+  const subtotal = r.items.reduce((s, i) => s + lineSubtotal(i), 0);
+  const discountTotal = r.items.reduce((s, i) => s + lineDiscount(i), Number(r.discount));
   const total = invoiceTotal(r.items, Number(r.discount));
   const debt = invoiceDebt(r);
   const issued = new Date(r.issued_on + "T00:00:00");
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <div className="flex items-center justify-between print:hidden">
-        <Link href="/admin/tuition">
+      <div className="flex flex-wrap items-center justify-end gap-2 print:hidden">
+        <Link href="/admin/tuition" className="mr-auto">
           <Button variant="outline">
             <ArrowLeft className="h-4 w-4" /> Hoá đơn
           </Button>
         </Link>
-        <Button onClick={() => window.print()}>
-          <Printer className="h-4 w-4" /> In hoá đơn
-        </Button>
+        <div className="flex gap-2">
+          {(can("tuition.manage") || can("students.manage")) && (
+            <Button variant="outline" onClick={() => setEditing(true)}>
+              <Pencil className="h-4 w-4" /> Sửa hoá đơn
+            </Button>
+          )}
+          <Button onClick={() => window.print()}>
+            <Printer className="h-4 w-4" /> In hoá đơn
+          </Button>
+        </div>
       </div>
 
-      <div className="rounded-2xl border bg-card p-8 shadow-sm print:rounded-none print:border-0 print:p-0 print:shadow-none">
+      <div className="rounded-2xl border bg-card p-4 shadow-sm sm:p-8 print:rounded-none print:border-0 print:p-0 print:shadow-none">
         <div className="flex items-start justify-between gap-4 border-b pb-5">
           <div>
             <Logo />
@@ -96,7 +109,7 @@ export default function InvoicePrintPage() {
           </div>
         </dl>
 
-        <table className="mt-5 w-full text-sm">
+        <table className="mt-5 w-full text-xs sm:text-sm">
           <thead>
             <tr className="border-y text-left text-xs uppercase tracking-[0.04em] text-muted-foreground">
               <th className="py-2 pr-3 font-semibold">Nội dung</th>
@@ -108,10 +121,17 @@ export default function InvoicePrintPage() {
           <tbody>
             {r.items.map((it, i) => (
               <tr key={i} className="border-b">
-                <td className="py-2 pr-3">{it.name}</td>
+                <td className="py-2 pr-3">
+                  {it.name}
+                  {lineDiscount(it) > 0 && (
+                    <div className="mt-0.5 text-xs text-muted-foreground">
+                      Giảm {it.discount_type === "percent" ? `${it.discount_value}% · ` : ""}{fmtVND(lineDiscount(it))}
+                    </div>
+                  )}
+                </td>
                 <td className="py-2 pr-3 text-right tabular-nums">{it.qty}</td>
-                <td className="py-2 pr-3 text-right tabular-nums">{fmtVND(it.price)}</td>
-                <td className="py-2 text-right tabular-nums">{fmtVND(lineTotal(it))}</td>
+                <td className="whitespace-nowrap py-2 pr-3 text-right tabular-nums">{fmtVND(it.price)}</td>
+                <td className="whitespace-nowrap py-2 text-right tabular-nums">{fmtVND(lineTotal(it))}</td>
               </tr>
             ))}
           </tbody>
@@ -136,10 +156,10 @@ export default function InvoicePrintPage() {
             <dt className="text-muted-foreground">Tổng học phí</dt>
             <dd className="tabular-nums">{fmtVND(subtotal)}</dd>
           </div>
-          {Number(r.discount) > 0 && (
+          {discountTotal > 0 && (
             <div className="flex justify-between">
               <dt className="text-muted-foreground">Giảm giá</dt>
-              <dd className="tabular-nums">− {fmtVND(Number(r.discount))}</dd>
+              <dd className="tabular-nums">− {fmtVND(discountTotal)}</dd>
             </div>
           )}
           <div className="flex justify-between border-t pt-2 text-base font-extrabold">
@@ -185,6 +205,16 @@ export default function InvoicePrintPage() {
           </div>
         </div>
       </div>
+      {editing && (
+        <InvoiceFormModal
+          target={{ kind: "invoice", invoice: r }}
+          onClose={() => setEditing(false)}
+          onCreated={() => {
+            setEditing(false);
+            inv.reload();
+          }}
+        />
+      )}
     </div>
   );
 }
