@@ -48,7 +48,10 @@ function embeddedPinyin(text: string): { text: string; parts: { text: string; pi
 
 export function textWithoutEmbeddedPinyin(text: string): string { return embeddedPinyin(text)?.text ?? text; }
 
-export function pinyinAllowed(q: { type: QuestionType; content: QuestionContent }): boolean {
+export function pinyinAllowed(q: { type: QuestionType; content: QuestionContent; level?: string | null; tags?: readonly string[] }): boolean {
+  // Level is authoritative; tags cover old test snapshots that lost their lesson link.
+  const level = q.level?.match(/^HSK[\s_-]*([0-9]+)/i) ?? q.tags?.map(tag => tag.match(/^HSK[\s_-]*([0-9]+)/i)).find(Boolean);
+  if (level && Number(level[1]) >= 3) return false;
   const c = q.content;
   if (c.pinyin_mode === "hidden" || q.type === "pinyin_choice" || q.type === "hanzi_pinyin" || c.require_pinyin) return false;
   if (q.type === "multi_matching" && c.columns?.some(column => /pinyin|phiên âm/i.test(column.label))) return false;

@@ -1,0 +1,1874 @@
+{
+  "description": "Source examples for workbook layout regressions; independent of unpublished importer changes. Source file names and SHA-256 remain on each question.",
+  "hsk3IntroLessons": [
+    {
+      "unit": 1,
+      "title": "Anh dự định làm gì vào cuối tuần vậy?",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 1 (40 câu) - KAT.pdf",
+              "sha256": "5827aeed1adc8f84c501465de0fa82910b8ff967ec769f195d1f2c5eef252b16",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 1 - KAT.pdf",
+              "answer_sha256": "ea41f77cfa230e4fb176e1c81c1c91122d6a7dda9dc3aef608dc8e64ab77061f",
+              "unit": 1,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 周末 có nghĩa là:",
+            "options": [
+              "tuần này",
+              "cuối tháng",
+              "ngày thường",
+              "cuối tuần"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 1\nBổ ngữ kết quả 好                               今晚的电影小刚已经买好票了。\n= việc đã xong VÀ người nói hài lòng           饭还没做好，请你等一会儿。\nSo sánh: 吃完了 chỉ là \"ăn xong\", 吃               去旅游的东西准备好了吗？\n好了 là \"ăn xong và ngon miệng\".                 我还没想好要不要跟你去呢。\n\nPhủ định hoàn toàn:                            我一个苹果也不想吃。\n一 + 量词 + 名词 + 也/都 + 不/没 +                      昨天他一件衣服都没买。\n动词                                             手机、电脑、地图，一个也不能少。\n一点儿 + 也/都 + 不 + 形容词                            他一点儿也不累。 · 南方一点儿都不冷。\n也/都 luôn đứng TRƯỚC 不/没                        这个星期我很忙，一点儿时间也没有。\n\nLiên từ 那                                      A: 我不想去看电影。 B: 那我也不去了。\n= \"vậy thì\", đứng đầu câu, nêu kết             A: 我早就复习好了。 B: 那也不能一直玩儿啊。\nluận rút ra từ lời người trước\n\nTừ mới cần nhớ                                 周末 · 打算 · 啊 · 跟 · 一直 · 游戏 · 作业 · 着急 · 复习 · 南(方)\n· 北方 · 面包 · 带 · 地图 · 搬"
+          },
+          "answer": "D"
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "Khi nào anh ấy quay về?",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 2 (40 câu) - KAT.pdf",
+              "sha256": "91579cc41664f39bbc8a8bdb090392226c25f37ea1a521fd573910703a9c21e7",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 2 - KAT.pdf",
+              "answer_sha256": "1256d8d75f03d1dcfe128640e99df4e881e7c75eeccddfbccd76d03adf94c794",
+              "unit": 2,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 腿 có nghĩa là:",
+            "options": [
+              "tay",
+              "đầu",
+              "chân",
+              "lưng"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 2\nBổ ngữ xu hướng đơn: 动词 + 来/去                  我们在楼上等你呢，你上来吧。\n来 = hướng về phía người nói                    谁在外边？你出去看看吧。\n去 = hướng ra xa người nói                      汉语书你带来了吗？\nĐộng từ hay dùng: 上·下·进·出·                     那边树多，我们过去坐一下吧。\n回·过·起 và 买·带·搬\n\nVị trí tân ngữ:                                老师进教室来了。 · 朋友回家去了。\n· nơi chốn → đặt TRƯỚC 来/去                     我上楼去。\n· sự vật → trước hoặc sau đều được             帮我买来点儿面包。 = 帮我买点儿面包来。\n\nHai hành động nối tiếp:                        我下了课就吃饭。\n动词1 + 了 …… 就 + 动词2                             妈妈起了床就做早饭。\nNếu có hai chủ ngữ, chủ ngữ thứ hai            你下了课我们就去书店。\nđặt TRƯỚC 就                                    他到了办公室我就告诉他。\n\nCâu phản vấn 能……吗？                             你不做作业，也不练习，能学好吗？ (= không thể học giỏi)\n· giữa là khẳng định → ý phủ định              吃了饭就睡觉，也不出去走走，能不胖吗？ (= chắc chắn sẽ béo)\n· giữa là phủ định → ý khẳng định\n\nTừ mới cần nhớ                                 腿 · 疼 · 脚 · 树 · 容易 · 难 · 太太 · 秘书 · 经理 · 办公室 · 辆\n· 楼 · 拿 · 把 · 伞 · 胖 · 其实 · 瘦"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Trên bàn có rất nhiều thức uống.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 3 (40 câu) - KAT.pdf",
+              "sha256": "d1ed176911aa00c114f129f2a000e981fed2454ac0876cca9f77b46d45c5f014",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 3 - KAT.pdf",
+              "answer_sha256": "174cf7f389ee0c567b9e1aaf535c20914ce5a95d420ac4b52d7205f519ea9c40",
+              "unit": 3,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 新鲜 có nghĩa là:",
+            "options": [
+              "mới lạ",
+              "tươi",
+              "sạch sẽ",
+              "hiếm có"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 3\n还是 — dùng trong câu hỏi lựa chọn               你要喝咖啡还是喝茶？\n或者 — dùng trong câu trần thuật                 今天晚上吃米饭或者面条都可以。\nMệnh đề mang hình thức nghi vấn                我不知道这个人是男的还是女的。\nnằm trong câu trần thuật vẫn dùng 还            他的生日是10月还是11月，我不记得了。\n是\n\nCâu tồn hiện:                                  桌子上放着一杯咖啡。\n处所词 + 动词着 + 数量 + 名词                            我家楼上住着一个老师。\nDanh từ phía sau phải là bất định (一           上面写着320元。 · 桌子上放着很多饮料。\n杯咖啡), không dùng 这杯咖啡                          桌子上没放着咖啡。 · 上面没写着多少钱。\nPhủ định: 处所词 + 没动词着 + 名词\n(bỏ lượng từ)\n\nTrợ động từ 会 chỉ khả năng, việc               你穿得那么少，会感冒的。\nchưa xảy ra                                    别担心，我会照顾好自己。\nThường đi với …的 ở cuối câu                    你不给他打电话，他会不高兴的。\n喝杯热茶会很舒服。\n\nTừ mới cần nhớ                                 还是 · 爬山 · 小心 · 条 · 裤子 · 记得 · 衬衫 · 元 · 新鲜 · 甜 ·\n只(zhǐ) · 放 · 饮料 · 或者 · 舒服 · 花 · 绿"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Cô ấy luôn cười khi nói chuyện với khách hàng.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 4 (40 câu) - KAT.pdf",
+              "sha256": "2e9bca1780cb2b3218e120826ee3847abb613c0d373e31d9031d79ae3a3b9312",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 4 - KAT.pdf",
+              "answer_sha256": "ff5479a4542b48765dd2c798aaf558ce890f4b187e85a38c7bfa1479567f0aa9",
+              "unit": 4,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 聪明 có nghĩa là:",
+            "options": [
+              "ngoan ngoãn",
+              "chăm chỉ",
+              "thông minh",
+              "xinh đẹp"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 4\n又 + 形容词1 + 又 + 形容词2                            这个西瓜又大又甜。\n= người/vật có đồng thời hai đặc điểm          外边又黑又冷。\nKHÔNG dùng kèm 很/非常; hai vế                    服务员又年轻又漂亮。\nphải cùng loại từ                              她工作又认真又热情。\n\nHành động đi kèm:                              弟弟吃着苹果写作业。\n动词1 + 着 (+宾语1) + 动词2 (+宾语2) 周先生和周太太坐着看电视。\nĐộng từ 1 là trạng thái / cách thức đi 很多人拿着花站在门口。\nkèm; động từ 2 mới là hành động                她总是笑着跟客人说话。\nchính\n\nTừ mới cần nhớ                                 比赛 · 照片 · 年级 · 又 · 聪明 · 热情 · 努力 · 总是 · 回答 · 站\n· 饿 · 超市 · 蛋糕 · 年轻 · 认真 · 客人"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "title": "Dạo này em ngày càng béo ra.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 5 (40 câu) - KAT.pdf",
+              "sha256": "eb68c329114d0f357b65cdf5ba52ac3defdfea4d50c83af5a3f47ebf3aacc0a8",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 5 - KAT.pdf",
+              "answer_sha256": "f76ebba2416229aac34789c25ac07386208b4a36716287eb0abf887a4c65ce06",
+              "unit": 5,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 发烧 có nghĩa là:",
+            "options": [
+              "nổi giận",
+              "sốt",
+              "nấu chín",
+              "cháy"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 5\nTrợ từ 了 chỉ SỰ THAY ĐỔI                         上个月很冷，现在天气不那么冷了。\nĐặt ở cuối câu trần thuật                        我前几天有点儿发烧，现在好多了。\nNghĩa: tình hình đã khác trước, hoặc             我现在喜欢夏天了。 (trước đây thì không)\nxuất hiện tình huống mới                         这条裙子是去年买的，今年就不能穿了。\n\n越来越 + 形容词 / 心理动词                                 我认识的汉字越来越多。\n= mức độ tăng dần theo thời gian                 你越来越漂亮。\nTrước tính từ KHÔNG được thêm 很 /                我越来越喜欢运动。\n非常 / 太                                           我做的饭越来越好吃。\n我最近越来越胖了。\n\nTừ mới cần nhớ                                   发烧 · 为 · 照顾 · 用 · 感冒 · 季节 · 当然 · 春(天) · 草 · 夏(天)\n· 裙子 · 最近 · 越"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "title": "Sao bỗng dưng lại không tìm thấy?",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 6 (40 câu) - KAT.pdf",
+              "sha256": "cef2ec7e7ba918d27aa8d1b7f278fb119aab2c6c4243d2ebf9793b393f1cd589",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 6 - KAT.pdf",
+              "answer_sha256": "b4545bcf331fa32e09215862762678048d1d871d8b6a1904391358d937186003",
+              "unit": 6,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 眼镜 có nghĩa là:",
+            "options": [
+              "con mắt",
+              "tấm gương",
+              "kính mắt",
+              "ống nhòm"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 6\nBổ ngữ khả năng:                               我看得清楚那个汉字。\n· khẳng định 动词 + 得 + 补语                       楼太高了，我上不去。\n· phủ định 动词 + 不 + 补语                         老师说的话你听得见听不见？\n· nghi vấn 动词得…动词不…? hoặc                      我找不到好饭馆。\n…得…吗?\n得/不 chen vào giữa động từ và bổ\nngữ\n\n名词 + 呢？ = hỏi ở đâu                            A: 你的书呢？放在哪儿了？ B: 就在桌子上啊。\n= …在哪儿？                                        A: 我的眼镜呢？你看见了吗？ B: 我没看见啊。\n\n刚 — phó từ, chỉ đứng trước động từ;            爸爸刚出去。 — 爸爸刚才出去了。\nkhoảng thời gian ngắn theo cảm nhận            我刚喝完一杯咖啡。 — 刚才我喝了一杯咖啡。\nngười nói (có thể vài phút, vài ngày,          儿子刚做完作业。 — 刚才儿子在做作业。\nvài tháng)                                     我刚来中国两个月。（刚才 không dùng được ở đây）\n刚才 — danh từ, chỉ vài phút trước;\nđứng trước động từ hoặc đầu câu\n\nTừ mới cần nhớ                                 眼镜 · 突然 · 离开 · 清楚 · 刚才 · 帮忙 · 特别 · 讲 · 明白 · 锻\n炼 · 音乐 · 公园 · 聊天(儿) · 睡着 · 更"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "title": "Tôi và cô ấy quen nhau được năm năm rồi.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 7 (40 câu) - KAT.pdf",
+              "sha256": "318d40dd3b6b0197df81950835b081fbc66942229e09208a2bf94cdf9cfdf646",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 7 - KAT.pdf",
+              "answer_sha256": "0efc0b1c14b913b85e23d251f72a8887d1b9d2dba57b98e8ef0de07d2795bfce",
+              "unit": 7,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 同事 có nghĩa là:",
+            "options": [
+              "bạn học",
+              "bạn cùng phòng",
+              "đồng nghiệp",
+              "việc chung"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 7\nBổ ngữ thời lượng:                             她工作了三年。 · 我们唱了两个小时歌。\n主语 + 动词 + 了 + 时间 + 宾语                          我们坐了一个小时公共汽车。 · 你怎么晚到了一刻钟？\nThời lượng đứng giữa động từ và tân            我学习了一年汉语了。 (vẫn đang học)\nngữ.                                           我都在这儿坐了半个小时了。\nThêm 了 ở cuối câu = việc vẫn đang\ntiếp diễn.\n\nDiễn tả hứng thú:                              他们对电影感兴趣。 · 我对她更感兴趣。\n对…… 感兴趣 / 有兴趣                                  我儿子对打篮球不感兴趣。 · 同学对汉语有兴趣。\nPhủ định: 对…不感兴趣 / 对…没(有)\n兴趣\nPhó từ mức độ đặt TRƯỚC 感兴趣: 很\n感兴趣 · 非常有兴趣\n\nĐọc giờ bằng 半 · 刻 · 差                         1:30 → 一点半 · 12:15 → 十二点一刻 · 12:45 → 差一刻一点 · 11:55 → 差五\n分十二点\nLưu ý: 一刻钟 là khoảng thời gian = 15 phút\n\nTừ mới cần nhớ                                 同事 · 以前 · 银行 · 久 · 感兴趣 · 结婚 · 欢迎 · 迟到 · 半 · 接\n·刻·差"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "title": "Em đi đâu thì anh đi đến đó.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 8 (40 câu) - KAT.pdf",
+              "sha256": "987dc27421146f6caacd407136353ddf9d3135de13d7a0e6a7df6b4c8469c8c1",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 8 - KAT.pdf",
+              "answer_sha256": "813669d395f7a5c92744f0c2750feda2b528369b917b511cc07da2439cb77df0",
+              "unit": 8,
+              "section": 1,
+              "section_title": "TRẮC NGHIỆM TỪ VỰNG (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ \"电梯\" có nghĩa là gì?",
+            "options": [
+              "Cầu thang",
+              "Tàu điện ngầm",
+              "Thang máy",
+              "Xe đạp"
+            ],
+            "hint": "TRẮC NGHIỆM TỪ VỰNG (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 8 (đọc trước khi làm bài)\n\n1. \"又\" và \"再\" — đều đứng trước động từ, chỉ hành\n2. 疑问代词活用 1 — Đại từ nghi vấn dùng linh hoạt\nđộng lặp lại\n\nCấu trúc: Đạ i t ừnghi vấ\nn … 就 … (cùng đạ   i t ừnghi vấ\nn\nđó)\n又 + V: việc lặp lại ĐÃ xảy ra (quá khứ)\nHai đại từ không hỏi, mà chỉ cùng một đối tượng.\n→ 昨天我又去看了看。\n→ 你去哪儿我就去哪儿。\n再 + V: việc lặp lại CHƯA xảy ra (tương lai)\n→ 想吃什么就吃什么。\n→ 明天我还要再去看看。\nHai vế cùng chủ ngữ → lược bỏ chủ ngữ vế sau. Khác chủ ngữ\n→ chủ ngữ thứ hai đặt trước 就."
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "title": "Cô ấy nói tiếng Trung Quốc hay như người Trung Quốc vậy.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 9 (40 câu) - KAT.pdf",
+              "sha256": "592ad65a9215431b75ecde06706e2c6745f3e6d5c5f7e04e9d5828efe426983c",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 9 - KAT.pdf",
+              "answer_sha256": "943a22e383a9838f706d6cacbb78dd8e1fdaeefefe11b9ee46670cd0047c58ee",
+              "unit": 9,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 中文 gần nghĩa nhất với từ nào?",
+            "options": [
+              "中国",
+              "文化",
+              "汉语",
+              "英语"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 9\n越A越B — B thay đổi theo A                       雨越下越大。 — Mưa càng lúc càng to.\n越来越 + 形/动 — ngày càng…                         山越高，路越难走。 — Núi càng cao, đường càng khó đi.\n你总是吃甜的东西，会越吃越胖。\n休息得越多，好得越快。\n你的中文越说越好了。 / 天气越来越热了。\n\nSo sánh (1): A 跟 B 一样（+ 形容                     这本书跟那本书一样。 — Quyển này giống quyển kia.\n词）                                             儿子跟爸爸一样高。 — Con trai cao bằng bố.\nPhủ định: A 跟 B 不一样                            这辆车的颜色跟那辆车不一样。\nLưu ý: sau 一样 KHÔNG dùng 很/非                   她的汉语说得跟中国人一样好。\n常\n\nTừ mới cần nhớ                                 中文 · 班 · 一样 · 最后 · 放心 · 一定 · 担心 · 比较 · 了解 · 先\n· 中间 · 参加 · 影响"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "title": "Môn Toán khó hơn môn Lịch Sử nhiều.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+              "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+              "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+              "unit": 10,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ nào TRÁI NGHĨA với 矮?",
+            "options": [
+              "胖",
+              "高",
+              "大",
+              "长"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 10\nSo sánh (2): A 比 B + 形容词 +                     大山比大卫矮一点儿。 — Đại Sơn thấp hơn David một chút.\n· chênh lệch ít: 一点儿 / 一些                      我今天起得比昨天晚一些。\n· chênh lệch nhiều: 得多 / 多了                    今天的作业比昨天多得多。\nSau 比… KHÔNG dùng 很/非常/太                       数学比历史难多了。\n我比马可大两岁。 — (số lượng đặt ngay sau tính từ)\n\nPhủ định: A 没有 B（+ 这么/那么）                      咖啡没有茶好喝。\n+ 形容词                                          他没有我这么高。\n学校里边的没有学校外边的那么安静。\n\nSố ước lượng (1): hai số đếm liền kề           我每天学习一两个小时汉语。\nđứng cạnh nhau                                 你都喝了三四杯咖啡了！\n一两 · 两三 · 三四 · 五六 · 七八                         骑车七八分钟就能到。\n· 八九                                           附近有三四个车站。\n\nTừ mới cần nhớ                                 个子 · 矮 · 历史 · 体育 · 数学 · 方便 · 自行车 · 骑 · 旧 · 换 ·\n地方 · 中介 · 主要 · 环境 · 附近"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "title": "Đừng quên tắt máy điều hòa không khí nhé.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 11 (40 câu) - KAT.pdf",
+              "sha256": "3c05ee839befae6610ca0a77db950cd229dfbe157cd62f500101223288705499",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 11 - KAT.pdf",
+              "answer_sha256": "1d34dbd438af1848a6a6263dd66b68ae79946213b724522c3adb5c5a16b5921d",
+              "unit": 11,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "桌子上还差一___筷子，你去拿一下。",
+            "options": [
+              "本",
+              "口",
+              "双",
+              "瓶"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 11\nCâu chữ 把 (1):                                 请你把衣服洗了。 — Anh giặt quần áo đi.\nA + 把 + B + 动词 + 了/…                           帮我把这本词典还了吧。\nB phải là người/vật xác định, cả người         你把灯关了吧。\nnói và người nghe đều biết. Sau động           我把爸爸的生日忘了。\ntừ phải có thành phần khác (了, bổ\nngữ…), không để động từ đứng trơ.\n\nPhó từ phủ định (没/别) và động từ               你没把书给我。\nnăng nguyện (能/可以/想) đặt                       你别把手机忘了。\nTRƯỚC 把                                        我不能把电脑给你。\n你可以把空调关了吗？\n\nSố ước lượng (2): 左右                           周末我一般十点左右起床。\nđặt SAU số lượng                               我们公司有五百人左右。\n王经理两点左右来了个电话。\n这个笔记本电脑要五千块左右。\n\nTừ mới cần nhớ                                 图书馆 · 借 · 词典 · 还(huán) · 灯 · 会议 · 结束 · 忘记 · 空调 ·\n关 · 地铁 · 双 · 筷子 · 啤酒 · 口 · 瓶子 · 笔记本 · 电子邮件 ·\n习惯"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "title": "Hãy để những đồ quan trọng ở chỗ tôi đi.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 12 (40 câu) - KAT.pdf",
+              "sha256": "68974f4ca544e7116490fa5b488988a4c47c084bd7bc2ed1c075b14cb8837887",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 12 - KAT.pdf",
+              "answer_sha256": "1b8bc062cb4c0cb7b6d766822fcb04c5c57cdbebd07e6b8f27da0997dbbb6bdf",
+              "unit": 12,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "出国旅游一定要带___。",
+            "options": [
+              "黑板",
+              "护照",
+              "太阳",
+              "司机"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 12\n就 — người nói thấy việc xảy ra                 我早上五点就起床了。\nSỚM, nhanh, thuận lợi                          坐飞机一个小时就到了。\n你怎么这么早就要睡觉了？\n\n才 — người nói thấy việc xảy ra                 八点上课，他九点才起床。\nMUỘN, chậm, không thuận lợi                    坐火车八个小时才能到。\nSau 才 thường KHÔNG có 了                        来机场的路上我才发现忘带护照了。\n\nCâu chữ 把 (2):                                 我把照片放在你包里了。 · 老师把作业放在桌子上了。\nA 把 B + 动词 + 在/到 + 地点                          我帮你把衣服放到行李箱里吧。\nA 把 B + 动词 + 给 + 某人                            我朋友把书借给我了。 · 你帮我把这本书带给小刚。\n\nTừ mới cần nhớ                                 太阳 · 西 · 生气 · 行李箱 · 自己 · 包 · 发现 · 护照 · 起飞 · 司\n机 · 教(jiāo) · 画 · 需要 · 黑板"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 13,
+      "title": "Anh đi bộ về.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 13 (40 câu) - KAT.pdf",
+              "sha256": "818609890bc17c2af8818b565a4d95616763632c7c3ef09bf0d8c72fefb64ffc",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 13 - KAT.pdf",
+              "answer_sha256": "425d66b060996cfd0f52096f114f549f5e75b25a361e005c0912883222240cf2",
+              "unit": 13,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 终于 có nghĩa là:",
+            "options": [
+              "bắt đầu",
+              "đột nhiên",
+              "thường xuyên",
+              "cuối cùng, rốt cuộc"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 13\nBổ ngữ xu hướng kép                            上来·下来·进来·出来·回来·过来·起来\n上/下/进/出/回/过/起 + 来/去                            上去·下去·进去·出去·回去·过去\n来 = hướng về phía người nói · 去 =              老师拿出一本书来。 · 小狗从房间跑出来。\nhướng ra xa người nói                          坐久了还可以站起来休息一会儿。\n\nVị trí tân ngữ:                                老师走进教室来。 · 周太太走进咖啡店去。\n· nơi chốn → TRƯỚC 来/去                         哥哥买回一个西瓜来。＝哥哥买回来一个西瓜。\n· sự vật → trước hoặc sau đều được             爸爸带回来了一些礼物。\n· việc đã hoàn thành → thường đặt\nSAU 来/去\n\n一边 A 一边 B — hai hành động xảy                  妈妈一边唱歌一边做饭。\nra cùng lúc, cùng một chủ ngữ                  老师边说边笑。\nCó thể lược 一: 边…边…                            我丈夫喜欢一边吃早饭一边看报纸。\n\nTừ mới cần nhớ                                 终于 · 爷爷 · 奶奶 · 礼物 · 遇到 · 一边 · 过去 · 一般 · 愿意 ·\n起来 · 应该 · 生活 · 校长 · 坏 · 经常"
+          },
+          "answer": "D"
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "title": "Cậu hãy mang trái cây đến đây.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 14 (40 câu) - KAT.pdf",
+              "sha256": "a2cd1a282934f0b9c83fa26d1e138b2ce8cc266d2c3165406a9d5d78e3ff220f",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 14 - KAT.pdf",
+              "answer_sha256": "7ba7887665a12708865fd0d6a923201daf5cbf308c7ed7233a1a936958a5a248",
+              "unit": 14,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 干净 có nghĩa là:",
+            "options": [
+              "khô ráo",
+              "sạch sẽ",
+              "yên tĩnh",
+              "đơn giản"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 14\nCâu chữ 把 (3):                                 我把衣服洗干净了。\nA 把 B + 动词 + 结果补语                              妈妈还没把饭做好呢。\nA 把 B + 动词 + 趋向补语                              请同学们把铅笔拿出来。\nSau động từ BẮT BUỘC có bổ ngữ,                你把水果拿过来。\nkhông để trơ\n\n先……，再/又……，然后……                                 回家以后，我先做作业，然后吃饭。\nchỉ trình tự trước sau                         我先坐了一个小时公共汽车，又坐了一会儿地铁才到。\n· 再 — việc CHƯA xảy ra                         你先把节目看完吧，然后再给我回电话。\n· 又 — việc ĐÃ xảy ra\n\nTừ mới cần nhớ                                 打扫 · 干净 · 然后 · 冰箱 · 洗澡 · 节目 · 月亮 · 像 · 盘子 · 刮\n风 · 叔叔 · 阿姨 · 故事 · 声音 · 菜单 · 简单 · 香蕉"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 15,
+      "title": "Những câu khác đều không có vấn đề gì.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 15 (40 câu) - KAT.pdf",
+              "sha256": "5ee09631246ff80911c2f7113e65b5b9fc64569f33669be12b2b43c2d2a90797",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 15 - KAT.pdf",
+              "answer_sha256": "74438f9985b4cdbd6cf0974dbc19341a0a8831bed9f6fe85697bd522319a6fdc",
+              "unit": 15,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 留学 có nghĩa là:",
+            "options": [
+              "lưu lại",
+              "học thêm",
+              "du học",
+              "giữ chỗ"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 15\n除了…（以外），都…                                      除了小云以外，其他人都来了。\n= LOẠI TRỪ phần được nhắc, phần                 除了这个汉字以外，别的汉字我都认识。\ncòn lại giống nhau\n以外 có thể lược bỏ\n\n除了…（以外），还/也…                                    除了唱歌以外，他还喜欢跳舞。\n= BỔ SUNG, ngoài cái đã nhắc còn có             除了汉语以外，我还会说英语。\ncái khác                                        除了春节、中秋节以外，啤酒节也是重要的节日。\n\nĐại từ nghi vấn dùng linh hoạt (2):             周末你有没有什么打算？\n什么 thay cho người/vật không xác                 你写得很好，没什么问题。\nđịnh, làm câu nói lịch sự, mềm hơn;             以后有什么不明白的地方，可以给我发电子邮件。\nbỏ đi nghĩa không đổi\n\nMức độ cao nhất: 形容词/心理动词 +                     今天天气冷极了。 · 我的小狗可爱极了。\n极了                                              那件衣服我喜欢极了。 · 他满意极了。\nKHÔNG dùng kèm 很/非常/太\n\nTừ mới cần nhớ                                  留学 · 水平 · 提高 · 练习 · 完成 · 句子 · 其他 · 发 · 要求 · 注\n意 · 上网 · 除了 · 新闻 · 花 · 极了 · 节日 · 举行 · 世界 · 街道\n· 各 · 文化"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "title": "Bây giờ tôi mệt đến nỗi chỉ muốn đi ngủ sau khi hết giờ làm việc.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 16 (40 câu) - KAT.pdf",
+              "sha256": "9d4c0577f342f6353b1010d99cbb639c9f064140e490a1129c7648c08398ebe0",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 16 - KAT.pdf",
+              "answer_sha256": "e38279ca4e296f5577c33055e3a24ae5f2df5ed92b1c11f75f8b51b65dd02164",
+              "unit": 16,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 城市 có nghĩa là:",
+            "options": [
+              "nông thôn",
+              "chợ búa",
+              "thành phố",
+              "công dân"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 16\n如果……（的话），（主语）就……                               如果你太累了，就休息一会儿。\nChủ ngữ của vế sau phải đứng                   如果你喜欢，我就给你买。\nTRƯỚC 就. 如果 hoặc 的话 đều có thể                 如果有钱的话，我就去旅游。\nlược một cái.                                  如果不舒服，就去医院检查一下吧。\n\nBổ ngữ trạng thái phức tạp:                    孩子们玩儿得不想回家。\n形容词/动词 + 得 + 动词词组                              弟弟高兴得跳了起来。\nTả mức độ bằng cả một mệnh đề                  儿子累得下了班就睡觉了。\n人们忙得没时间跟别人见面。\n\nTính từ đơn âm lặp lại: AA 的                   你送的花红红的。 · 这些草绿绿的。\n= mức độ sâu hơn, dùng để miêu tả              他鼻子小小的。 · 头发黑黑的。\nKHÔNG dùng kèm 很/非常                            你女儿长得白白的、胖胖的，真可爱！\n\nTừ mới cần nhớ                                 城市 · 如果 · 认为 · 皮鞋 · 帽子 · 长(zhǎng) · 可爱 · 米 · 公斤 ·\n鼻子 · 头发 · 检查 · 刷牙 · 关系 · 别人 · 词语"
+          },
+          "answer": "C"
+        }
+      ]
+    },
+    {
+      "unit": 17,
+      "title": "Ai cũng có cách chữa khỏi “bệnh” của em.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 17 (40 câu) - KAT.pdf",
+              "sha256": "d4dafe0868177d2cf803aceaa2ad93f066887a62049f7d7e5ed23712eed6e5f9",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 17 - KAT.pdf",
+              "answer_sha256": "3e20baf648e552873869db44f94a8de4e0f31cab752f8931abbce85fdc49ddfc",
+              "unit": 17,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 请假 có nghĩa là:",
+            "options": [
+              "mời khách",
+              "xin nghỉ phép",
+              "nghỉ hè",
+              "nhờ giúp đỡ"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 17\nĐộng từ hai âm tiết lặp lại: ABAB              你介绍我们认识认识吧。\n= hành động diễn ra ngắn, mang tính            有时间你帮助帮助他吧。\n\"thử một chút\", giọng nhẹ nhàng                这是本新书，你学习学习吧。\nKHÔNG lặp thành AABB                           我真应该多锻炼锻炼了。\n\nĐại từ nghi vấn dùng linh hoạt (3):            谁都喜欢小丽。\n谁/什么/怎么/哪儿 … 都/也 …                             小刚什么都喜欢吃。\n= toàn bộ, không có ngoại lệ                   我们怎么去公园都可以。\n都/也 bắt buộc có, đứng trước động từ            最近我觉得哪儿都不舒服。\n\nTừ mới cần nhớ                                 请假 · 一共 · 邻居 · 后来 · 爱好 · 办法 · 饱 · 为了 · 决定 · 选\n择 · 冬(天) · 必须 · 根据 · 情况 · 口 · 渴"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 18,
+      "title": "Tôi tin họ sẽ đồng ý.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 18 (40 câu) - KAT.pdf",
+              "sha256": "f34d1509269cda68cc73d2fff56fa223174de16f70e97279daaa856af78c01e5",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 18 - KAT.pdf",
+              "answer_sha256": "8740757ec14d639424e9e90407f3df08b21324aea50f24298e3b4f8d7d959fe2",
+              "unit": 18,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "我在动物园看见了一___大熊猫。",
+            "options": [
+              "条",
+              "只",
+              "张",
+              "位"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 18\n只要……，（主语）就……                                    只要我有时间，就一定跟你去旅游。\n= chỉ cần A thì B                               我只要喜欢，就一定会买。\nVế 只要 là điều kiện đủ. Chủ ngữ đặt              只要你想去，我就跟你去。\ntrước hoặc sau 只要 đều được, nhưng               只要你给我买，我就能照顾好它。\nchủ ngữ vế sau phải đứng TRƯỚC 就.\n\nGiới từ 关于 + danh từ                            我最近看了一些关于中国文化的电影。\n= về, liên quan tới                             关于这件事，我们还没有决定。\nCụm 关于…的 đứng TRƯỚC danh từ                     关于出国学习的事，妈妈已经同意了。\nchính, hoặc cả cụm 关于…， đứng                    关于这个工作，还有什么问题吗？\nđầu câu.\n\nTừ mới cần nhớ                                  向 · 万 · 只(zhī) · 嘴 · 动物 · 段 · 不但…而且… · 有名 · 同意 ·\n相信 · 关于 · 机会 · 国家 · 种 · 特点 · 奇怪 · 地(de)"
+          },
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "unit": 19,
+      "title": "Anh không nhìn ra được à?",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 19 (40 câu) - KAT.pdf",
+              "sha256": "7b00fc8522cf53d45f0e60680cfc9e816e37676b432d30b89f2422cf0a19e7dc",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 19 - KAT.pdf",
+              "answer_sha256": "9d467f463cd8277dfe72efb6fbf2a4e760ad69bd78b53bc2e594ad8f9f1cf63a",
+              "unit": 19,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 耳朵 có nghĩa là:",
+            "options": [
+              "mắt",
+              "mũi",
+              "miệng",
+              "tai"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 19\n动词 + 出来                                        ① 这个字你能写出来吗？ · 朋友想出来一个好办法。\n① từ không thành có (tạo ra cái mới)           ② 你听出来了吗？这是谁的声音？\n② nhận ra, phân biệt được                        我喝不出来这两杯咖啡有什么不一样。\n\n动词/形容词 + 下来                                    前边的车越开越慢，停下来了。\n= động → tĩnh, mạnh → yếu, nhanh               天黑下来了，孩子们要回家了。\n→ chậm                                         他一学小鸟叫，她马上就安静下来了。\n\n动词 + 起来                                        你记起来我是谁了吗？\n= nhớ ra, hồi tưởng có kết quả                 对不起，我想不起来你的名字了。\nRiêng 看起来 / 看上去 = \"trông có                    这是你做的饭吗？看起来很好吃。\nvẻ\" (đánh giá qua quan sát), KHÔNG\nphải nhớ lại\n\n使 / 叫 / 让 + 某人 + 形/动                           读书使我快乐。 · 考试让我很紧张。\n= khiến cho ai đó…                             穿运动服让他更年轻。\n使 thiên về văn viết, 叫 thiên về khẩu           我把照片发给大家，叫朋友们也高兴高兴。\nngữ\n\nTừ mới cần nhớ                                 耳朵 · 脸 · 短 · 马 · 张 · 位 · 蓝 · 秋(天) · 过 · 鸟 · 哭 · 黄河\n· 船 · 经过"
+          },
+          "answer": "D"
+        }
+      ]
+    },
+    {
+      "unit": 20,
+      "title": "Mình chịu ảnh hưởng từ anh ấy.",
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "content": {
+            "source": {
+              "file": "ÔN TẬP HSK3 - Bài 20 (40 câu) - KAT.pdf",
+              "sha256": "0bc7ba26d2fa7b9833b58ece9bce6afbb49388cb321717aae4fc0e87f1c9910a",
+              "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 20 - KAT.pdf",
+              "answer_sha256": "096211f331dd1931d2cb2db2d3577d2395ad99846182630f38ad67b9bfc71faf",
+              "unit": 20,
+              "section": 1,
+              "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+              "numbers": [
+                1
+              ],
+              "answer_origin": "source_key"
+            },
+            "prompt": "Từ 照相机 có nghĩa là:",
+            "options": [
+              "ti vi",
+              "máy vi tính",
+              "máy ảnh",
+              "máy giặt"
+            ],
+            "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "passage": "NHẮC LẠI KIẾN THỨC BÀI 20\nCâu chữ 被:                                     我被男朋友影响了。\n主语 + 被/叫/让 + 宾语 + 动词 + 其                       帽子被风刮跑了。\n他成分                                            蛋糕让弟弟吃完了。\nChủ ngữ là đối tượng chịu tác động.            我的照相机被谁拿走了？\nSau động từ bắt buộc có 了 hoặc bổ\nngữ.\n\nHai lưu ý của câu 被:                           问题还没有被解决呢。\n① Tân ngữ sau 被 có thể lược, nhưng             病人还没被送到医院呢。\nsau 叫/让 thì bắt buộc có.                       下个月她会被妈妈送到美国。\n② Phó từ phủ định và động từ năng              我们经常被别人认错。\nnguyện đặt TRƯỚC 被.\n\n只有……，才……                                       只有写完作业，才能看电视。\n= chỉ có A thì mới B                           只有妈妈做的饭，她才爱吃。\nĐiều kiện duy nhất. Đi với 才,                  看来只有爱，才能让人有变化。\nKHÔNG đi với 就.\n\nTừ mới cần nhớ                                 照相机 · 被 · 难过 · 东 · 信用卡 · 关心 · 只有…才… · 成绩 · 碗\n· 分 · 解决 · 试 · 真正 · 多么"
+          },
+          "answer": "C"
+        }
+      ]
+    }
+  ],
+  "hsk3Lesson10": {
+    "unit": 10,
+    "title": "Môn Toán khó hơn môn Lịch Sử nhiều.",
+    "questions": [
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              1
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Từ nào TRÁI NGHĨA với 矮?",
+          "options": [
+            "胖",
+            "高",
+            "大",
+            "长"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)",
+          "passage": "NHẮC LẠI KIẾN THỨC BÀI 10\nSo sánh (2): A 比 B + 形容词 +                     大山比大卫矮一点儿。 — Đại Sơn thấp hơn David một chút.\n· chênh lệch ít: 一点儿 / 一些                      我今天起得比昨天晚一些。\n· chênh lệch nhiều: 得多 / 多了                    今天的作业比昨天多得多。\nSau 比… KHÔNG dùng 很/非常/太                       数学比历史难多了。\n我比马可大两岁。 — (số lượng đặt ngay sau tính từ)\n\nPhủ định: A 没有 B（+ 这么/那么）                      咖啡没有茶好喝。\n+ 形容词                                          他没有我这么高。\n学校里边的没有学校外边的那么安静。\n\nSố ước lượng (1): hai số đếm liền kề           我每天学习一两个小时汉语。\nđứng cạnh nhau                                 你都喝了三四杯咖啡了！\n一两 · 两三 · 三四 · 五六 · 七八                         骑车七八分钟就能到。\n· 八九                                           附近有三四个车站。\n\nTừ mới cần nhớ                                 个子 · 矮 · 历史 · 体育 · 数学 · 方便 · 自行车 · 骑 · 旧 · 换 ·\n地方 · 中介 · 主要 · 环境 · 附近"
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              2
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Từ nào TRÁI NGHĨA với 旧?",
+          "options": [
+            "快",
+            "贵",
+            "干净",
+            "新"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "D"
+      },
+      {
+        "type": "pinyin_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              3
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Phiên âm đúng của 自行车 là:",
+          "options": [
+            "zìxíngchē",
+            "zìxìngchē",
+            "zhìxíngchē",
+            "zìxíncē"
+          ],
+          "hanzi": "自行车",
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "A"
+      },
+      {
+        "type": "pinyin_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              4
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Phiên âm đúng của 数学 là:",
+          "options": [
+            "shǔxué",
+            "shùxuě",
+            "shùxué",
+            "shuōxué"
+          ],
+          "hanzi": "数学",
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "C"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              5
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Từ 方便 có nghĩa là:",
+          "options": [
+            "phương pháp",
+            "thuận tiện",
+            "một bên",
+            "rẻ tiền"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              6
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "学习中国过去的事情，这是___课。",
+          "options": [
+            "体育",
+            "数学",
+            "中文",
+            "历史"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "D"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              7
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我想买一___自行车。",
+          "options": [
+            "辆",
+            "只",
+            "条",
+            "本"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              8
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我每天___自行车去上学。",
+          "options": [
+            "坐",
+            "开",
+            "骑",
+            "走"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "C"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              9
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我家___有三四个车站，去哪儿都很方便。",
+          "options": [
+            "中间",
+            "主要",
+            "地方",
+            "附近"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "D"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 1,
+            "section_title": "Chọn đáp án đúng nhất (Câu 1–10)",
+            "numbers": [
+              10
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "这辆自行车太旧了，我想___一辆新的。",
+          "options": [
+            "换",
+            "骑",
+            "矮",
+            "比"
+          ],
+          "hint": "Chọn đáp án đúng nhất (Câu 1–10)"
+        },
+        "answer": "A"
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              11
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "弟弟今年才十二岁，___已经跟妈妈一样高了。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "个子"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              12
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我最喜欢上___课，因为可以打篮球。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "体育"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              13
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "这儿的___很好，又干净又安静。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "环境"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              14
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "你知道附近有没有便宜一点儿的___吃饭吗？",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "地方"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              15
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我买这个房子，___是因为它离学校很近。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "主要"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              16
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "从我家骑___到公司只要七八分钟。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "自行车"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              17
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "这件衣服太大了，我想去商店___一件小一点儿的。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "换"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              18
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "学校旁边有地铁站，坐车非常___。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "方便"
+        ]
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              19
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "今天的作业比昨天多___，我做到十一点才做完。",
+          "options": [
+            "得多",
+            "很",
+            "太",
+            "非常"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              20
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "学校里边的房子没有学校外边的___安静。",
+          "options": [
+            "很",
+            "更",
+            "那么",
+            "得多"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "C"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              21
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我今天起得比昨天晚___，只晚了五分钟。",
+          "options": [
+            "多了",
+            "一点儿",
+            "得多",
+            "很多"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "B"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              22
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我的自行车___他的新。（ý: xe tôi không mới bằng xe anh ấy）",
+          "options": [
+            "比",
+            "跟",
+            "不比",
+            "没有"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "D"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              23
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "数学比历史难___，我完全听不懂。",
+          "options": [
+            "一点儿",
+            "一些",
+            "多了",
+            "很"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "C"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              24
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "他___我这么高。（ý: anh ấy không cao bằng tôi）",
+          "options": [
+            "没有",
+            "比",
+            "不比",
+            "跟"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "A"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              25
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "大山比马可矮___，两个人差不多一样高。",
+          "options": [
+            "得多",
+            "多了",
+            "很多",
+            "一点儿"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "D"
+      },
+      {
+        "type": "multiple_choice",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 3,
+            "section_title": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)",
+            "numbers": [
+              26
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Câu nào dưới đây SAI?",
+          "options": [
+            "他比我大两岁。",
+            "这本书比那本书很有意思。",
+            "今天比昨天冷得多。",
+            "我没有他那么高。"
+          ],
+          "hint": "Câu so sánh A比B…／A没有B… — chọn đáp án đúng (Câu 19–26)"
+        },
+        "answer": "B"
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              27
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "我每天学习___个小时汉语。（khoảng 1–2 tiếng）",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)\nCâu 27–30: điền cặp số ước lượng thích hợp vào chỗ trống."
+        },
+        "answer": [
+          "一两"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              28
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "从我家骑车到学校只要___分钟。（khoảng 7–8 phút）",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)\nCâu 27–30: điền cặp số ước lượng thích hợp vào chỗ trống."
+        },
+        "answer": [
+          "七八"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              29
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "你今天已经喝了___杯咖啡了，别再喝了！（khoảng 3–4 cốc）",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)\nCâu 27–30: điền cặp số ước lượng thích hợp vào chỗ trống."
+        },
+        "answer": [
+          "三四"
+        ]
+      },
+      {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              30
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "这辆自行车不贵，___百块钱就能买到。（khoảng 200–300 tệ）",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)\nCâu 27–30: điền cặp số ước lượng thích hợp vào chỗ trống."
+        },
+        "answer": [
+          "两三"
+        ]
+      },
+      {
+        "type": "essay",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              31
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Câu 31–32: viết lại câu, dùng cách diễn tả số ước lượng.\n我们班有五个或者六个越南学生。",
+          "target_language": "zh",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)"
+        },
+        "answer": [
+          "我们班有五六个越南学生。"
+        ]
+      },
+      {
+        "type": "essay",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 4,
+            "section_title": "Cách diễn tả số ước lượng (Câu 27–32)",
+            "numbers": [
+              32
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Câu 31–32: viết lại câu, dùng cách diễn tả số ước lượng.\n我家附近有八个或者九个车站。",
+          "target_language": "zh",
+          "hint": "Cách diễn tả số ước lượng (Câu 27–32)"
+        },
+        "answer": [
+          "我家附近有八九个车站。"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 5,
+            "section_title": "Sắp xếp thành câu đúng (Câu 33–36)",
+            "numbers": [
+              33
+            ],
+            "answer_origin": "source_key"
+          },
+          "tokens": [
+            "得多",
+            "有意思",
+            "体育课",
+            "比",
+            "历史课"
+          ],
+          "hint": "Sắp xếp thành câu đúng (Câu 33–36)"
+        },
+        "answer": [
+          "历史课",
+          "比",
+          "体育课",
+          "有意思",
+          "得多"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 5,
+            "section_title": "Sắp xếp thành câu đúng (Câu 33–36)",
+            "numbers": [
+              34
+            ],
+            "answer_origin": "source_key"
+          },
+          "tokens": [
+            "他的",
+            "那么",
+            "我的自行车",
+            "没有",
+            "新"
+          ],
+          "hint": "Sắp xếp thành câu đúng (Câu 33–36)"
+        },
+        "answer": [
+          "我的自行车",
+          "没有",
+          "他的",
+          "那么",
+          "新"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 5,
+            "section_title": "Sắp xếp thành câu đúng (Câu 33–36)",
+            "numbers": [
+              35
+            ],
+            "answer_origin": "source_key"
+          },
+          "tokens": [
+            "到学校",
+            "从我家",
+            "七八分钟",
+            "骑车",
+            "就能到"
+          ],
+          "hint": "Sắp xếp thành câu đúng (Câu 33–36)"
+        },
+        "answer": [
+          "从我家",
+          "骑车",
+          "到学校",
+          "七八分钟",
+          "就能到"
+        ]
+      },
+      {
+        "type": "reorder",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 5,
+            "section_title": "Sắp xếp thành câu đúng (Câu 33–36)",
+            "numbers": [
+              36
+            ],
+            "answer_origin": "source_key"
+          },
+          "tokens": [
+            "那个地方",
+            "方便",
+            "这个地方",
+            "比",
+            "一些"
+          ],
+          "hint": "Sắp xếp thành câu đúng (Câu 33–36)"
+        },
+        "answer": [
+          "这个地方",
+          "比",
+          "那个地方",
+          "方便",
+          "一些"
+        ]
+      },
+      {
+        "type": "sentence_correction",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 6,
+            "section_title": "Tìm và sửa lỗi sai (Câu 37–40)",
+            "numbers": [
+              37
+            ],
+            "answer_origin": "reviewed_source_key"
+          },
+          "prompt": "Tìm và sửa lỗi sai theo ngữ pháp của bài.\n今天比昨天很冷。",
+          "target_language": "zh",
+          "hint": "Tìm và sửa lỗi sai (Câu 37–40)"
+        },
+        "answer": [
+          "今天比昨天冷多了。",
+          "今天比昨天冷。",
+          "今天比昨天冷一些。",
+          "今天比昨天冷得多。"
+        ]
+      },
+      {
+        "type": "sentence_correction",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 6,
+            "section_title": "Tìm và sửa lỗi sai (Câu 37–40)",
+            "numbers": [
+              38
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Tìm và sửa lỗi sai theo ngữ pháp của bài.\n这个房子没有那个房子安静得多。",
+          "target_language": "zh",
+          "hint": "Tìm và sửa lỗi sai (Câu 37–40)"
+        },
+        "answer": [
+          "这个房子没有那个房子那么安静。"
+        ]
+      },
+      {
+        "type": "sentence_correction",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 6,
+            "section_title": "Tìm và sửa lỗi sai (Câu 37–40)",
+            "numbers": [
+              39
+            ],
+            "answer_origin": "reviewed_source_key"
+          },
+          "prompt": "Tìm và sửa lỗi sai theo ngữ pháp của bài.\n我每天学习一二三个小时汉语。",
+          "target_language": "zh",
+          "hint": "Tìm và sửa lỗi sai (Câu 37–40)"
+        },
+        "answer": [
+          "我每天学习一两个小时汉语。",
+          "我每天学习两三个小时汉语。"
+        ]
+      },
+      {
+        "type": "sentence_correction",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 6,
+            "section_title": "Tìm và sửa lỗi sai (Câu 37–40)",
+            "numbers": [
+              40
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "Tìm và sửa lỗi sai theo ngữ pháp của bài.\n他比我大得多两岁。",
+          "target_language": "zh",
+          "hint": "Tìm và sửa lỗi sai (Câu 37–40)"
+        },
+        "answer": [
+          "他比我大两岁。"
+        ]
+      }
+    ]
+  },
+  "bankExamples": [
+    {
+      "filename": "kat-hsk3-baitap",
+      "level": "HSK3",
+      "unit": 10,
+      "title": "Môn Toán khó hơn môn Lịch Sử nhiều.",
+      "question": {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 10 (40 câu) - KAT.pdf",
+            "sha256": "51eb9eac4a01a6f491801abf46061e04974f38cb0d10bfa0ff3a1a1b37d280ef",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 10 - KAT.pdf",
+            "answer_sha256": "191f0b6b05e69c7ded30c23f399908c5d59f35f6e5128e5378a9155220d33da8",
+            "unit": 10,
+            "section": 2,
+            "section_title": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)",
+            "numbers": [
+              11
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "弟弟今年才十二岁，___已经跟妈妈一样高了。",
+          "hint": "Chọn từ thích hợp trong khung điền vào chỗ trống (Câu 11–18)\nKhung có 10 từ nhưng chỉ dùng 8 từ — có 2 từ thừa. Mỗi từ chỉ dùng một lần.\n环境 · 换 · 中介 · 个子 · 方便 · 数学 · 主要 · 自行车 · 体育 · 地方"
+        },
+        "answer": [
+          "个子"
+        ]
+      }
+    },
+    {
+      "filename": "hsk2-new30-baitap",
+      "level": "HSK2",
+      "unit": 1,
+      "title": "Chị ấy mời chúng em ăn vịt quay Bắc Kinh",
+      "question": {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "明天下午谁去机场___你？",
+          "hint": "Từ cho sẵn: 请、让、叫、接、介绍、帮忙、懂、吧、不好意思",
+          "source": {
+            "file": "PHIẾU BÀI TẬP BÀI 1 HSK2 3.0.pdf",
+            "sha256": "1ca065a5f25904fc749f7514eb6b3eeb1a3fc9ac79e66d6b3ade984d2171bd32",
+            "unit": 1,
+            "section": 1,
+            "numbers": [
+              1
+            ]
+          }
+        },
+        "answer": [
+          "接"
+        ]
+      }
+    },
+    {
+      "filename": "hsk3-new30-baitap",
+      "level": "HSK3",
+      "unit": 2,
+      "title": "Các em thích ăn gì thì gọi món đó",
+      "question": {
+        "type": "fill_blank",
+        "content": {
+          "prompt": "服务员，请给我一张___。",
+          "hint": "Từ cho sẵn: [ 菜单, 饿, 饮料, 筷子, 尝, 外卖, 方便, 简单, 马上, 选 ]",
+          "source": {
+            "file": "bài 2.pdf",
+            "sha256": "902e74f02cf157eaddfeeaded561d709e1fb38ae5d6ef88d13b5fa5bdfa101fb",
+            "unit": 2,
+            "section": 1,
+            "numbers": [
+              1
+            ]
+          }
+        },
+        "answer": [
+          "菜单"
+        ]
+      }
+    },
+    {
+      "filename": "yct-workbooks",
+      "level": "YCT1",
+      "unit": 1,
+      "title": "Xin chào!",
+      "question": {
+        "type": "fill_blank",
+        "content": {
+          "pinyin_mode": "auto",
+          "prompt": "你好！___是丽丽。",
+          "hint": "Chọn từ phù hợp: 好 你 吗 我 老师",
+          "source": {
+            "file": "YCT1 từ bài 1 tới bài 7.pdf",
+            "sha256": "c87a13f4506c52de5fa72647b71dfcb42853337865ea2d7d9a57ef63e71b7dc9",
+            "page": 8,
+            "unit": 1,
+            "section": "1-008-1",
+            "numbers": [
+              1
+            ],
+            "format": "fill"
+          }
+        },
+        "answer": [
+          "我"
+        ]
+      }
+    },
+    {
+      "filename": "hsk3-grammar",
+      "level": "HSK3",
+      "unit": 8,
+      "title": "Em đi đâu thì anh đi đến đó.",
+      "question": {
+        "type": "fill_blank",
+        "content": {
+          "source": {
+            "file": "ÔN TẬP HSK3 - Bài 8 (40 câu) - KAT.pdf",
+            "sha256": "987dc27421146f6caacd407136353ddf9d3135de13d7a0e6a7df6b4c8469c8c1",
+            "answer_file": "ĐÁP ÁN ÔN TẬP HSK3 - Bài 8 - KAT.pdf",
+            "answer_sha256": "813669d395f7a5c92744f0c2750feda2b528369b917b511cc07da2439cb77df0",
+            "unit": 8,
+            "section": 3,
+            "section_title": "CHỌN 又 HAY 再 (Câu 19–26)",
+            "numbers": [
+              19
+            ],
+            "answer_origin": "source_key"
+          },
+          "prompt": "昨天我去看了看那个房子，今天___去看了看。",
+          "hint": "CHỌN 又 HAY 再 (Câu 19–26)\nĐiền A. 又 hoặc B. 再 vào chỗ trống cho phù hợp:"
+        },
+        "answer": [
+          "又"
+        ]
+      }
+    }
+  ]
+}

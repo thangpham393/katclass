@@ -5,7 +5,9 @@ const {sortWorkbookQuestions,workbookSections}=require('../src/lib/question-orde
 const {parseDialogue}=require('../src/lib/question-dialogue.ts');
 const {QuestionDialogue}=require('../src/components/question-dialogue.tsx');
 const {QuestionText,QuestionPinyinContext}=require('../src/components/question-visuals.tsx');
-const {alignPinyin,textWithoutEmbeddedPinyin}=require('../src/lib/question-pinyin.ts');
+const {alignPinyin,textWithoutEmbeddedPinyin,pinyinAllowed}=require('../src/lib/question-pinyin.ts');
+const {workbookIntro,questionWithoutWorkbookIntro,workbookIntroRows}=require('../src/lib/workbook-intro.ts');
+const {questionWordBank,wordBankKey}=require('../src/lib/question-word-bank.ts');
 const {reviewStatus,reviewAnswerText}=require('../src/lib/homework-review.ts');
 const q=(id,unit,section,number,type='multiple_choice',file='source.pdf')=>({id,type,lesson_id:`lesson-${unit}`,lesson:{unit,title:`Bài ${unit}`,textbook_id:'book'},content:{source:{unit,section,numbers:[number],file}}});
 test('Exercise types stay together across source sections, PDFs and lessons',()=>{
@@ -86,4 +88,79 @@ test('Review resolves choices and matching columns and differentiates partial, b
  assert.equal(reviewStatus({...detail,total:1,correct:0,parts:[{actual:'a',correct:true},{actual:'b',correct:false}]}),'partial');
  assert.equal(reviewStatus({...detail,correct:0,parts:[{actual:'  '}]}),'skipped');
  const reading={type:'reading',content:{items:[{type:'short_answer'}]}};assert.equal(reviewAnswerText(reading,{key:'0'},'中国'),'中国');
+});
+const lessonRows=(lesson,level='HSK3')=>lesson.questions.map((q,i)=>({...q,id:`${level}-${lesson.unit}-${i}`,level,tags:[],lesson_id:`${level}-${lesson.unit}`,lesson:{id:`${level}-${lesson.unit}`,title:lesson.title,unit:lesson.unit,textbook_id:level}}));
+const layoutFixture=JSON.parse(fs.readFileSync('tests/fixtures/workbook-layout.json'));
+const nativeHsk3=JSON.parse(fs.readFileSync('supabase/library/kat-hsk3-baitap.json'));
+const hasNativeHsk3Intros=nativeHsk3.lessons.every(l=>workbookIntro(l.questions[0]));
+test('All 20 HSK 3 recaps render separately before unchanged questions, including snapshot views',()=>{
+ const {WorkbookQuestionList}=require('../src/components/workbook-question-list.tsx');
+ const {QuestionInput}=require('../src/components/question-player-input.tsx');
+ const payload=hasNativeHsk3Intros?nativeHsk3:{lessons:layoutFixture.hsk3IntroLessons};
+ let count=0;
+ for(const lesson of payload.lessons){
+  const rows=lessonRows(lesson);const before=JSON.stringify(rows);const intro=workbookIntro(rows[0]);assert(intro);
+  assert.equal(rows.filter(row=>workbookIntro(row)).length,1);assert.match(intro.title,new RegExp(`BÀI ${lesson.unit}(?:\\D|$)`));
+  const cleaned=rows.map(questionWithoutWorkbookIntro);assert.equal(cleaned[0].content.passage,undefined);
+  assert.deepEqual(cleaned.map(row=>[row.id,row.content.prompt,row.content.options,row.answer]),rows.map(row=>[row.id,row.content.prompt,row.content.options,row.answer]));
+  const html=renderToStaticMarkup(React.createElement(QuestionPinyinContext.Provider,{value:{show:true}},React.createElement(WorkbookQuestionList,{questions:rows,showPinyin:true,renderQuestion:row=>React.createElement('div',{'data-question-id':row.id},React.createElement(QuestionInput,{question:row,onChange:()=>{}}))})));
+  assert.equal((html.match(/aria-label="Nhắc lại kiến thức"/g)??[]).length,1);assert.equal((html.match(/data-question-id=/g)??[]).length,rows.length);
+  assert(html.indexOf('aria-label="Nhắc lại kiến thức"')<html.indexOf('id="exercise-section-0"'));
+  assert.equal((html.match(/NHẮC LẠI KIẾN THỨC/g)??[]).length,1);assert(!html.includes('<ruby'));assert.equal(JSON.stringify(rows),before);
+  count+=rows.length;
+ }
+ assert.equal(payload.lessons.length,20);assert.equal(count,hasNativeHsk3Intros?800:20);
+});
+test('Reading passages remain attached; filtered review keeps the separate intro without reintroducing question 1',()=>{
+ const reading={type:'reading',content:{passage:'NHẮC LẠI KIẾN THỨC\nĐoạn văn cần trả lời.',items:[]}};
+ assert.equal(workbookIntro(reading),null);assert.strictEqual(questionWithoutWorkbookIntro(reading),reading);
+ const ordinary={type:'multiple_choice',content:{passage:'Đọc câu sau:\n你好吗？'}};assert.strictEqual(questionWithoutWorkbookIntro(ordinary),ordinary);
+ const {WorkbookQuestionList}=require('../src/components/workbook-question-list.tsx');
+ const rows=lessonRows(layoutFixture.hsk3Lesson10);
+ const html=renderToStaticMarkup(React.createElement(WorkbookQuestionList,{questions:rows.slice(1),introQuestions:[...rows,rows[0]],renderQuestion:q=>React.createElement('div',{'data-question-id':q.id})}));
+ assert.equal((html.match(/aria-label="Nhắc lại kiến thức"/g)??[]).length,1);assert.equal((html.match(/data-question-id=/g)??[]).length,39);
+ assert.deepEqual(workbookIntroRows('Quy tắc      例子。\nTiếp theo\n\nTừ mới'),[[['Quy tắc','例子。'],['Tiếp theo']],[['Từ mới']]]);
+});
+test('HSK 3+ always suppresses annotations while Pinyin choices remain actual options',()=>{
+ const {QuestionInput}=require('../src/components/question-player-input.tsx');
+ const base={id:'level-test',type:'multiple_choice',content:{prompt:'你叫什么？',options:['叫 jiào','是 shì'],pinyin_mode:'auto'},tags:[]};
+ for(const level of ['HSK3','HSK 4','HSK5','HSK6','HSK7']){
+  const row={...base,level};assert.equal(pinyinAllowed(row),false);
+  const html=renderToStaticMarkup(React.createElement(QuestionPinyinContext.Provider,{value:{show:true}},React.createElement(QuestionInput,{question:row,onChange:()=>{}})));
+  assert(!html.includes('<ruby'));assert(!html.includes('jiào'));assert(html.includes('叫'));
+ }
+ for(const level of ['HSK1','HSK2','YCT1','KIDS'])assert.equal(pinyinAllowed({...base,level}),true);
+ assert.equal(pinyinAllowed({...base,level:null,tags:['hsk3-new30']}),false);
+ const row={...base,level:'HSK3',type:'pinyin_choice',content:{hanzi:'老师',options:['lǎoshī','làoshì']}};
+ const html=renderToStaticMarkup(React.createElement(QuestionPinyinContext.Provider,{value:{show:true}},React.createElement(QuestionInput,{question:row,onChange:()=>{}})));
+ assert(!html.includes('<ruby'));assert(html.includes('lǎoshī'));assert(html.includes('làoshì'));
+ assert.equal((html.match(/<button /g)??[]).length,2,'No pronunciation button gives away Pinyin-choice answers');
+});
+test('Source word banks in HSK 2, both HSK 3 editions and YCT are parsed without inventing answer choices',()=>{
+ for(const example of layoutFixture.bankExamples){const bank=questionWordBank(example.question);assert(bank,example.filename);assert(bank.words.every(word=>example.question.content.hint.includes(word)));}
+ // One HSK 3 bank item is deliberately teacher-graded because the source is ambiguous.
+ const expected={'hsk1-new30-baitap.json':130,'hsk2-new30-baitap.json':30,'hsk3-new30-baitap.json':170,'yct-workbooks.json':78};
+ for(const [file,count] of Object.entries(expected)){
+  if(!fs.existsSync(`supabase/library/${file}`))continue;
+  const lessons=JSON.parse(fs.readFileSync(`supabase/library/${file}`)).lessons;const qs=lessons.flatMap(l=>l.questions);const banks=qs.filter(q=>questionWordBank(q));
+  assert.equal(banks.length,count,file);
+  for(const q of banks){const bank=questionWordBank(q);assert(bank.words.every(word=>q.content.hint.includes(word)));assert.equal(bank.remainingHint,'');}
+ }
+ if(hasNativeHsk3Intros){const banks=nativeHsk3.lessons.flatMap(l=>l.questions).filter(q=>questionWordBank(q));assert(banks.length>=159);const big=banks.filter(q=>questionWordBank(q).words.length===10);assert.equal(big.length,159);}
+ assert.equal(questionWordBank({type:'fill_blank',content:{hint:'Động từ nghĩa là “gọi / tên là”'}}),null);
+ assert.equal(questionWordBank({type:'fill_blank',content:{hint:'Bổ ngữ 好 & liên từ 那 (Câu 27–32)'}}),null);
+ assert.deepEqual(questionWordBank({type:'fill_blank',content:{hint:'问、不、叫、国、没、什、认、也、很、是'}}).words,['问','不','叫','国','没','什','认','也','很','是']);
+ for(const [hint,words] of [['CHỌN 又 HAY 再 (Câu 19–26)\nĐiền A. 又 hoặc B. 再 vào chỗ trống cho phù hợp:',['又','再']],['Câu 27–30: điền 跟 / 一样 / 不 vào chỗ trống.',['跟','一样','不']],['Câu 27–29: điền 只有 hoặc 才 vào chỗ trống.',['只有','才']]])assert.deepEqual(questionWordBank({type:'fill_blank',content:{hint}}).words,words);
+ const native={type:'fill_blank',content:{prompt:'我___。',word_bank:{words:['学习','工作'],reuse:false}},answer:['学习']};
+ require('../src/lib/question-schema.ts').validateQuestionDefinition(native);assert.deepEqual(questionWordBank(native).words,['学习','工作']);
+ assert.throws(()=>require('../src/lib/question-schema.ts').validateQuestionDefinition({...native,content:{...native.content,word_bank:{words:[]}}}));
+});
+test('Shared banks appear once above their source exercise, with separate banks for other lessons/files',()=>{
+ const {WorkbookQuestionList}=require('../src/components/workbook-question-list.tsx');
+ const rows=lessonRows(layoutFixture.hsk3Lesson10);
+ const bankRows=rows.filter(row=>questionWordBank(row));assert.equal(bankRows.length,8);assert.equal(new Set(bankRows.map(wordBankKey)).size,1);
+ const html=renderToStaticMarkup(React.createElement(WorkbookQuestionList,{questions:rows,renderQuestion:row=>React.createElement('div',{'data-question-id':row.id},row.content.prompt)}));
+ assert.equal((html.match(/aria-label="Từ cho sẵn"/g)??[]).length,1);assert(html.indexOf('aria-label="Từ cho sẵn"')<html.indexOf(`data-question-id="${bankRows[0].id}"`));
+ assert.notEqual(wordBankKey({...bankRows[0],lesson_id:'another-lesson'}),wordBankKey(bankRows[0]));
+ assert.notEqual(wordBankKey({...bankRows[0],content:{...bankRows[0].content,source:{...bankRows[0].content.source,sha256:'other-hash'}}}),wordBankKey(bankRows[0]));
 });

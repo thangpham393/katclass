@@ -65,6 +65,7 @@ export default function StudentHomeworkPlayerPage() {
   }
 
   const questions = homework.data?.questions ?? [];
+  const canShowPinyin = questions.some(q => pinyinAllowed(q));
   const answeredCount = useMemo(
     () => questions.filter((q) => questionIsAnswered(q, answers[q.id])).length,
     [questions, answers],
@@ -214,9 +215,9 @@ export default function StudentHomeworkPlayerPage() {
             </Link>
           </div>
         </div>
-        <Button type="button" variant="outline" aria-pressed={showPinyin} onClick={() => setShowPinyin(current => !current)}>
+        {canShowPinyin && <Button type="button" variant="outline" aria-pressed={showPinyin} onClick={() => setShowPinyin(current => !current)}>
           {showPinyin ? "Ẩn phiên âm" : "Hiện phiên âm"}
-        </Button>
+        </Button>}
         <HomeworkReviewPanel key={existing?.submitted_at ?? "just-submitted"} homeworkId={hw.id} questions={questions} showPinyin={showPinyin} />
       </div>
     );
@@ -329,7 +330,7 @@ export default function StudentHomeworkPlayerPage() {
         </div>
       </div>
 
-      {questions.some(q => pinyinAllowed(q)) && (
+      {canShowPinyin && (
         <Button type="button" variant="outline" aria-pressed={showPinyin} onClick={() => setShowPinyin(current => !current)}>
           {showPinyin ? "Ẩn phiên âm" : "Hiện phiên âm"}
         </Button>
@@ -370,8 +371,8 @@ export default function StudentHomeworkPlayerPage() {
         </Card>
       ) : (
         questions.length > 0 &&
-        <WorkbookQuestionList questions={questions} renderQuestion={(q, i) => (
-            <Card key={q.id}>
+        <WorkbookQuestionList questions={questions} showPinyin={showPinyin} answers={answers} interactive renderQuestion={(q, i) => (
+            <Card key={q.id} data-question-id={q.id}>
               <CardContent className="p-4 sm:p-5 md:p-6">
                 <div className="mb-4 flex flex-wrap items-center gap-2">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-600 text-xs font-bold text-white">

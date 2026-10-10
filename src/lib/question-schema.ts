@@ -70,6 +70,8 @@ export interface QuestionContent {
   audio_url?: string;
   options?: string[];
   hint?: string;
+  /** Source word bank for choosing words into blanks; answers stay private. */
+  word_bank?: { words: string[]; instruction?: string; reuse?: boolean; group?: string };
   tokens?: string[];
   translation?: string;
   left?: string[];
@@ -133,6 +135,8 @@ export function validateQuestionDefinition(q: { type: QuestionType; content: Que
   const map = typeof a === "object" && a !== null && !Array.isArray(a) ? a : {};
   const pair = () => { if (!map.hanzi?.trim() || !map.pinyin?.trim()) fail("Cần đủ đáp án chữ Hán và Pinyin."); };
   if (!c || !QUESTION_TYPE_LABELS[type]) fail("Dạng câu hỏi không hợp lệ.");
+  if (c.word_bank !== undefined && (type !== "fill_blank" || !strings(c.word_bank.words) ||
+    (c.word_bank.reuse !== undefined && typeof c.word_bank.reuse !== "boolean"))) fail("Ngân hàng từ cần danh sách từ hợp lệ cho bài điền từ.");
   const checkImage = (image: unknown) => {
     if (image === null || image === undefined) return;
     const value = image as { url?: string; alt?: string };

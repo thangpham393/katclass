@@ -4,6 +4,7 @@ import { useState } from "react";
 import { fetchMyHomeworkReview, QUESTION_TYPE_LABELS, type QuestionRow } from "@/lib/db-content";
 import { reviewAnswerText, reviewStatus, type QuestionReview, type ReviewPart } from "@/lib/homework-review";
 import { sourceQuestionLabel } from "@/lib/question-order";
+import { pinyinAllowed } from "@/lib/question-pinyin";
 import { useLoad } from "@/lib/use-load";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -35,7 +36,7 @@ export function HomeworkReviewPanel({ homeworkId, questions, showPinyin }: { hom
     </div>
     {review.data.legacy && <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900">Lượt nộp này dùng quy tắc chấm cũ. Điểm đã lưu được giữ nguyên; phần đối chiếu dựa trên đáp án hiện có. Các lượt nộp mới chấp nhận Pinyin không dấu.</p>}
     {!visible.length && <p className="rounded-xl border p-5 text-center text-sm text-muted-foreground">Không có câu cần xem lại.</p>}
-    <WorkbookQuestionList questions={visible} prefix="review" renderQuestion={(q, index) => {
+    <WorkbookQuestionList questions={visible} introQuestions={rows} showPinyin={showPinyin} prefix="review" renderQuestion={(q, index) => {
       const detail = byId.get(q.id)!;
       const status = reviewStatus(detail);
       const actual = detail.actual;
@@ -44,7 +45,7 @@ export function HomeworkReviewPanel({ homeworkId, questions, showPinyin }: { hom
           <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-semibold">{sourceQuestionLabel(q, index)}</span><Badge variant="outline">{QUESTION_TYPE_LABELS[q.type]}</Badge></div>
           <Badge variant={status === "correct" ? "jade" : status === "manual" ? "muted" : "gold"}>{labels[status]}{detail.total > 0 ? ` · ${detail.correct}/${detail.total}` : ""}</Badge>
         </div>
-        <QuestionPinyinContext.Provider value={{ show: showPinyin, dictionary: q.content.pinyin }}>
+        <QuestionPinyinContext.Provider value={{ show: showPinyin && pinyinAllowed(q), dictionary: q.content.pinyin }}>
           <fieldset disabled className="min-w-0 space-y-3"><QuestionImage image={q.content.image} /><QuestionInput question={q} value={actual} onChange={() => {}} /></fieldset>
           <div className="space-y-3">{detail.parts.map(part => <ReviewPartRow key={part.key} detail={detail} part={part} />)}</div>
           {detail.explanation && <div className="rounded-xl border border-brand-200 bg-brand-50 p-3 text-sm leading-relaxed"><p className="mb-1 font-semibold">Giải thích</p><QuestionText text={detail.explanation} /></div>}

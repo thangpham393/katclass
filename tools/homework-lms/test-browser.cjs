@@ -3,10 +3,9 @@ const fs=require('node:fs');const path=require('node:path');const assert=require
 const {chromium}=require('/private/tmp/hsk-community-tools/node_modules/playwright');
 const {PGlite}=require('/private/tmp/classhub-lms-tests/node_modules/@electric-sql/pglite/dist/index.cjs');
 const port=3110;const origin=`http://127.0.0.1:${port}`;
-const root=path.resolve('src/app/homework-verification');assert(!fs.existsSync(root),'Refuse to replace existing route');fs.mkdirSync(path.join(root,'[id]'),{recursive:true});
-fs.writeFileSync(path.join(root,'[id]/page.tsx'),'// GENERATED LMS BROWSER VERIFICATION ONLY\nexport {default} from "@/app/student/homework/[id]/page";\n');
+const root=path.resolve('src/app/homework-verification');assert(!fs.existsSync(root),'Refuse to replace existing route');
 const work=path.resolve('tools/homework-lms/work');fs.mkdirSync(work,{recursive:true});
-const q=(id,type,content,section,number)=>({id,type,content:{...content,source:{file:`fixture-${id}.pdf`,unit:1,section,numbers:[number]}},level:'HSK3',tags:[],lesson_id:'lesson-1',lesson:{id:'lesson-1',title:'Luyện tập hội thoại',unit:1,textbook_id:'textbook-1'},created_at:''});
+const q=(id,type,content,section,number)=>({id,type,content:{...content,source:{file:`fixture-${id}.pdf`,unit:1,section,numbers:[number]}},level:'HSK2',tags:[],lesson_id:'lesson-1',lesson:{id:'lesson-1',title:'Luyện tập hội thoại',unit:1,textbook_id:'textbook-1'},created_at:''});
 const qs=[
  q('q1','multiple_choice',{prompt:'你____什么名字？ nǐ ___ shénme míngzi?',options:['是 shì','叫 jiào','人 rén','吗 ma']},'1-018-2',2),
  q('q2','fill_blank',{prompt:'A:___你有什么打算？ B: 我打算去爬山。',hint:'Từ cho sẵn: 周末 · 复习 · 作业'},'1-015-2',11),
@@ -37,8 +36,32 @@ const dialogueQs=JSON.parse(fs.readFileSync('supabase/library/yct-workbooks.json
  .map((row,i)=>({...q(`dialogue-${i}`,row.type,row.content,row.content.source.section,i+1),level:'YCT1'}));
 assert.equal(dialogueQs.length,2);
 const expected=['B',['周末'],['喝','喝'],{hanzi:'快乐',pinyin:'kuàilè'},['Bài mẫu không được lộ cho học viên'],'A'];
+const fixtureExpected=new Map(qs.map((q,i)=>[q.id,expected[i]]));
+const layoutFixture=JSON.parse(fs.readFileSync('tests/fixtures/workbook-layout.json'));
+function sourceRows(filename,level,unit){
+ const source=`supabase/library/${filename}.json`;
+ let lesson=fs.existsSync(source)?JSON.parse(fs.readFileSync(source)).lessons.find(l=>l.unit===unit):null;
+ if(filename==='kat-hsk3-baitap'&&!lesson?.questions[0]?.content.passage?.startsWith('NHẮC LẠI KIẾN THỨC'))lesson=layoutFixture.hsk3Lesson10;
+ if(!lesson){const example=layoutFixture.bankExamples.find(e=>e.filename===filename);lesson={unit,title:example.title,questions:[example.question]};}
+ return lesson.questions.map((row,i)=>{
+  const id=`${filename}-${unit}-${i}`;fixtureExpected.set(id,row.answer);
+  return {...q(id,row.type,row.content,row.content.source?.section,i+1),content:row.content,level,lesson_id:`${filename}-${unit}`,lesson:{id:`${filename}-${unit}`,title:lesson.title,unit,textbook_id:filename}};
+ });
+}
+const recapQs=sourceRows('kat-hsk3-baitap','HSK3',10);
+const bankFixtures={
+ 'bank-hsk1':sourceRows('hsk1-new30-baitap','HSK1',2).filter(q=>q.type==='fill_blank'&&q.content.hint?.includes('、')),
+ 'bank-hsk2':sourceRows('hsk2-new30-baitap','HSK2',1).filter(q=>q.type==='fill_blank'&&q.content.hint?.startsWith('Từ cho sẵn:')),
+ 'bank-hsk3-30':sourceRows('hsk3-new30-baitap','HSK3',2).filter(q=>q.type==='fill_blank'),
+ 'bank-yct':sourceRows('yct-workbooks','YCT1',1).filter(q=>q.type==='fill_blank'&&q.content.hint?.startsWith('Chọn từ phù hợp:')),
+ 'bank-grammar':sourceRows('hsk3-grammar','HSK3',8),
+};
+for(const [name,rows] of Object.entries(bankFixtures))assert(rows.length,`Missing fixture ${name}`);
+function fixtureRows(id){return id==='grouping31'?grouping31:id==='dialogue'?dialogueQs:id==='hsk3-recap'?recapQs:bankFixtures[id]??qs;}
 let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
 (async()=>{
+ fs.mkdirSync(path.join(root,'[id]'),{recursive:true});
+ fs.writeFileSync(path.join(root,'[id]/page.tsx'),'// GENERATED LMS BROWSER VERIFICATION ONLY\nexport {default} from "@/app/student/homework/[id]/page";\n');
  const db=new PGlite();await db.exec(`create role anon;create role authenticated;
  create table questions(id uuid,type text constraint questions_type_check check(type in('multiple_choice')),content jsonb);
  create table question_answers(question_id uuid,answer jsonb);
@@ -63,12 +86,12 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
   if(route.request().method()==='OPTIONS'){await route.fulfill({status:200,headers:{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'*'}});return;}
   if(url.pathname.endsWith('/profiles'))result={id:user.id,name:'Học viên kiểm thử',email:user.email,role:'student',avatar:null,branch_id:null};
   else if(url.pathname.endsWith('/role_permissions'))result=[];
-  else if(url.pathname.endsWith('/homeworks'))result={id:'fixture',title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:(url.searchParams.get('id')==='eq.grouping31'?grouping31:url.searchParams.get('id')==='eq.dialogue'?dialogueQs:qs).slice().reverse().map((question,i)=>({sort:i,question}))};
+  else if(url.pathname.endsWith('/homeworks')){const id=url.searchParams.get('id').replace(/^eq\./,'');result={id,title:'HSK · Luyện tập theo từng phần',kind:'homework',class_id:'fixture-class',class:{id:'fixture-class',name:'Lớp HSK kiểm thử'},manual_tasks:[],teacher_note:'',time_limit_minutes:null,open_at:null,due_at:null,homework_questions:fixtureRows(id).slice().reverse().map((question,i)=>({sort:i,question}))};}
   else if(url.pathname.endsWith('/submissions'))result=sub;
   else if(url.pathname.endsWith('/rpc/submit_homework')){
-   const answers=route.request().postDataJSON().my_answers;posts.push(answers);const details=[];
-   for(let i=0;i<qs.length;i++){
-    const {rows}=await db.query('select build_question_review($1,$2,$3,$4) as r',[qs[i].type,JSON.stringify(qs[i].content),JSON.stringify(expected[i]),answers[qs[i].id]===undefined?null:JSON.stringify(answers[qs[i].id])]);details.push({...rows[0].r,question_id:qs[i].id,explanation:i===0?'叫 dùng để hỏi tên trong câu 你叫什么名字？':null});
+   const body=route.request().postDataJSON();const answers=body.my_answers;posts.push(answers);const details=[];
+   for(const [i,question] of fixtureRows(body.hw_id).entries()){
+    const {rows}=await db.query('select build_question_review($1,$2,$3,$4) as r',[question.type,JSON.stringify(question.content),JSON.stringify(fixtureExpected.get(question.id)),answers[question.id]===undefined?null:JSON.stringify(answers[question.id])]);details.push({...rows[0].r,question_id:question.id,explanation:i===0&&body.hw_id==='fixture'?'叫 dùng để hỏi tên trong câu 你叫什么名字？':null});
    }
    review={legacy:false,questions:details};sub={id:'submission-fixture',student_id:user.id,answers,auto_score:Math.round(details.reduce((s,q)=>s+q.correct,0)*100/details.reduce((s,q)=>s+q.total,0))/10,score:null,status:'submitted',submitted_at:new Date().toISOString()};result=sub;
   }else if(url.pathname.endsWith('/rpc/get_homework_review')){assert(sub,'No review before submission');result=review;}
@@ -101,7 +124,7 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
  const groupingSubmission=page.waitForResponse(r=>r.url().includes('/fixture/rest/v1/submissions'));
  await page.goto(origin+'/homework-verification/grouping31');await groupingSubmission;
  await page.waitForFunction(()=>document.querySelectorAll('[id^="exercise-section-"]').length===8);
- assert.equal(await page.locator('[id^="exercise-section-"] > div').count(),31,'Every assigned question appears once');
+ assert.equal(await page.locator('[data-question-id]').count(),31,'Every assigned question appears once');
  assert.equal(new Set(await page.locator('[id^="exercise-section-"] > header > h2').allTextContents()).size,8,'One heading per exercise type');
  assert.equal(await page.getByRole('navigation',{name:'Các phần trong bài tập'}).count(),0);
  await page.screenshot({path:path.join(work,'grouping31-desktop.png'),fullPage:true});
@@ -127,6 +150,57 @@ let server,browser;const logs=[];let sub=null;let review=null;let posts=[];
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.screenshot({path:path.join(work,'unlabelled-dialogue-desktop.png')});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Unlabelled dialogue desktop overflow');
+ sub=null;
+ await page.goto(origin+'/homework-verification/hsk3-recap');
+ const intro=page.getByRole('complementary',{name:'Nhắc lại kiến thức'});await intro.waitFor();
+ assert.equal(await intro.count(),1);assert.equal(await page.locator('[data-question-id]').count(),40);
+ assert.equal(await page.getByRole('button',{name:/^(Ẩn|Hiện) phiên âm$/}).count(),0,'HSK 3 has no Pinyin toggle');
+ assert.equal(await page.locator('ruby').count(),0,'HSK 3 has no Pinyin annotations');
+ assert(!((await page.locator('[data-question-id]').first().textContent()).includes('NHẮC LẠI KIẾN THỨC')),'Recap cannot remain inside question 1');
+ assert(await intro.evaluate(e=>Boolean(e.compareDocumentPosition(document.querySelector('[id^="exercise-section-"]'))&Node.DOCUMENT_POSITION_FOLLOWING)),'Recap precedes all exercise sections');
+ await intro.locator('summary').click();assert.equal(await intro.locator('details').getAttribute('open'),'');
+ await page.setViewportSize({width:1280,height:1000});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ await page.screenshot({path:path.join(work,'hsk3-recap-desktop.png')});
+ const banks=page.getByRole('group',{name:'Từ cho sẵn'});const bank=banks.first();assert.equal(await bank.getByRole('button').count(),10);
+ assert.equal(await banks.count(),1,'One shared source bank; estimation-number exercises have no provided bank');
+ const bankRows=recapQs.filter(q=>q.content.source.section===2);assert.equal(bankRows.length,8);
+ const firstBlank=page.locator(`[data-question-id="${bankRows[0].id}"]`).getByLabel('Chỗ trống 1',{exact:true});
+ const secondBlank=page.locator(`[data-question-id="${bankRows[1].id}"]`).getByLabel('Chỗ trống 1',{exact:true});
+ await bank.getByRole('button',{name:'Chọn từ 个子',exact:true}).dragTo(firstBlank);
+ assert.equal(await firstBlank.inputValue(),'个子');assert(await bank.getByRole('button',{name:'Chọn từ 个子',exact:true}).isDisabled(),'Single-use word is used across the whole source exercise');
+ await bank.getByRole('button',{name:'Chọn từ 环境',exact:true}).dragTo(firstBlank);assert.equal(await firstBlank.inputValue(),'环境');
+ assert(await bank.getByRole('button',{name:'Chọn từ 个子',exact:true}).isEnabled(),'Replacing a word returns it to the bank');
+ await page.locator(`[data-question-id="${bankRows[0].id}"]`).getByRole('button',{name:'Xóa chỗ trống 1',exact:true}).click();assert.equal(await firstBlank.inputValue(),'');
+ await bank.getByRole('button',{name:'Chọn từ 个子',exact:true}).dragTo(firstBlank);
+ await page.setViewportSize({width:390,height:844});
+ await bank.getByRole('button',{name:'Chọn từ 体育',exact:true}).click();await secondBlank.click();assert.equal(await secondBlank.inputValue(),'体育','Tap-to-select fills the selected mobile blank');
+ assert.equal(await bank.locator('button:enabled').count(),8,'Used words are tracked per source group, distractors remain available');
+ await intro.locator('summary').click();await bank.scrollIntoViewIfNeeded();
+ await page.screenshot({path:path.join(work,'hsk3-word-bank-mobile.png')});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'HSK 3 bank mobile overflow');
+ await page.setViewportSize({width:1280,height:1000});await bank.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(work,'hsk3-word-bank-desktop.png')});
+ await page.getByRole('button',{name:'Nộp bài',exact:true}).click();await page.getByRole('heading',{name:'Xem lại bài làm',exact:true}).waitFor();
+ assert.equal(Object.keys(posts.at(-1)).length,2);assert.deepEqual(posts.at(-1)[bankRows[0].id],['个子']);assert.deepEqual(posts.at(-1)[bankRows[1].id],['体育']);
+ assert.equal(review.questions.length,40);assert(review.questions[0].content.passage.includes('NHẮC LẠI KIẾN THỨC'),'Original snapshot content is preserved');
+ assert.equal(await page.getByRole('button',{name:/^(Ẩn|Hiện) phiên âm$/}).count(),0);assert.equal(await page.locator('ruby').count(),0);
+ assert.equal(await page.getByRole('complementary',{name:'Nhắc lại kiến thức'}).count(),1);
+ assert.equal(await page.getByRole('group',{name:'Từ cho sẵn'}).locator('button:enabled').count(),0,'Review word bank is read-only');
+ await page.getByRole('button',{name:/Cần xem lại/}).click();assert.equal(await page.getByRole('complementary',{name:'Nhắc lại kiến thức'}).count(),1,'Review filtering cannot lose the intro');
+ await page.getByRole('button',{name:'Tiếp tục / sửa bài đã nộp',exact:true}).click();assert.equal(await firstBlank.inputValue(),'个子');assert.equal(await secondBlank.inputValue(),'体育');
+ assert.equal(await page.getByRole('group',{name:'Từ cho sẵn'}).first().locator('button:enabled').count(),8,'Submitted bank usage survives continuing');
+ for(const [id,rows] of Object.entries(bankFixtures)){
+  sub=null;const loadedSubmission=page.waitForResponse(r=>r.url().includes('/fixture/rest/v1/submissions'));
+  await page.goto(origin+'/homework-verification/'+id);await loadedSubmission;
+  await page.waitForFunction(count=>document.querySelectorAll('[data-question-id]').length===count,rows.length);
+  const bank=page.getByRole('group',{name:'Từ cho sẵn'}).first();await bank.waitFor();
+  assert.equal(await page.locator('[data-question-id]').count(),rows.length,id+' rendered questions');
+  const button=bank.getByRole('button').first();const word=(await button.getAttribute('aria-label')).replace('Chọn từ ','');
+  await page.setViewportSize({width:390,height:844});await button.click();const input=page.getByLabel('Chỗ trống 1',{exact:true}).first();await input.click();assert.equal(await input.inputValue(),word,id+' mobile word selection');
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),id+' mobile overflow');
+  if(rows[0].level==='HSK3'){
+   assert.equal(await page.getByRole('button',{name:/^(Ẩn|Hiện) phiên âm$/}).count(),0);assert.equal(await page.locator('ruby').count(),0);
+  }else assert(await page.locator('ruby').count()>0,id+' still supports lower-level pronunciation');
+ }
  assert.deepEqual(errors,[]);
- await db.close();console.log('PASS: actual player at 390px and 1280px, grouped types across source PDFs/string section codes, no navigation wall, labelled and exact unlabelled source dialogue turns/inline answer indices, ruby above Hanzi, incomplete submission, review/filter/reload, continue editing, no browser exceptions or horizontal overflow');
+ await db.close();console.log('PASS: actual player at 390px and 1280px, shared word-bank drag/drop, replace/clear and mobile selection across HSK 2/HSK 3 2.0/3.0/YCT, single-use tracking, separate HSK 3 recap, no HSK 3 Pinyin/toggle, unchanged snapshots, partial submission/review/filter/continue, labelled/unlabelled dialogues, lower-level ruby, no browser exceptions or horizontal overflow');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();if(server)server.kill('SIGTERM');const file=path.join(root,'[id]/page.tsx');if(fs.existsSync(file)&&fs.readFileSync(file,'utf8').includes('GENERATED LMS BROWSER VERIFICATION ONLY')){fs.unlinkSync(file);fs.rmdirSync(path.join(root,'[id]'));fs.rmdirSync(root);}});

@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Play, Volume2 } from "lucide-react";
-import { QuestionImage, QuestionText } from "@/components/question-visuals";
+import { QuestionImage, QuestionPinyinContext, QuestionText } from "@/components/question-visuals";
 import { ManualResponseInput } from "@/components/question-manual-response";
 import { QuestionDialogue } from "@/components/question-dialogue";
 import { parseDialogue } from "@/lib/question-dialogue";
@@ -11,7 +11,10 @@ import { Input, Textarea } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { CHOICE_LETTERS, MATCHING_LETTERS, readTokenOrder, shuffleTokens, type QuestionRow, type QuestionAnswer } from "@/lib/db-content";
-import { textWithoutEmbeddedPinyin } from "@/lib/question-pinyin";
+import { pinyinAllowed, textWithoutEmbeddedPinyin } from "@/lib/question-pinyin";
+import { questionWithoutWorkbookIntro } from "@/lib/workbook-intro";
+import { questionWordBank } from "@/lib/question-word-bank";
+import { QuestionWordBank, WordBankContext, WordBankProvider, useQuestionWordBank } from "./question-word-bank";
 
 function speak(text: string) {
   const u = new SpeechSynthesisUtterance(text);
@@ -26,15 +29,29 @@ function hasHanzi(s: string | undefined): boolean {
   return Boolean(s && /[一-鿿]/.test(s));
 }
 
-export function QuestionInput({
-  question: q,
-  value,
-  onChange,
-}: {
+interface QuestionInputProps {
   question: QuestionRow;
   value: QuestionAnswer | undefined;
   onChange: (v: QuestionAnswer) => void;
-}) {
+}
+
+export function QuestionInput(props: QuestionInputProps) {
+  const context = useContext(QuestionPinyinContext);
+  const wordBankContext = useContext(WordBankContext);
+  const question = questionWithoutWorkbookIntro(props.question);
+  const input = <QuestionAnswerInput {...props} question={question} />;
+  return <QuestionPinyinContext.Provider value={{ ...context, show: context.show && pinyinAllowed(question) }}>
+    {!wordBankContext && questionWordBank(question) ? <WordBankProvider questions={[question]} answers={props.value === undefined ? {} : { [question.id]: props.value }} interactive>
+      <div className="space-y-3"><QuestionWordBank question={question} showPinyin={context.show} />{input}</div>
+    </WordBankProvider> : input}
+  </QuestionPinyinContext.Provider>;
+}
+
+function QuestionAnswerInput({
+  question: q,
+  value,
+  onChange,
+}: QuestionInputProps) {
   switch (q.type) {
     case "translation":
     case "sentence_correction":
@@ -47,6 +64,7 @@ export function QuestionInput({
       return <div className="space-y-2">
         {q.content.passage && <div className="zh rounded-xl bg-secondary p-4"><QuestionDialogue text={q.content.passage} /></div>}
         <QuestionDialogue text={q.content.prompt ?? ""} renderTurn={inlineReply ? (turn, i) => i === dialogue.turns.length - 1 ? response : <QuestionText text={turn.text} /> : undefined} />
+        {q.content.hint && <p className="whitespace-pre-line text-xs leading-relaxed text-muted-foreground">Gợi ý: <QuestionText text={q.content.hint} /></p>}
         {q.type === "essay" && q.content.response_mode === "ordering"
           ? <ReorderInput q={q} value={typeof value === "string" ? readTokenOrder(value) : []} onChange={tokens => onChange(JSON.stringify(tokens))} />
           : q.type === "essay" && ["drawing", "oral"].includes(q.content.response_mode ?? "")
@@ -150,8 +168,7 @@ function ChoiceInput({
 }) {
   const c = q.content;
   const audioText = c.tts;
-  const hidePronunciation = q.type === "pinyin_choice" &&
-    (q.level?.startsWith("YCT") || q.tags.some(tag => /^yct/i.test(tag)));
+  const hidePronunciation = q.type === "pinyin_choice";
   return (
     <div>
       {c.hanzi && (
@@ -242,6 +259,7 @@ function FillBlankInput({
   const parts = (q.content.prompt ?? "").split("___");
   const blanks = Math.max(parts.length - 1, 1);
   const vals = Array.from({ length: blanks }, (_, i) => value[i] ?? "");
+  const wordBank = useQuestionWordBank(q);
 
   function setBlank(i: number, s: string) {
     const next = [...vals];
@@ -255,7 +273,11 @@ function FillBlankInput({
       <QuestionText text={part} />
       {i < all.length - 1 && <input aria-label={`Chỗ trống ${offset + i + 1}`} value={vals[offset + i] ?? ""}
         onChange={e => setBlank(offset + i, e.target.value)} placeholder={`(${offset + i + 1})`}
+        onFocus={e => { if (!e.currentTarget.disabled) { const word = wordBank.choose(vals[offset + i] ?? ""); if (word !== null) setBlank(offset + i, word); } }}
+        onDragOver={e => { if (!e.currentTarget.disabled && wordBank.context?.interactive && e.dataTransfer.types.includes(wordBank.dragType)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } }}
+        onDrop={e => { const word = wordBank.drop(e, vals[offset + i] ?? ""); if (word !== null) setBlank(offset + i, word); }}
         className="mx-1 inline-block w-28 max-w-full rounded-lg border-2 border-brand-300 bg-card px-2 py-1 text-center text-base text-foreground outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-200" />}
+      {i < all.length - 1 && wordBank.bank && wordBank.context?.interactive && vals[offset + i] && <button type="button" aria-label={`Xóa chỗ trống ${offset + i + 1}`} onClick={() => setBlank(offset + i, "")} className="inline-flex h-7 w-7 items-center justify-center rounded-full text-base text-muted-foreground hover:bg-muted">×</button>}
     </span>);
   }
 
@@ -266,8 +288,8 @@ function FillBlankInput({
           renderBlanks(turn.text, dialogue.turns.slice(0, i).reduce((n, previous) => n + previous.text.split("___").length - 1, 0))} />
           : renderBlanks(q.content.prompt ?? "", 0)}
       </div>
-      {q.content.hint && (
-        <div className="mt-2 text-xs text-muted-foreground">Gợi ý: <QuestionText text={q.content.hint} /></div>
+      {(wordBank.bank ? wordBank.bank.remainingHint : q.content.hint) && (
+        <div className="mt-2 text-xs text-muted-foreground">Gợi ý: <QuestionText text={wordBank.bank ? wordBank.bank.remainingHint : q.content.hint} /></div>
       )}
       {parts.length === 1 && <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {vals.map((v, i) => (
