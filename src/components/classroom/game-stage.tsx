@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { speakZh, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
 import type { VocabRow } from "@/lib/db-content";
-import { HeadTiltCamera } from "./head-tilt-camera";
+import { HeadTiltGame } from "./head-tilt-game";
 
 type Game = "menu" | "memory" | "quick" | "listen" | "tilt";
 
@@ -103,6 +103,12 @@ export function GameStage({
     );
   }
 
+  if (game === "tilt") {
+    return <HeadTiltGame vocab={vocab} active={active} onExit={() => setGame("menu")}>
+      <AwardRow students={students} onAward={onAward} />
+    </HeadTiltGame>;
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
       <div className="flex items-center gap-2">
@@ -117,7 +123,7 @@ export function GameStage({
         {game === "memory" ? (
           <MemoryGame vocab={vocab} students={students} onAward={onAward} />
         ) : (
-          <ChoiceGame kind={game} vocab={vocab} students={students} onAward={onAward} active={active} />
+          <ChoiceGame kind={game} vocab={vocab} students={students} onAward={onAward} />
         )}
       </div>
     </div>
@@ -170,13 +176,11 @@ function ChoiceGame({
   vocab,
   students,
   onAward,
-  active,
 }: {
-  kind: "quick" | "listen" | "tilt";
+  kind: "quick" | "listen";
   vocab: VocabRow[];
   students: ClassroomStudent[];
   onAward: (studentId: string, points: number, reason: PointReason) => void;
-  active: boolean;
 }) {
   const [round, setRound] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -184,7 +188,7 @@ function ChoiceGame({
 
   const { answer, options } = useMemo(() => {
     const answer = vocab[Math.floor(Math.random() * vocab.length)];
-    const distractors = shuffle(vocab.filter((v) => v.id !== answer.id && v.hanzi !== answer.hanzi)).slice(0, kind === "tilt" ? 1 : 3);
+    const distractors = shuffle(vocab.filter((v) => v.id !== answer.id && v.hanzi !== answer.hanzi)).slice(0, 3);
     return { answer, options: shuffle([answer, ...distractors]) };
     // Chỉ đổi câu khi giáo viên bấm "Câu tiếp theo" (round) — KHÔNG phụ thuộc
     // tham chiếu mảng vocab, kẻo trang re-render là tự nhảy câu khác.
@@ -202,10 +206,6 @@ function ChoiceGame({
     setPicked(id);
     setScore((s) => ({ right: s.right + (id === answer.id ? 1 : 0), total: s.total + 1 }));
   }, [picked, answer.id]);
-
-  if (kind === "tilt" && options.length < 2) {
-    return <div className="rounded-2xl bg-classroom-surface p-6 text-classroom-secondary">Cần ít nhất hai từ có chữ Hán khác nhau để chơi nghiêng đầu. Hãy chọn bài có thêm từ vựng.</div>;
-  }
 
   return (
     <div className="flex h-full flex-col gap-3">
@@ -228,7 +228,7 @@ function ChoiceGame({
         )}
 
         <div className="grid w-full max-w-3xl grid-cols-2 gap-3">
-          {options.map((o, index) => {
+          {options.map((o) => {
             const isAnswer = o.id === answer.id;
             const show = picked !== null;
             return (
@@ -247,7 +247,6 @@ function ChoiceGame({
                         : "border-classroom-border-muted bg-classroom-surface text-classroom-faint",
                 )}
               >
-                {kind === "tilt" && <div className="mb-2 font-sans text-sm font-semibold">{index === 0 ? "← Nghiêng trái" : "Nghiêng phải →"}</div>}
                 {o.hanzi}
                 {show && isAnswer && (
                   <div className="mt-1 text-sm font-semibold text-classroom-success">
@@ -258,21 +257,6 @@ function ChoiceGame({
             );
           })}
         </div>
-
-        {kind === "tilt" && (
-          <HeadTiltCamera
-            active={active}
-            round={round}
-            answered={picked !== null}
-            onChoose={(side) => choose(options[side === "left" ? 0 : 1].id)}
-          />
-        )}
-
-        {kind === "tilt" && picked && (
-          <p role="status" className="text-center font-semibold text-classroom-foreground">
-            {picked === answer.id ? "Chính xác! 🎉" : `Đáp án đúng: ${answer.hanzi} · ${answer.pinyin}`}
-          </p>
-        )}
 
         <div className="flex items-center gap-3 text-sm text-classroom-muted-foreground">
           <span>

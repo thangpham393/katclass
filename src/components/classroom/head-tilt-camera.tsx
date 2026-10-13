@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FaceLandmarker } from "@mediapipe/tasks-vision";
-import { Camera, CameraOff } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Camera, CameraOff, ScanFace, Crosshair } from "lucide-react";
 import { eyeRoll, TiltGesture, type TiltSide } from "@/lib/head-tilt";
 
 const WASM_URL = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm";
@@ -18,31 +17,46 @@ function cameraError(error: unknown): string {
   return "Không tải được nhận diện khuôn mặt hoặc camera. Kiểm tra mạng rồi thử lại, hoặc bấm đáp án để chơi.";
 }
 
-export function HeadTiltCamera({ active, answered, round, onChoose }: {
+export type TiltMotion = { side: TiltSide | null; progress: number; angle: number };
+
+export function HeadTiltCamera({ active, answered, paused = false, round, onChoose, onMotion }: {
   active: boolean;
   answered: boolean;
   round: number;
   onChoose: (side: TiltSide) => void;
+  paused?: boolean;
+  onMotion?: (motion: TiltMotion) => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const gesture = useRef(new TiltGesture());
-  const current = useRef({ answered, onChoose });
-  current.current = { answered, onChoose };
+  const current = useRef({ answered, paused, onChoose, onMotion });
+  current.current = { answered, paused, onChoose, onMotion };
+  const offset = useRef(0);
+  const rawAngle = useRef<number | null>(null);
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [hint, setHint] = useState("Nhìn thẳng vào camera để bắt đầu.");
   const [progress, setProgress] = useState(0);
+  const [angle, setAngle] = useState(0);
 
   useEffect(() => {
     gesture.current.reset();
     setProgress(0);
-  }, [round]);
+    current.current.onMotion?.({ side: null, progress: 0, angle: 0 });
+  }, [round, paused]);
 
   // Classroom overlays stay mounted when hidden: explicitly stop the stream.
   useEffect(() => {
     if (!active) setEnabled(false);
   }, [active]);
+
+  useEffect(() => {
+    if (enabled && active) return;
+    setLoading(false); setAngle(0); setProgress(0);
+    gesture.current.reset();
+    current.current.onMotion?.({ side: null, progress: 0, angle: 0 });
+  }, [enabled, active]);
 
   useEffect(() => {
     const hide = () => {
@@ -62,6 +76,7 @@ export function HeadTiltCamera({ active, answered, round, onChoose }: {
     let lastRun = 0;
     const video = videoRef.current;
     gesture.current.reset();
+    offset.current = 0;
     setLoading(true);
     setError("");
     setProgress(0);
@@ -128,10 +143,14 @@ export function HeadTiltCamera({ active, answered, round, onChoose }: {
               lastTime = video.currentTime;
               const faces = detector.detectForVideo(video, now).faceLandmarks;
               const face = faces.length === 1 ? faces[0] : null;
-              const angle = face ? eyeRoll(face[33], face[263], video.videoWidth, video.videoHeight) : null;
-              const result = gesture.current.update(angle, now, current.current.answered);
+              rawAngle.current = face ? eyeRoll(face[33], face[263], video.videoWidth, video.videoHeight) : null;
+              const angle = rawAngle.current === null ? null : rawAngle.current - offset.current;
+              const result = gesture.current.update(angle, now, current.current.answered || current.current.paused);
+              setAngle(angle ?? 0);
+              current.current.onMotion?.({ side: result.side, progress: result.progress, angle: angle ?? 0 });
               setProgress(result.progress);
-              setHint(current.current.answered ? "Đã chọn! Bấm Câu tiếp theo để chơi tiếp."
+              setHint(current.current.paused ? "Đang tạm dừng"
+                : current.current.answered ? "Đã chọn! Đưa đầu về giữa nhé."
                 : faces.length > 1 ? "Chỉ một người đứng trước camera nhé."
                 : !face ? "Chưa thấy khuôn mặt. Đứng gần hơn và kiểm tra ánh sáng."
                 : result.side ? `Giữ nghiêng ${result.side === "left" ? "trái" : "phải"}… ${Math.round(result.progress * 100)}%`
@@ -146,28 +165,33 @@ export function HeadTiltCamera({ active, answered, round, onChoose }: {
       } catch (error) { fail(error); }
     }
     void start();
-    return () => { cancelled = true; dispose(); };
+    return () => {
+      cancelled = true; dispose();
+      rawAngle.current = null;
+      current.current.onMotion?.({ side: null, progress: 0, angle: 0 });
+    };
   }, [enabled, active]);
 
   return (
-    <div className="w-full max-w-3xl rounded-xl border border-classroom-border bg-classroom-muted p-3">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="tilt-camera">
+      <div className={`tilt-camera-ring ${progress > 0 ? "tilt-camera-tracking" : ""}`} style={{ "--hold": `${progress * 360}deg` } as React.CSSProperties}>
+        <div className="tilt-camera-inner">
         <video ref={videoRef} muted playsInline autoPlay aria-label="Camera người chơi, hình ảnh phản chiếu như gương"
-          className={`h-24 w-32 shrink-0 -scale-x-100 rounded-lg bg-black object-cover ${enabled && active ? "" : "hidden"}`} />
-        <div className="min-w-0 flex-1 text-sm text-classroom-secondary">
-          <p>Nghiêng về phía đáp án trên màn hình, giữ khoảng 1 giây để chọn.</p>
-          <p className="mt-1 text-xs text-classroom-muted-foreground">Camera xử lý trên thiết bị, không lưu hoặc gửi hình ảnh. Có thể bấm hai đáp án để chơi.</p>
-          {enabled && <p role="status" className="mt-2 font-semibold">{loading ? "Đang tải nhận diện và mở camera…" : hint}</p>}
-          {error && <p role="alert" className="mt-2 text-classroom-warning">{error}</p>}
+          className={`tilt-camera-video ${enabled && active ? "" : "hidden"}`} />
+        {(!enabled || loading) && <div className="tilt-camera-placeholder"><ScanFace size={46} strokeWidth={1} /><span>{loading ? "Đang mở camera…" : "Bạn ở đây"}</span>{!enabled && <button onClick={() => setEnabled(true)} disabled={!active}><Camera size={14} /> Bật camera</button>}</div>}
+        {enabled && !loading && <span className="tilt-angle">{Math.round(angle)}° / 16°</span>}
         </div>
-        <Button size="sm" variant="secondary" onClick={() => setEnabled((value) => !value)} disabled={!active}>
-          {enabled ? <CameraOff className="h-4 w-4" /> : <Camera className="h-4 w-4" />}
-          {enabled ? "Tắt camera" : "Bật camera"}
-        </Button>
       </div>
-      {enabled && <div role="progressbar" aria-label="Giữ nghiêng để chọn" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="mt-2 h-2 overflow-hidden rounded-full bg-classroom-border">
-        <div className="h-full bg-brand-500 transition-[width]" style={{ width: `${progress * 100}%` }} />
-      </div>}
+      <p role="status" className="tilt-camera-hint">{enabled ? loading ? "Đang tải nhận diện…" : hint : "Bật camera hoặc bấm đáp án"}</p>
+      <div className="tilt-angle-meter"><span>←</span><div><i /><b style={{ left: `${50 - Math.max(-30, Math.min(30, angle)) / 30 * 50}%` }} /></div><span>→</span></div>
+      <div role="progressbar" aria-label="Giữ nghiêng để chọn" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="tilt-hold-label">GIỮ ĐẦU {Math.round(progress * 100)}%</div>
+      {enabled && <div className="tilt-camera-tools"><button onClick={() => {
+        if (rawAngle.current !== null) offset.current = rawAngle.current;
+        gesture.current.reset(); setProgress(0); setAngle(0);
+        current.current.onMotion?.({ side: null, progress: 0, angle: 0 });
+      }} disabled={loading || paused || answered || rawAngle.current === null} title="Nhìn thẳng rồi bấm để lấy vị trí đầu ở giữa"><Crosshair size={13} /> Hiệu chỉnh</button><button onClick={() => setEnabled(false)}><CameraOff size={13} /> Tắt camera</button></div>}
+      {error && <p role="alert" className="tilt-camera-error">{error}</p>}
+      <span className="tilt-camera-privacy">Camera riêng tư · xử lý trên thiết bị</span>
     </div>
   );
 }
