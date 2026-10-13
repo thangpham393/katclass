@@ -15,7 +15,7 @@
 .name-picker-toolbar > span { margin-left: auto; color: rgb(var(--classroom-muted-foreground)); }
 .name-picker-toolbar button { padding: 7px; border-radius: 8px; background: rgb(var(--classroom-muted)); }
 .name-picker-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding: 12px 16px; border-radius: 12px; background: rgb(var(--classroom-surface)); font-size: 12px; }
-.name-picker-settings label { display: flex; align-items: center; gap: 12px; }
+.name-picker-settings label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; max-width: 100%; }
 .name-picker-settings input { width: 130px; accent-color: #818cf8; }
 .name-picker-settings select { background: rgb(var(--classroom-muted)); color: rgb(var(--classroom-foreground)); padding: 7px 10px; border-radius: 8px; }
 .name-picker-note { background: #6366f115; border: 1px solid #6366f133; color: rgb(var(--classroom-secondary)); padding: 10px 14px; border-radius: 10px; font-size: 12px; }
@@ -25,6 +25,10 @@
 .name-picker-arena.marble { background: radial-gradient(ellipse at 25% 0%, #1e497a, transparent 60%), linear-gradient(145deg, #101b34, #0e233a); }
 .name-picker-arena::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(#ffffff16 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
 .name-picker-canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
+.name-picker-flight-backdrop { display: block; width: 100%; height: 100%; position: absolute; inset: 0; pointer-events: none; }
+.name-picker-arena.photo .name-picker-preview, .name-picker-arena.photo .name-picker-winner { background: linear-gradient(transparent, #0f172a33); text-shadow: 0 2px 12px #0f172a88; }
+.name-picker-arena.photo .name-picker-eyebrow, .name-picker-arena.photo .name-picker-preview p, .name-picker-arena.photo .name-picker-winner p { color: #fff; }
+.name-picker-arena.photo .name-picker-winner-face { border-color: #fff; box-shadow: 0 0 60px #ffffff66; }
 .name-picker-progress { position: absolute; bottom: 0; height: 4px; background: #ffffff12; width: 100%; }
 .name-picker-progress > div { height: 100%; background: linear-gradient(90deg, #818cf8, #38bdf8, #f0abfc); transform: scaleX(0); transform-origin: left; }
 .name-picker-preview, .name-picker-winner { position: relative; height: 100%; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 30px 16px; text-align: center; }
@@ -41,6 +45,11 @@
 .name-picker-confetti i { position: absolute; top: -15px; width: 6px; height: 12px; animation: picker-confetti 2.8s ease-in both; }
 .name-picker-running-label { position: absolute; top: 14px; left: 16px; background: #0f172acc; border: 1px solid #ffffff22; padding: 8px 12px; border-radius: 30px; font-size: 11px; display: flex; gap: 8px; align-items: center; }
 .name-picker-live-dot { height: 6px; width: 6px; background: #34d399; border-radius: 50%; box-shadow: 0 0 12px #34d399; }
+.name-picker-photo-running { position: relative; height: 100%; min-height: 420px; }
+.name-picker-photo-running > .name-picker-modes, .name-picker-photo-running > .name-picker-toolbar, .name-picker-photo-running > .name-picker-settings, .name-picker-photo-running > .name-picker-note, .name-picker-photo-running > .name-picker-bottom { display: none; }
+.name-picker-photo-running .name-picker-arena { height: 100%; min-height: 420px; }
+.name-picker-photo-running > .name-picker-music-error { display: block; position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 2; background: #0f172acc; color: #fff; }
+.name-picker-stage-mute { position: absolute; top: 12px; right: 14px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; background: #0f172a66; border: 1px solid #ffffff40; }
 .name-picker-bottom { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
 .name-picker-bottom > span { font-size: 12px; color: rgb(var(--classroom-muted-foreground)); }
 .name-picker-wheel { flex: 1; min-height: 300px; }

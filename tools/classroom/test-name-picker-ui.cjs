@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
+const { createHash } = require('node:crypto');
 const { spawn } = require('node:child_process');
 const { chromium } = require(path.resolve(process.argv[2]));
 const origin = 'http://127.0.0.1:3134';
@@ -93,11 +94,36 @@ let server, browser; const logs = [], errors = [], uploads = [], saves = []; let
   await page.getByRole('button',{name:/Gọi tên bằng ảnh/}).click();
   await page.getByRole('button',{name:'Cài đặt gọi tên'}).click();
   await page.getByRole('slider',{name:'Thời gian gọi tên'}).focus();await page.keyboard.press('Home');
+  const music=page.getByTestId('picker-music');
+  assert.equal(await music.getAttribute('src'),'/audio/classroom-random.mp3');
+  await page.getByRole('slider',{name:'Âm lượng nhạc nền'}).focus();await page.keyboard.press('Home');for(let i=0;i<5;i++)await page.keyboard.press('ArrowRight');
+  assert.equal(await music.evaluate(el=>el.volume),.25);
+  const styleHashes=[];
+  for(const style of ['wave','eight','spiral','orbit','fire','bounce','pendulum','mix']) {
+    await page.getByRole('combobox',{name:'Kiểu bay của ảnh'}).selectOption(style);
+    await page.getByRole('button',{name:'Bắt đầu gọi tên',exact:true}).click();
+    await page.waitForFunction(()=>{const audio=document.querySelector('[data-testid="picker-music"]');return !audio.paused&&audio.currentTime>.1&&audio.duration>0;});
+    await page.waitForTimeout(style==='mix'?3700:350);
+    assert.equal(await page.locator('.name-picker-canvas').getAttribute('data-flight'),style);
+    const shot=await page.locator('.name-picker-arena').screenshot({path:output+'/flight-'+style+'.png'});
+    styleHashes.push(createHash('sha256').update(shot).digest('hex'));
+    if(style==='wave') {
+      await page.getByRole('button',{name:'Tắt nhạc nền',exact:true}).click();assert(await music.evaluate(el=>el.paused));
+      await page.getByRole('button',{name:'Bật nhạc nền',exact:true}).click();
+      await page.waitForFunction(()=>!document.querySelector('[data-testid="picker-music"]').paused);
+    }
+    await page.getByRole('button',{name:'Toggle overlay',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('[data-testid="picker-music"]').paused);
+    assert.equal(await music.evaluate(el=>el.currentTime),0,'Closing resets background music');
+    await page.getByRole('button',{name:'Toggle overlay',exact:true}).click();
+  }
+  assert.equal(new Set(styleHashes).size,8,'Eight styles have distinct rendered backgrounds and guides');
   await page.screenshot({path:output+'/photo-ready.png',fullPage:true});
   const picked=async()=>JSON.parse(await page.getByTestId('picked').textContent());
   await page.getByRole('button',{name:'Bắt đầu gọi tên',exact:true}).click();
   await page.waitForTimeout(1200);await page.screenshot({path:output+'/photo-flying.png',fullPage:true});
   await page.locator('.name-picker-winner').waitFor();assert.equal((await picked()).length,1);
+  assert(await music.evaluate(el=>el.paused&&el.currentTime===0),'Winner stops music immediately');
   await page.screenshot({path:output+'/photo-winner.png',fullPage:true});
   await page.getByRole('button',{name:/Đua bi/}).click();
   await page.getByRole('button',{name:'Bắt đầu đua bi',exact:true}).click();
@@ -119,5 +145,5 @@ let server, browser; const logs = [], errors = [], uploads = [], saves = []; let
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Picker fits mobile width');
   await page.getByRole('button',{name:'Chuyển sang giao diện sáng'}).click();await page.waitForTimeout(300);await page.screenshot({path:output+'/photo-mobile-light.png',fullPage:true});
   assert.deepEqual(errors,[],'No runtime or hydration errors');
-  console.log('PASS: original-photo crop, zoom/pan, assignment, failed-save retry, private upload paths, portraits reload, all 3 modes, cross-mode fairness, reload history, cancellation, desktop/mobile and both themes. Screenshots: '+output);
+  console.log('PASS: photo crop/save/roster avatars, all 3 modes, eight flight backgrounds, real MP3 playback, volume, mute/unmute, result/cancellation audio stop, fairness, reload history, desktop/mobile and both themes. Screenshots: '+output);
 })().catch(e=>{console.error(e);console.error(logs.slice(-10).join(''));process.exitCode=1;}).finally(async()=>{await browser?.close();server?.kill('SIGTERM');fs.unlinkSync(path.join(route,'page.tsx'));fs.rmdirSync(route);});
