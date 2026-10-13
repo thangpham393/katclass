@@ -745,6 +745,7 @@ export default function ClassroomPage() {
 
         <ToolOverlay title="Trò chơi từ vựng" open={overlay === "game"} onClose={() => setOverlay(null)} wide>
           <GameStage
+            active={overlay === "game"}
             vocab={vocab}
             students={presentStudents}
             onAward={(id, pts, why) => give(id, pts, why)}

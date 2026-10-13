@@ -7,10 +7,17 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { speakZh, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
 import type { VocabRow } from "@/lib/db-content";
+import { HeadTiltCamera } from "./head-tilt-camera";
 
-type Game = "menu" | "memory" | "quick" | "listen";
+type Game = "menu" | "memory" | "quick" | "listen" | "tilt";
 
 const GAMES: { key: Exclude<Game, "menu">; title: string; desc: string; emoji: string }[] = [
+  {
+    key: "tilt",
+    title: "Nghiêng đầu chọn đáp án",
+    desc: "Bật camera, nghiêng đầu trái hoặc phải và giữ để chọn chữ Hán đúng.",
+    emoji: "🙆",
+  },
   {
     key: "quick",
     title: "Ai nhanh hơn",
@@ -49,10 +56,12 @@ export function GameStage({
   vocab,
   students,
   onAward,
+  active = true,
 }: {
   vocab: VocabRow[];
   students: ClassroomStudent[];
   onAward: (studentId: string, points: number, reason: PointReason) => void;
+  active?: boolean;
 }) {
   const [game, setGame] = useState<Game>("menu");
 
@@ -77,7 +86,7 @@ export function GameStage({
           <div className="text-lg font-bold text-classroom-foreground">Chọn trò chơi</div>
           <p className="text-sm text-classroom-muted-foreground">{vocab.length} từ của bài đang dạy</p>
         </div>
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {GAMES.map((g) => (
             <button
               key={g.key}
@@ -108,7 +117,7 @@ export function GameStage({
         {game === "memory" ? (
           <MemoryGame vocab={vocab} students={students} onAward={onAward} />
         ) : (
-          <ChoiceGame kind={game} vocab={vocab} students={students} onAward={onAward} />
+          <ChoiceGame kind={game} vocab={vocab} students={students} onAward={onAward} active={active} />
         )}
       </div>
     </div>
@@ -161,11 +170,13 @@ function ChoiceGame({
   vocab,
   students,
   onAward,
+  active,
 }: {
-  kind: "quick" | "listen";
+  kind: "quick" | "listen" | "tilt";
   vocab: VocabRow[];
   students: ClassroomStudent[];
   onAward: (studentId: string, points: number, reason: PointReason) => void;
+  active: boolean;
 }) {
   const [round, setRound] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -173,12 +184,12 @@ function ChoiceGame({
 
   const { answer, options } = useMemo(() => {
     const answer = vocab[Math.floor(Math.random() * vocab.length)];
-    const distractors = shuffle(vocab.filter((v) => v.id !== answer.id)).slice(0, 3);
+    const distractors = shuffle(vocab.filter((v) => v.id !== answer.id && v.hanzi !== answer.hanzi)).slice(0, kind === "tilt" ? 1 : 3);
     return { answer, options: shuffle([answer, ...distractors]) };
     // Chỉ đổi câu khi giáo viên bấm "Câu tiếp theo" (round) — KHÔNG phụ thuộc
     // tham chiếu mảng vocab, kẻo trang re-render là tự nhảy câu khác.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [round, vocab.length]);
+  }, [round, vocab.length, kind]);
 
   const speak = useCallback(() => speakZh(answer.hanzi), [answer]);
 
@@ -186,16 +197,20 @@ function ChoiceGame({
     if (kind === "listen") speak();
   }, [kind, speak]);
 
-  function choose(id: string) {
+  const choose = useCallback((id: string) => {
     if (picked) return;
     setPicked(id);
     setScore((s) => ({ right: s.right + (id === answer.id ? 1 : 0), total: s.total + 1 }));
+  }, [picked, answer.id]);
+
+  if (kind === "tilt" && options.length < 2) {
+    return <div className="rounded-2xl bg-classroom-surface p-6 text-classroom-secondary">Cần ít nhất hai từ có chữ Hán khác nhau để chơi nghiêng đầu. Hãy chọn bài có thêm từ vựng.</div>;
   }
 
   return (
     <div className="flex h-full flex-col gap-3">
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4 sm:gap-6 sm:p-6">
-        {kind === "quick" ? (
+        {kind !== "listen" ? (
           <div className="text-center">
             <div className="text-xs font-semibold uppercase tracking-wide text-classroom-muted-foreground">
               Chữ Hán nào có nghĩa
@@ -213,12 +228,13 @@ function ChoiceGame({
         )}
 
         <div className="grid w-full max-w-3xl grid-cols-2 gap-3">
-          {options.map((o) => {
+          {options.map((o, index) => {
             const isAnswer = o.id === answer.id;
             const show = picked !== null;
             return (
               <button
                 key={o.id}
+                disabled={picked !== null}
                 onClick={() => choose(o.id)}
                 className={cn(
                   "zh rounded-2xl border-2 px-2 py-4 text-4xl font-bold transition-colors sm:py-6 sm:text-5xl",
@@ -231,6 +247,7 @@ function ChoiceGame({
                         : "border-classroom-border-muted bg-classroom-surface text-classroom-faint",
                 )}
               >
+                {kind === "tilt" && <div className="mb-2 font-sans text-sm font-semibold">{index === 0 ? "← Nghiêng trái" : "Nghiêng phải →"}</div>}
                 {o.hanzi}
                 {show && isAnswer && (
                   <div className="mt-1 text-sm font-semibold text-classroom-success">
@@ -241,6 +258,21 @@ function ChoiceGame({
             );
           })}
         </div>
+
+        {kind === "tilt" && (
+          <HeadTiltCamera
+            active={active}
+            round={round}
+            answered={picked !== null}
+            onChoose={(side) => choose(options[side === "left" ? 0 : 1].id)}
+          />
+        )}
+
+        {kind === "tilt" && picked && (
+          <p role="status" className="text-center font-semibold text-classroom-foreground">
+            {picked === answer.id ? "Chính xác! 🎉" : `Đáp án đúng: ${answer.hanzi} · ${answer.pinyin}`}
+          </p>
+        )}
 
         <div className="flex items-center gap-3 text-sm text-classroom-muted-foreground">
           <span>
