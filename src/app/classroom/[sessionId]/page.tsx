@@ -747,6 +747,7 @@ export default function ClassroomPage() {
           <GameStage
             active={overlay === "game"}
             vocab={vocab}
+            lessons={lessons.data ?? []}
             students={presentStudents}
             onAward={(id, pts, why) => give(id, pts, why)}
           />

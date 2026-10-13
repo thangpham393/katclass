@@ -31,6 +31,7 @@ import { getSupabase } from "./supabase";
 import { sortWorkbookQuestions } from "./question-order";
 import type { HomeworkReview } from "./homework-review";
 import type { CourseRow } from "./db";
+import { cumulativeVocabPlan, uniqueClassroomVocab, type ScopeLesson } from "./classroom-vocab-scope";
 
 /* ============ Từ vựng ============ */
 
@@ -170,6 +171,31 @@ export async function fetchLesson(id: string): Promise<LessonDetail | null> {
     .map((lv) => lv.vocab)
     .filter(Boolean);
   return { ...rest, vocab };
+}
+
+/** Read only the current textbook/course, never units beyond the assigned lesson. */
+export async function fetchCumulativeLessonVocab(lessons: ScopeLesson[]): Promise<VocabRow[]> {
+  const plans = cumulativeVocabPlan(lessons);
+  const groups = await Promise.all(plans.map(async (plan) => {
+    const words: VocabRow[] = [];
+    const pageSize = 500;
+    for (let offset = 0; ; offset += pageSize) {
+      let query = getSupabase().from("lessons")
+        .select("id, lesson_vocab ( sort, vocab:vocab_items ( * ) )")
+        .eq(plan.field, plan.id).gte("unit", 1).lte("unit", plan.throughUnit)
+        .order("unit").order("sort").order("id")
+        .range(offset, offset + pageSize - 1);
+      if (plan.field === "course_id") query = query.is("textbook_id", null);
+      const { data, error } = await query;
+      if (error) throw error;
+      const rows = (data ?? []) as unknown as { lesson_vocab: { sort: number; vocab: VocabRow | null }[] }[];
+      words.push(...rows.flatMap((row) => (row.lesson_vocab ?? []).slice().sort((a, b) => a.sort - b.sort)
+        .flatMap((item) => item.vocab ? [item.vocab] : [])));
+      if (rows.length < pageSize) break;
+    }
+    return words;
+  }));
+  return uniqueClassroomVocab([...groups.flat(), ...lessons.flatMap((lesson) => lesson.vocab)]);
 }
 
 export async function createLesson(input: LessonInput, createdBy: string): Promise<string> {

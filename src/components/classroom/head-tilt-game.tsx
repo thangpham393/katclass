@@ -1,18 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowLeft, ArrowRight, Check, Flame, Home, Pause, Play, RotateCcw, Trophy, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, Flame, Home, Pause, Play, RotateCcw, Trophy, X } from "lucide-react";
 import type { VocabRow } from "@/lib/db-content";
 import type { TiltSide } from "@/lib/head-tilt";
 import { makeTiltQuestions, TILT_QUESTION_LABELS, type TiltQuestion } from "@/lib/head-tilt-questions";
 import { HeadTiltCamera, type TiltMotion } from "./head-tilt-camera";
 import "./head-tilt-game.css";
 
-export function HeadTiltGame({ vocab, active, onExit, children }: {
+export function HeadTiltGame({ vocab, active, onExit, children, scopeLabel = "Từ vựng bài học", onChangeScope }: {
   vocab: VocabRow[];
   active: boolean;
   onExit: () => void;
   children: ReactNode;
+  scopeLabel?: string;
+  onChangeScope?: () => void;
 }) {
   const [rounds, setRounds] = useState<TiltQuestion[]>([]);
   const [prepared, setPrepared] = useState(false);
@@ -94,7 +96,7 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
   return (
     <div className="tilt-game">
       <header className="tilt-header">
-        <div className="tilt-round"><strong>Câu {index + 1}<span> / {rounds.length}</span></strong><span className="tilt-pill">TỪ VỰNG BÀI HỌC</span>
+        <div className="tilt-round"><strong>Câu {index + 1}<span> / {rounds.length}</span></strong><span className="tilt-pill" title={scopeLabel}>{scopeLabel}</span>
           <div className="tilt-round-track"><i style={{ width: `${(index + (picked ? 1 : 0)) / rounds.length * 100}%` }} /></div>
         </div>
         <div className="tilt-brand"><span className="tilt-brand-icon zh">汉</span><div><b>NGHIÊNG ĐẦU CHỌN ĐÁP ÁN</b><span className="zh">汉字大挑战</span></div></div>
@@ -130,7 +132,7 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
         </div>
       </>}
 
-      <footer className="tilt-footer"><div className="tilt-footer-actions"><button className="tilt-pause" onClick={() => setPaused((value) => !value)} disabled={finished}>{paused ? <Play size={15} /> : <Pause size={15} />}{paused ? "Tiếp tục" : "Tạm dừng"}</button><button onClick={restart}><RotateCcw size={15} /> Chơi lại</button><button onClick={onExit}><Home size={15} /> Trò khác</button></div><span className="tilt-footer-hint">{right} câu đúng · ← → hoặc chạm để chọn</span>{!finished && <button className="tilt-next" onClick={next} disabled={!picked}>{index === rounds.length - 1 ? "Kết quả" : "Câu tiếp theo"}<ArrowRight size={16} /></button>}</footer>
+      <footer className="tilt-footer"><div className="tilt-footer-actions"><button className="tilt-pause" onClick={() => setPaused((value) => !value)} disabled={finished}>{paused ? <Play size={15} /> : <Pause size={15} />}{paused ? "Tiếp tục" : "Tạm dừng"}</button><button onClick={restart}><RotateCcw size={15} /> Chơi lại</button>{onChangeScope && <button onClick={onChangeScope}><BookOpen size={15} /> Đổi phạm vi</button>}<button onClick={onExit}><Home size={15} /> Trò khác</button></div><span className="tilt-footer-hint">{right} câu đúng · ← → hoặc chạm để chọn</span>{!finished && <button className="tilt-next" onClick={next} disabled={!picked}>{index === rounds.length - 1 ? "Kết quả" : "Câu tiếp theo"}<ArrowRight size={16} /></button>}</footer>
       <div className="tilt-awards">{children}</div>
     </div>
   );

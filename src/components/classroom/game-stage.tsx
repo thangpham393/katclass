@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { speakZh, type ClassroomStudent, type PointReason } from "@/lib/db-classroom";
 import type { VocabRow } from "@/lib/db-content";
 import { HeadTiltGame } from "./head-tilt-game";
+import { VocabScopePicker } from "./vocab-scope-picker";
+import type { ScopeLesson } from "@/lib/classroom-vocab-scope";
 
 type Game = "menu" | "memory" | "quick" | "listen" | "tilt";
 
@@ -57,15 +59,24 @@ export function GameStage({
   students,
   onAward,
   active = true,
+  lessons = [],
 }: {
   vocab: VocabRow[];
   students: ClassroomStudent[];
   onAward: (studentId: string, points: number, reason: PointReason) => void;
   active?: boolean;
+  lessons?: ScopeLesson[];
 }) {
   const [game, setGame] = useState<Game>("menu");
+  const [selection, setSelection] = useState<{ words: VocabRow[]; label: string } | null>(null);
+  const lessonKey = JSON.stringify(lessons.map((lesson) => [lesson.id, lesson.unit, lesson.textbook_id, lesson.course_id]));
+  useEffect(() => { setSelection(null); }, [lessonKey]);
 
-  if (!vocab.length) {
+  function backToMenu() {
+    setGame("menu"); setSelection(null);
+  }
+
+  if (!vocab.length && !lessons.length) {
     return (
       <div className="grid h-full place-items-center rounded-2xl border border-classroom-border-muted bg-classroom-surface text-center text-classroom-muted-foreground">
         <div className="max-w-md p-8">
@@ -90,7 +101,7 @@ export function GameStage({
           {GAMES.map((g) => (
             <button
               key={g.key}
-              onClick={() => setGame(g.key)}
+              onClick={() => { setSelection(null); setGame(g.key); }}
               className="rounded-2xl border border-classroom-border bg-classroom-muted p-5 text-left transition-colors hover:border-brand-500 hover:bg-classroom-hover"
             >
               <div className="text-3xl">{g.emoji}</div>
@@ -103,27 +114,34 @@ export function GameStage({
     );
   }
 
+  if (!selection) {
+    return <VocabScopePicker title={GAMES.find((item) => item.key === game)!.title} vocab={vocab} lessons={lessons}
+      onPick={(words, label) => setSelection({ words, label })} onBack={backToMenu} />;
+  }
+
   if (game === "tilt") {
-    return <HeadTiltGame vocab={vocab} active={active} onExit={() => setGame("menu")}>
+    return <HeadTiltGame vocab={selection.words} active={active} onExit={backToMenu} scopeLabel={selection.label} onChangeScope={() => setSelection(null)}>
       <AwardRow students={students} onAward={onAward} />
     </HeadTiltGame>;
   }
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Button size="sm" variant="ghost" onClick={() => setGame("menu")} className="text-classroom-secondary">
+      <div className="flex flex-wrap items-center gap-2">
+        <Button size="sm" variant="ghost" onClick={backToMenu} className="text-classroom-secondary">
           ← Trò khác
         </Button>
         <span className="text-sm font-bold text-classroom-foreground">
           {GAMES.find((g) => g.key === game)?.title}
         </span>
+        <span className="ml-auto text-xs text-classroom-muted-foreground">{selection.label} · {selection.words.length} từ</span>
+        <Button size="sm" variant="ghost" onClick={() => setSelection(null)} className="text-classroom-secondary">Đổi phạm vi</Button>
       </div>
       <div className="min-h-0 flex-1">
         {game === "memory" ? (
-          <MemoryGame vocab={vocab} students={students} onAward={onAward} />
+          <MemoryGame vocab={selection.words} students={students} onAward={onAward} />
         ) : (
-          <ChoiceGame kind={game} vocab={vocab} students={students} onAward={onAward} />
+          <ChoiceGame kind={game} vocab={selection.words} students={students} onAward={onAward} />
         )}
       </div>
     </div>

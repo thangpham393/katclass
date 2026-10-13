@@ -15,7 +15,8 @@ import { GameStage } from "@/components/classroom/game-stage";
 import { ClassroomThemeProvider } from "@/components/classroom/theme-provider";
 import "@/app/classroom/classroom.css";
 const vocab = ${JSON.stringify([['冷','lěng','Lạnh'],['热','rè','Nóng'],['天气','tiānqì','Thời tiết']].map(([hanzi,pinyin,meaning],i)=>({id:String(i),hanzi,pinyin,meaning,example:null,audio_url:null,level:null,tags:[],created_at:''})))};
-export default function Fixture() { const [active,setActive] = useState(true); return <ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><div style={{height:'calc(100dvh - 85px)',minHeight:550,display:active?'block':'none'}}><GameStage vocab={vocab} students={[]} onAward={()=>{}} active={active}/></div></div></ClassroomThemeProvider> }
+const lessons = [{id:'lesson-11',unit:11,textbook_id:'hsk3',course_id:'course',textbook:{id:'hsk3',name:'HSK3',level:'HSK3'},course:{id:'course',name:'HSK',level:'HSK3'},vocab}];
+export default function Fixture() { const [active,setActive] = useState(true); return <ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><div style={{height:'calc(100dvh - 85px)',minHeight:550,display:active?'block':'none'}}><GameStage vocab={vocab} lessons={lessons} students={[]} onAward={()=>{}} active={active}/></div></div></ClassroomThemeProvider> }
 `);
 let server, browser;
 const logs = [];
@@ -28,9 +29,26 @@ const logs = [];
   browser = await chromium.launch({ executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true });
   const page = await browser.newPage({viewport:{width:1366,height:900}});
   const errors = []; page.on('pageerror',e=>errors.push(e.message));
+  let failScope = false, scopeRequests = 0;
+  await page.route('**/fixture/rest/v1/lessons?**',async route=>{
+    const url=new URL(route.request().url());
+    assert.equal(url.searchParams.get('textbook_id'),'eq.hsk3');
+    assert.deepEqual(url.searchParams.getAll('unit'),['gte.1','lte.11']);
+    scopeRequests++;
+    if(failScope) return route.fulfill({status:500,contentType:'application/json',body:JSON.stringify({message:'Fixture failure'})});
+    const word={id:'old-word',hanzi:'学习',pinyin:'xuéxí',meaning:'Học tập',tags:[],example:null,audio_url:null,level:null,created_at:''};
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify([{id:'lesson-1',lesson_vocab:[{sort:0,vocab:word}]}])});
+  });
   await page.addInitScript(()=>{ navigator.mediaDevices.getUserMedia=async()=>{throw new DOMException('Denied in fixture','NotAllowedError');}; });
   await page.goto(origin+'/tilt-verification');
   await page.getByRole('button',{name:/Nghiêng đầu chọn đáp án/}).click();
+  await page.getByRole('heading',{name:'Chọn phạm vi từ vựng'}).waitFor();
+  await page.screenshot({path:output+'/scope-desktop.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  await page.screenshot({path:output+'/scope-mobile.png',fullPage:true});
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth),'Scope picker does not overflow on mobile');
+  await page.setViewportSize({width:1366,height:900});
+  await page.getByRole('button',{name:/^Từ vựng của bài/}).click();
   await page.locator('.tilt-card').first().waitFor();
   await page.screenshot({path:output+'/desktop.png',fullPage:true});
   const left = await page.locator('.tilt-card-left').boundingBox(), camera = await page.locator('.tilt-camera-ring').boundingBox(), right = await page.locator('.tilt-card-right').boundingBox();
@@ -96,8 +114,37 @@ const logs = [];
   assert(mCamera.y+mCamera.height<mLeft.y,'Camera above cards on mobile');
   await page.getByRole('button',{name:'Trò khác',exact:true}).click();
   await page.getByRole('button',{name:/Ai nhanh hơn/}).waitFor();
+  await page.setViewportSize({width:1366,height:900});
+  for(const title of ['Nghiêng đầu chọn đáp án','Ai nhanh hơn','Nghe đoán chữ','Lật thẻ trí nhớ']) {
+    await page.getByRole('button',{name:new RegExp(title)}).click();
+    await page.getByRole('heading',{name:'Chọn phạm vi từ vựng'}).waitFor();
+    assert.match(await page.getByRole('button',{name:/^Từ vựng của bài/}).textContent(),/Bài 11.*3 từ/);
+    await page.getByRole('button',{name:/^Từ vựng của bài/}).click();
+    await page.getByRole('button',{name:'Đổi phạm vi',exact:true}).click();
+    const cumulative=page.getByRole('button',{name:/^Từ vựng tổng hợp/});
+    await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.startsWith('Từ vựng tổng hợp')&&!b.disabled));
+    assert.match(await cumulative.textContent(),/Bài 1–11.*4 từ/);
+    await cumulative.click();
+    if(title==='Nghiêng đầu chọn đáp án') {
+      await page.locator('.tilt-card').first().waitFor();
+      assert.match(await page.locator('.tilt-round strong').textContent(),/\/ 12/);
+    } else if(title==='Lật thẻ trí nhớ') assert.equal(await page.locator('.grid.grid-cols-3 > button').count(),8);
+    else { assert.equal(await page.locator('button.zh').count(),4); assert.ok((await page.locator('button.zh').allTextContents()).some(text=>text.includes('学习'))); }
+    await page.getByRole('button',{name:/Trò khác/}).click();
+  }
+  // A failed cumulative load keeps current-lesson play available and supports retry.
+  failScope=true;
+  await page.getByRole('button',{name:/Ai nhanh hơn/}).click();
+  await page.getByRole('button',{name:'Tải lại từ vựng tổng hợp'}).waitFor();
+  assert.equal(await page.getByRole('button',{name:/^Từ vựng của bài/}).isEnabled(),true);
+  failScope=false;
+  await page.getByRole('button',{name:'Tải lại từ vựng tổng hợp'}).click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.startsWith('Từ vựng tổng hợp')&&!b.disabled));
+  await page.getByRole('button',{name:/^Từ vựng tổng hợp/}).click();
+  assert.equal(await page.locator('button.zh').count(),4);
+  assert.ok(scopeRequests>=5);
   assert.deepEqual(errors,[],'No browser runtime or hydration errors');
-  console.log('PASS: auto advance, pause/hidden overlay, timer cleanup on manual next/restart, layout, camera denial fallback, scoring and results. Screenshots: '+output);
+  console.log('PASS: current/cumulative scopes for all four games, unit/textbook query boundaries, load retry, auto advance, pause/hidden overlay, layout, scoring and results. Screenshots: '+output);
 })().catch(error=>{console.error(error);console.error(logs.slice(-8).join(''));process.exitCode=1;}).finally(async()=>{
   await browser?.close(); server?.kill('SIGTERM');
   fs.unlinkSync(path.join(route,'page.tsx')); fs.rmdirSync(route);
