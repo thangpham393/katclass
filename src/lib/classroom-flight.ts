@@ -14,7 +14,7 @@ export const FLIGHT_PALETTES: Record<Flight, [string, string, string]> = {
 const TAU = Math.PI * 2;
 const reflect = (v: number) => 1 - Math.abs(((v % 2) + 2) % 2 - 1);
 export function flightPattern(flight: Flight, sec: number): FlightPattern {
-  return flight === "mix" ? FLIGHT_PATTERNS[Math.floor(sec / 3.5) % FLIGHT_PATTERNS.length] : flight;
+  return flight === "mix" ? FLIGHT_PATTERNS[Math.floor(Math.max(0, sec) / 3.5) % FLIGHT_PATTERNS.length] : flight;
 }
 
 /** Normalized geometry also draws the guides, so portraits follow the visible paths. */

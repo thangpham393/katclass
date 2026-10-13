@@ -19,6 +19,7 @@ test('figure eight crosses its center, spiral grows outward, waves have separate
   assert(flightPoint('wave',.2,2).y>flightPoint('wave',.2,0).y);
 });
 test('combined mode visits all seven patterns, each fixed style keeps its own palette and geometry', () => {
+  assert.equal(flightPattern('mix',-.016),'wave','An early RAF timestamp cannot select a negative pattern index');
   assert.deepEqual(FLIGHT_PATTERNS.map((_,i)=>flightPattern('mix',i*3.5)),FLIGHT_PATTERNS);
   const paths=FLIGHT_PATTERNS.map(p=>JSON.stringify(Array.from({length:10},(_,i)=>flightPoint(p,i/10))));
   assert.equal(new Set(paths).size,7);

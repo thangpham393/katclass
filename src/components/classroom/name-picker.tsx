@@ -19,7 +19,7 @@ const MODES = [
   { key: "marble" as const, icon: CircleDot, title: "Đua bi", text: "Cùng lăn qua đường đua. Ai về đích đầu tiên?", tone: "sky" },
 ];
 
-export function NamePicker({ students, onPicked, active, sessionId, photosHref, photoError, onReloadPhotos }: { students: ClassroomStudent[]; onPicked: (s: ClassroomStudent) => void; active: boolean; sessionId: string; photosHref?: string; photoError?: string | null; onReloadPhotos?: () => void }) {
+export function NamePicker({ students, onPicked, onStarted, active, sessionId, photosHref, photoError, onReloadPhotos }: { students: ClassroomStudent[]; onPicked: (s: ClassroomStudent) => void; onStarted?: () => void; active: boolean; sessionId: string; photosHref?: string; photoError?: string | null; onReloadPhotos?: () => void }) {
   const [mode, setMode] = useState<Mode>("wheel");
   const [fair, setFair] = useState(true);
   const [called, setCalled] = useState<string[]>([]);
@@ -85,6 +85,7 @@ export function NamePicker({ students, onPicked, active, sessionId, photosHref, 
   function start() {
     const picked = pickStudent(pool);
     if (!picked || running) return;
+    onStarted?.();
     playMusic();
     if (sound) { try { audio.current ??= new AudioContext(); audio.current.resume().catch(() => {}); } catch { /* optional sound */ } }
     setWinner(null);
@@ -93,7 +94,7 @@ export function NamePicker({ students, onPicked, active, sessionId, photosHref, 
   }
   function wheelState(running: boolean) {
     setWheelRunning(running);
-    if (running) playMusic();
+    if (running) { onStarted?.(); playMusic(); }
     if (running && sound) { try { audio.current ??= new AudioContext(); audio.current.resume().catch(() => {}); } catch { /* optional sound */ } }
   }
 
@@ -169,7 +170,9 @@ function AnimatedRound({ round, onFinish }: { round: Round; onFinish: (s: Classr
     const duration = reduce ? Math.min(1500, round.duration) : round.duration;
     function frame(now: number) {
       if (w < 1 || h < 1) { raf = requestAnimationFrame(frame); return; }
-      const t = Math.min(1, (now - start) / duration), seconds = (now - start) / 1000;
+      // RAF timestamps describe the frame's start, which can precede this effect.
+      const elapsed = Math.max(0, now - start);
+      const t = Math.min(1, elapsed / duration), seconds = elapsed / 1000;
       ctx.clearRect(0, 0, w, h);
       if (round.mode === "photo") paintPhotos(ctx, w, h, t, seconds, round, imgs, reduce);
       else paintRace(ctx, w, h, t, seconds, round, imgs, reduce);

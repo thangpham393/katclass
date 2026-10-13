@@ -14,7 +14,7 @@ const students = ['Bình An', 'Cherry', 'Chi Anh', 'Bắp', 'Mễ'].map((name,i)
 assert(!fs.existsSync(route), 'Refuse to overwrite existing route');
 fs.mkdirSync(route); fs.mkdirSync(output,{recursive:true});
 fs.writeFileSync(path.join(route,'page.tsx'), `"use client";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { NamePicker } from '@/components/classroom/name-picker';
 import { ClassPhotoManager } from '@/components/classes/class-photo-manager';
 import { Avatar } from '@/components/ui/avatar';
@@ -23,8 +23,8 @@ import { ClassroomThemeProvider, ClassroomThemeToggle } from '@/components/class
 import '@/app/classroom/classroom.css';
 const students = ${JSON.stringify(students)};
 const roster = students.map(s=>({student_id:s.id,status:'active',joined_at:'',student:{...s,avatar:null,email:'',phone:null}}));
-export default function Fixture() { const [active,setActive]=useState(true), [picked,setPicked]=useState<string[]>([]), [photos,setPhotos]=useState<ClassPhoto[]>([]);
-return <><div style={{padding:20}}><ClassPhotoManager classId="${id(1)}" students={roster} onPhotosChange={setPhotos}/><ul data-testid="class-roster">{roster.map(s=><li key={s.student_id}><Avatar name={s.student.name} src={photos.find(p=>p.key===s.student_id)?.url ?? s.student.avatar ?? undefined}/>{s.student.name}</li>)}</ul></div><ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><ClassroomThemeToggle/><output data-testid="picked">{JSON.stringify(picked)}</output><div style={{height:660,display:active?'block':'none'}}><NamePicker students={students} sessionId="fixture" active={active} onPicked={s=>setPicked(p=>[...p,s.id])} photosHref="/name-picker-verification"/></div></div></ClassroomThemeProvider></> }
+export default function Fixture() { const [active,setActive]=useState(true), [picked,setPicked]=useState<string[]>([]), [photos,setPhotos]=useState<ClassPhoto[]>([]); const delayedClose=useRef<ReturnType<typeof setTimeout>|null>(null);
+return <><div style={{padding:20}}><ClassPhotoManager classId="${id(1)}" students={roster} onPhotosChange={setPhotos}/><ul data-testid="class-roster">{roster.map(s=><li key={s.student_id}><Avatar name={s.student.name} src={photos.find(p=>p.key===s.student_id)?.url ?? s.student.avatar ?? undefined}/>{s.student.name}</li>)}</ul></div><ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><ClassroomThemeToggle/><output data-testid="picked">{JSON.stringify(picked)}</output><div className="relative" style={{height:660,display:active?'block':'none'}}><div className="absolute inset-0 flex flex-col p-4 pb-20"><div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col rounded-2xl border"><header className="shrink-0 p-3">Gọi tên học viên</header><div data-testid="picker-scroll" className="min-h-0 flex-1 overflow-y-auto p-4"><NamePicker students={students} sessionId="fixture" active={active} onStarted={()=>{if(delayedClose.current)clearTimeout(delayedClose.current);delayedClose.current=null;}} onPicked={s=>{setPicked(p=>[...p,s.id]);if(${process.argv.includes("--repeat-only")})delayedClose.current=setTimeout(()=>setActive(false),3000);}} photosHref="/name-picker-verification"/></div></div></div></div></div></ClassroomThemeProvider></> }
 `);
 let server, browser; const logs = [], errors = [], uploads = [], saves = []; let rejectSave = true; const stored = new Map();
 (async()=>{
@@ -49,7 +49,29 @@ let server, browser; const logs = [], errors = [], uploads = [], saves = []; let
     if(p.includes('/storage/v1/object/class-photos/')) {const key=decodeURIComponent(p.split('/class-photos/')[1]);const up=uploads.find(u=>u.path===key);return r.fulfill({contentType:'image/jpeg',body:up?.bytes??Buffer.alloc(0)});}
     return r.fulfill({contentType:'application/json',body:'[]'});
   });
+  if(process.argv.includes('--repeat-only')) await page.addInitScript(()=>{const nativeRAF=window.requestAnimationFrame.bind(window);window.requestAnimationFrame=callback=>nativeRAF(time=>callback(time-64));});
   await page.goto(origin+'/name-picker-verification');
+  if(process.argv.includes('--repeat-only')) {
+    await page.getByRole('button',{name:/Gọi tên bằng ảnh/}).click();
+    await page.getByRole('button',{name:'Cài đặt gọi tên'}).click();
+    await page.getByRole('slider',{name:'Thời gian gọi tên'}).focus();await page.keyboard.press('Home');
+    for(let i=0;i<4;i++) {
+      await page.getByRole('button',{name:i?'Gọi bạn tiếp theo':'Bắt đầu gọi tên',exact:true}).click();
+      await page.waitForTimeout(300);
+      const canvas=page.locator('.name-picker-canvas');
+      await canvas.waitFor();
+      const before=await page.locator('.name-picker-progress > div').getAttribute('style');
+      if(!before) {console.log('Animation diagnostics:',JSON.stringify({errors,layout:await page.evaluate(()=>['.name-picker','.name-picker-arena','.name-picker-canvas'].map(selector=>{const e=document.querySelector(selector),r=e.getBoundingClientRect();return{selector,width:r.width,height:r.height,canvasWidth:e.width,canvasHeight:e.height};}))}));await page.screenshot({path:output+'/repeat-failed.png',fullPage:true});}
+      await page.waitForTimeout(400);
+      assert.notEqual(await page.locator('.name-picker-progress > div').getAttribute('style'),before,`Round ${i+1} keeps animating`);
+      assert(await canvas.evaluate(el=>el.width>0&&el.height>0&&el.getContext('2d').getImageData(20,20,1,1).data[3]>0),`Round ${i+1} has painted pixels`);
+      await page.screenshot({path:output+'/repeat-'+i+'.png',fullPage:true});
+      await page.locator('.name-picker-winner').waitFor();
+      if(i===1){await page.waitForTimeout(3200);assert.equal(await page.locator('.name-picker').isVisible(),false,'Result overlay closes after timeout');await page.getByRole('button',{name:'Toggle overlay',exact:true}).click();}
+    }
+    assert.equal(new Set(JSON.parse(await page.getByTestId('picked').textContent())).size,4);
+    assert.deepEqual(errors,[]);console.log('PASS: four consecutive photo rounds animate and paint inside the actual overlay flex/scroll layout.');return;
+  }
   await page.getByRole('button',{name:'Quản lý ảnh'}).click();
   const source=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=1600;c.height=900;const x=c.getContext('2d');x.fillStyle='#dbeafe';x.fillRect(0,0,1600,900);for(let i=0;i<5;i++){x.fillStyle=['#fda4af','#a5b4fc','#fcd34d','#6ee7b7','#7dd3fc'][i];x.beginPath();x.arc(260+i*270,400,95,0,Math.PI*2);x.fill();x.fillStyle='#1e293b';x.beginPath();x.arc(230+i*270,385,8,0,7);x.arc(290+i*270,385,8,0,7);x.fill();x.lineWidth=6;x.beginPath();x.arc(260+i*270,405,40,.15,Math.PI-.15);x.stroke();}return c.toDataURL().split(',')[1];});
   await page.locator('input[type=file]').first().setInputFiles({name:'group.png',mimeType:'image/png',buffer:Buffer.from(source,'base64')});

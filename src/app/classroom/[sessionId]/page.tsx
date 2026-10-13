@@ -359,6 +359,13 @@ export default function ClassroomPage() {
       });
   }
 
+  /** Lượt mới không bị bộ hẹn giờ của kết quả cũ đóng giữa chừng. */
+  function handlePickStart() {
+    if (hideOverlayTimer.current) window.clearTimeout(hideOverlayTimer.current);
+    hideOverlayTimer.current = null;
+    setAnswering(null);
+  }
+
   /** Quay trúng ai: giữ tên trên màn 3 giây rồi trả màn hình về slide. */
   function handlePicked(student: ClassroomStudent) {
     setAnswering(student);
@@ -735,7 +742,7 @@ export default function ClassroomPage() {
         </ToolOverlay>
 
         <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)} wide>
-          <NamePicker students={presentStudents} onPicked={handlePicked} active={overlay === "random"} sessionId={sessionId}
+          <NamePicker students={presentStudents} onPicked={handlePicked} onStarted={handlePickStart} active={overlay === "random"} sessionId={sessionId}
             photosHref={classId ? `/${user?.role === "teacher" ? "teacher" : "admin"}/classes/${classId}` : undefined}
             photoError={classPhotos.error} onReloadPhotos={classPhotos.reload} />
         </ToolOverlay>
@@ -749,7 +756,7 @@ export default function ClassroomPage() {
             }}
             onSkip={() => setAnswering(null)}
             onAgain={() => {
-              setAnswering(null);
+              handlePickStart();
               setOverlay("random");
             }}
           />
