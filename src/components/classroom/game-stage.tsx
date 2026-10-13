@@ -15,7 +15,7 @@ const GAMES: { key: Exclude<Game, "menu">; title: string; desc: string; emoji: s
   {
     key: "tilt",
     title: "Nghiêng đầu chọn đáp án",
-    desc: "Bật camera, nghiêng đầu trái hoặc phải để chọn chữ Hán đúng. Tự chuyển câu.",
+    desc: "Bật camera, nghiêng đầu trái hoặc phải và giữ để chọn chữ Hán đúng. Tự chuyển câu.",
     emoji: "🙆",
   },
   {

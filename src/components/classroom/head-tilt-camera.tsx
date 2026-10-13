@@ -145,7 +145,7 @@ export function HeadTiltCamera({ active, answered, paused = false, round, onChoo
               const face = faces.length === 1 ? faces[0] : null;
               rawAngle.current = face ? eyeRoll(face[33], face[263], video.videoWidth, video.videoHeight) : null;
               const angle = rawAngle.current === null ? null : rawAngle.current - offset.current;
-              const result = gesture.current.update(angle, current.current.answered || current.current.paused);
+              const result = gesture.current.update(angle, now, current.current.answered || current.current.paused);
               setAngle(angle ?? 0);
               current.current.onMotion?.({ side: result.side, progress: result.progress, angle: angle ?? 0 });
               setProgress(result.progress);
@@ -153,7 +153,7 @@ export function HeadTiltCamera({ active, answered, paused = false, round, onChoo
                 : current.current.answered ? "Đã chọn! Đưa đầu về giữa nhé."
                 : faces.length > 1 ? "Chỉ một người đứng trước camera nhé."
                 : !face ? "Chưa thấy khuôn mặt. Đứng gần hơn và kiểm tra ánh sáng."
-                : result.side ? `Đã chọn ${result.side === "left" ? "trái" : "phải"}!`
+                : result.side ? `Giữ nghiêng ${result.side === "left" ? "trái" : "phải"}… ${Math.round(result.progress * 100)}%`
                 : result.ready ? "Sẵn sàng! Nghiêng trái hoặc phải để chọn."
                 : "Đưa đầu về giữa để sẵn sàng.");
               if (result.choose) current.current.onChoose(result.choose);
@@ -184,7 +184,7 @@ export function HeadTiltCamera({ active, answered, paused = false, round, onChoo
       </div>
       <p role="status" className="tilt-camera-hint">{enabled ? loading ? "Đang tải nhận diện…" : hint : "Bật camera hoặc bấm đáp án"}</p>
       <div className="tilt-angle-meter"><span>←</span><div><i /><b style={{ left: `${50 - Math.max(-30, Math.min(30, angle)) / 30 * 50}%` }} /></div><span>→</span></div>
-      <div className="tilt-hold-label">NGHIÊNG LÀ CHỌN</div>
+      <div role="progressbar" aria-label="Giữ nghiêng để chọn" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="tilt-hold-label">GIỮ ĐẦU {Math.round(progress * 100)}%</div>
       {enabled && <div className="tilt-camera-tools"><button onClick={() => {
         if (rawAngle.current !== null) offset.current = rawAngle.current;
         gesture.current.reset(); setProgress(0); setAngle(0);
