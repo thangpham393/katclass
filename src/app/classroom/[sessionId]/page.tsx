@@ -32,7 +32,9 @@ import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { homeForRole } from "@/lib/auth";
 import { RosterPanel, presentCount } from "@/components/classroom/roster-panel";
-import { RandomStage, SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
+import { SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
+import { NamePicker } from "@/components/classroom/name-picker";
+import { fetchClassPhotos } from "@/lib/db-class-photos";
 import { GameStage, LeaderboardStage } from "@/components/classroom/game-stage";
 import { StrokeStage } from "@/components/classroom/stroke-stage";
 import { WhiteboardStage } from "@/components/classroom/whiteboard";
@@ -104,6 +106,7 @@ export default function ClassroomPage() {
 
   const session = useLoad(() => fetchSession(sessionId), [sessionId]);
   const classId = session.data?.class_id ?? "";
+  const classPhotos = useLoad(() => classId ? fetchClassPhotos(classId) : Promise.resolve([]), [classId]);
   const classStudents = useLoad(
     () => (classId ? fetchClassStudents(classId) : Promise.resolve([])),
     [classId],
@@ -164,7 +167,7 @@ export default function ClassroomPage() {
   const students: ClassroomStudent[] = useMemo(() => {
     const list: ClassroomStudent[] = (classStudents.data ?? [])
       .filter((s) => s.status === "active")
-      .map((s) => ({ id: s.student_id, name: s.student.name, avatar: s.student.avatar, makeup: false }));
+      .map((s) => ({ id: s.student_id, name: s.student.name, avatar: classPhotos.data?.find(p => p.key === s.student_id)?.url ?? s.student.avatar, makeup: false }));
     const ids = new Set(list.map((s) => s.id));
     for (const m of makeups.data ?? []) {
       if (!ids.has(m.student.id)) {
@@ -172,7 +175,14 @@ export default function ClassroomPage() {
       }
     }
     return list;
-  }, [classStudents.data, makeups.data]);
+  }, [classStudents.data, makeups.data, classPhotos.data]);
+
+  // Photos edited in another class tab become available when the classroom regains focus.
+  useEffect(() => {
+    const reload = () => classPhotos.reload();
+    window.addEventListener("focus", reload);
+    return () => window.removeEventListener("focus", reload);
+  }, [classPhotos.reload]);
 
   /**
    * Từ vựng của các bài đã gán cho buổi. Bắt buộc memo: trang re-render mỗi giây
@@ -724,8 +734,10 @@ export default function ClassroomPage() {
           <VocabStage vocab={vocab} />
         </ToolOverlay>
 
-        <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)}>
-          <RandomStage students={presentStudents} onPicked={handlePicked} />
+        <ToolOverlay title="Gọi tên học viên" open={overlay === "random"} onClose={() => setOverlay(null)} wide>
+          <NamePicker students={presentStudents} onPicked={handlePicked} active={overlay === "random"} sessionId={sessionId}
+            photosHref={classId ? `/${user?.role === "teacher" ? "teacher" : "admin"}/classes/${classId}` : undefined}
+            photoError={classPhotos.error} onReloadPhotos={classPhotos.reload} />
         </ToolOverlay>
 
         {answering && (

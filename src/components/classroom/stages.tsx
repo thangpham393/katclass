@@ -789,11 +789,15 @@ export function VocabStage({ vocab }: { vocab: VocabRow[] }) {
 export function RandomStage({
   students,
   onPicked,
+  managed = false,
+  onRunningChange,
 }: {
   students: ClassroomStudent[];
   onPicked: (student: ClassroomStudent) => void;
+  managed?: boolean;
+  onRunningChange?: (running: boolean) => void;
 }) {
-  const [fair, setFair] = useState(true);
+  const [fair, setFair] = useState(!managed);
   const [called, setCalled] = useState<string[]>([]);
   const [spinning, setSpinning] = useState(false);
   const [display, setDisplay] = useState<ClassroomStudent | null>(null);
@@ -811,6 +815,7 @@ export function RandomStage({
   function spin() {
     if (spinning || !students.length) return;
     setSpinning(true);
+    onRunningChange?.(true);
     setWinner(null);
     const picked = pool[Math.floor(Math.random() * pool.length)];
     timers.current.forEach((t) => window.clearTimeout(t));
@@ -829,6 +834,7 @@ export function RandomStage({
         setDisplay(picked);
         setWinner(picked);
         setSpinning(false);
+        onRunningChange?.(false);
         setCalled((prev) => (prev.includes(picked.id) ? prev : [...prev, picked.id]));
         onPicked(picked);
       }, acc + delay),
@@ -839,7 +845,7 @@ export function RandomStage({
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 rounded-2xl border border-classroom-border-muted bg-classroom-surface p-8">
-      <div className="flex items-center gap-3 text-sm">
+      {!managed && <div className="flex items-center gap-3 text-sm">
         <label className="flex cursor-pointer items-center gap-2 text-classroom-secondary">
           <input type="checkbox" checked={fair} onChange={(e) => setFair(e.target.checked)} className="h-4 w-4" />
           Gọi công bằng (chưa ai bị gọi hai lần)
@@ -852,7 +858,7 @@ export function RandomStage({
             <RotateCcw className="h-3.5 w-3.5" /> làm mới
           </button>
         )}
-      </div>
+      </div>}
 
       <div
         className={cn(

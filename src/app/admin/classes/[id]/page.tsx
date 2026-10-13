@@ -45,6 +45,7 @@ import {
 import { fetchTextbooks } from "@/lib/db-library";
 import { parseScheduleFromName } from "@/lib/parse-schedule";
 import { useLoad } from "@/lib/use-load";
+import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
 
 export default function AdminClassDetailPage() {
   const params = useParams<{ id: string }>();
@@ -230,6 +231,7 @@ export default function AdminClassDetailPage() {
         </div>
       </div>
 
+      <ClassPhotoManager classId={classId} students={students.data ?? []} />
       {actionError && <ErrorNote message={actionError} />}
 
       <TeacherScheduleCard cls={c} onSaved={() => { cls.reload(); sessions.reload(); }} />

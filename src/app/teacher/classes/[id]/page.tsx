@@ -21,6 +21,7 @@ import {
 import { fetchParticipation } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
+import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
 
 export default function TeacherClassDetailPage() {
   const params = useParams<{ id: string }>();
@@ -106,6 +107,7 @@ export default function TeacherClassDetailPage() {
         </div>
       )}
 
+      <ClassPhotoManager classId={classId} students={students.data ?? []} />
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Card>
