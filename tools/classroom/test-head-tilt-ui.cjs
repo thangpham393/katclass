@@ -47,10 +47,32 @@ const logs = [];
     const word = answers[prompt.match(/“(.+)”/)[1]];
     await page.getByRole('button',{name:new RegExp('Chọn (trái|phải): '+word+'$')}).click();
     assert.equal(await page.locator('.tilt-card-correct .tilt-hanzi').textContent(),word);
-    if(i===0) await page.screenshot({path:output+'/correct.png',fullPage:true});
-    await page.getByRole('button',{name:i===2?'Kết quả':'Câu tiếp theo',exact:true}).click();
+    if(i===0) {
+      await page.getByRole('button',{name:'Tạm dừng',exact:true}).click();
+      await page.waitForTimeout(1200);
+      assert.match(await page.locator('.tilt-round strong').textContent(), /Câu 1/,'Pause stops auto advance');
+      await page.getByRole('button',{name:'Toggle overlay',exact:true}).click();
+      await page.waitForTimeout(1200);
+      await page.getByRole('button',{name:'Toggle overlay',exact:true}).click();
+      assert.match(await page.locator('.tilt-round strong').textContent(), /Câu 1/,'Hidden overlay stops auto advance');
+      await page.screenshot({path:output+'/correct.png',fullPage:true});
+      await page.getByRole('button',{name:'Tiếp tục',exact:true}).click();
+    }
+    if(i===2) await page.locator('.tilt-finish').waitFor();
+    else await page.waitForFunction(expected => document.querySelector('.tilt-round strong')?.textContent?.includes('Câu '+expected),i+2);
   }
   assert.match(await page.locator('.tilt-finish').textContent(),/Đúng 3\/3 câu · 40 điểm/);
+  // A manual next must cancel the old round's timer rather than skipping another question.
+  await page.getByRole('button',{name:'Chơi lại',exact:true}).first().click();
+  await page.keyboard.press('ArrowLeft');
+  await page.getByRole('button',{name:'Câu tiếp theo',exact:true}).click();
+  await page.waitForTimeout(1200);
+  assert.match(await page.locator('.tilt-round strong').textContent(), /Câu 2/);
+  // Restart during the result delay must not advance the newly created game.
+  await page.keyboard.press('ArrowLeft');
+  await page.getByRole('button',{name:'Chơi lại',exact:true}).first().click();
+  await page.waitForTimeout(1200);
+  assert.match(await page.locator('.tilt-round strong').textContent(), /Câu 1/);
   await page.getByRole('button',{name:'Chơi lại',exact:true}).first().click();
   await page.setViewportSize({width:390,height:844});
   await page.screenshot({path:output+'/mobile.png',fullPage:true});
@@ -60,7 +82,7 @@ const logs = [];
   await page.getByRole('button',{name:'Trò khác',exact:true}).click();
   await page.getByRole('button',{name:/Ai nhanh hơn/}).waitFor();
   assert.deepEqual(errors,[],'No browser runtime or hydration errors');
-  console.log('PASS: layout, mobile overflow, pause, camera denial fallback, scoring, streak bonus, results and restart. Screenshots: '+output);
+  console.log('PASS: auto advance, pause/hidden overlay, timer cleanup on manual next/restart, layout, camera denial fallback, scoring and results. Screenshots: '+output);
 })().catch(error=>{console.error(error);console.error(logs.slice(-8).join(''));process.exitCode=1;}).finally(async()=>{
   await browser?.close(); server?.kill('SIGTERM');
   fs.unlinkSync(path.join(route,'page.tsx')); fs.rmdirSync(route);

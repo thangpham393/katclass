@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, ArrowRight, Check, Flame, Home, Pause, Play, RotateCcw, Trophy, X } from "lucide-react";
 import type { VocabRow } from "@/lib/db-content";
 import type { TiltSide } from "@/lib/head-tilt";
@@ -52,7 +52,7 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
     } else setStreak(0);
   }
 
-  function next() {
+  const next = useCallback(() => {
     if (picked === null) return;
     if (index === rounds.length - 1) { setFinished(true); return; }
     setIndex((value) => value + 1);
@@ -60,7 +60,13 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
     locked.current = false;
     setCameraRound((value) => value + 1);
     setMotion({ side: null, progress: 0, angle: 0 });
-  }
+  }, [picked, index, rounds.length]);
+
+  useEffect(() => {
+    if (picked === null || paused || !active || finished) return;
+    const timer = window.setTimeout(next, 1000);
+    return () => window.clearTimeout(timer);
+  }, [picked, paused, active, finished, next]);
 
   function restart() {
     setRounds(makeRounds(vocab));
@@ -127,7 +133,7 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
         </div>
         <div className="tilt-feedback" role="status">
           {picked ? correct ? <span className="tilt-feedback-correct">{streak % 3 === 0 ? <><Flame size={21} /> {streak} CÂU ĐÚNG LIÊN TIẾP! +20 điểm</> : <><Check size={21} /> Chính xác! +10 điểm</>}</span> : <span className="tilt-feedback-wrong">Đáp án đúng: {question.answer.hanzi} · {question.answer.pinyin}</span> : <span className="tilt-feedback-idle">Hai lựa chọn. Một cái nghiêng đầu.</span>}
-          <p>← Chọn trái <span>Giữ khoảng 1 giây để chọn</span> Chọn phải →</p>
+          <p>← Chọn trái <span>{picked ? "Tự chuyển câu sau 1 giây" : "Nghiêng là chọn · đưa đầu về giữa để chơi tiếp"}</span> Chọn phải →</p>
         </div>
       </>}
 
