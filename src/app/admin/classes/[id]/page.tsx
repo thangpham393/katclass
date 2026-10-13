@@ -46,11 +46,13 @@ import { fetchTextbooks } from "@/lib/db-library";
 import { parseScheduleFromName } from "@/lib/parse-schedule";
 import { useLoad } from "@/lib/use-load";
 import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
+import type { ClassPhoto } from "@/lib/db-class-photos";
 
 export default function AdminClassDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const classId = params.id;
+  const [classPhotos, setClassPhotos] = useState<ClassPhoto[]>([]);
 
   const cls = useLoad(() => fetchClass(classId), [classId]);
   const students = useLoad(() => fetchClassStudents(classId), [classId]);
@@ -231,7 +233,7 @@ export default function AdminClassDetailPage() {
         </div>
       </div>
 
-      <ClassPhotoManager classId={classId} students={students.data ?? []} />
+      <ClassPhotoManager classId={classId} students={students.data ?? []} onPhotosChange={setClassPhotos} />
       {actionError && <ErrorNote message={actionError} />}
 
       <TeacherScheduleCard cls={c} onSaved={() => { cls.reload(); sessions.reload(); }} />
@@ -265,7 +267,7 @@ export default function AdminClassDetailPage() {
               <div className="divide-y">
                 {students.data!.map((s) => (
                   <div key={s.student_id} className="flex items-center gap-3 py-3">
-                    <Avatar name={s.student.name} src={s.student.avatar ?? undefined} size={38} />
+                    <Avatar name={s.student.name} src={classPhotos.find(p => p.key === s.student_id)?.url ?? s.student.avatar ?? undefined} size={38} />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-semibold">{s.student.name}</div>
                       <div className="truncate text-xs text-muted-foreground">

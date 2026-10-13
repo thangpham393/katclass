@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, ClipboardCheck, ListChecks } from "lucide-react";
@@ -22,10 +23,12 @@ import { fetchParticipation } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
+import type { ClassPhoto } from "@/lib/db-class-photos";
 
 export default function TeacherClassDetailPage() {
   const params = useParams<{ id: string }>();
   const classId = params.id;
+  const [classPhotos, setClassPhotos] = useState<ClassPhoto[]>([]);
 
   const cls = useLoad(() => fetchClass(classId), [classId]);
   const students = useLoad(() => fetchClassStudents(classId), [classId]);
@@ -107,7 +110,7 @@ export default function TeacherClassDetailPage() {
         </div>
       )}
 
-      <ClassPhotoManager classId={classId} students={students.data ?? []} />
+      <ClassPhotoManager classId={classId} students={students.data ?? []} onPhotosChange={setClassPhotos} />
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Card>
@@ -166,7 +169,7 @@ export default function TeacherClassDetailPage() {
                   const quiet = hasPoints && (p?.speak ?? 0) === 0;
                   return (
                     <div key={s.student_id} className="flex items-center gap-3 py-2.5">
-                      <Avatar name={s.student.name} src={s.student.avatar ?? undefined} size={34} />
+                      <Avatar name={s.student.name} src={classPhotos.find(p => p.key === s.student_id)?.url ?? s.student.avatar ?? undefined} size={34} />
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm font-semibold">{s.student.name}</div>
                         <div className="truncate text-xs text-muted-foreground">

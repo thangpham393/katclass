@@ -29,8 +29,11 @@ function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error("Không cắt được ảnh.")), "image/jpeg", .92));
 }
 
-export function ClassPhotoManager({ classId, students }: { classId: string; students: ClassStudentRow[] }) {
+export function ClassPhotoManager({ classId, students, onPhotosChange }: { classId: string; students: ClassStudentRow[]; onPhotosChange?: (photos: ClassPhoto[]) => void }) {
   const photos = useLoad(() => fetchClassPhotos(classId), [classId]);
+  useEffect(() => {
+    if (photos.data) onPhotosChange?.(photos.data);
+  }, [photos.data, onPhotosChange]);
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const count = (photos.data ?? []).filter(p => p.key !== "group" && students.some(s => s.student_id === p.key)).length;

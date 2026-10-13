@@ -16,12 +16,14 @@ fs.writeFileSync(path.join(route,'page.tsx'), `"use client";
 import { useState } from 'react';
 import { NamePicker } from '@/components/classroom/name-picker';
 import { ClassPhotoManager } from '@/components/classes/class-photo-manager';
+import { Avatar } from '@/components/ui/avatar';
+import type { ClassPhoto } from '@/lib/db-class-photos';
 import { ClassroomThemeProvider, ClassroomThemeToggle } from '@/components/classroom/theme-provider';
 import '@/app/classroom/classroom.css';
 const students = ${JSON.stringify(students)};
 const roster = students.map(s=>({student_id:s.id,status:'active',joined_at:'',student:{...s,avatar:null,email:'',phone:null}}));
-export default function Fixture() { const [active,setActive]=useState(true), [picked,setPicked]=useState<string[]>([]);
-return <><div style={{padding:20}}><ClassPhotoManager classId="${id(1)}" students={roster}/></div><ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><ClassroomThemeToggle/><output data-testid="picked">{JSON.stringify(picked)}</output><div style={{height:660,display:active?'block':'none'}}><NamePicker students={students} sessionId="fixture" active={active} onPicked={s=>setPicked(p=>[...p,s.id])} photosHref="/name-picker-verification"/></div></div></ClassroomThemeProvider></> }
+export default function Fixture() { const [active,setActive]=useState(true), [picked,setPicked]=useState<string[]>([]), [photos,setPhotos]=useState<ClassPhoto[]>([]);
+return <><div style={{padding:20}}><ClassPhotoManager classId="${id(1)}" students={roster} onPhotosChange={setPhotos}/><ul data-testid="class-roster">{roster.map(s=><li key={s.student_id}><Avatar name={s.student.name} src={photos.find(p=>p.key===s.student_id)?.url ?? s.student.avatar ?? undefined}/>{s.student.name}</li>)}</ul></div><ClassroomThemeProvider><div style={{padding:20}}><button onClick={()=>setActive(v=>!v)}>Toggle overlay</button><ClassroomThemeToggle/><output data-testid="picked">{JSON.stringify(picked)}</output><div style={{height:660,display:active?'block':'none'}}><NamePicker students={students} sessionId="fixture" active={active} onPicked={s=>setPicked(p=>[...p,s.id])} photosHref="/name-picker-verification"/></div></div></ClassroomThemeProvider></> }
 `);
 let server, browser; const logs = [], errors = [], uploads = [], saves = []; let rejectSave = true; const stored = new Map();
 (async()=>{
@@ -63,12 +65,14 @@ let server, browser; const logs = [], errors = [], uploads = [], saves = []; let
   await page.screenshot({path:output+'/crop-desktop.png',fullPage:true});
   await page.getByRole('button',{name:'Lưu ảnh',exact:true}).click();
   await page.getByRole('alert').filter({hasText:'lưu ảnh thất bại'}).waitFor();
+  assert.equal(await page.getByTestId('class-roster').locator('img').count(),0,'Failed save does not change roster avatars');
   assert.equal(await page.locator('.photo-editor').count(),1,'Failed save retains editor and drafts');
   assert.equal(Object.keys(saves[0].changes).length,3,'Group and both portraits save in one RPC');
   assert.equal(saves[0].cid,id(1));
   for(const up of uploads){assert(up.path.startsWith(id(1)+'/'));assert(up.bytes.length>100);}
   rejectSave=false;await page.getByRole('button',{name:'Lưu ảnh',exact:true}).click();
   await page.getByText('Đã lưu ảnh',{exact:true}).waitFor();assert.equal(stored.size,3);
+  await page.waitForFunction(()=>document.querySelectorAll('[data-testid="class-roster"] img').length===2&&[...document.querySelectorAll('[data-testid="class-roster"] img')].every(img=>img.complete&&img.naturalWidth===512));
   await page.getByRole('button',{name:'Quản lý ảnh'}).click();
   assert.equal(await page.locator('.photo-editor-assign img').count(),2,'Saved portraits reload');
   await page.waitForFunction(()=>[...document.querySelectorAll('.photo-editor-assign img')].every(img=>img.complete&&img.naturalWidth===512)&&document.querySelector('.photo-editor-image img')?.naturalWidth===1600);
@@ -76,6 +80,15 @@ let server, browser; const logs = [], errors = [], uploads = [], saves = []; let
   await page.setViewportSize({width:390,height:844});await page.screenshot({path:output+'/crop-mobile.png',fullPage:true});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Photo editor fits mobile width');
   await page.getByRole('button',{name:'Đóng',exact:true}).last().click();
+  await page.reload();
+  await page.waitForFunction(()=>document.querySelectorAll('[data-testid="class-roster"] img').length===2);
+  await page.getByRole('button',{name:'Quản lý ảnh'}).click();
+  await page.getByRole('button',{name:'Xóa ảnh lớp của Bình An',exact:true}).click();
+  await page.getByRole('button',{name:'Lưu ảnh',exact:true}).click();
+  await page.getByText('Đã lưu ảnh',{exact:true}).waitFor();
+  await page.waitForFunction(()=>document.querySelectorAll('[data-testid="class-roster"] img').length===1);
+  assert.equal(await page.getByTestId('class-roster').locator('li').filter({hasText:'Bình An'}).locator('img').count(),0,'Removed class photo falls back to name initials');
+  if(process.argv.includes('--photos-only')) {console.log('PASS: failed save preserves avatars, successful save updates roster without reload, photos persist on reload, removing photo restores avatar fallback.');return;}
   await page.setViewportSize({width:1366,height:1000});
   await page.getByRole('button',{name:/Gọi tên bằng ảnh/}).click();
   await page.getByRole('button',{name:'Cài đặt gọi tên'}).click();
