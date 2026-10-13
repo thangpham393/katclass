@@ -4,22 +4,9 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { ArrowLeft, ArrowRight, Check, Flame, Home, Pause, Play, RotateCcw, Trophy, X } from "lucide-react";
 import type { VocabRow } from "@/lib/db-content";
 import type { TiltSide } from "@/lib/head-tilt";
+import { makeTiltQuestions, TILT_QUESTION_LABELS, type TiltQuestion } from "@/lib/head-tilt-questions";
 import { HeadTiltCamera, type TiltMotion } from "./head-tilt-camera";
 import "./head-tilt-game.css";
-
-function makeRounds(vocab: VocabRow[]) {
-  const words = Array.from(new Map(vocab.map((word) => [word.hanzi, word])).values());
-  const shuffled = [...words];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled.map((answer) => {
-    const others = words.filter((word) => word.id !== answer.id);
-    const other = others[Math.floor(Math.random() * others.length)];
-    return { answer, options: Math.random() < .5 ? [answer, other] : [other, answer] };
-  });
-}
 
 export function HeadTiltGame({ vocab, active, onExit, children }: {
   vocab: VocabRow[];
@@ -27,7 +14,8 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
   onExit: () => void;
   children: ReactNode;
 }) {
-  const [rounds, setRounds] = useState<ReturnType<typeof makeRounds>>([]);
+  const [rounds, setRounds] = useState<TiltQuestion[]>([]);
+  const [prepared, setPrepared] = useState(false);
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<TiltSide | null>(null);
   const [paused, setPaused] = useState(false);
@@ -39,13 +27,13 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
   const [motion, setMotion] = useState<TiltMotion>({ side: null, progress: 0, angle: 0 });
   const locked = useRef(false);
   const question = rounds[index];
-  const correct = picked !== null && question.options[picked === "left" ? 0 : 1]?.id === question.answer.id;
+  const correct = picked !== null && (picked === "left" ? 0 : 1) === question.correctIndex;
 
   function choose(side: TiltSide) {
     if (locked.current || paused || finished || !active) return;
     locked.current = true;
     setPicked(side);
-    if (question.options[side === "left" ? 0 : 1].id === question.answer.id) {
+    if ((side === "left" ? 0 : 1) === question.correctIndex) {
       setRight((value) => value + 1);
       setScore((value) => value + 10 + ((streak + 1) % 3 === 0 ? 10 : 0));
       setStreak((value) => value + 1);
@@ -69,7 +57,8 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
   }, [picked, paused, active, finished, next]);
 
   function restart() {
-    setRounds(makeRounds(vocab));
+    setRounds(makeTiltQuestions(vocab));
+    setPrepared(true);
     setIndex(0); setPicked(null); setPaused(false); setScore(0); setRight(0); setStreak(0); setFinished(false);
     locked.current = false;
     setCameraRound((value) => value + 1);
@@ -99,8 +88,8 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, paused, finished, question, streak]);
 
-  if (!rounds.length) return <div className="tilt-game tilt-empty" role="status">Đang chuẩn bị thử thách…</div>;
-  if (rounds.length < 2) return <div className="tilt-game tilt-empty"><h2>Cần thêm từ vựng</h2><p>Chọn bài có ít nhất hai chữ Hán khác nhau để chơi.</p><button onClick={onExit}>← Trò khác</button></div>;
+  if (!prepared) return <div className="tilt-game tilt-empty" role="status">Đang chuẩn bị thử thách…</div>;
+  if (rounds.length < 2) return <div className="tilt-game tilt-empty"><h2>Cần thêm từ vựng</h2><p>Chọn bài có ít nhất hai từ có chữ Hán và nghĩa khác nhau để chơi.</p><button onClick={onExit}>← Trò khác</button></div>;
 
   return (
     <div className="tilt-game">
@@ -108,22 +97,25 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
         <div className="tilt-round"><strong>Câu {index + 1}<span> / {rounds.length}</span></strong><span className="tilt-pill">TỪ VỰNG BÀI HỌC</span>
           <div className="tilt-round-track"><i style={{ width: `${(index + (picked ? 1 : 0)) / rounds.length * 100}%` }} /></div>
         </div>
-        <div className="tilt-brand"><span className="tilt-brand-icon zh">汉</span><div><b>NGHIÊNG ĐẦU CHỌN CHỮ</b><span className="zh">汉字大挑战</span></div></div>
+        <div className="tilt-brand"><span className="tilt-brand-icon zh">汉</span><div><b>NGHIÊNG ĐẦU CHỌN ĐÁP ÁN</b><span className="zh">汉字大挑战</span></div></div>
         <div className="tilt-score"><Trophy size={17} /><div><small>ĐIỂM CỦA BẠN</small><strong>{score}<span> điểm</span></strong></div></div>
       </header>
 
       {finished ? <section className="tilt-finish"><div className="tilt-trophy">🏆</div><span className="tilt-eyebrow">HOÀN THÀNH THỬ THÁCH</span><h2>Chơi rất tuyệt!</h2><p>Đúng {right}/{rounds.length} câu · <strong>{score} điểm</strong></p><button className="tilt-primary" onClick={restart}><RotateCcw size={17} /> Chơi lại</button></section> : <>
-        <div className="tilt-question"><span className="tilt-streak-pill"><Flame size={14} /> Chuỗi đúng <b>{streak}</b></span><div className="tilt-eyebrow">THỬ THÁCH PHẢN XẠ</div><h2>“{question.answer.meaning}” là từ nào?</h2><span className="tilt-live"><i /> {paused ? "ĐANG TẠM DỪNG" : picked ? "ĐÃ CHỌN ĐÁP ÁN" : "NGHIÊNG ĐẦU ĐỂ CHỌN"}</span></div>
+        <div className="tilt-question" data-kind={question.kind}><span className="tilt-streak-pill"><Flame size={14} /> Chuỗi đúng <b>{streak}</b></span><div className="tilt-eyebrow">{TILT_QUESTION_LABELS[question.kind]}</div>
+          <h2>{question.kind === "vi_zh" ? <>“{question.word.meaning}” là từ nào?</> : question.kind === "zh_vi" ? <>“<span className="zh">{question.word.hanzi}</span>” có nghĩa là gì?</> : <><span className="zh">{question.word.hanzi}</span><span className="tilt-statement-equals"> = </span>“{question.statementMeaning}”</>}</h2>
+          {question.kind !== "vi_zh" && <div className="tilt-question-pinyin">{question.word.pinyin}</div>}
+          <span className="tilt-live"><i /> {paused ? "ĐANG TẠM DỪNG" : picked ? "ĐÃ CHỌN ĐÁP ÁN" : "NGHIÊNG ĐẦU ĐỂ CHỌN"}</span></div>
         <div className="tilt-arena">
           {(["left", "right"] as const).map((side, optionIndex) => {
             const word = question.options[optionIndex];
             const revealed = picked !== null;
-            const isRight = word.id === question.answer.id;
+            const isRight = optionIndex === question.correctIndex;
             const state = revealed ? isRight ? "correct" : picked === side ? "wrong" : "dimmed" : motion.side === side ? "tracking" : "idle";
-            return <button key={`${index}-${side}`} className={`tilt-card tilt-card-${side} tilt-card-${state}`} onClick={() => choose(side)} disabled={paused || revealed || !active} aria-label={`Chọn ${side === "left" ? "trái" : "phải"}: ${word.hanzi}`}>
+            return <button key={`${index}-${side}`} className={`tilt-card tilt-card-${side} tilt-card-${state}`} onClick={() => choose(side)} disabled={paused || revealed || !active} aria-label={`Chọn ${side === "left" ? "trái" : "phải"}: ${word.text}`}>
               <span className="tilt-card-direction">{side === "left" && <ArrowLeft size={18} />} CHỌN {side === "left" ? "TRÁI" : "PHẢI"} {side === "right" && <ArrowRight size={18} />}</span>
-              <span className="tilt-hanzi zh">{word.hanzi}</span><span className="tilt-pinyin">{word.pinyin}</span>
-              <span className="tilt-card-caption">{revealed ? word.meaning : "Nghiêng đầu về phía này"}</span>
+              <span className={question.kind === "vi_zh" ? "tilt-hanzi zh" : "tilt-option-text"}>{word.text}</span>{word.pinyin && <span className="tilt-pinyin">{word.pinyin}</span>}
+              <span className="tilt-card-caption">{revealed ? word.reveal : "Nghiêng đầu về phía này"}</span>
               {revealed && isRight && <span className="tilt-card-badge"><Check size={24} /></span>}
               {revealed && !isRight && picked === side && <span className="tilt-card-badge"><X size={24} /></span>}
               <span className="tilt-card-fill" style={{ width: `${!revealed && motion.side === side ? motion.progress * 100 : 0}%` }} />
@@ -132,7 +124,8 @@ export function HeadTiltGame({ vocab, active, onExit, children }: {
           <div className="tilt-camera-position"><HeadTiltCamera active={active} answered={picked !== null} paused={paused} round={cameraRound} onChoose={choose} onMotion={setMotion} /></div>
         </div>
         <div className="tilt-feedback" role="status">
-          {picked ? correct ? <span className="tilt-feedback-correct">{streak % 3 === 0 ? <><Flame size={21} /> {streak} CÂU ĐÚNG LIÊN TIẾP! +20 điểm</> : <><Check size={21} /> Chính xác! +10 điểm</>}</span> : <span className="tilt-feedback-wrong">Đáp án đúng: {question.answer.hanzi} · {question.answer.pinyin}</span> : <span className="tilt-feedback-idle">Hai lựa chọn. Một cái nghiêng đầu.</span>}
+          {picked ? correct ? <span className="tilt-feedback-correct">{streak % 3 === 0 ? <><Flame size={21} /> {streak} CÂU ĐÚNG LIÊN TIẾP! +20 điểm</> : <><Check size={21} /> Chính xác! +10 điểm</>}</span> : <span className="tilt-feedback-wrong">Đáp án: {question.options[question.correctIndex].text} · {question.explanation}</span> : <span className="tilt-feedback-idle">Hai lựa chọn. Một cái nghiêng đầu.</span>}
+          {picked && correct && question.kind === "true_false" && <div className="tilt-explanation">{question.explanation}</div>}
           <p>← Chọn trái <span>{picked ? "Tự chuyển câu sau 1 giây" : "Giữ nghiêng khoảng 1 giây để chọn"}</span> Chọn phải →</p>
         </div>
       </>}

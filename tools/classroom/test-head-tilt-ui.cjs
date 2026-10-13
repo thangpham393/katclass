@@ -42,11 +42,25 @@ const logs = [];
   await page.locator('.tilt-camera-error').waitFor();
   assert.match(await page.locator('.tilt-camera-error').textContent(), /Chưa được phép/);
   const answers = {'Lạnh':'冷','Nóng':'热','Thời tiết':'天气'};
-  for(let i=0;i<3;i++) {
+  const meanings = Object.fromEntries(Object.entries(answers).map(([meaning,hanzi])=>[hanzi,meaning]));
+  const seenKinds = new Set();
+  for(let i=0;i<9;i++) {
     const prompt = await page.locator('.tilt-question h2').textContent();
-    const word = answers[prompt.match(/“(.+)”/)[1]];
+    const kind = await page.locator('.tilt-question').getAttribute('data-kind');
+    const quoted = prompt.match(/“(.+)”/)[1];
+    const word = kind==='vi_zh' ? answers[quoted] : kind==='zh_vi' ? meanings[quoted]
+      : meanings[await page.locator('.tilt-question h2 .zh').textContent()]===quoted ? 'Đúng' : 'Sai';
+    assert(word,'Question can be solved from visible vocabulary');
+    if(!seenKinds.has(kind)) {
+      await page.screenshot({path:output+'/'+kind+'-desktop.png',fullPage:true});
+      await page.setViewportSize({width:390,height:844});
+      await page.screenshot({path:output+'/'+kind+'-mobile.png',fullPage:true});
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth),kind+' does not overflow on mobile');
+      await page.setViewportSize({width:1366,height:900});
+      seenKinds.add(kind);
+    }
     await page.getByRole('button',{name:new RegExp('Chọn (trái|phải): '+word+'$')}).click();
-    assert.equal(await page.locator('.tilt-card-correct .tilt-hanzi').textContent(),word);
+    assert.equal(await page.locator('.tilt-card-correct .tilt-hanzi, .tilt-card-correct .tilt-option-text').textContent(),word);
     if(i===0) {
       await page.getByRole('button',{name:'Tạm dừng',exact:true}).click();
       await page.waitForTimeout(1200);
@@ -58,10 +72,11 @@ const logs = [];
       await page.screenshot({path:output+'/correct.png',fullPage:true});
       await page.getByRole('button',{name:'Tiếp tục',exact:true}).click();
     }
-    if(i===2) await page.locator('.tilt-finish').waitFor();
+    if(i===8) await page.locator('.tilt-finish').waitFor();
     else await page.waitForFunction(expected => document.querySelector('.tilt-round strong')?.textContent?.includes('Câu '+expected),i+2);
   }
-  assert.match(await page.locator('.tilt-finish').textContent(),/Đúng 3\/3 câu · 40 điểm/);
+  assert.equal(seenKinds.size,3,'All requested question types are played');
+  assert.match(await page.locator('.tilt-finish').textContent(),/Đúng 9\/9 câu · 120 điểm/);
   // A manual next must cancel the old round's timer rather than skipping another question.
   await page.getByRole('button',{name:'Chơi lại',exact:true}).first().click();
   await page.keyboard.press('ArrowLeft');
