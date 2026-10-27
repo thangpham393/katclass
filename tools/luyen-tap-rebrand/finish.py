@@ -11,3 +11,13 @@ open(f, 'w', encoding='utf-8').write(t)
 f = P + '/hsk-hongdat-theme.css'; t = open(f, encoding='utf-8').read()
 open(f, 'w', encoding='utf-8').write(t + '\n/* KAT: chữ phụ trên header nền xanh */\n.page-header .subtitle,.header .subtitle{color:rgba(255,255,255,.85) !important}\n')
 print('finished')
+
+# Font: theme gốc xếp "Noto Sans SC" trước font hệ thống — máy nào không tải được
+# Be Vietnam Pro sẽ vẽ chữ Việt bằng font Trung (thiếu glyph "ủ", dấu bị tách).
+f = P + '/hsk-hongdat-theme.css'; t = open(f, encoding='utf-8').read()
+t = ('@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap");\n'
+     + t)
+t = t.replace('font-family:"Be Vietnam Pro","Inter","Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif !important;',
+              'font-family:"Be Vietnam Pro",-apple-system,system-ui,"Segoe UI",Roboto,Arial,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif !important;')
+open(f, 'w', encoding='utf-8').write(t)
+print('font fixed')
