@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KAT CHINESE - Ôn tập Tiếng Trung HSK2</title>
+<style>
+:root {
+  --primary: #1d4ed8;
+  --primary-dark: #173ca1;
+  --gold: #bf1b1b;
+  --gold-light: #e5eeff;
+  --bg: #eef2fb;
+  --surface: #fff;
+  --text: #25282e;
+  --text-muted: #747c8e;
+  --border: #f6cece;
+  --sidebar-w: 280px;
+  --topbar-h: 60px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h); z-index: 100;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; display: flex; align-items: center; padding: 0 16px; gap: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.topbar .menu-btn {
+  width: 44px; height: 44px; border: none; background: rgba(255,255,255,0.12);
+  border-radius: 10px; color: #fff; font-size: 22px; cursor: pointer; display: none;
+}
+.topbar .menu-btn:hover { background: rgba(255,255,255,0.22); }
+.topbar .logo { font-size: 18px; font-weight: 700; flex: 1; }
+.topbar .logo small { font-weight: 400; opacity: 0.8; font-size: 13px; display: block; }
+.topbar .user-pill {
+  display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15);
+  padding: 5px 14px 5px 10px; border-radius: 20px; font-size: 13px;
+}
+.topbar .user-pill .avatar {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--gold);
+  display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+}
+.btn-logout {
+  background: rgba(255,255,255,0.12); border: none; color: #fff;
+  padding: 6px 12px; border-radius: 14px; cursor: pointer; font-size: 12px;
+}
+.btn-logout:hover { background: rgba(255,255,255,0.25); }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed; top: var(--topbar-h); left: 0; bottom: 0; width: var(--sidebar-w);
+  background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto;
+  padding: 12px; z-index: 90; transition: transform 0.28s ease;
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: var(--topbar-h) 0 0 0;
+  background: rgba(0,0,0,0.4); z-index: 89;
+}
+.sidebar-section { margin-bottom: 16px; }
+.sidebar-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--text-muted); padding: 8px 12px 4px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; min-height: 44px;
+  border-radius: 10px; cursor: pointer; font-size: 14px; color: var(--text);
+  border: none; background: none; width: 100%; text-align: left; transition: background 0.15s;
+}
+.sidebar-item:hover { background: var(--bg); }
+.sidebar-item.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; font-weight: 600; box-shadow: 0 4px 12px rgba(29,78,216,0.2); }
+.sidebar-item .icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item.active .icon { background: rgba(255,255,255,0.2); }
+.sidebar-item:not(.active) .icon { background: var(--gold-light); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 4px; }
+
+/* Group toggle */
+.sidebar-group-toggle {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px; min-height: 44px;
+  border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text);
+  border: none; background: none; width: 100%; text-align: left; transition: background 0.15s;
+}
+.sidebar-group-toggle:hover { background: var(--bg); }
+.sidebar-group-toggle .icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; background: var(--gold-light); }
+.sidebar-group-toggle .arrow { margin-left: auto; font-size: 12px; color: var(--text-muted); transition: transform 0.2s; }
+.sidebar-group-toggle.open .arrow { transform: rotate(90deg); }
+.sidebar-group-children { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+.sidebar-group-children.open { max-height: 2000px; }
+.sidebar-group-children .sidebar-item { padding-left: 28px; font-size: 13px; min-height: 38px; }
+.sidebar-group-children .sidebar-item .icon { width: 26px; height: 26px; font-size: 13px; }
+
+
+/* ===== MAIN CONTENT ===== */
+.main { margin-left: var(--sidebar-w); padding-top: var(--topbar-h); height: 100vh; display: flex; flex-direction: column; }
+
+/* --- Home view --- */
+.home-view { flex: 1; overflow-y: auto; padding: 24px; }
+.home-hero {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark) 60%, #102a70);
+  color: #fff; border-radius: 16px; padding: 30px; margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(29,78,216,0.15);
+}
+.home-hero h2 { font-size: 22px; margin-bottom: 8px; }
+.home-hero p { opacity: 0.9; line-height: 1.5; }
+/* Home features */
+.home-features {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;
+  max-width: 900px; margin-bottom: 20px;
+}
+.feature-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.feature-icon { font-size: 2rem; margin-bottom: 10px; }
+.feature-card h4 { font-size: 14px; margin-bottom: 6px; color: var(--primary-dark); }
+.feature-card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.home-tip {
+  background: var(--gold-light); border: 1px solid #e8a0a0; border-radius: 12px;
+  padding: 16px 20px; font-size: 14px; line-height: 1.6; max-width: 900px;
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.home-tip strong { white-space: nowrap; }
+.home-tip span { color: var(--text-muted); }
+
+/* --- Iframe view --- */
+.iframe-view { flex: 1; display: none; flex-direction: column; }
+.iframe-toolbar {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.btn-back {
+  display: flex; align-items: center; gap: 6px; padding: 8px 16px; min-height: 40px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer; color: var(--primary-dark);
+}
+.btn-back:hover { background: #ebf0fa; }
+.iframe-title { font-size: 14px; font-weight: 600; flex: 1; }
+.content-frame { flex: 1; border: none; width: 100%; background: #fff; }
+
+/* --- Dashboard view --- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: var(--surface); border-radius: 14px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+.stat-card .number { font-size: 1.8rem; font-weight: 700; }
+.stat-card .label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+.stat-card.c1 .number { color: var(--primary); }
+.stat-card.c2 .number { color: #27ae60; }
+.stat-card.c3 .number { color: var(--gold); }
+.stat-card.c4 .number { color: #3498db; }
+.filter-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-bar select, .filter-bar input {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px;
+  font-size: 14px; outline: none; background: var(--surface);
+}
+.filter-bar select:focus, .filter-bar input:focus { border-color: var(--primary); }
+.filter-bar input { flex: 1; min-width: 150px; }
+.btn-refresh {
+  padding: 10px 20px; background: var(--primary); color: #fff; border: none;
+  border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 500;
+}
+.btn-refresh:hover { background: var(--primary-dark); }
+.table-wrap { background: var(--surface); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 650px; }
+thead { background: var(--gold-light); }
+th { padding: 12px 14px; text-align: left; font-weight: 600; color: #7c1f1f; border-bottom: 2px solid var(--border); white-space: nowrap; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+tr:hover { background: #f5f8ff; }
+.s-high { color: #27ae60; font-weight: 600; }
+.s-mid { color: var(--gold); font-weight: 600; }
+.s-low { color: var(--primary); font-weight: 600; }
+.empty-row { text-align: center; padding: 40px; color: #aaa; }
+
+/* ===== LOGIN ===== */
+.login-overlay {
+  position: fixed; inset: 0; background: linear-gradient(135deg, #eef2fb, #e5eeff);
+  z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.login-card {
+  background: var(--surface); border-radius: 20px; padding: 40px 32px; max-width: 400px;
+  width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,0.08); text-align: center;
+}
+.login-card .brand { font-size: 2.5rem; margin-bottom: 10px; }
+.login-card h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 4px; }
+.login-card .desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+.form-group { margin-bottom: 14px; text-align: left; }
+.form-group label { display: block; font-size: 13px; font-weight: 500; color: #555; margin-bottom: 5px; }
+.form-group input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 12px;
+  font-size: 15px; outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus { border-color: var(--primary); }
+.btn-login {
+  width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600;
+  cursor: pointer; margin-top: 6px;
+}
+.btn-login:hover { opacity: 0.92; }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+.error-msg { color: var(--primary); font-size: 13px; margin-top: 10px; display: none; }
+.login-footer { margin-top: 16px; font-size: 12px; color: var(--text-muted); }
+.tab-switch { display: flex; gap: 0; margin-bottom: 20px; background: var(--bg); border-radius: 10px; padding: 3px; }
+.tab-switch button {
+  flex: 1; padding: 10px; border: none; background: none; border-radius: 8px;
+  cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-muted); transition: all 0.2s;
+}
+.tab-switch button.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.teacher-pwd { display: none; }
+
+/* ===== SPINNER ===== */
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-center { display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; gap: 12px; color: var(--text-muted); }
+.loading-center .spinner { border-color: var(--border); border-top-color: var(--primary); width: 30px; height: 30px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .topbar .menu-btn { display: flex; align-items: center; justify-content: center; }
+  .sidebar { transform: translateX(-100%); width: min(85vw, 300px); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
+  .sidebar-overlay.open { display: block; }
+  .main { margin-left: 0; }
+  .home-features { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .home-hero { padding: 22px 18px; }
+  .home-hero h2 { font-size: 19px; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 400px) {
+  .home-features { grid-template-columns: 1fr; }
+  .login-card { padding: 30px 20px; }
+}
+.hidden { display: none !important; }
+</style>
+  <link rel="stylesheet" href="hsk-hongdat-theme.css">
+</head>
+<body>
+
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar" id="topbar" style="display:none">
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <div class="logo">KAT CHINESE <small>Ôn tập HSK2</small></div>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <a href="index.html" class="sidebar-item" style="color:inherit;text-decoration:none;border-left:3px solid #1d4cce;padding-left:12px;">
+      <div class="icon">⬅️</div> Trang chủ chính
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Trang chính</div>
+    <button class="sidebar-item active" data-page="home" onclick="goHome()">
+      <div class="icon">🏠</div> Trang chủ
+    </button>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Khoá học</div>
+    <div id="courseNav"></div>
+  </div>
+
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ===== MAIN ===== -->
+<div class="main" id="mainArea" style="display:none">
+  <!-- Home -->
+  <div class="home-view" id="homeView">
+    <div class="home-hero">
+      <h2>KAT CHINESE</h2>
+      <p style="margin-bottom:16px">Nền tảng ôn tập Tiếng Trung HSK2</p>
+      <p style="opacity:0.8; font-size:14px">Chọn bài học từ menu bên trái để bắt đầu ôn tập.</p>
+    </div>
+    <div class="home-features">
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h4>Ôn tập từ vựng</h4>
+        <p>Flashcard, ghép nghĩa, điền từ theo từng bài học</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h4>Luyện bài tập</h4>
+        <p>Sách bài tập HSK từ cơ bản đến nâng cao</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h4>Kiểm tra trình độ</h4>
+        <p>Thi thử HSK, chấm điểm tự động</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Iframe -->
+  <div class="iframe-view" id="iframeView">
+    <div class="iframe-toolbar">
+      <button class="btn-back" onclick="goHome()">⬅ Trang chủ</button>
+      <div class="iframe-title" id="iframeTitle"></div>
+    </div>
+    <iframe class="content-frame" id="contentFrame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+  </div>
+
+
+</div>
+
+<script>
+// ============================================
+// CẤU HÌNH
+// ============================================
+const COURSES = [
+  { id: 'hsk2-bt1',  title: 'Bài 1',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt01.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt2',  title: 'Bài 2',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt02.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt3',  title: 'Bài 3',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt03.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt4',  title: 'Bài 4',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt04.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt5',  title: 'Bài 5',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt05.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt6',  title: 'Bài 6',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt06.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt7',  title: 'Bài 7',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt07.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt8',  title: 'Bài 8',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt08.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt9',  title: 'Bài 9',  desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt09.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt10', title: 'Bài 10', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt10.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt11', title: 'Bài 11', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt11.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt12', title: 'Bài 12', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt12.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt13', title: 'Bài 13', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt13.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt14', title: 'Bài 14', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt14.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-bt15', title: 'Bài 15', desc: 'Ôn tập HSK2', emoji: '📘', file: 'hsk2-bt15.html', group: 'Ôn tập HSK2' },
+  { id: 'hsk2-sbt1', title: 'Sách BT · Bài 1', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_1.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt2', title: 'Sách BT · Bài 2', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_2.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt3', title: 'Sách BT · Bài 3', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_3.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt4', title: 'Sách BT · Bài 4', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_4.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt5', title: 'Sách BT · Bài 5', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_5.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt6', title: 'Sách BT · Bài 6', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_6.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt7', title: 'Sách BT · Bài 7', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_7.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt8', title: 'Sách BT · Bài 8', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_8.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt9', title: 'Sách BT · Bài 9', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_9.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt10', title: 'Sách BT · Bài 10', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_10.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt11', title: 'Sách BT · Bài 11', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_11.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt12', title: 'Sách BT · Bài 12', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_12.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt13', title: 'Sách BT · Bài 13', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_13.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt14', title: 'Sách BT · Bài 14', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_14.html', group: 'Sách bài tập HSK2' },
+  { id: 'hsk2-sbt15', title: 'Sách BT · Bài 15', desc: 'Sách bài tập HSK2', emoji: '📚', file: 'sbt-hsk2/SBT_HSK2_Bai_15.html', group: 'Sách bài tập HSK2' },
+];
+
+// ============================================
+// SIDEBAR + NAVIGATION
+// ============================================
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+function renderCourseNav() {
+  const nav = document.getElementById('courseNav');
+  const ungrouped = COURSES.filter(c => !c.group);
+  const groups = {};
+  COURSES.filter(c => c.group).forEach(c => {
+    if (!groups[c.group]) groups[c.group] = [];
+    groups[c.group].push(c);
+  });
+
+  let html = ungrouped.map(c =>
+    `<button class="sidebar-item" data-page="course-${c.id}" onclick="openCourse('${c.id}')">
+      <div class="icon">${c.emoji}</div> ${c.title}
+    </button>`
+  ).join('');
+
+  for (const [groupName, items] of Object.entries(groups)) {
+    html += `<button class="sidebar-group-toggle" onclick="toggleGroup(this)">
+      <div class="icon">📕</div> ${groupName} <span style="font-weight:400;font-size:12px;color:var(--text-muted)">(${items.length})</span> <span class="arrow">▶</span>
+    </button>
+    <div class="sidebar-group-children">`;
+    html += items.map(c =>
+      `<button class="sidebar-item" data-page="course-${c.id}" onclick="openCourse('${c.id}')">
+        <div class="icon">${c.emoji}</div> ${c.title}
+      </button>`
+    ).join('');
+    html += '</div>';
+  }
+  nav.innerHTML = html;
+}
+
+function toggleGroup(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+function setActiveSidebar(page) {
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === page);
+  });
+}
+
+function goHome() {
+  closeSidebar();
+  document.getElementById('homeView').style.display = '';
+  document.getElementById('iframeView').style.display = 'none';
+  document.getElementById('contentFrame').src = 'about:blank';
+  setActiveSidebar('home');
+}
+
+function openCourse(id) {
+  closeSidebar();
+  const course = COURSES.find(c => c.id === id);
+  if (!course) return;
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('iframeView').style.display = 'flex';
+  document.getElementById('iframeTitle').textContent = course.title;
+  const frame = document.getElementById('contentFrame');
+  frame.src = encodeURI(course.file);
+  setActiveSidebar('course-' + id);
+}
+
+// ============================================
+// KHỞI ĐỘNG
+// ============================================
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('topbar').style.display = 'flex';
+  document.getElementById('mainArea').style.display = 'flex';
+  renderCourseNav();
+  goHome();
+});
+</script>
+</body>
+</html>

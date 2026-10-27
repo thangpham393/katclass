@@ -28,8 +28,15 @@ export default function LandingPage() {
           <a href="#features" className="text-muted-foreground hover:text-foreground">Tính năng</a>
           <a href="#audience" className="text-muted-foreground hover:text-foreground">Đối tượng</a>
           <a href="#how" className="text-muted-foreground hover:text-foreground">Cách hoạt động</a>
+          {/* Web tĩnh public/luyen-tap — thẻ <a> để tải trang cứng, không qua router */}
+          <a href="/luyen-tap/index.html" className="font-semibold text-brand-700 hover:text-brand-800">
+            Ôn &amp; Luyện HSK 3.0
+          </a>
         </nav>
         <div className="flex shrink-0 items-center gap-2">
+          <a href="/luyen-tap/index.html" className="md:hidden">
+            <Button variant="ghost" size="sm" className="text-brand-700">Ôn &amp; Luyện HSK</Button>
+          </a>
           <Link href="/login" className="hidden sm:block">
             <Button variant="ghost" size="sm">Đăng nhập</Button>
           </Link>

@@ -1,0 +1,320 @@
+/* ============================================================
+   HSK HỒNG ĐẤT THEME — presentation-only override
+   Palette: #2549ec / #dc2626 / #f5f8ff
+   Scope: colors, typography, surfaces, borders, shadows, controls.
+   Does NOT change lesson content, answers, audio, data or JavaScript.
+   ============================================================ */
+
+:root{
+  --hd-primary:#2549ec;
+  --hd-primary-dark:#1d4ed8;
+  --hd-primary-deep:#1e3aa8;
+  --hd-primary-soft:#ebf0fa;
+  --hd-primary-softer:#f1f5fd;
+  --hd-gold:#dc2626;
+  --hd-gold-dark:#b91c1c;
+  --hd-gold-soft:#eaeffb;
+  --hd-bg:#f5f8ff;
+  --hd-surface:#ffffff;
+  --hd-surface-2:#f8faff;
+  --hd-text:#0f172a;
+  --hd-muted:#64748b;
+  --hd-border:#e2e8f0;
+  --hd-shadow:0 8px 28px rgba(20,53,143,.07);
+  --hd-shadow-sm:0 3px 12px rgba(20,53,143,.055);
+
+  /* Map legacy tokens to the same visual system. */
+  --primary:#2549ec;
+  --primary-dark:#1d4ed8;
+  --primary-deep:#1e3aa8;
+  --primary-light:#ebf0fa;
+  --accent:#dc2626;
+  --accent-dark:#b91c1c;
+  --accent-light:#eaeffb;
+  --gold:#dc2626;
+  --gold-light:#eaeffb;
+  --bg:#f5f8ff;
+  --surface:#ffffff;
+  --card:#ffffff;
+  --text:#0f172a;
+  --text-dark:#0f172a;
+  --text-muted:#64748b;
+  --text-soft:#64748b;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --gray-border:#e2e8f0;
+  --gray-light:#f8faff;
+  --blue:#2549ec;
+  --blue-dark:#1d4ed8;
+  --blue-light:#ebf0fa;
+  --blue-d:#1d4ed8;
+  --blue-l:#ebf0fa;
+  --yellow:#dc2626;
+  --yellow-dark:#b91c1c;
+  --yellow-light:#eaeffb;
+  --yellow-l:#eaeffb;
+  --main-bg-60:#f5f8ff;
+  --gold-30:#dc2626;
+  --accent-red-10:#2549ec;
+  --light-gold:#eaeffb;
+  --border-gold:#e2e8f0;
+  --lesson-primary:#2549ec;
+  --lesson-primary-dark:#1d4ed8;
+  --lesson-primary-deep:#1e3aa8;
+  --lesson-gold:#dc2626;
+  --lesson-border:#e2e8f0;
+  --lesson-soft:#f1f5fd;
+  --shadow:0 8px 28px rgba(20,53,143,.07);
+}
+
+html{
+  background:var(--hd-bg);
+  color-scheme:light;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+html body{
+  background-color:var(--hd-bg) !important;
+  color:var(--hd-text) !important;
+}
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea{
+  font-family:"Be Vietnam Pro","Inter","Noto Sans SC","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif !important;
+}
+::selection{background:#d1dcfa;color:var(--hd-primary-deep)}
+
+/* Brand surfaces */
+header,.header,.page-header,.topbar{
+  background:linear-gradient(135deg,var(--hd-primary) 0%,var(--hd-primary-dark) 72%,var(--hd-primary-deep) 100%) !important;
+  color:#fff !important;
+  box-shadow:0 5px 22px rgba(29,78,216,.18) !important;
+}
+.header h1,.header h2,.header p,.page-header h1,.page-header h2,.page-header p,.topbar .logo{color:#fff !important}
+.logo-icon,.topbar .menu-btn,.topbar .user-pill{
+  background:rgba(255,255,255,.13) !important;
+  border-color:rgba(255,255,255,.18) !important;
+}
+.lesson-badge,.hero-badge,.badge,.wenben-badge{
+  background:var(--hd-gold-soft) !important;
+  color:#802020 !important;
+  border-color:#e59595 !important;
+  box-shadow:none !important;
+}
+
+/* Typography */
+h1,h2,h3,h4{letter-spacing:-.012em}
+.section h2,.panel h2,.card h2,.grammar-card h2,h2{
+  color:var(--hd-primary-deep) !important;
+  border-left-color:var(--hd-gold) !important;
+}
+.pinyin,.py-line,.lt-pinyin,.study-pinyin{
+  color:#1c49c5 !important;
+}
+.big-hanzi,.dl-hanzi,.han-line,.q-text-cn,.cn,.hanzi,.hanzi-big{
+  font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC","Be Vietnam Pro",sans-serif !important;
+}
+.muted,.subtitle,.card-desc,.section-sub,.instr,.text-muted,.progress-label,.hint{color:var(--hd-muted) !important}
+
+/* Cards / content surfaces */
+.section,.card,.panel,.intro-card,.q-card,.grammar-card,.example-box,.example-block,.ex-box,
+.pair-card,.passage,.q-passage,.audio-block,.sb-box,.result-card,.feature-card,.level-card,
+.vocab-card,.flash-face,.stat-card,.login-card{
+  background:var(--hd-surface) !important;
+  border-color:var(--hd-border) !important;
+  box-shadow:var(--hd-shadow-sm) !important;
+}
+.question,.memory-info,.vb-block,.vocab-group-hdr,.audio-row,.stat-item,.group-header,.word-bank,
+.example,.ex-line,.q-row,.tongue{
+  background:var(--hd-surface-2) !important;
+  border-color:var(--hd-border) !important;
+}
+.intro-card,.home-tip{
+  background:var(--hd-gold-soft) !important;
+  border-color:#e79f9f !important;
+}
+
+/* Tables */
+table,.vocab-table{border-color:var(--hd-border) !important}
+table th,.vocab-table th{
+  background:#F6E7E8 !important;
+  color:#46516a !important;
+  border-color:var(--hd-border) !important;
+}
+table td,.vocab-table td{border-color:var(--hd-border) !important}
+
+/* Navigation / tabs */
+.nav-tabs,.tabs,.tab-wrap{border-color:var(--hd-border) !important}
+.nav-tabs{background:rgba(255,255,255,.97) !important}
+.tab-wrap{
+  background:rgba(255,255,255,.92) !important;
+  border-color:var(--hd-border) !important;
+}
+.tab-btn,.nav-tab,.tab{
+  background:#f8faff !important;
+  color:#565e72 !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+}
+.tab-btn:hover,.nav-tab:hover,.tab:hover{
+  background:var(--hd-primary-soft) !important;
+  color:var(--hd-primary) !important;
+  border-color:#c4d2f8 !important;
+}
+.tab-btn.active,.nav-tab.active,.tab.active{
+  background:var(--hd-primary) !important;
+  color:#fff !important;
+  border-color:var(--hd-primary) !important;
+}
+
+/* Sidebar shell — keep text readable, never fill every button. */
+.sidebar{
+  background:#ffffff !important;
+  border-color:var(--hd-border) !important;
+  box-shadow:8px 0 28px rgba(20,53,143,.045) !important;
+}
+.sidebar-section-title{color:#747a88 !important}
+.sidebar-divider{background:var(--hd-border) !important}
+.sidebar .sidebar-item,
+.sidebar .sidebar-group-toggle,
+.sidebar .sidebar-group-children .sidebar-item,
+.sidebar a.sidebar-item{
+  background:transparent !important;
+  color:#4d5362 !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+}
+.sidebar .sidebar-item:hover,
+.sidebar .sidebar-group-toggle:hover,
+.sidebar .sidebar-group-children .sidebar-item:hover,
+.sidebar a.sidebar-item:hover{
+  background:#f0f4fd !important;
+  color:var(--hd-primary) !important;
+  border-color:#ccd8f9 !important;
+}
+.sidebar .sidebar-item.active,
+.sidebar .sidebar-group-children .sidebar-item.active{
+  background:var(--hd-primary-soft) !important;
+  color:var(--hd-primary-dark) !important;
+  border-color:#ccd8f9 !important;
+  box-shadow:inset 4px 0 0 var(--hd-gold) !important;
+}
+.sidebar .sidebar-item .icon,.sidebar .sidebar-group-toggle .icon{
+  background:var(--hd-gold-soft) !important;
+}
+.sidebar .sidebar-group-toggle .arrow{color:var(--hd-muted) !important}
+
+/* Home blocks inside course index pages */
+.home-hero,.hero{
+  background:linear-gradient(145deg,#ecf1fc 0%,#f6f9ff 64%,#eaeffb 100%) !important;
+  color:var(--hd-text) !important;
+  border:1px solid #EEDBDB !important;
+  box-shadow:var(--hd-shadow) !important;
+}
+.home-hero h1,.home-hero h2,.home-hero p,.hero h1,.hero h2,.hero p{color:inherit !important}
+.feature-card,.level-card{border-color:var(--hd-border) !important}
+.feature-card:hover,.level-card:hover{
+  border-color:#a4b9f2 !important;
+  box-shadow:var(--hd-shadow) !important;
+}
+
+/* Primary action controls */
+.btn,.btn-primary,.submit-btn,.btn-check,.replay-btn,.audio-btn,.listen-btn,.speak-btn,.btn-refresh,
+.result-close,.flash-btn.primary,.btn-answer{
+  background:var(--hd-primary) !important;
+  color:#fff !important;
+  border-color:var(--hd-primary) !important;
+  box-shadow:0 3px 10px rgba(37,73,236,.15) !important;
+}
+.btn:hover,.btn-primary:hover,.submit-btn:hover,.btn-check:hover,.replay-btn:hover,.audio-btn:hover,
+.listen-btn:hover,.speak-btn:hover,.btn-refresh:hover,.result-close:hover,.btn-answer:hover{
+  background:var(--hd-primary-dark) !important;
+}
+.btn-secondary,.btn-reset,.btn-back{
+  background:var(--hd-surface) !important;
+  color:var(--hd-primary) !important;
+  border-color:#b0c3f6 !important;
+  box-shadow:none !important;
+}
+
+/* Legacy pages use plain buttons for primary actions. Keep navigation/choices excluded. */
+button:not(.sidebar-item):not(.sidebar-group-toggle):not(.menu-btn):not(.tab-btn):not(.nav-tab):not(.tab):not(.opt):not(.mcq-opt):not(.tf-btn):not(.match-item):not(.word-chip):not(.wchip):not(.wtile):not(.wr-tile):not(.ro-tile):not(.flash-btn){
+  background:var(--hd-primary) !important;
+  color:#fff !important;
+  border-color:var(--hd-primary) !important;
+}
+button:not(.sidebar-item):not(.sidebar-group-toggle):not(.menu-btn):not(.tab-btn):not(.nav-tab):not(.tab):not(.opt):not(.mcq-opt):not(.tf-btn):not(.match-item):not(.word-chip):not(.wchip):not(.wtile):not(.wr-tile):not(.ro-tile):not(.flash-btn):hover{
+  background:var(--hd-primary-dark) !important;
+}
+
+/* Choice controls */
+.opt,.mcq-opt,.tf-btn,.ro-tile,.wtile,.wr-tile,.match-item,.word-chip,.wchip,.flash-btn{
+  background:var(--hd-surface) !important;
+  color:var(--hd-text) !important;
+  border-color:var(--hd-border) !important;
+  box-shadow:0 2px 8px rgba(20,53,143,.035) !important;
+}
+.opt:hover,.mcq-opt:hover,.tf-btn:hover,.ro-tile:hover,.wtile:hover,.wr-tile:hover,.match-item:hover,
+.word-chip:hover,.wchip:hover,.flash-btn:hover{
+  background:var(--hd-primary-softer) !important;
+  color:var(--hd-primary-deep) !important;
+  border-color:#a4b9f2 !important;
+}
+.selected:not(.correct):not(.wrong),.opt.selected:not(.correct):not(.wrong),
+.mcq-opt.selected:not(.correct):not(.wrong),.tf-btn.selected:not(.correct):not(.wrong),
+.match-item.selected:not(.correct):not(.wrong){
+  background:var(--hd-primary-soft) !important;
+  border-color:var(--hd-primary) !important;
+  color:var(--hd-primary-dark) !important;
+}
+
+/* Keep semantic feedback colors — correct/wrong must remain immediately recognizable. */
+.correct,.lopt-correct,.is-correct,.flash-know,.match-done,.mem-win{
+  background:#EAF6F0 !important;
+  color:#21684E !important;
+  border-color:#7AB69C !important;
+}
+.wrong,.lopt-wrong,.incorrect,.is-wrong,.flash-redo{
+  background:#FCEDEE !important;
+  color:#9F3940 !important;
+  border-color:#E5A0A4 !important;
+}
+
+/* Inputs */
+input,select,textarea,.input-box,.name-input{
+  background:#ffffff !important;
+  color:var(--hd-text) !important;
+  border-color:#cbd2e1 !important;
+}
+input:focus,select:focus,textarea:focus,.input-box:focus,.name-input:focus{
+  border-color:var(--hd-primary) !important;
+  box-shadow:0 0 0 3px rgba(37,73,236,.11) !important;
+  outline:none !important;
+}
+input[type="radio"],input[type="checkbox"]{accent-color:var(--hd-primary)}
+
+/* Flashcards / study surfaces */
+.front,.mem-front,.mem-front-face{background:#ffffff !important}
+.back,.mem-back,.flash-back{
+  background:linear-gradient(145deg,#e8effc,#eaeffb) !important;
+  color:var(--hd-text) !important;
+}
+.mem-back-face{background:linear-gradient(135deg,var(--hd-primary),var(--hd-primary-dark)) !important}
+
+/* Progress / accents */
+.progress-inner,.progress-bar > div,.progress-bar-fill{
+  background:linear-gradient(90deg,var(--hd-primary),var(--hd-gold)) !important;
+}
+.score-badge,.stat-num,.match-score{color:var(--hd-primary-dark) !important}
+.vocab-card .pinyin,.flash-back .pinyin-big,.mem-front-face .mfh{color:var(--hd-primary) !important}
+.vocab-card.learned{border-color:#7AB69C !important}
+
+/* Mobile: only visual spacing; no layout logic changes. */
+@media (max-width:768px){
+  .section,.card,.panel{box-shadow:0 2px 10px rgba(20,53,143,.045) !important}
+}
+
+/* KAT: chữ phụ trên header nền xanh */
+.page-header .subtitle,.header .subtitle{color:rgba(255,255,255,.85) !important}

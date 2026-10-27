@@ -99,6 +99,7 @@ const studentNav: NavSection[] = [
       { href: "/student/classes", label: "Lớp của tôi", icon: School },
       { href: "/student/homework", label: "Bài tập & kiểm tra", icon: ClipboardList },
       { href: "/student/flashcard", label: "Flashcard", icon: Sparkles },
+      { href: "/luyen-tap", label: "Ôn & Luyện HSK 3.0", icon: GraduationCap },
       { href: "/student/library", label: "Kho tài liệu", icon: Library },
     ],
   },

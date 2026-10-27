@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HSK 1 · Bài 1 · AI小语，你好！</title>
+  <style>
+    :root{--terracotta:#1f50d7;--deep:#1a43b4;--soft:#ebf0fa;--cream:#f3f6fc;--ink:#363b46;--green:#2f7d5d;--red:#b83c3c;--line:#a3b9f5}
+    *{box-sizing:border-box} body{margin:0;background:#ebf0fa;color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI","Noto Sans",Arial,sans-serif}
+    header{background:linear-gradient(135deg,var(--deep),var(--terracotta));color:white;padding:30px 18px 26px}
+    header .inner,main{max-width:1080px;margin:auto} .eyebrow{letter-spacing:.12em;font-weight:800;opacity:.85;font-size:.78rem}
+    h1{margin:.25rem 0 0;font-size:clamp(1.8rem,4vw,3.1rem);line-height:1.2} header p{margin:.45rem 0 0;opacity:.9}
+    main{padding:24px 16px 56px}.section{background:#fff;border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,30px);margin:0 0 22px;box-shadow:0 8px 24px #7a3c3012}
+    h2{margin:0 0 16px;color:var(--deep);font-size:1.45rem}.num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--terracotta);color:#fff;margin-right:8px}
+    .note{background:var(--cream);border-left:5px solid var(--terracotta);padding:12px 15px;border-radius:8px;margin:12px 0}
+    .table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:620px}th,td{border:1px solid var(--line);padding:10px;text-align:center}th{background:var(--terracotta);color:white}
+    .tone-chart{margin:16px auto;max-width:760px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.tone-chart img{display:block;width:100%;height:auto}
+    .audio-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--soft);padding:12px 14px;border-radius:14px;margin:14px 0}.audio-row strong{color:var(--deep)}audio{max-width:100%}
+    .syllable-table{width:100%;min-width:0;table-layout:fixed;font-size:1.22rem}.syllable-table td{background:#f9fbff;padding:12px 8px;font-weight:650}.syllable-table tr:nth-child(odd) td{background:var(--soft)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:14px}.cards-continuation{margin-top:14px}.sound-card{position:relative;border:1px solid var(--line);border-radius:16px;background:white;padding:8px;cursor:pointer;transition:.2s;box-shadow:0 5px 14px #7a3c3010}.sound-card:hover,.sound-card:focus{transform:translateY(-3px);box-shadow:0 10px 22px #7a3c3020;outline:3px solid #b2c5f6}.sound-card img{width:100%;aspect-ratio:150/184;object-fit:cover;border-radius:11px;display:block}.sound-card .speaker{position:absolute;right:12px;top:12px;background:#e5eeff;color:var(--deep);border-radius:999px;padding:4px 8px;font-weight:800}.sound-card small{display:block;text-align:center;margin-top:5px;color:#495673}
+    .initial-final{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin:12px 0}.phonetics{background:var(--soft);padding:16px;border-radius:14px;font-size:1.13rem;word-spacing:.65rem}
+    .exercise{border-top:1px dashed var(--line);padding-top:20px;margin-top:20px}.exercise h3{margin:0 0 4px}.help{color:#525f7c;margin:0 0 14px}.answer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}.answer-item{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff}.answer-item label{display:block;font-weight:700}.answer-item select,.answer-item input{width:100%;padding:9px;border:1px solid #819eed;border-radius:8px;margin-top:6px;background:white;font-size:1rem}.answer-item input{text-align:center;font-weight:750}.tone-word{font-size:1.35rem;text-align:center;color:var(--deep);margin:2px 0 8px}.tone-options{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.tone-option{border:1px solid #819eed;border-radius:9px;background:#f7faff;color:var(--deep);font-size:1.25rem;font-weight:850;padding:8px 3px;cursor:pointer}.tone-option:hover,.tone-option:focus{outline:2px solid #a6bbf5}.tone-option.active{background:var(--terracotta);border-color:var(--terracotta);color:#fff}.tone-reading-wrap{margin:14px 0}.dialogue-bank{display:grid;gap:9px;margin:12px 0 16px}.dialogue{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 14px}.dialogue b{color:var(--deep);margin-right:8px}
+    .picture-q{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.pic-item{border:2px solid transparent;border-radius:15px;padding:9px;background:var(--cream)}.pic-item img{width:100%;border-radius:10px}.pic-item select{width:100%;padding:10px;margin-top:8px;border:1px solid #819eed;border-radius:9px;background:white}
+    .actions{text-align:center;margin-top:26px}.submit{border:0;border-radius:999px;background:var(--terracotta);color:#fff;font-size:1.1rem;font-weight:800;padding:14px 34px;cursor:pointer}.submit:hover{background:var(--deep)}
+    #result{display:none;margin-top:20px;padding:20px;border-radius:16px;text-align:center;background:var(--soft)}#result.show{display:block}#result .score{font-size:2rem;font-weight:900;color:var(--deep)}
+    .correct{border-color:#4f9a76!important;background:#eef9f3!important}.wrong{border-color:#ca6262!important;background:#f0f5ff!important}.feedback{font-size:.88rem;margin-top:6px;font-weight:700}.correct .feedback{color:var(--green)}.wrong .feedback{color:var(--red)}
+    footer{text-align:center;color:#606d8c;padding:0 16px 35px}
+    @media(max-width:680px){.picture-q{grid-template-columns:1fr}.initial-final{grid-template-columns:1fr}.section{border-radius:14px}.cards{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<header><div class="inner"><div class="eyebrow">KAT CHINESE · NEW HSK 1</div><h1>第1课 AI小语，你好！</h1><p>Bài 1 · AI Tiểu Ngữ, xin chào!</p></div></header>
+<main>
+  <section class="section">
+    <h2><span class="num">1</span>Ngữ âm</h2>
+    <h3>Âm tiết tiếng Trung Quốc</h3>
+    
+    <p>Trong tiếng Trung Quốc, mỗi chữ Hán thường tương ứng với một âm tiết. Một âm tiết thường bao gồm thanh mẫu, vận mẫu và thanh điệu; đôi khi chỉ gồm vận mẫu và thanh điệu.</p>
+    <div class="table-wrap"><table><thead><tr><th>Thanh mẫu</th><th>Vận mẫu</th><th>Thanh điệu</th><th>Âm tiết</th><th>Chữ Hán</th></tr></thead><tbody><tr><td>b</td><td>a</td><td>−</td><td>bā</td><td>八</td></tr><tr><td>b</td><td>a</td><td>ˊ</td><td>bá</td><td>拔</td></tr><tr><td>b</td><td>a</td><td>ˇ</td><td>bǎ</td><td>把</td></tr><tr><td>b</td><td>a</td><td>ˋ</td><td>bà</td><td>爸</td></tr><tr><td>—</td><td>a</td><td>−</td><td>ā</td><td>啊</td></tr><tr><td>—</td><td>a</td><td>ˊ</td><td>á</td><td>啊</td></tr></tbody></table></div>
+    <div class="note">Nhấn vào từng hình để nghe AI đọc. Hãy nghe, nhắc lại âm tiết rồi đọc to.</div><div class="audio-row"><strong>🎧 Nghe các từ theo hình: 茶–鸡蛋</strong><audio controls preload="none" src="../assets/04ffbdf29e17c9a34a01.mp3"></audio></div>
+    <div class="cards" id="cards1"></div>
+    <div class="cards cards-continuation" id="cards2"></div>
+    <h3 style="margin-top:24px">Thanh mẫu và vận mẫu (1)</h3>
+    <div class="audio-row"><strong>🎧 Nghe bảng thanh mẫu và vận mẫu</strong><audio controls preload="none" src="../assets/62fe19a04d1e762dc856.mp3"></audio></div>
+    <p>Thanh mẫu và vận mẫu kết hợp với nhau tạo thành âm tiết, nhưng không phải tất cả đều có thể ghép tùy ý. “n, l” ghép được với “ü” và các vận mẫu bắt đầu bằng “ü”; “b, p, f” không ghép với “e”; “f, g, k, h” không ghép với “i”. Vận mẫu “er” đứng độc lập, không ghép với thanh mẫu.</p>
+    <div class="initial-final"><div class="phonetics"><strong>Thanh mẫu</strong><br>b　p　m　f<br>d　t　n　l<br>g　k　h</div><div class="phonetics"><strong>Vận mẫu</strong><br>a　o　e　i [i]　u　er<br>ai　ei　ao　ou<br>an　en<br>ang　eng　ong</div></div>
+    <div class="note">Nghe và nhắc lại thanh mẫu, vận mẫu; sau đó đọc to.</div>
+    <h3 style="margin-top:24px">Thanh điệu</h3>
+    <div class="audio-row"><strong>🎧 Nghe bảng thanh điệu</strong><audio controls preload="none" src="../assets/13715f02719c197ad62b.mp3"></audio></div>
+    <p>Tiếng Trung Quốc có 4 thanh điệu cơ bản: thanh 1 (55), thanh 2 (35), thanh 3 (214) và thanh 4 (51). Dấu thanh điệu được đặt trên nguyên âm chính của vận mẫu. Thanh điệu khác nhau thì ý nghĩa cũng có thể khác nhau.</p>
+    <div class="tone-chart"><img src="../assets/fbadfbb9d11eb129449d.webp" alt="Biểu đồ đường đi của bốn thanh điệu tiếng Trung"></div>
+    <div class="note">Nghe và nhắc lại từng âm tiết; sau đó đọc to.</div>
+    <div class="table-wrap tone-reading-wrap">
+      <table class="syllable-table tone-reading-table" aria-label="Bảng luyện đọc bốn thanh điệu">
+        <tbody>
+          <tr><td>ā</td><td>á</td><td>ǎ</td><td>à</td></tr>
+          <tr><td>ē</td><td>é</td><td>ě</td><td>è</td></tr>
+          <tr><td>—</td><td>ér</td><td>ěr</td><td>èr</td></tr>
+          <tr><td>dā</td><td>dá</td><td>dǎ</td><td>dà</td></tr>
+          <tr><td>kē</td><td>ké</td><td>kě</td><td>kè</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="audio-row"><strong>🎧 Nghe các từ theo hình: 口–电脑</strong><audio controls preload="none" src="../assets/c248d830651ad518800d.mp3"></audio></div><div class="cards" id="cards3"></div>
+  </section>
+
+  <section class="section" id="practice">
+    <h2><span class="num">2</span>Nghe, đọc và luyện tập</h2>
+    <p class="note">Hãy nghe audio và hoàn thành tất cả câu hỏi. Đáp án chỉ xuất hiện sau khi nộp bài.</p>
+    <form id="quiz">
+      <div class="exercise"><h3>Câu 1 · Nghe ghi âm, đọc to âm tiết</h3><div class="audio-row"><strong>🎧 Nghe Câu 1</strong><audio controls preload="none" src="../assets/accec9606741c52254de.mp3"></audio></div><p class="help">Nghe từng âm tiết, sau đó đọc to theo ghi âm.</p><div class="table-wrap"><table class="syllable-table" aria-label="Bảng âm tiết luyện đọc"><tbody><tr><td>mō</td><td>mó</td><td>mǒ</td><td>mò</td></tr><tr><td>fū</td><td>fú</td><td>fǔ</td><td>fù</td></tr><tr><td>dī</td><td>dí</td><td>dǐ</td><td>dì</td></tr><tr><td>tāo</td><td>táo</td><td>tǎo</td><td>tào</td></tr><tr><td>lōu</td><td>lóu</td><td>lǒu</td><td>lòu</td></tr><tr><td>hān</td><td>hán</td><td>hǎn</td><td>hàn</td></tr><tr><td>pāng</td><td>páng</td><td>pǎng</td><td>pàng</td></tr><tr><td>gēn</td><td>gén</td><td>gěn</td><td>gèn</td></tr></tbody></table></div></div>
+      <div class="exercise"><h3>Câu 2 · Viết thanh mẫu nghe được</h3><div class="audio-row"><strong>🎧 Nghe Câu 2</strong><audio controls preload="none" src="../assets/a58aac38685660a470a1.mp3"></audio></div><p class="help">Nghe ghi âm, tự điền thanh mẫu còn thiếu và đọc to.</p><div class="answer-grid" id="q2"></div></div>
+      <div class="exercise"><h3>Câu 3 · Viết vận mẫu nghe được</h3><div class="audio-row"><strong>🎧 Nghe Câu 3</strong><audio controls preload="none" src="../assets/a8370e3824f5eed9d505.mp3"></audio></div><p class="help">Nghe ghi âm, tự điền vận mẫu còn thiếu và đọc to.</p><div class="answer-grid" id="q3"></div></div>
+      <div class="exercise"><h3>Câu 4 · Chọn dấu thanh nghe được</h3><div class="audio-row"><strong>🎧 Nghe Câu 4</strong><audio controls preload="none" src="../assets/175f7dabd715330b45e5.mp3"></audio></div><p class="help">Nghe ghi âm và chọn đúng dấu thanh của mỗi âm tiết. Đáp án chỉ xuất hiện sau khi nộp bài.</p><div class="answer-grid" id="q4"></div></div>
+      <div class="exercise"><h3>Câu 5 · Xem hình, chọn hội thoại đúng</h3><div class="audio-row"><strong>🎧 Nghe Câu 5</strong><audio controls preload="none" src="../assets/2539de2947251feef54a.mp3"></audio></div><p class="help">Mỗi đoạn hội thoại chỉ được dùng một lần.</p><div class="dialogue-bank"><div class="dialogue"><b>1</b>A: 你好！　B: 你好！</div><div class="dialogue"><b>2</b>A: 你们好！　B: 你们好！</div><div class="dialogue"><b>3</b>A: 谢谢！　B: 不客气！</div></div><div class="picture-q" id="q5"></div></div>
+      <div class="actions"><button class="submit" type="submit">Nộp bài và xem kết quả</button></div>
+    </form>
+    <div id="result" role="status" aria-live="polite"></div>
+  </section>
+</main>
+<footer>KAT CHINESE · Bài luyện tập HSK 1</footer>
+<script>
+const ASSET_DATA={"bieu_do_thanh_dieu.png":"../assets/fbadfbb9d11eb129449d.webp","card_baitian.png":"../assets/ed642ff5f57a312e20ce.webp","card_beizi.png":"../assets/215df0a34c7cdf128cde.webp","card_cai.png":"../assets/b0f4220d1c8fc39f5c45.webp","card_cha.png":"../assets/bd16d1f859b7461969a5.webp","card_diannao.png":"../assets/7c8ff000ab08dcb594d7.webp","card_er.png":"../assets/fd31e488f82968ca77fa.webp","card_fan.png":"../assets/857f6f0867e9543f7876.webp","card_fandian.png":"../assets/12998c55b648db91856d.webp","card_fangjian.png":"../assets/3a6fa005cedf4518f4b9.webp","card_gou.png":"../assets/c735a5ea054444f1003f.webp","card_he.png":"../assets/f1388ae5fabdaf25b03d.webp","card_jidan.png":"../assets/24bdcd6942a16ec908a3.webp","card_kou.png":"../assets/721bfaa8de83534a01de.webp","card_laoshi.png":"../assets/21834ff8dc3a74487802.webp","card_mao.png":"../assets/d506a6accc073d65758e.webp","card_meimei.png":"../assets/5de672afcd120c08f165.webp","card_mianbao.png":"../assets/b10fe8bf6916e29a51a6.webp","card_nihao.png":"../assets/8abe18d917a1a8843dee.webp","card_pengyou.png":"../assets/a213f23e0680fb2de149.webp","card_xuesheng.png":"../assets/37220d1926e8404afcfb.webp","q5_1.png":"../assets/396026399811c64f06e4.webp","q5_2.png":"../assets/732bde2cb591fddfc43a.webp","q5_3.png":"../assets/97b8b9270855905a0ff8.webp"};
+const cardGroups={
+ cards1:[['card_cha.png','茶','chá'],['card_gou.png','狗','gǒu'],['card_mao.png','猫','māo'],['card_cai.png','菜','cài']],
+ cards2:[['card_beizi.png','杯子','bēizi'],['card_xuesheng.png','学生','xuésheng'],['card_laoshi.png','老师','lǎoshī'],['card_jidan.png','鸡蛋','jīdàn']],
+ cards3:[['card_kou.png','口','kǒu'],['card_fan.png','饭','fàn'],['card_he.png','喝','hē'],['card_er.png','二','èr'],['card_nihao.png','你好','nǐ hǎo'],['card_pengyou.png','朋友','péngyou'],['card_mianbao.png','面包','miànbāo'],['card_meimei.png','妹妹','mèimei'],['card_fangjian.png','房间','fángjiān'],['card_baitian.png','白天','báitiān'],['card_fandian.png','饭店','fàndiàn'],['card_diannao.png','电脑','diànnǎo']]
+};
+function speak(text){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=.72;const voices=speechSynthesis.getVoices();u.voice=voices.find(v=>v.lang.toLowerCase().startsWith('zh-cn')&&/female|xiaoxiao|huihui|tingting|yaoyao/i.test(v.name))||voices.find(v=>v.lang.toLowerCase().startsWith('zh'))||null;speechSynthesis.speak(u)}
+for(const [id,data] of Object.entries(cardGroups)){const box=document.getElementById(id);data.forEach(([img,hanzi,pinyin])=>{const b=document.createElement('button');b.type='button';b.className='sound-card';b.setAttribute('aria-label','Nghe đọc '+pinyin);b.innerHTML=`<img src="${ASSET_DATA[img]}" alt="${hanzi} · ${pinyin}"><span class="speaker">🔊</span><small>Nhấn để nghe</small>`;b.onclick=()=>speak(hanzi);box.appendChild(b)})}
+const q2=[['__ à','d'],['__ ěi','g'],['__ án','p'],['__ ù','b'],['__ ǎi','m'],['__ ěng','l'],['__ ó','f'],['__ ǎo','h'],['__ óng','t'],['__ ěn','h'],['__ ān','b'],['__ òu','d'],['__ è','k'],['__ ǐ','n'],['__ áng','m']];
+const q3=[['t ___','a'],['h ___','en'],['m ___','ao'],['d ___','i'],['f ___','ang'],['d ___','ong'],['h ___','an'],['g ___','ou'],['p ___','eng'],['g ___','e'],['k ___','ai'],['f ___','ei'],['n ___','u'],['l ___','eng'],['b ___','o']];
+const q4=[
+ ['lao','ˇ',['lāo','láo','lǎo','lào']],['neng','´',['nēng','néng','něng','nèng']],
+ ['ge','`',['gē','gé','gě','gè']],['ba','¯',['bā','bá','bǎ','bà']],
+ ['fen','¯',['fēn','fén','fěn','fèn']],['kan','`',['kān','kán','kǎn','kàn']],
+ ['bai','´',['bāi','bái','bǎi','bài']],['li','`',['lī','lí','lǐ','lì']],
+ ['gong','¯',['gōng','góng','gǒng','gòng']],['mang','´',['māng','máng','mǎng','màng']],
+ ['gou','ˇ',['gōu','góu','gǒu','gòu']],['hou','`',['hōu','hóu','hǒu','hòu']]
+];
+function makeInputs(boxId,data,prefix,mode='text'){const box=document.getElementById(boxId);data.forEach(([label,ans],i)=>{const d=document.createElement('div');d.className='answer-item';d.dataset.answer=ans;const attrs=mode==='tone'?'inputmode="numeric" maxlength="1" pattern="[1-4]"':'autocapitalize="off" autocomplete="off" spellcheck="false"';d.innerHTML=`<label>${i+1}. ${label}</label><input name="${prefix}${i}" ${attrs} aria-label="Câu ${i+1}: điền đáp án"><div class="feedback"></div>`;box.appendChild(d)})}
+function makeToneChoices(boxId,data,prefix){const marks=['¯','´','ˇ','`'];const box=document.getElementById(boxId);data.forEach(([base,ans,forms],i)=>{const d=document.createElement('div');d.className='answer-item tone-item';d.dataset.answer=ans;d.dataset.answerText=forms[marks.indexOf(ans)];d.innerHTML=`<label class="tone-number">${i+1}.</label><div class="tone-word" aria-live="polite">${base}</div><input type="hidden" name="${prefix}${i}" value=""><div class="tone-options">${marks.map((mark,j)=>`<button type="button" class="tone-option" data-mark="${mark}" data-form="${forms[j]}" aria-label="Chọn dấu ${mark}">${mark}</button>`).join('')}</div><div class="feedback"></div>`;d.querySelectorAll('.tone-option').forEach(btn=>btn.addEventListener('click',()=>{d.querySelector('input').value=btn.dataset.mark;d.querySelector('.tone-word').textContent=btn.dataset.form;d.querySelectorAll('.tone-option').forEach(b=>b.classList.toggle('active',b===btn))}));box.appendChild(d)})}
+makeInputs('q2',q2,'q2_');
+makeInputs('q3',q3,'q3_');
+makeToneChoices('q4',q4,'q4_');
+const dialogues=[['1','A: 你好！\nB: 你好！'],['2','A: 你们好！\nB: 你们好！'],['3','A: 谢谢！\nB: 不客气！']];
+[['q5_1.png','1'],['q5_2.png','3'],['q5_3.png','2']].forEach(([img,ans],i)=>{const d=document.createElement('div');d.className='pic-item';d.dataset.answer=ans;d.innerHTML=`<img src="${ASSET_DATA[img]}" alt="Hình ${i+1}"><select name="q5_${i}"><option value="">— Chọn số —</option>${dialogues.map(([v])=>`<option value="${v}">${v}</option>`).join('')}</select><div class="feedback"></div>`;document.getElementById('q5').appendChild(d)});
+document.getElementById('quiz').addEventListener('submit',e=>{e.preventDefault();const items=[...document.querySelectorAll('.answer-item,.pic-item')];let score=0;items.forEach(item=>{const field=item.querySelector('input,select');const raw=field.value.trim();const value=raw.toLowerCase().replace('u:','ü').replace(/^v$/,'ü');const ok=value===item.dataset.answer;const correctAnswer=item.dataset.answerText||item.dataset.answer;item.classList.remove('correct','wrong');item.classList.add(ok?'correct':'wrong');const feedback=item.querySelector('.feedback');if(ok){feedback.textContent='✓ Chính xác';score++}else if(!raw){feedback.textContent=`✗ Chưa trả lời · Đáp án đúng: ${correctAnswer}`}else{const shown=item.classList.contains('tone-item')?item.querySelector('.tone-word').textContent:raw;feedback.textContent=`✗ Bạn trả lời: ${shown} · Đáp án đúng: ${correctAnswer}`}});const pct=Math.round(score/items.length*100);const result=document.getElementById('result');result.className='show';result.innerHTML=`<div class="score">${score}/${items.length} · ${pct}%</div><div>${pct===100?'Xuất sắc! Bạn đã làm đúng toàn bộ.':pct>=80?'Rất tốt! Hãy xem lại những câu được đánh dấu đỏ.':pct>=60?'Khá tốt. Hãy nghe lại audio và sửa các câu sai.':'Bạn hãy nghe lại từng phần rồi thử lại nhé.'}</div>`;result.scrollIntoView({behavior:'smooth',block:'center'})});
+</script>
+<style>.review-summary{background:#eef4ff;border:2px solid #d45353;border-radius:16px;padding:20px;margin:24px auto;max-width:1100px;color:#24334e}.review-summary h2{margin-top:0}.review-row{background:white;border:1px solid #f0aaaa;padding:14px;margin:12px 0;border-radius:10px}.review-row button{padding:8px 14px;cursor:pointer;background:#23334e;color:white;border:0;border-radius:8px}.review-row img{max-width:180px;max-height:130px;object-fit:contain}.review-stats{font-weight:bold;font-size:1.1rem}.review-focus{outline:3px solid #d54545;outline-offset:4px}</style><script>
+(()=>{
+const clean=s=>(s||'').replace(/\s+/g,' ').trim();
+function response(el){
+ const id=el.dataset.id;
+ if(id&&typeof picked!=='undefined')return picked[id]?(picked[id].show||picked[id].v):'';
+ if(id&&typeof selected!=='undefined'){const p=selected[id];return p?(p.label||p.val||p.v||clean(p.h)):''}
+ const inp=el.querySelector('input,select');return inp?inp.value.trim():'';
+}
+function review(){
+ const items=[...document.querySelectorAll('.correct,.wrong')].filter(e=>e.matches('.graded,.answer-item,.pic-item,.qitem,.q[data-answer]'));
+ if(!items.length)return;
+ document.getElementById('reviewSummary')?.remove();
+ const good=items.filter(e=>e.classList.contains('correct')).length;
+ const missing=items.filter(e=>!e.classList.contains('correct')&&!response(e)).length;
+ const box=document.createElement('section');box.id='reviewSummary';box.className='review-summary';
+ const h=document.createElement('h2');h.textContent='Kết quả bài làm';box.append(h);
+ const stats=document.createElement('p');stats.className='review-stats';stats.textContent=`Tổng: ${items.length} câu · Đúng: ${good} · Sai: ${items.length-good-missing} · Chưa trả lời: ${missing} · ${Math.round(good/items.length*100)}%`;box.append(stats);
+ const title=document.createElement('h3');title.textContent=good===items.length?'✓ Em đã làm đúng tất cả!':'Các câu cần sửa';box.append(title);
+ items.forEach((el,i)=>{if(el.classList.contains('correct'))return;
+ const row=document.createElement('div');row.className='review-row';
+ const section=el.closest('section,.exercise');const heading=section?.querySelector('h3,h2');
+ const q=el.querySelector('.q-title,label,.qnum,.number,h3,h4');
+ const copy=el.cloneNode(true);copy.querySelectorAll('.feedback,.choices,.tone-options,input,select,button,audio').forEach(e=>e.remove());
+ const question=clean(q?.textContent)||clean(copy.textContent).slice(0,240)||`Mục ${i+1}`;
+ const p=document.createElement('p');p.textContent=(heading?clean(heading.textContent)+' — ':'')+question;row.append(p);
+ copy.querySelectorAll('img').forEach(im=>{const img=im.cloneNode();row.append(img)});
+ const answer=document.createElement('p');answer.textContent='Em trả lời: '+(response(el)||'Chưa trả lời');row.append(answer);
+ let feedback=clean(el.querySelector('.feedback')?.textContent);
+ if(!feedback&&el.dataset.id&&typeof ANSWERS!=='undefined')feedback='Đáp án đúng: '+ANSWERS[el.dataset.id];
+ const f=document.createElement('p');f.textContent=feedback;row.append(f);
+ const b=document.createElement('button');b.type='button';b.textContent='Đến câu này';b.onclick=()=>{document.querySelectorAll('.review-focus').forEach(e=>e.classList.remove('review-focus'));el.classList.add('review-focus');el.scrollIntoView({behavior:'smooth',block:'center'})};row.append(b);box.append(row);
+ });
+
+ if(window.parent!==window){
+  const wrong_answers=items.map((el,i)=>{if(el.classList.contains('correct'))return null;const copy=el.cloneNode(true);copy.querySelectorAll('.feedback,.choices,.tone-options,input,select,button,audio').forEach(e=>e.remove());const feedback=clean(el.querySelector('.feedback')?.textContent);let correct=el.dataset.answerText||el.dataset.answer||'';if(!correct&&el.dataset.id&&typeof ANSWERS!=='undefined')correct=ANSWERS[el.dataset.id];if(!correct)correct=feedback.split('Đáp án đúng:').pop().trim();return {question_number:i+1,question_text:clean(copy.textContent).slice(0,700),student_answer:response(el)||'Chưa trả lời',correct_answer:String(correct),explanation:feedback};}).filter(Boolean);
+  window.parent.postMessage({type:'learningResult',payload:{correct:good,total:items.length,score:Math.round(good/items.length*100),exerciseName:'Sách BT HSK1 · Bài 1',lessonTitle:'Bài 1',attemptReview:{level:'HSK1',wrong_count:wrong_answers.length,wrong_answers}}},window.location.origin);
+ }
+ const result=document.getElementById('result');(result||document.querySelector('main')||document.body).insertAdjacentElement('afterend',box);box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.addEventListener('submit',e=>{if(e.target.id==='quiz')setTimeout(review,0)});
+document.getElementById('submitBtn')?.addEventListener('click',()=>setTimeout(review,0));
+document.getElementById('reset')?.addEventListener('click',()=>document.getElementById('reviewSummary')?.remove());
+})();</script></body>
+</html>

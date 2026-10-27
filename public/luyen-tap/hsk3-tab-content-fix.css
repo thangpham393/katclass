@@ -1,0 +1,8 @@
+/* HSK3 lessons 5–18 use .tab as a content panel, not as a tab button. */
+body > .tab,
+body > .tab.active {
+  background: transparent !important;
+  color: var(--hd-text, #0f172a) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

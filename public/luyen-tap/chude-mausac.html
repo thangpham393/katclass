@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chủ đề: Màu sắc 颜色</title>
+<style>
+:root{
+  --primary:#2549ec;--primary-dark:#1d4ed8;--primary-light:#e8effd;
+  --accent:#dc2626;--accent-dark:#b91c1c;--accent-light:#e5eeff;
+  --green:#43A047;--green-light:#E8F5E9;
+  --red:#E53935;--red-light:#ebf2ff;
+  --gray:#757575;--gray-light:#F5F5F5;--gray-border:#E0E0E0;
+  --text:#212121;--text-soft:#616161;
+  --radius:14px;--radius-sm:8px;
+  --shadow:0 2px 8px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#F0F4F8;color:var(--text);min-height:100vh;padding-bottom:2rem}
+
+/* ── HEADER ── */
+.page-header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;padding:1.3rem 1rem 1rem;text-align:center}
+.lesson-badge{display:inline-block;background:var(--accent);color:#333;font-size:.75rem;font-weight:700;border-radius:20px;padding:.2rem .8rem;margin-bottom:.5rem}
+.page-header h1{font-size:1.4rem;font-weight:700}
+.page-header .subtitle{font-size:.85rem;opacity:.9;margin-top:.25rem}
+
+/* ── NAME BAR ── */
+.name-bar{background:#fff;border-bottom:2px solid var(--gray-border);padding:.6rem 1rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.85rem;color:var(--text-soft)}
+.name-bar b{color:var(--primary)}
+
+/* ── TABS ── */
+.nav-tabs{display:flex;background:#fff;border-bottom:2px solid var(--gray-border);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:10}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{flex-shrink:0;padding:.75rem 1.1rem;font-size:.85rem;font-weight:600;color:var(--gray);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+.nav-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.nav-tab:hover:not(.active){color:var(--primary);background:var(--primary-light)}
+
+.panel{display:none;max-width:900px;margin:0 auto;padding:0 1rem}
+.panel.active{display:block}
+
+/* ── PROGRESS ── */
+.progress-wrap{margin:.9rem 0 0}
+.progress-bar-bg{background:#fff;border-radius:20px;height:10px;box-shadow:inset 0 1px 3px rgba(0,0,0,.1);overflow:hidden}
+.progress-bar-fill{background:linear-gradient(90deg,var(--primary),var(--green));height:100%;width:0%;border-radius:20px;transition:width .3s}
+.progress-label{font-size:.78rem;color:var(--text-soft);text-align:right;margin-top:.3rem}
+
+/* ── INTRO ── */
+.intro-card{background:var(--accent-light);border-left:4px solid var(--accent-dark);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.75rem 1rem;font-size:.87rem;color:var(--text);margin:.9rem 0}
+.intro-card b{color:var(--accent-dark)}
+
+/* ── VOCAB GRID (Bước 1) ── */
+.vocab-grid{margin:1rem 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem}
+.vocab-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem .7rem;text-align:center;cursor:pointer;border:3px solid transparent;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.vocab-card:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+.vocab-card.learned{border-color:var(--green)}
+.vocab-card.learned::after{content:'✓';position:absolute;top:6px;right:8px;color:var(--green);font-weight:800;font-size:.9rem}
+.vocab-card .swatch{width:100%;height:6px;border-radius:6px;margin-bottom:.6rem}
+.vocab-card .emoji{font-size:3.4rem;line-height:1;margin-bottom:.5rem;display:block}
+.vocab-card .hanzi{font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
+.vocab-card .pinyin{font-size:.85rem;color:var(--primary);font-weight:600;margin-bottom:.25rem}
+.vocab-card .meaning{font-size:.82rem;color:var(--text-soft)}
+.vocab-card .speak-hint{font-size:.68rem;color:#bbb;margin-top:.4rem}
+.vocab-card:active{transform:scale(.96)}
+
+/* ── FLASHCARD (Bước 2) ── */
+.flash-wrap{display:flex;flex-direction:column;align-items:center;margin:1.2rem 0}
+.flash-tally{display:flex;gap:1rem;margin-bottom:.9rem;font-size:.85rem}
+.flash-tally span{background:#fff;border-radius:20px;padding:.3rem .9rem;box-shadow:var(--shadow);font-weight:600}
+.flash-tally .known{color:var(--green)}
+.flash-tally .review{color:var(--red)}
+.flash-stage{width:100%;max-width:340px;height:280px;perspective:1200px;cursor:pointer}
+.flash-card{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flash-card.flipped{transform:rotateY(180deg)}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);box-shadow:0 6px 20px rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem;background:#fff}
+.flash-front{}
+.flash-front .swatch-big{width:70%;height:8px;border-radius:8px;margin-bottom:1rem}
+.flash-front .emoji-big{font-size:6.5rem;margin-bottom:.6rem}
+.flash-front .hint{font-size:.85rem;color:var(--text-soft);margin-top:.6rem}
+.flash-back{transform:rotateY(180deg);background:var(--primary-light)}
+.flash-back .hanzi-big{font-size:2.4rem;font-weight:800;color:var(--primary-dark);margin-bottom:.4rem}
+.flash-back .pinyin-big{font-size:1.1rem;color:var(--primary);font-weight:600;margin-bottom:.3rem}
+.flash-back .meaning-big{font-size:1rem;color:var(--text);margin-bottom:.7rem}
+.flash-back .speak-btn{background:var(--primary);color:#fff;border:none;border-radius:20px;padding:.4rem 1rem;font-size:.85rem;cursor:pointer}
+.flash-nav{display:flex;gap:.6rem;margin-top:1.1rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.flash-btn{background:#fff;border:2px solid var(--gray-border);border-radius:var(--radius-sm);padding:.5rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;color:var(--text);transition:.2s}
+.flash-btn:hover{border-color:var(--primary);color:var(--primary)}
+.flash-know{background:var(--green);color:#fff;border-color:var(--green)}
+.flash-know:hover{background:#388E3C;color:#fff}
+.flash-redo{background:var(--red);color:#fff;border-color:var(--red)}
+.flash-redo:hover{background:#C62828;color:#fff}
+.flash-index{font-size:.82rem;color:var(--text-soft);margin-top:.7rem}
+
+/* ── MATCHING (Bước 3) ── */
+.match-toolbar{display:flex;justify-content:space-between;align-items:center;margin:1rem 0 .7rem;flex-wrap:wrap;gap:.5rem}
+.match-score{font-size:.85rem;font-weight:600;color:var(--primary)}
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.match-col-title{font-size:.75rem;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.match-item{background:#fff;border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:.7rem .8rem;margin-bottom:.55rem;cursor:pointer;border:2px solid transparent;font-size:.95rem;display:flex;align-items:center;gap:.5rem;transition:.15s;user-select:none}
+.match-item:hover{border-color:var(--primary-light)}
+.match-item.selected{border-color:var(--primary);background:var(--primary-light)}
+.match-item.correct{border-color:var(--green);background:var(--green-light);cursor:default;opacity:.65}
+.match-item.wrong{border-color:var(--red);background:var(--red-light);animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-item.popcorrect{border-color:var(--green);background:var(--green-light);animation:popOut .45s forwards}
+@keyframes popOut{0%{transform:scale(1);opacity:1}40%{transform:scale(1.08);opacity:1}100%{transform:scale(.4);opacity:0;margin-bottom:0;padding-top:0;padding-bottom:0;height:0;border-width:0}}
+.match-done{text-align:center;background:var(--green-light);border-radius:var(--radius);padding:1.2rem;font-size:1rem;color:#2E7D32;font-weight:700;grid-column:1/-1}
+#confettiCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999}
+
+/* ── MEMORY GAME (Bước 4) ── */
+.mem-stats{display:flex;gap:1rem;margin:1rem 0;flex-wrap:wrap}
+.mem-stats span{background:#fff;border-radius:20px;padding:.35rem 1rem;box-shadow:var(--shadow);font-size:.83rem;font-weight:600;color:var(--primary-dark)}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;max-width:640px;margin:0 auto}
+.mem-card{aspect-ratio:1;perspective:900px;cursor:pointer}
+.mem-inner{position:relative;width:100%;height:100%;transition:transform .4s;transform-style:preserve-3d}
+.mem-card.flipped .mem-inner,.mem-card.matched .mem-inner{transform:rotateY(180deg)}
+.mem-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;text-align:center;padding:.3rem;box-shadow:var(--shadow)}
+.mem-back-face{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:2.6rem}
+.mem-front-face{background:#fff;transform:rotateY(180deg);flex-direction:column;gap:.25rem}
+.mem-front-face .mfe{font-size:3.4rem;line-height:1}
+.mem-front-face .mfh{font-size:1.4rem;font-weight:800;color:var(--primary-dark);line-height:1.1}
+.mem-front-face .mfp{font-size:.95rem;color:var(--text-soft);font-weight:600}
+.mem-card.matched .mem-front-face{background:var(--green-light);border:2px solid var(--green)}
+.mem-win{text-align:center;background:var(--green-light);border-radius:var(--radius);padding:1.2rem;margin-top:1rem;font-size:1rem;color:#2E7D32;font-weight:700;display:none}
+.mem-win.show{display:block}
+.replay-btn{background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.5rem}
+.replay-btn:hover{background:var(--primary-dark)}
+
+.footer-note{margin:1.4rem 0 0}
+.footer-card{background:#fff;border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:.8rem 1rem;font-size:.82rem;color:var(--text-soft);text-align:center}
+
+@media(max-width:480px){
+  .vocab-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem}
+  .vocab-card .emoji{font-size:2.8rem}
+  .vocab-card .hanzi{font-size:1.3rem}
+  .match-cols{gap:.5rem}
+  .match-item{font-size:.85rem;padding:.6rem .5rem}
+  .mem-grid{grid-template-columns:repeat(3,1fr);gap:.5rem;max-width:400px}
+  .mem-front-face .mfe{font-size:2.7rem}
+  .mem-front-face .mfh{font-size:1.15rem}
+  .mem-front-face .mfp{font-size:.82rem}
+  .mem-back-face{font-size:1.7rem}
+}
+</style>
+  <link rel="stylesheet" href="hsk-hongdat-theme.css">
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div class="page-header">
+  <div class="lesson-badge">🎨 Ôn tập theo chủ đề</div>
+  <h1>颜色 · Màu sắc</h1>
+  <div class="subtitle" id="pageSubtitle">Nhấn vào từng bước bên dưới để ôn tập</div>
+</div>
+
+<div class="name-bar" id="nameBar">
+  Xin chào, <b id="studentNameLbl">bạn học</b>! Chúc bạn ôn tập vui vẻ 🎉
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="switchTab('hoc', this)">1️⃣ Học từ vựng</button>
+  <button class="nav-tab" onclick="switchTab('flash', this)">2️⃣ Flashcard</button>
+  <button class="nav-tab" onclick="switchTab('match', this)">3️⃣ Nối nghĩa</button>
+  <button class="nav-tab" onclick="switchTab('mem', this)">4️⃣ Lật thẻ</button>
+</div>
+
+<!-- ═══════════ PANEL 1: HỌC TỪ VỰNG ═══════════ -->
+<div class="panel active" id="panel-hoc">
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-label"><span id="progressCount">0</span>/<span id="totalVocab">20</span> từ đã học</div>
+  </div>
+  <div class="intro-card"><b>💡 Hướng dẫn:</b> Nhấn vào thẻ để nghe phát âm và đánh dấu đã học (viền xanh lá).</div>
+  <div class="vocab-grid" id="vocabGrid"></div>
+</div>
+
+<!-- ═══════════ PANEL 2: FLASHCARD ═══════════ -->
+<div class="panel" id="panel-flash">
+  <div class="intro-card"><b>💡 Hướng dẫn:</b> Nhìn hình/màu và đoán tên màu bằng tiếng Trung, sau đó nhấn vào thẻ để lật xem đáp án.</div>
+  <div class="flash-wrap">
+    <div class="flash-tally">
+      <span class="known">😎 Đã nhớ: <span id="knownCount">0</span></span>
+      <span class="review">🔁 Cần ôn: <span id="reviewCount">0</span></span>
+    </div>
+    <div class="flash-stage" id="flashStage" onclick="flipFlash()">
+      <div class="flash-card" id="flashCard">
+        <div class="flash-face flash-front">
+          <div class="swatch-big" id="flashSwatch"></div>
+          <div class="emoji-big" id="flashEmoji"></div>
+          <div class="hint">Đây là màu gì? Nhấn để xem đáp án</div>
+        </div>
+        <div class="flash-face flash-back">
+          <div class="hanzi-big" id="flashHanzi"></div>
+          <div class="pinyin-big" id="flashPinyin"></div>
+          <div class="meaning-big" id="flashMeaning"></div>
+          <button class="speak-btn" onclick="event.stopPropagation();speakFlash()">🔊 Nghe lại</button>
+        </div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="flash-btn" onclick="flashPrev()">← Trước</button>
+      <button class="flash-btn flash-redo" onclick="flashMark(false)">🔁 Cần ôn thêm</button>
+      <button class="flash-btn flash-know" onclick="flashMark(true)">😎 Tôi đã nhớ</button>
+      <button class="flash-btn" onclick="flashNext()">Tiếp theo →</button>
+      <button class="flash-btn" onclick="flashShuffle()">🔀 Xáo trộn</button>
+    </div>
+    <div class="flash-index"><span id="flashIndexLbl">1</span>/<span id="flashTotalLbl">20</span></div>
+  </div>
+</div>
+
+<!-- ═══════════ PANEL 3: NỐI NGHĨA ═══════════ -->
+<div class="panel" id="panel-match">
+  <div class="intro-card"><b>💡 Hướng dẫn:</b> Nhấn 1 ô chữ Hán bên trái và 1 ô nghĩa tiếng Việt bên phải để nối cặp đúng. Hoàn thành xong nhấn "Vòng mới" để chơi tiếp với 8 từ khác.</div>
+  <div class="match-toolbar">
+    <div class="match-score">Đúng: <span id="matchScore">0</span>/<span id="matchTotal">8</span></div>
+    <button class="flash-btn" onclick="newMatchRound()">🔀 Vòng mới</button>
+  </div>
+  <div class="match-cols">
+    <div>
+      <div class="match-col-title">汉语 Chữ Hán</div>
+      <div id="matchLeft"></div>
+    </div>
+    <div>
+      <div class="match-col-title">Nghĩa tiếng Việt</div>
+      <div id="matchRight"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PANEL 4: LẬT THẺ ═══════════ -->
+<div class="panel" id="panel-mem">
+  <div class="intro-card"><b>💡 Hướng dẫn:</b> Lật 2 thẻ để tìm cặp emoji – tên màu tương ứng. Tìm hết các cặp để hoàn thành trò chơi!</div>
+  <button class="replay-btn" onclick="newMemGame()">🔀 Chơi ván mới</button>
+  <div class="mem-stats">
+    <span>🔄 Lượt lật: <span id="memMoves">0</span></span>
+    <span>⏱️ Thời gian: <span id="memTime">0</span>s</span>
+    <span>✅ Đã tìm: <span id="memFound">0</span>/8</span>
+  </div>
+  <div class="mem-grid" id="memGrid"></div>
+  <div class="mem-win" id="memWin"></div>
+</div>
+
+<div class="footer-note">
+  <div class="footer-card">Chủ đề <b>Màu sắc</b> · 4 bước ôn tập: Học từ vựng → Flashcard → Nối nghĩa → Lật thẻ. Chúc bạn học tốt! 🎉</div>
+</div>
+
+<script>
+const VOCAB = [
+  { hz:'红色',   py:'hóngsè',    vn:'đỏ',           emoji:'🔴', color:'#E53935' },
+  { hz:'橙色',   py:'chéngsè',   vn:'cam',          emoji:'🟠', color:'#dc1f1f' },
+  { hz:'黄色',   py:'huángsè',   vn:'vàng',         emoji:'🟡', color:'#FDD835' },
+  { hz:'绿色',   py:'lǜsè',      vn:'xanh lá',      emoji:'🟢', color:'#43A047' },
+  { hz:'蓝色',   py:'lánsè',     vn:'xanh dương',   emoji:'🔵', color:'#1E88E5' },
+  { hz:'紫色',   py:'zǐsè',      vn:'tím',          emoji:'🟣', color:'#8E24AA' },
+  { hz:'粉红色', py:'fěnhóngsè', vn:'hồng',         emoji:'🌸', color:'#406eec' },
+  { hz:'棕色',   py:'zōngsè',    vn:'nâu',          emoji:'🟤', color:'#183fa9' },
+  { hz:'黑色',   py:'hēisè',     vn:'đen',          emoji:'⚫', color:'#212121' },
+  { hz:'白色',   py:'báisè',     vn:'trắng',        emoji:'⚪', color:'#BDBDBD' },
+  { hz:'灰色',   py:'huīsè',     vn:'xám',          emoji:'◻️', color:'#9E9E9E' },
+  { hz:'天蓝色', py:'tiānlánsè', vn:'xanh da trời', emoji:'🩵', color:'#4FC3F7' },
+  { hz:'深蓝色', py:'shēnlánsè', vn:'xanh dương đậm', emoji:'🔷', color:'#1565C0' },
+  { hz:'浅绿色', py:'qiǎnlǜsè',  vn:'xanh lá nhạt', emoji:'🥝', color:'#8BC34A' },
+  { hz:'青色',   py:'qīngsè',    vn:'xanh ngọc',    emoji:'🦚', color:'#00ACC1' },
+  { hz:'金色',   py:'jīnsè',     vn:'vàng kim',     emoji:'🥇', color:'#C9A400' },
+  { hz:'银色',   py:'yínsè',     vn:'bạc',          emoji:'🥈', color:'#90A4AE' },
+  { hz:'米色',   py:'mǐsè',      vn:'be/kem',       emoji:'🌾', color:'#e9a5a5' },
+  { hz:'咖啡色', py:'kāfēisè',   vn:'nâu cà phê',   emoji:'☕', color:'#852121' },
+];
+
+/* ═══════════ TIỆN ÍCH CHUNG ═══════════ */
+function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+function safeSet(key, val){ try{ localStorage.setItem(key, val); }catch(e){ /* ignore */ } }
+function shuffle(arr){ const c=[...arr]; for(let i=c.length-1;i>0;i--){ const r=Math.floor(Math.random()*(i+1)); [c[i],c[r]]=[c[r],c[i]]; } return c; }
+
+let zhVoice = null;
+function loadVoice(){
+  const voices = speechSynthesis.getVoices();
+  const zh = voices.filter(v => v.lang && v.lang.toLowerCase().indexOf('zh') === 0);
+  // Ưu tiên giọng Trung Quốc đại lục (zh-CN, phổ thông/Putonghua) để tránh bị lẫn giọng
+  // Đài Loan (zh-TW, ví dụ "Mei-Jia") hay Hồng Kông (zh-HK) — các vùng này đôi khi đọc
+  // khác thanh điệu chuẩn phổ thông (vd 法国 đọc "Fàguó" ở Đài Loan thay vì "Fǎguó" chuẩn).
+  const mainland = zh.filter(v => v.lang.toLowerCase() === 'zh-cn');
+  const pool = mainland.length ? mainland : zh;
+  const femaleHints = ['female','ting-ting','tingting','yaoyao','huihui','xiaoxiao','女'];
+  const maleHints = ['male','kangkang','yunyang','男'];
+  // Ưu tiên 1: giọng NỮ + đại lục (trường hợp phổ biến nhất, hầu hết máy đều có).
+  // Ưu tiên 2: nếu đại lục không có giọng nữ, vẫn ưu tiên giọng NỮ (kể cả khác vùng)
+  // hơn là rơi vào giọng nam — luôn đảm bảo giọng đọc là nữ.
+  zhVoice = pool.find(v => femaleHints.some(h => v.name.toLowerCase().includes(h)))
+        || zh.find(v => femaleHints.some(h => v.name.toLowerCase().includes(h)))
+        || pool.find(v => !maleHints.some(h => v.name.toLowerCase().includes(h)))
+        || pool[0] || zh[0] || null;
+}
+if('speechSynthesis' in window){
+  loadVoice();
+  speechSynthesis.onvoiceschanged = loadVoice;
+}
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'zh-CN';
+  utt.rate = 0.85;
+  if(zhVoice) utt.voice = zhVoice;
+  speechSynthesis.speak(utt);
+}
+
+/* ═══════════ PHÁO HOA (confetti) ═══════════ */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const confettiCtx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+let confettiRunning = false;
+function resizeConfettiCanvas(){
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+resizeConfettiCanvas();
+window.addEventListener('resize', resizeConfettiCanvas);
+
+function fireConfetti(originX, originY){
+  const colors = ['#E53935','#dc1f1f','#FDD835','#43A047','#1E88E5','#8E24AA','#406eec','#e02626'];
+  const x = originX !== undefined ? originX : confettiCanvas.width / 2;
+  const y = originY !== undefined ? originY : confettiCanvas.height / 3;
+  for(let i = 0; i < 45; i++){
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 3 + Math.random() * 6;
+    confettiParticles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2,
+      size: 4 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: 1,
+      rot: Math.random() * Math.PI * 2,
+      vrot: (Math.random() - 0.5) * 0.3,
+    });
+  }
+  if(!confettiRunning){ confettiRunning = true; requestAnimationFrame(animateConfetti); }
+}
+function animateConfetti(){
+  confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiParticles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.18; p.life -= 0.018; p.rot += p.vrot;
+    confettiCtx.save();
+    confettiCtx.globalAlpha = Math.max(p.life, 0);
+    confettiCtx.translate(p.x, p.y);
+    confettiCtx.rotate(p.rot);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+    confettiCtx.restore();
+  });
+  confettiParticles = confettiParticles.filter(p => p.life > 0 && p.y < confettiCanvas.height + 50);
+  if(confettiParticles.length > 0){
+    requestAnimationFrame(animateConfetti);
+  }else{
+    confettiRunning = false;
+    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  }
+}
+
+/* ═══════════ TAB SWITCH ═══════════ */
+const subtitles = {
+  hoc: 'Bước 1: Học từ vựng · Nhấn vào thẻ để nghe phát âm',
+  flash: 'Bước 2: Flashcard · Xem hình đoán từ',
+  match: 'Bước 3: Nối từ vựng với nghĩa tiếng Việt',
+  mem: 'Bước 4: Trò chơi lật thẻ ghi nhớ',
+};
+function switchTab(name, btn){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pageSubtitle').textContent = subtitles[name] || '';
+  if(name === 'flash' && !flashInit){ initFlash(); }
+  if(name === 'match' && !matchInit){ newMatchRound(); matchInit = true; }
+  if(name === 'mem' && !memInit){ newMemGame(); memInit = true; }
+}
+
+/* ═══════════ PANEL 1: HỌC TỪ VỰNG ═══════════ */
+const LEARNED_KEY = 'chude_mausac_learned';
+let learned = new Set();
+try{ const saved = JSON.parse(safeGet(LEARNED_KEY) || '[]'); if(Array.isArray(saved)) learned = new Set(saved); }catch(e){}
+
+function renderGrid(){
+  const grid = document.getElementById('vocabGrid');
+  grid.innerHTML = VOCAB.map((w, i) => `
+    <div class="vocab-card${learned.has(i) ? ' learned' : ''}" data-idx="${i}" onclick="cardClick(${i})">
+      <div class="swatch" style="background:${w.color}"></div>
+      <span class="emoji">${w.emoji}</span>
+      <div class="hanzi">${w.hz}</div>
+      <div class="pinyin">${w.py}</div>
+      <div class="meaning">${w.vn}</div>
+      <div class="speak-hint">🔊 nhấn để nghe</div>
+    </div>
+  `).join('');
+  updateProgress();
+}
+function cardClick(i){
+  speak(VOCAB[i].hz);
+  learned.add(i);
+  safeSet(LEARNED_KEY, JSON.stringify([...learned]));
+  const card = document.querySelector(`.vocab-card[data-idx="${i}"]`);
+  if(card) card.classList.add('learned');
+  updateProgress();
+}
+function updateProgress(){
+  const pct = Math.round(learned.size / VOCAB.length * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = learned.size;
+  document.getElementById('totalVocab').textContent = VOCAB.length;
+}
+renderGrid();
+
+/* ═══════════ PANEL 2: FLASHCARD ═══════════ */
+let flashInit = false;
+let flashOrder = [];
+let flashPos = 0;
+let flashFlipped = false;
+let flashKnown = 0, flashReview = 0;
+
+function initFlash(){
+  flashInit = true;
+  flashOrder = shuffle(VOCAB.map((_, i) => i));
+  flashPos = 0;
+  flashKnown = 0; flashReview = 0;
+  renderFlash();
+}
+function renderFlash(){
+  const w = VOCAB[flashOrder[flashPos]];
+  document.getElementById('flashSwatch').style.background = w.color;
+  document.getElementById('flashEmoji').textContent = w.emoji;
+  document.getElementById('flashHanzi').textContent = w.hz;
+  document.getElementById('flashPinyin').textContent = w.py;
+  document.getElementById('flashMeaning').textContent = w.vn;
+  document.getElementById('flashIndexLbl').textContent = flashPos + 1;
+  document.getElementById('flashTotalLbl').textContent = flashOrder.length;
+  document.getElementById('knownCount').textContent = flashKnown;
+  document.getElementById('reviewCount').textContent = flashReview;
+  flashFlipped = false;
+  document.getElementById('flashCard').classList.remove('flipped');
+}
+function flipFlash(){
+  flashFlipped = !flashFlipped;
+  document.getElementById('flashCard').classList.toggle('flipped', flashFlipped);
+  if(flashFlipped) speak(VOCAB[flashOrder[flashPos]].hz);
+}
+function speakFlash(){ speak(VOCAB[flashOrder[flashPos]].hz); }
+function flashNext(){ flashPos = (flashPos + 1) % flashOrder.length; renderFlash(); }
+function flashPrev(){ flashPos = (flashPos - 1 + flashOrder.length) % flashOrder.length; renderFlash(); }
+function flashMark(know){
+  if(know) flashKnown++; else flashReview++;
+  flashNext();
+}
+function flashShuffle(){ flashOrder = shuffle(VOCAB.map((_, i) => i)); flashPos = 0; renderFlash(); }
+
+/* ═══════════ PANEL 3: NỐI NGHĨA ═══════════ */
+let matchInit = false;
+let matchSet = [];
+let matchSelLeft = null, matchSelRight = null;
+let matchCorrectCount = 0;
+
+function newMatchRound(){
+  matchSet = shuffle(VOCAB.map((_, i) => i)).slice(0, 8);
+  matchCorrectCount = 0;
+  matchSelLeft = null; matchSelRight = null;
+  document.getElementById('matchScore').textContent = 0;
+  document.getElementById('matchTotal').textContent = matchSet.length;
+  const oldDone = document.querySelector('.match-done');
+  if(oldDone) oldDone.remove();
+
+  const leftOrder = shuffle(matchSet);
+  const rightOrder = shuffle(matchSet);
+
+  document.getElementById('matchLeft').innerHTML = leftOrder.map(i => `
+    <div class="match-item" data-side="L" data-id="${i}" onclick="matchClick('L', ${i}, this)">
+      <span>${VOCAB[i].hz}</span>
+    </div>`).join('');
+  document.getElementById('matchRight').innerHTML = rightOrder.map(i => `
+    <div class="match-item" data-side="R" data-id="${i}" onclick="matchClick('R', ${i}, this)">${VOCAB[i].vn}</div>`).join('');
+}
+
+function matchClick(side, id, el){
+  if(el.classList.contains('correct')) return;
+  if(side === 'L'){
+    if(matchSelLeft) matchSelLeft.el.classList.remove('selected');
+    matchSelLeft = { id, el };
+    el.classList.add('selected');
+  }else{
+    if(matchSelRight) matchSelRight.el.classList.remove('selected');
+    matchSelRight = { id, el };
+    el.classList.add('selected');
+  }
+  if(matchSelLeft && matchSelRight){
+    const l = matchSelLeft, r = matchSelRight;
+    if(l.id === r.id){
+      l.el.classList.remove('selected'); r.el.classList.remove('selected');
+      l.el.classList.add('popcorrect'); r.el.classList.add('popcorrect');
+      matchCorrectCount++;
+      document.getElementById('matchScore').textContent = matchCorrectCount;
+      speak(VOCAB[l.id].hz);
+      // Bắn pháo hoa tại vị trí 2 ô vừa nối đúng
+      const rectL = l.el.getBoundingClientRect();
+      const rectR = r.el.getBoundingClientRect();
+      fireConfetti(rectL.left + rectL.width/2, rectL.top + rectL.height/2);
+      fireConfetti(rectR.left + rectR.width/2, rectR.top + rectR.height/2);
+      // Xóa 2 ô khỏi giao diện sau khi hiệu ứng chạy xong
+      setTimeout(() => {
+        l.el.remove(); r.el.remove();
+        if(matchCorrectCount === matchSet.length){
+          const doneMsg = document.createElement('div');
+          doneMsg.className = 'match-done';
+          doneMsg.textContent = `🎉 Hoàn thành vòng này! Nhấn "Vòng mới" để tiếp tục.`;
+          document.querySelector('.match-cols').appendChild(doneMsg);
+        }
+      }, 450);
+    }else{
+      l.el.classList.add('wrong'); r.el.classList.add('wrong');
+      setTimeout(() => {
+        l.el.classList.remove('selected','wrong');
+        r.el.classList.remove('selected','wrong');
+      }, 500);
+    }
+    matchSelLeft = null; matchSelRight = null;
+  }
+}
+
+/* ═══════════ PANEL 4: LẬT THẺ (MEMORY) ═══════════ */
+let memInit = false;
+let memCards = [];
+let memFlipped = [];
+let memMoves = 0;
+let memFoundCount = 0;
+let memTimer = null;
+let memSec = 0;
+
+function newMemGame(){
+  memInit = true;
+  clearInterval(memTimer);
+  memSec = 0; memMoves = 0; memFoundCount = 0; memFlipped = [];
+  document.getElementById('memMoves').textContent = 0;
+  document.getElementById('memTime').textContent = 0;
+  document.getElementById('memFound').textContent = 0;
+  document.getElementById('memWin').classList.remove('show');
+  document.getElementById('memWin').textContent = '';
+
+  const picks = shuffle(VOCAB.map((_, i) => i)).slice(0, 8);
+  let cards = [];
+  picks.forEach(i => {
+    cards.push({ wordIdx: i, type: 'emoji' });
+    cards.push({ wordIdx: i, type: 'name' });
+  });
+  memCards = shuffle(cards);
+
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = memCards.map((c, idx) => {
+    const w = VOCAB[c.wordIdx];
+    const front = c.type === 'emoji'
+      ? `<div class="mfe">${w.emoji}</div>`
+      : `<div class="mfh">${w.hz}</div><div class="mfp">${w.py}</div>`;
+    return `
+    <div class="mem-card" id="mem-${idx}" onclick="memClick(${idx})">
+      <div class="mem-inner">
+        <div class="mem-face mem-back-face">🎨</div>
+        <div class="mem-face mem-front-face">${front}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  memTimer = setInterval(() => {
+    memSec++;
+    document.getElementById('memTime').textContent = memSec;
+  }, 1000);
+}
+
+function memClick(idx){
+  if(memFlipped.length >= 2) return;
+  const el = document.getElementById('mem-' + idx);
+  if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
+
+  el.classList.add('flipped');
+  memFlipped.push(idx);
+
+  if(memFlipped.length === 2){
+    memMoves++;
+    document.getElementById('memMoves').textContent = memMoves;
+    const [a, b] = memFlipped;
+    const cardA = memCards[a], cardB = memCards[b];
+    if(cardA.wordIdx === cardB.wordIdx && cardA.type !== cardB.type){
+      setTimeout(() => {
+        document.getElementById('mem-' + a).classList.add('matched');
+        document.getElementById('mem-' + b).classList.add('matched');
+        memFoundCount++;
+        document.getElementById('memFound').textContent = memFoundCount;
+        speak(VOCAB[cardA.wordIdx].hz);
+        memFlipped = [];
+        if(memFoundCount === 8){
+          clearInterval(memTimer);
+          const winEl = document.getElementById('memWin');
+          winEl.textContent = `🎉 Hoàn thành! ${memMoves} lượt lật · ${memSec} giây`;
+          winEl.classList.add('show');
+        }
+      }, 400);
+    }else{
+      setTimeout(() => {
+        document.getElementById('mem-' + a).classList.remove('flipped');
+        document.getElementById('mem-' + b).classList.remove('flipped');
+        memFlipped = [];
+      }, 800);
+    }
+  }
+}
+
+/* ═══════════ NHẬN TÊN HỌC SINH TỪ TRANG CHÍNH ═══════════ */
+window.addEventListener('message', function(e){
+  if(e.data && e.data.type === 'userInfo' && e.data.name){
+    document.getElementById('studentNameLbl').textContent = e.data.name;
+  }
+});
+</script>
+
+</body>
+</html>

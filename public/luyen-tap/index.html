@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KAT CHINESE - Học Tiếng Trung Online</title>
+  <style>
+    :root {
+      --rose:       #2549ec;
+      --rose-dark:  #1d4ed8;
+      --rose-deep:  #1e3aa8;
+      --rose-soft:  #ebf0fa;
+      --gold:       #dc2626;
+      --gold-dark:  #b91c1c;
+      --gold-soft:  #f7d2d2;
+      --blush:      #f5f8ff;
+      --paper:      #fafcff;
+      --card:       #FFFFFF;
+      --text:       #0f172a;
+      --muted:      #64748b;
+      --border:     #e2e8f0;
+      --shadow:     0 12px 34px rgba(23,60,163, .08);
+      --shadow-sm:  0 5px 18px rgba(23,60,163, .065);
+      --radius:     20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; background: var(--blush); }
+
+    body {
+      font-family: "Be Vietnam Pro", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 8% 8%, rgba(220,38,38,.09), transparent 25rem),
+        radial-gradient(circle at 92% 27%, rgba(37,73,236,.07), transparent 29rem),
+        var(--paper);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(115deg, var(--rose-deep) 0%, var(--rose) 72%, #4671e5 100%);
+      color: #fff;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 6px 22px rgba(30,58,168,.18);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 70px;
+      gap: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      text-decoration: none;
+      color: #fff;
+      min-width: 0;
+    }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(245,248,255,.15);
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+    }
+    .logo-text {
+      font-size: 1.02rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: .01em;
+    }
+    .logo-text small {
+      display: block;
+      font-size: .69rem;
+      font-weight: 500;
+      opacity: .78;
+      margin-top: .08rem;
+      letter-spacing: .02em;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: .2rem;
+      padding: .25rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    nav a {
+      color: rgba(255,255,255,.88);
+      text-decoration: none;
+      padding: .42rem .82rem;
+      border-radius: 999px;
+      font-size: .84rem;
+      font-weight: 600;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+    nav a:hover {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(245,248,255,.96) 58%, rgba(235,240,250,.94));
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 1.5rem 4.2rem;
+      text-align: center;
+    }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(.2px);
+    }
+    .hero::before {
+      width: 340px;
+      height: 340px;
+      left: -150px;
+      top: -155px;
+      border: 1px solid rgba(220,38,38,.20);
+      box-shadow: 0 0 0 40px rgba(220,38,38,.028), 0 0 0 88px rgba(37,73,236,.022);
+    }
+    .hero::after {
+      width: 380px;
+      height: 380px;
+      right: -205px;
+      bottom: -250px;
+      background: radial-gradient(circle, rgba(37,73,236,.08), rgba(37,73,236,0) 70%);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: rgba(250,252,255,.86);
+      border: 1px solid #E7C7C7;
+      color: var(--rose-dark);
+      font-size: .76rem;
+      font-weight: 700;
+      padding: .38rem .95rem;
+      border-radius: 999px;
+      margin-bottom: 1.4rem;
+      letter-spacing: .045em;
+      box-shadow: 0 5px 16px rgba(37,73,236,.06);
+      backdrop-filter: blur(5px);
+    }
+    .hero h1 {
+      font-size: clamp(1.95rem, 4.3vw, 3.15rem);
+      font-weight: 750;
+      color: var(--text);
+      line-height: 1.16;
+      margin-bottom: .95rem;
+      letter-spacing: -.025em;
+    }
+    .hero h1 .cn {
+      position: relative;
+      display: inline-block;
+      margin-top: .25rem;
+      color: var(--rose-dark);
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+      font-size: 1.12em;
+      font-weight: 700;
+      letter-spacing: .015em;
+      text-shadow: 0 1px 0 #fff, 0 8px 24px rgba(37,73,236,.08);
+    }
+    .hero h1 .cn::after {
+      content: "";
+      display: block;
+      width: min(150px, 58%);
+      height: 2px;
+      margin: .55rem auto 0;
+      border-radius: 99px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: .85;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 610px;
+      margin: 0 auto 2.25rem;
+      line-height: 1.75;
+    }
+    .hero-stats {
+      width: min(820px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .9rem;
+    }
+    .stat {
+      position: relative;
+      text-align: center;
+      padding: .85rem .7rem;
+      border-radius: 15px;
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(226,232,240,.92);
+      box-shadow: 0 5px 18px rgba(23,60,163,.035);
+      backdrop-filter: blur(6px);
+    }
+    .stat-num {
+      font-size: 1.62rem;
+      font-weight: 800;
+      color: var(--rose);
+      display: block;
+      line-height: 1.1;
+    }
+    .stat-lbl {
+      font-size: .76rem;
+      color: var(--muted);
+      margin-top: .32rem;
+      font-weight: 500;
+    }
+
+    /* ── SECTION ── */
+    section { padding: 3.8rem 1.5rem; }
+    .section-inner { max-width: 1120px; margin: 0 auto; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 2.45rem;
+    }
+    .section-title::before {
+      content: "";
+      display: block;
+      width: 36px;
+      height: 3px;
+      border-radius: 99px;
+      margin: 0 auto .8rem;
+      background: var(--gold);
+    }
+    .section-title h2 {
+      font-size: clamp(1.45rem, 2.5vw, 1.78rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: .4rem;
+      letter-spacing: -.02em;
+    }
+    .section-title p { color: var(--muted); font-size: .94rem; }
+
+    /* ── LEVEL CARDS ── */
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 1.2rem;
+    }
+    .level-card {
+      --accent: var(--rose);
+      --soft: var(--rose-soft);
+      background: linear-gradient(165deg, #FFFFFF 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      min-height: 246px;
+    }
+    .level-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+    .level-card::after {
+      content: "";
+      position: absolute;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      right: -48px;
+      top: -42px;
+      background: color-mix(in srgb, var(--accent) 9%, transparent);
+      pointer-events: none;
+    }
+    .level-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    }
+    .level-card.hsk1 { --accent: #2549ec; --soft: #eff4ff; }
+    .level-card.hsk2 { --accent: #1e3aa8; --soft: #dbe6fe; }
+    .level-card.hsk3 { --accent: #0a7d59; --soft: #e7f6ef; }
+    .level-card.chude { --accent: #dc2626; --soft: #fef2f2; }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      flex-shrink: 0;
+      background: var(--soft) !important;
+      border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+    }
+    .card-label {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .095em;
+      text-transform: uppercase;
+      margin-bottom: .18rem;
+      color: var(--accent) !important;
+    }
+    .card-name {
+      font-size: 1.13rem;
+      font-weight: 750;
+      color: var(--text);
+      margin-bottom: .38rem;
+      letter-spacing: -.012em;
+    }
+    .card-desc {
+      font-size: .84rem;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: auto;
+      padding-top: .9rem;
+      border-top: 1px solid var(--border);
+    }
+    .card-count {
+      font-size: .79rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      white-space: nowrap;
+    }
+    .card-btn {
+      font-size: .78rem;
+      font-weight: 700;
+      padding: .4rem .84rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+      background: var(--soft) !important;
+      color: var(--accent) !important;
+      white-space: nowrap;
+    }
+    .level-card:hover .card-btn {
+      background: var(--accent) !important;
+      color: #fff !important;
+      transform: translateX(2px);
+    }
+
+    /* ── FEATURES ── */
+    .features-bg {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(245,248,255,.8), rgba(248,250,255,.96));
+      border-top: 1px solid rgba(226,232,240,.7);
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 1.15rem;
+    }
+    .feature-item {
+      background: rgba(255,255,255,.82);
+      border-radius: 18px;
+      padding: 1.45rem 1.3rem;
+      box-shadow: 0 5px 18px rgba(23,60,163,.045);
+      border: 1px solid var(--border);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .feature-item:hover {
+      transform: translateY(-3px);
+      border-color: #DFC1C4;
+      box-shadow: 0 10px 26px rgba(23,60,163,.07);
+    }
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      margin-bottom: .75rem;
+      border-radius: 13px;
+      background: var(--rose-soft);
+      border: 1px solid #c8d5f9;
+    }
+    .feature-item:nth-child(2n) .feature-icon {
+      background: var(--gold-soft);
+      border-color: #f2b2b2;
+    }
+    .feature-item h3 {
+      font-size: .94rem;
+      font-weight: 750;
+      margin-bottom: .35rem;
+      color: var(--text);
+    }
+    .feature-item p {
+      font-size: .81rem;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(115deg, #1c2338, #2b3555);
+      color: rgba(255,255,255,.72);
+      text-align: center;
+      padding: 2.15rem 1.5rem;
+      font-size: .81rem;
+      border-top: 3px solid var(--gold);
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(220,38,38,.13), transparent 26rem);
+      pointer-events: none;
+    }
+    footer strong {
+      color: #f4f8ff;
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      letter-spacing: .02em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .header-inner { min-height: 64px; }
+      nav { display: none; }
+      .hero { padding: 3.3rem 1rem 2.8rem; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: .7rem; }
+      section { padding: 3rem 1rem; }
+      .level-grid { grid-template-columns: 1fr; }
+      .level-card { min-height: auto; }
+    }
+    @media (max-width: 420px) {
+      .logo-text { font-size: .93rem; }
+      .logo-text small { font-size: .64rem; }
+      .hero h1 { font-size: 1.9rem; }
+      .hero p { font-size: .94rem; }
+      .stat { padding: .72rem .45rem; }
+      .stat-num { font-size: 1.4rem; }
+      .card-footer { align-items: center; }
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      header { position: static; }
+      .level-card, .feature-item { break-inside: avoid; box-shadow: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🏮</div>
+      <div class="logo-text">
+        KAT CHINESE
+        <small>Học tiếng Trung cùng chúng tôi</small>
+      </div>
+    </a>
+    <nav>
+      <a href="hsk1-index.html">HSK 1</a>
+      <a href="hsk2-index.html">HSK 2</a>
+      <a href="hsk3-index.html">HSK 3</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎓 Nền tảng học tiếng Trung</div>
+  <h1>
+    Chào mừng đến với<br />
+    <span class="cn">KAT CHINESE</span>
+  </h1>
+  <p>
+    Hệ thống bài tập tương tác, luyện nghe – nhìn – phản xạ,
+    được thiết kế dành riêng cho học viên của trung tâm.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">48</span>
+      <div class="stat-lbl">Bài luyện tập</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <div class="stat-lbl">Cấp độ HSK</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">9</span>
+      <div class="stat-lbl">Chủ đề từ vựng</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <div class="stat-lbl">Miễn phí cho học viên</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEVELS -->
+<section>
+  <div class="section-inner">
+    <div class="section-title">
+      <h2>Chọn cấp độ của bạn</h2>
+      <p>Từ cơ bản đến nâng cao — học theo lộ trình phù hợp</p>
+    </div>
+    <div class="level-grid">
+
+      <a href="hsk1-index.html" class="level-card hsk1">
+        <div class="card-icon">🌱</div>
+        <div class="card-body">
+          <div class="card-label">HSK 1</div>
+          <div class="card-name">Sơ cấp 1</div>
+          <div class="card-desc">500 từ vựng sơ cấp, 15 bài luyện nghe &amp; điền từ, từ điển tương tác.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-count">📖 15 bài</span>
+          <span class="card-btn">Vào học →</span>
+        </div>
+      </a>
+
+      <a href="hsk2-index.html" class="level-card hsk2">
+        <div class="card-icon">📘</div>
+        <div class="card-body">
+          <div class="card-label">HSK 2</div>
+          <div class="card-name">Sơ cấp 2</div>
+          <div class="card-desc">772 từ vựng mới, 15 bài luyện tập đa dạng, hội thoại thực tế hằng ngày.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-count">📖 15 bài</span>
+          <span class="card-btn">Vào học →</span>
+        </div>
+      </a>
+
+      <a href="hsk3-index.html" class="level-card hsk3">
+        <div class="card-icon">🎯</div>
+        <div class="card-body">
+          <div class="card-label">HSK 3</div>
+          <div class="card-name">Trung cấp 1</div>
+          <div class="card-desc">973 từ vựng mới, 18 bài luyện tập nâng cao, kỹ năng nghe hiểu chuyên sâu.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-count">📖 18 bài</span>
+          <span class="card-btn">Vào học →</span>
+        </div>
+      </a>
+
+      <a href="chude-index.html" class="level-card chude">
+        <div class="card-icon">🌐</div>
+        <div class="card-body">
+          <div class="card-label">Chủ đề</div>
+          <div class="card-name">Ôn tập theo chủ đề</div>
+          <div class="card-desc">9 chủ đề giao tiếp thực tế: màu sắc, đồ vật, động vật, chỉ đường và nhiều hơn nữa.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-count">🗂️ 9 chủ đề</span>
+          <span class="card-btn">Vào học →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-bg">
+  <div class="section-inner">
+    <div class="section-title">
+      <h2>Tính năng nổi bật</h2>
+      <p>Được thiết kế để học hiệu quả và thú vị</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🎧</div>
+        <h3>Luyện nghe tương tác</h3>
+        <p>Nghe câu tiếng Trung, chọn đáp án đúng — đáp án xáo trộn mỗi lần tải trang.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📝</div>
+        <h3>Điền từ thông minh</h3>
+        <p>Bài tập điền từ vào chỗ trống, hệ thống tự động kiểm tra và chấm điểm tức thì.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔀</div>
+        <h3>Ghép & sắp xếp câu</h3>
+        <p>Luyện cấu trúc ngữ pháp bằng cách kéo thả hoặc chọn từ để tạo câu đúng.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <h3>Sắp xếp hội thoại</h3>
+        <p>Khôi phục thứ tự đúng của đoạn hội thoại — luyện kỹ năng đọc hiểu ngữ cảnh.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📱</div>
+        <h3>Dùng được mọi thiết bị</h3>
+        <p>Tương thích điện thoại, máy tính bảng và máy tính — học mọi lúc, mọi nơi.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔒</div>
+        <h3>Không cần Internet</h3>
+        <p>Tài liệu hoạt động hoàn toàn offline sau khi tải về — không lo mất kết nối.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>KAT CHINESE</strong> · Hệ thống học tiếng Trung tương tác</p>
+  <p style="margin-top:.5rem">Thiết kế dành riêng cho học viên của trung tâm · Không chia sẻ ra ngoài</p>
+</footer>
+
+</body>
+</html>
