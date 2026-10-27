@@ -21,3 +21,29 @@ t = t.replace('font-family:"Be Vietnam Pro","Inter","Noto Sans SC","PingFang SC"
               'font-family:"Be Vietnam Pro",-apple-system,system-ui,"Segoe UI",Roboto,Arial,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif !important;')
 open(f, 'w', encoding='utf-8').write(t)
 print('font fixed')
+
+# Trò "Nối chữ" và "Ghép cặp" không được dựng lúc tải trang (bản gốc quên gọi
+# trong window.onload) → tab trống tới khi bấm "Bắt đầu lại". Dựng khi mở tab
+# lần đầu; không gọi lúc tải vì initMemoryGame chạy đồng hồ ngay.
+LAZY_INIT = '''<script>
+/* KAT: dựng trò Nối chữ / Ghép cặp khi mở tab lần đầu */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('.tab-btn');
+  if (!btn) return;
+  var tab = btn.getAttribute('data-tab');
+  setTimeout(function () {
+    var left = document.getElementById('leftCol');
+    var grid = document.getElementById('memGrid');
+    if (tab === 'connect' && left && !left.children.length && typeof initConnectGame === 'function') initConnectGame();
+    if (tab === 'memorygame' && grid && !grid.children.length && typeof initMemoryGame === 'function') initMemoryGame();
+  }, 0);
+});
+</script>
+'''
+n = 0
+for f in glob.glob(P + '/*.html'):
+    t = open(f, encoding='utf-8').read()
+    if 'onclick="initConnectGame()"' not in t or 'KAT: dựng trò' in t: continue
+    i = t.rfind('</body>')
+    open(f, 'w', encoding='utf-8').write(t[:i] + LAZY_INIT + t[i:]); n += 1
+print('lazy init added', n)

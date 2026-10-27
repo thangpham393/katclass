@@ -1576,5 +1576,19 @@ window.onload = function(){
     }
 })();
 </script>
+<script>
+/* KAT: dựng trò Nối chữ / Ghép cặp khi mở tab lần đầu */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('.tab-btn');
+  if (!btn) return;
+  var tab = btn.getAttribute('data-tab');
+  setTimeout(function () {
+    var left = document.getElementById('leftCol');
+    var grid = document.getElementById('memGrid');
+    if (tab === 'connect' && left && !left.children.length && typeof initConnectGame === 'function') initConnectGame();
+    if (tab === 'memorygame' && grid && !grid.children.length && typeof initMemoryGame === 'function') initMemoryGame();
+  }, 0);
+});
+</script>
 </body>
 </html>
