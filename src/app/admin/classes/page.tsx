@@ -13,6 +13,7 @@ import { Empty } from "@/components/ui/empty";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import {
   fetchClasses,
+  fetchClassProgress,
   fetchCourses,
   fetchRooms,
   fetchProfilesByRole,
@@ -25,6 +26,8 @@ import {
 } from "@/lib/db";
 import { fetchTextbooks } from "@/lib/db-library";
 import { useLoad } from "@/lib/use-load";
+import { computeClassProgress, fmtDate } from "@/lib/class-progress";
+import { Progress } from "@/components/ui/progress";
 
 /**
  * Chuẩn hoá chuỗi để tìm kiếm: bỏ dấu tiếng Việt, gộp mọi khoảng trắng về
@@ -58,6 +61,7 @@ function classTeacherIds(c: { teacher: { id: string } | null; class_teachers: { 
 export default function AdminClassesPage() {
   const { data: classes, loading, error, reload } = useLoad(fetchClasses);
   const rooms = useLoad(fetchRooms, []);
+  const progress = useLoad(fetchClassProgress, []);
   const [creating, setCreating] = useState(false);
   const [q, setQ] = useState("");
   const [teacherId, setTeacherId] = useState("");   // "" = tất cả, "none" = chưa gán GV
@@ -221,20 +225,33 @@ export default function AdminClassesPage() {
       ) : (
         <Card>
           <div className="hidden grid-cols-12 gap-3 border-b bg-muted/40 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground md:grid">
-            <div className="md:col-span-4">Lớp</div>
-            <div className="md:col-span-3">Lịch tuần</div>
+            <div className="md:col-span-3">Lớp</div>
+            <div className="md:col-span-2">Lịch tuần</div>
             <div className="md:col-span-2">Giáo viên</div>
+            <div className="md:col-span-3">Tiến độ</div>
             <div className="md:col-span-1">Sĩ số</div>
-            <div className="md:col-span-2 text-right">Trạng thái</div>
+            <div className="md:col-span-1 text-right">Trạng thái</div>
           </div>
           <div className="divide-y">
-            {filtered.map((c) => (
+            {filtered.map((c) => {
+              const row = progress.data?.get(c.id);
+              const p = computeClassProgress({
+                total: c.course?.total_sessions,
+                classStartDate: c.start_date,
+                firstDate: row?.first_date ?? null,
+                lastDate: row?.last_date ?? null,
+                done: row?.done ?? 0,
+                pastPending: row?.past_pending ?? 0,
+                upcoming: row?.upcoming ?? 0,
+                schedules: c.class_schedules,
+              });
+              return (
               <Link
                 key={c.id}
                 href={`/admin/classes/${c.id}`}
                 className="grid grid-cols-1 items-center gap-2 px-4 py-3.5 transition-colors hover:bg-brand-50/40 sm:px-5 md:grid-cols-12 md:gap-3"
               >
-                <div className="md:col-span-4 flex items-center gap-3">
+                <div className="md:col-span-3 flex items-center gap-3">
                   <div className="zh grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-xs font-bold text-brand-700">
                     {c.course?.level ? (LEVEL_LABELS[c.course.level] ?? c.course.level) : "—"}
                   </div>
@@ -243,16 +260,29 @@ export default function AdminClassesPage() {
                     <div className="truncate text-xs text-muted-foreground">{c.course?.name ?? "Chưa gắn khóa"}</div>
                   </div>
                 </div>
-                <div className="md:col-span-3 text-xs text-muted-foreground">{formatSchedules(c.class_schedules)}</div>
+                <div className="md:col-span-2 text-xs text-muted-foreground">{formatSchedules(c.class_schedules)}</div>
                 <div className="md:col-span-2 text-sm">{c.teacher?.name ?? <span className="text-muted-foreground">Chưa có</span>}</div>
+                <div className="md:col-span-3 min-w-0 text-xs">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="font-semibold">
+                      {p.total ? `${p.learned}/${p.total} buổi` : `${p.learned} buổi đã học`}
+                    </span>
+                    {p.remaining !== null && <span className="text-muted-foreground">còn {p.remaining}</span>}
+                  </div>
+                  {p.total && <Progress value={p.learned} max={p.total} className="my-1 h-1.5" />}
+                  <div className="text-muted-foreground" title={p.endProjected ? "Ngày kết thúc dự kiến theo lịch tuần" : undefined}>
+                    {fmtDate(p.startDate)} → {fmtDate(p.endDate)}{p.endProjected && p.endDate ? " (dự kiến)" : ""}
+                  </div>
+                </div>
                 <div className="md:col-span-1 text-sm font-semibold">{c.class_students?.[0]?.count ?? 0}</div>
-                <div className="md:col-span-2 md:text-right">
+                <div className="md:col-span-1 md:text-right">
                   <Badge variant={c.status === "active" ? "jade" : c.status === "planned" ? "gold" : "muted"}>
                     {CLASS_STATUS_LABELS[c.status]}
                   </Badge>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </Card>
       )}

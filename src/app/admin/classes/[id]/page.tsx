@@ -3,13 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CalendarPlus, Check, Pencil, Plus, Sparkles, Trash2, UserMinus, X } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CalendarClock, CalendarPlus, Check, Pencil, Plus, Sparkles, Trash2, UserMinus, X } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { Select, Field } from "@/components/ui/select";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import {
@@ -30,6 +31,8 @@ import {
   classTeachers,
   replaceClassSchedules,
   generateSessions,
+  rescheduleClassSessions,
+  deleteUnheldSessions,
   deleteClass,
   dbErrorMessage,
   formatSchedules,
@@ -41,7 +44,9 @@ import {
   type ClassRow,
   type SessionRow,
   type GenerateSessionsResult,
+  type RescheduleRow,
 } from "@/lib/db";
+import { fmtDate, progressFromSessions } from "@/lib/class-progress";
 import { fetchTextbooks } from "@/lib/db-library";
 import { parseScheduleFromName } from "@/lib/parse-schedule";
 import { useLoad } from "@/lib/use-load";
@@ -63,6 +68,7 @@ export default function AdminClassDetailPage() {
   const [renaming, setRenaming] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [savingName, setSavingName] = useState(false);
+  const [rescheduling, setRescheduling] = useState(false);
 
   async function handleRename() {
     const name = nameDraft.trim();
@@ -236,14 +242,33 @@ export default function AdminClassDetailPage() {
       <ClassPhotoManager classId={classId} students={students.data ?? []} onPhotosChange={setClassPhotos} />
       {actionError && <ErrorNote message={actionError} />}
 
-      <TeacherScheduleCard cls={c} onSaved={() => { cls.reload(); sessions.reload(); }} />
+      <ClassProgressCard cls={c} sessions={sessions.data ?? []} loading={sessions.loading} />
+
+      <TeacherScheduleCard
+        cls={c}
+        onSaved={() => { cls.reload(); sessions.reload(); }}
+        onScheduleSaved={() => {
+          // Còn buổi chưa học đã sinh theo lịch cũ → mời áp lịch mới luôn
+          const today = todayISO();
+          if ((sessions.data ?? []).some((s) => s.status === "scheduled" && s.date >= today)) setRescheduling(true);
+        }}
+      />
 
       <SessionsCard
         cls={c}
         sessions={sessions.data ?? []}
         loading={sessions.loading}
         onChanged={sessions.reload}
+        onReschedule={() => setRescheduling(true)}
       />
+
+      {rescheduling && (
+        <RescheduleModal
+          cls={c}
+          onClose={() => setRescheduling(false)}
+          onApplied={() => { sessions.reload(); }}
+        />
+      )}
 
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
@@ -330,7 +355,16 @@ function draftsFromClass(c: ClassRow): ScheduleDraft[] {
     }));
 }
 
-function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => void }) {
+function TeacherScheduleCard({
+  cls,
+  onSaved,
+  onScheduleSaved,
+}: {
+  cls: ClassRow;
+  onSaved: () => void;
+  /** Gọi sau khi lưu lịch tuần — trang mở hộp áp lịch mới cho các buổi đã sinh. */
+  onScheduleSaved: () => void;
+}) {
   const teachers = useLoad(() => fetchProfilesByRole("teacher"));
   const rooms = useLoad(fetchRooms);
 
@@ -447,7 +481,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
         })),
       );
 
-      let msg = "Đã lưu lịch tuần. Các buổi đã sinh trước đó không đổi — dùng “Sinh buổi học” cho lịch mới.";
+      let msg = "Đã lưu lịch tuần.";
       if (updateSessions) {
         const res = await applyScheduleTeachers(cls.id);
         msg = `Đã lưu lịch tuần. Cập nhật giáo viên cho ${res.updated} buổi sắp tới.`;
@@ -457,6 +491,7 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
       }
       setNotice(msg);
       onSaved();
+      onScheduleSaved();
     } catch (e) {
       setError(dbErrorMessage(e));
     } finally {
@@ -669,6 +704,82 @@ function TeacherScheduleCard({ cls, onSaved }: { cls: ClassRow; onSaved: () => v
   );
 }
 
+/* ================= Tiến độ lớp ================= */
+
+function ClassProgressCard({
+  cls,
+  sessions,
+  loading,
+}: {
+  cls: ClassRow;
+  sessions: SessionRow[];
+  loading: boolean;
+}) {
+  const p = useMemo(
+    () =>
+      progressFromSessions(sessions, {
+        total: cls.course?.total_sessions,
+        classStartDate: cls.start_date,
+        schedules: cls.class_schedules,
+      }),
+    [sessions, cls],
+  );
+  if (loading) return <Card><LoadingRows rows={2} /></Card>;
+
+  const items: { label: string; value: React.ReactNode; hint?: React.ReactNode }[] = [
+    {
+      label: "Ngày bắt đầu",
+      value: fmtDate(p.startDate),
+      hint: sessions.some((s) => s.status !== "cancelled") ? "Buổi đầu tiên" : "Theo ngày khai giảng",
+    },
+    {
+      label: p.endProjected ? "Kết thúc dự kiến" : "Ngày kết thúc",
+      value: fmtDate(p.endDate),
+      hint: p.endProjected
+        ? `Đếm tiếp ${p.notGenerated} buổi theo lịch tuần`
+        : p.total ? `Buổi thứ ${p.total}` : "Buổi cuối đã sinh",
+    },
+    {
+      label: "Đã học",
+      value: (
+        <>
+          {p.learned}
+          {p.total && <span className="text-sm font-semibold text-muted-foreground">/{p.total}</span>}
+        </>
+      ),
+      hint: p.pastPending > 0 ? (
+        <span className="text-gold-700">{p.pastPending} buổi đã qua chưa chấm công</span>
+      ) : `${p.done} buổi đã chấm công`,
+    },
+    {
+      label: "Còn lại dự kiến",
+      value: p.remaining ?? p.upcoming,
+      hint: p.total
+        ? p.notGenerated > 0
+          ? `${p.upcoming} đã xếp lịch · ${p.notGenerated} chưa sinh`
+          : `${p.upcoming} buổi đã xếp lịch`
+        : "Khóa chưa ghi tổng số buổi — đếm buổi đã sinh",
+    },
+  ];
+
+  return (
+    <Card>
+      <CardContent className="space-y-4 p-4 sm:p-5">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {items.map((it) => (
+            <div key={it.label}>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{it.label}</div>
+              <div className="mt-1 text-xl font-extrabold">{it.value}</div>
+              {it.hint && <div className="mt-0.5 text-xs text-muted-foreground">{it.hint}</div>}
+            </div>
+          ))}
+        </div>
+        {p.total && <Progress value={p.learned} max={p.total} />}
+      </CardContent>
+    </Card>
+  );
+}
+
 /* ================= Buổi học ================= */
 
 function SessionsCard({
@@ -676,27 +787,63 @@ function SessionsCard({
   sessions,
   loading,
   onChanged,
+  onReschedule,
 }: {
   cls: ClassRow;
   sessions: SessionRow[];
   loading: boolean;
   onChanged: () => void;
+  onReschedule: () => void;
 }) {
   const [weeks, setWeeks] = useState(4);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<GenerateSessionsResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
 
   const upcoming = sessions.filter((s) => s.status !== "cancelled" && s.date >= todayISO());
   const visible = showAll ? sessions : upcoming;
+  // Buổi chưa học (DB kiểm lại: chưa chấm công, chưa điểm danh mới xoá được)
+  const deletable = visible.filter((s) => s.status === "scheduled");
+  const progress = useMemo(
+    () =>
+      progressFromSessions(sessions, {
+        total: cls.course?.total_sessions,
+        classStartDate: cls.start_date,
+        schedules: cls.class_schedules,
+      }),
+    [sessions, cls],
+  );
 
-  async function handleGenerate() {
+  // Danh sách thay đổi (reload / đổi bộ lọc) thì bỏ chọn buổi không còn hiện
+  useEffect(() => {
+    const ids = new Set(deletable.map((s) => s.id));
+    setSelected((prev) => new Set([...prev].filter((id) => ids.has(id))));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessions, showAll]);
+
+  function toggle(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  async function handleGenerate(limit?: number) {
     setGenerating(true);
     setError(null);
+    setNotice(null);
     setResult(null);
     try {
-      const r = await generateSessions(cls.id, weeks);
+      // Sinh đủ khóa: đủ số tuần để phủ số buổi còn thiếu (+1 tuần dự phòng ngày trùng)
+      const perWeek = Math.max(1, cls.class_schedules.length);
+      const w = limit ? Math.min(104, Math.ceil(limit / perWeek) + 1) : weeks;
+      const r = await generateSessions(cls.id, w, limit);
       setResult(r);
       onChanged();
     } catch (e) {
@@ -706,6 +853,28 @@ function SessionsCard({
     }
   }
 
+  async function handleDelete() {
+    if (!selected.size) return;
+    if (!confirm(`Xoá ${selected.size} buổi chưa học đã chọn? Buổi đã chấm công hoặc đã điểm danh sẽ được giữ lại.`)) return;
+    setDeleting(true);
+    setError(null);
+    setNotice(null);
+    setResult(null);
+    try {
+      const n = await deleteUnheldSessions([...selected]);
+      const kept = selected.size - n;
+      setNotice(`Đã xoá ${n} buổi.${kept > 0 ? ` Giữ lại ${kept} buổi vì đã chấm công / điểm danh.` : ""}`);
+      setSelected(new Set());
+      onChanged();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  const allSelected = deletable.length > 0 && deletable.every((s) => selected.has(s.id));
+
   return (
     <Card>
       <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
@@ -713,7 +882,7 @@ function SessionsCard({
           Buổi học
           <Badge variant="muted" className="ml-2">{sessions.length}</Badge>
         </CardTitle>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-muted-foreground">Sinh buổi cho</span>
           <Input
             type="number"
@@ -724,14 +893,27 @@ function SessionsCard({
             onChange={(e) => setWeeks(Math.max(1, Math.min(26, Number(e.target.value) || 1)))}
           />
           <span className="text-sm text-muted-foreground">tuần tới</span>
-          <Button size="sm" disabled={generating} onClick={handleGenerate}>
+          <Button size="sm" disabled={generating} onClick={() => handleGenerate()}>
             <CalendarPlus className="h-3.5 w-3.5" />
             {generating ? "Đang sinh..." : "Sinh buổi học"}
+          </Button>
+          {progress.notGenerated > 0 && (
+            <Button size="sm" variant="secondary" disabled={generating} onClick={() => handleGenerate(progress.notGenerated)}>
+              Sinh đủ {progress.notGenerated} buổi còn thiếu
+            </Button>
+          )}
+          <Button size="sm" variant="outline" onClick={onReschedule} title="Dời các buổi chưa học theo lịch tuần hiện tại">
+            <CalendarClock className="h-3.5 w-3.5" /> Áp lịch tuần mới
           </Button>
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {error && <ErrorNote message={error} />}
+        {notice && (
+          <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            {notice}
+          </div>
+        )}
         {result && (
           <div className="mb-3 rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-800">
             Đã tạo <b>{result.created}</b> buổi mới, bỏ qua {result.skipped} buổi đã tồn tại.
@@ -752,15 +934,40 @@ function SessionsCard({
           </div>
         ) : (
           <>
-            <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{showAll ? "Tất cả các buổi" : `Buổi sắp tới (${upcoming.length})`}</span>
-              <button className="font-semibold text-brand-600" onClick={() => setShowAll((v) => !v)}>
-                {showAll ? "Chỉ hiện buổi sắp tới" : "Hiện tất cả"}
-              </button>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-input accent-brand-600"
+                  disabled={deletable.length === 0}
+                  checked={allSelected}
+                  onChange={() => setSelected(allSelected ? new Set() : new Set(deletable.map((s) => s.id)))}
+                />
+                <span>{showAll ? "Tất cả các buổi" : `Buổi sắp tới (${upcoming.length})`}</span>
+              </label>
+              <div className="flex items-center gap-3">
+                {selected.size > 0 && (
+                  <Button size="sm" variant="outline" disabled={deleting} onClick={handleDelete}>
+                    <Trash2 className="h-3.5 w-3.5 text-gold-700" />
+                    {deleting ? "Đang xoá..." : `Xoá ${selected.size} buổi`}
+                  </Button>
+                )}
+                <button className="font-semibold text-brand-600" onClick={() => setShowAll((v) => !v)}>
+                  {showAll ? "Chỉ hiện buổi sắp tới" : "Hiện tất cả"}
+                </button>
+              </div>
             </div>
             <div className="max-h-96 divide-y overflow-y-auto scrollbar-thin">
               {visible.map((s) => (
                 <div key={s.id} className="flex flex-wrap items-center gap-3 py-2.5 text-sm">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-input accent-brand-600 disabled:opacity-30"
+                    disabled={s.status !== "scheduled"}
+                    checked={selected.has(s.id)}
+                    onChange={() => toggle(s.id)}
+                    title={s.status === "scheduled" ? "Chọn để xoá" : "Buổi đã học / đã hủy không xoá được"}
+                  />
                   <span className="w-14 shrink-0 text-xs font-semibold text-muted-foreground">
                     {s.session_no ? `Buổi ${s.session_no}` : "—"}
                   </span>
@@ -790,6 +997,120 @@ function SessionsCard({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/* ================= Áp lịch tuần mới cho buổi đã sinh ================= */
+
+function RescheduleModal({
+  cls,
+  onClose,
+  onApplied,
+}: {
+  cls: ClassRow;
+  onClose: () => void;
+  onApplied: () => void;
+}) {
+  const [from, setFrom] = useState(todayISO());
+  const [rows, setRows] = useState<RescheduleRow[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [applying, setApplying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState<number | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    setError(null);
+    rescheduleClassSessions(cls.id, from, false)
+      .then((r) => alive && setRows(r))
+      .catch((e) => alive && setError(dbErrorMessage(e)))
+      .finally(() => alive && setLoading(false));
+    return () => { alive = false; };
+  }, [cls.id, from]);
+
+  const conflicts = (rows ?? []).filter((r) => r.conflict);
+
+  async function handleApply() {
+    setApplying(true);
+    setError(null);
+    try {
+      const r = await rescheduleClassSessions(cls.id, from, true);
+      setDone(r.length);
+      onApplied();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    } finally {
+      setApplying(false);
+    }
+  }
+
+  const fmt = (d: string, a: string, b: string) =>
+    `${WEEKDAY_LABELS[new Date(d + "T00:00:00").getDay()]} ${fmtDate(d)} ${a.slice(0, 5)}–${b.slice(0, 5)}`;
+
+  return (
+    <Modal open onClose={onClose} title="Áp lịch tuần mới cho các buổi đã sinh" className="max-w-2xl">
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">
+          Lịch tuần hiện tại: <b className="text-foreground">{formatSchedules(cls.class_schedules)}</b>. Các buổi
+          chưa học (chưa chấm công, chưa điểm danh) được dời sang lịch này, giữ nguyên thứ tự buổi — slide, ghi chú
+          chuẩn bị và học viên học bù đi theo buổi. Học viên & phụ huynh nhận một thông báo tổng hợp.
+        </p>
+        {error && <ErrorNote message={error} />}
+
+        {done !== null ? (
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            Đã dời {done} buổi theo lịch mới.
+          </div>
+        ) : (
+          <>
+            <Field label="Áp dụng từ ngày">
+              <Input type="date" className="w-full sm:w-48" value={from} onChange={(e) => e.target.value && setFrom(e.target.value)} />
+            </Field>
+
+            {loading ? (
+              <LoadingRows rows={3} className="p-0" />
+            ) : !rows || rows.length === 0 ? (
+              <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+                Các buổi chưa học đã khớp lịch tuần — không có gì cần đổi.
+              </div>
+            ) : (
+              <>
+                {conflicts.length > 0 && (
+                  <div className="flex gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
+                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                    {conflicts.length} buổi trùng giờ giáo viên/phòng với lớp khác — đổi GV/phòng ở lịch tuần
+                    hoặc chọn ngày áp dụng khác rồi thử lại.
+                  </div>
+                )}
+                <div className="max-h-80 divide-y overflow-y-auto rounded-lg border scrollbar-thin">
+                  {rows.map((r) => (
+                    <div key={r.session_id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm">
+                      <span className="w-14 shrink-0 text-xs font-semibold text-muted-foreground">
+                        {r.session_no ? `Buổi ${r.session_no}` : "—"}
+                      </span>
+                      <span className="text-muted-foreground line-through">{fmt(r.old_date, r.old_start, r.old_end)}</span>
+                      <span className="text-muted-foreground">→</span>
+                      <span className="font-medium">{fmt(r.new_date, r.new_start, r.new_end)}</span>
+                      {r.conflict && <span className="w-full text-xs text-gold-700">⚠ {r.conflict}</span>}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={onClose}>{done !== null ? "Đóng" : "Để nguyên"}</Button>
+          {done === null && (
+            <Button disabled={loading || applying || !rows?.length || conflicts.length > 0} onClick={handleApply}>
+              {applying ? "Đang dời..." : `Dời ${rows?.length ?? 0} buổi`}
+            </Button>
+          )}
+        </div>
+      </div>
+    </Modal>
   );
 }
 

@@ -810,7 +810,12 @@ export interface GenerateSessionsResult {
  * Buổi đã tồn tại (cùng ngày + giờ) thì bỏ qua; buổi trùng phòng/GV
  * (exclusion constraint 23P01) được gom lại trả về trong `conflicts`.
  */
-export async function generateSessions(classId: string, weeks: number): Promise<GenerateSessionsResult> {
+export async function generateSessions(
+  classId: string,
+  weeks: number,
+  /** Tạo tối đa bấy nhiêu buổi (vd chỉ sinh đủ số buổi còn thiếu của khóa). */
+  limit?: number,
+): Promise<GenerateSessionsResult> {
   const supabase = getSupabase();
   const [clsRes, schedRes, existingRes] = await Promise.all([
     supabase.from("classes").select("id, teacher_id").eq("id", classId).single(),
@@ -855,6 +860,7 @@ export async function generateSessions(classId: string, weeks: number): Promise<
   let skipped = 0;
   const conflicts: string[] = [];
   for (const c of candidates) {
+    if (limit !== undefined && created >= limit) break;
     if (existingKeys.has(`${c.date}|${c.start_time.slice(0, 5)}`)) {
       skipped++;
       continue;
@@ -878,6 +884,60 @@ export async function generateSessions(classId: string, weeks: number): Promise<
     }
   }
   return { created, skipped, conflicts };
+}
+
+/** Một buổi sẽ được dời khi áp lịch tuần mới (migration 0055). */
+export interface RescheduleRow {
+  session_id: string;
+  session_no: number | null;
+  old_date: string;
+  old_start: string;
+  old_end: string;
+  new_date: string;
+  new_start: string;
+  new_end: string;
+  conflict: string | null; // trùng giờ GV/phòng với lớp khác
+}
+
+/**
+ * Xếp lại các buổi chưa học (từ ngày `from`) theo lịch tuần hiện tại, giữ thứ tự buổi.
+ * `apply = false` chỉ xem trước; `true` đổi thật + gửi 1 thông báo tổng hợp cho HV/PH.
+ */
+export async function rescheduleClassSessions(
+  classId: string,
+  from: string,
+  apply: boolean,
+): Promise<RescheduleRow[]> {
+  const { data, error } = await getSupabase().rpc("reschedule_class_sessions", {
+    p_class_id: classId,
+    p_from: from,
+    p_apply: apply,
+  });
+  if (error) throw error;
+  return (data ?? []) as RescheduleRow[];
+}
+
+/** Xoá các buổi chưa học (chưa chấm công, chưa điểm danh); trả về số buổi đã xoá. */
+export async function deleteUnheldSessions(ids: string[]): Promise<number> {
+  const { data, error } = await getSupabase().rpc("delete_unheld_sessions", { p_session_ids: ids });
+  if (error) throw error;
+  return (data ?? 0) as number;
+}
+
+/** Tổng hợp buổi học theo lớp (view class_progress, migration 0055). */
+export interface ClassProgressRow {
+  class_id: string;
+  first_date: string | null;
+  last_date: string | null;
+  done: number;
+  past_pending: number;
+  upcoming: number;
+}
+
+export async function fetchClassProgress(): Promise<Map<string, ClassProgressRow>> {
+  const { data, error } = await getSupabase().from("class_progress").select("*");
+  if (error) throw error;
+  return new Map(((data ?? []) as ClassProgressRow[]).map((r) => [r.class_id, r]));
 }
 
 /* ============ Điểm danh ============ */
