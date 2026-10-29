@@ -87,10 +87,16 @@ export default function AdminClassDetailPage() {
   }
 
   async function handleStatusChange(status: ClassRow["status"]) {
+    const ending = status === "completed" || status === "cancelled";
+    if (
+      ending &&
+      !confirm("Các buổi chưa diễn ra (chưa chấm công, chưa điểm danh) của lớp sẽ bị xoá khỏi lịch. Tiếp tục?")
+    ) return;
     setActionError(null);
     try {
       await updateClassStatus(classId, status);
       cls.reload();
+      if (ending) sessions.reload();
     } catch (e) {
       setActionError(dbErrorMessage(e));
     }
