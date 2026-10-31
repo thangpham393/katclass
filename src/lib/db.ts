@@ -282,6 +282,13 @@ export async function updateClassTextbook(id: string, textbookId: string | null)
   if (error) throw error;
 }
 
+/** Đổi khóa học của lớp (null = bỏ gán). */
+export async function updateClassCourse(id: string, courseId: string | null) {
+  const { error } = await getSupabase()
+    .from("classes").update({ course_id: courseId }).eq("id", id);
+  if (error) throw error;
+}
+
 export async function createClass(input: CreateClassInput) {
   const supabase = getSupabase();
   const { schedules, ...classData } = input;

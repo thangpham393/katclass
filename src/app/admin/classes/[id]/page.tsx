@@ -17,10 +17,12 @@ import {
   fetchClass,
   fetchClassStudents,
   fetchClassSessions,
+  fetchCourses,
   fetchProfilesByRole,
   fetchRooms,
   addStudentToClass,
   removeStudentFromClass,
+  updateClassCourse,
   updateClassInfo,
   updateClassStatus,
   updateClassTeacher,
@@ -63,6 +65,7 @@ export default function AdminClassDetailPage() {
   const students = useLoad(() => fetchClassStudents(classId), [classId]);
   const sessions = useLoad(() => fetchClassSessions(classId), [classId]);
   const textbooks = useLoad(fetchTextbooks);
+  const courses = useLoad(fetchCourses);
   const [adding, setAdding] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -97,6 +100,16 @@ export default function AdminClassDetailPage() {
       await updateClassStatus(classId, status);
       cls.reload();
       if (ending) sessions.reload();
+    } catch (e) {
+      setActionError(dbErrorMessage(e));
+    }
+  }
+
+  async function handleCourseChange(courseId: string | null) {
+    setActionError(null);
+    try {
+      await updateClassCourse(classId, courseId);
+      cls.reload();
     } catch (e) {
       setActionError(dbErrorMessage(e));
     }
@@ -197,8 +210,6 @@ export default function AdminClassDetailPage() {
               </div>
             )}
             <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span>{c.course?.name ?? "Chưa gắn khóa học"}</span>
-              <span className="text-border">·</span>
               <span>{formatSchedules(c.class_schedules)}</span>
               {classTeachers(c).length > 0 && (
                 <>
@@ -211,6 +222,20 @@ export default function AdminClassDetailPage() {
                   </span>
                 </>
               )}
+            </div>
+            <div className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Khóa học:</span>
+              <Select
+                wrapClassName="w-full sm:w-auto"
+                className="h-9 w-full text-xs sm:h-8 sm:w-56"
+                value={c.course?.id ?? ""}
+                onChange={(e) => handleCourseChange(e.target.value || null)}
+              >
+                <option value="">— Chưa gán —</option>
+                {(courses.data ?? []).map((course) => (
+                  <option key={course.id} value={course.id}>{course.name} ({course.total_sessions} buổi)</option>
+                ))}
+              </Select>
             </div>
             <div className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
               <span>Giáo trình:</span>
