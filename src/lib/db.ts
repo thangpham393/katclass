@@ -825,7 +825,7 @@ export async function generateSessions(
 ): Promise<GenerateSessionsResult> {
   const supabase = getSupabase();
   const [clsRes, schedRes, existingRes] = await Promise.all([
-    supabase.from("classes").select("id, teacher_id").eq("id", classId).single(),
+    supabase.from("classes").select("id, teacher_id, start_date").eq("id", classId).single(),
     supabase.from("class_schedules").select("weekday, start_time, end_time, room_id, teacher_id").eq("class_id", classId),
     supabase.from("sessions").select("date, start_time, session_no").eq("class_id", classId),
   ]);
@@ -842,12 +842,19 @@ export async function generateSessions(
   const existingKeys = new Set(existing.map((s) => `${s.date}|${s.start_time.slice(0, 5)}`));
   let nextNo = Math.max(existing.length, ...existing.map((s) => s.session_no ?? 0), 0) + 1;
 
-  // Duyệt từng ngày trong N tuần tới (tính từ hôm nay)
+  // Duyệt từng ngày trong N tuần tới (từ hôm nay, lớp chưa khai giảng thì từ ngày khai giảng)
   const candidates: {
     date: string; start_time: string; end_time: string; room_id: string | null; teacher_id: string | null;
   }[] = [];
+  const startDate = clsRes.data.start_date as string | null;
+  const offset = startDate
+    ? Math.max(0, Math.round(
+        (new Date(startDate + "T00:00:00").getTime() - new Date(todayISO() + "T00:00:00").getTime()) / 86400000,
+      ))
+    : 0;
   const cursor = new Date();
-  for (let i = 0; i < weeks * 7; i++) {
+  cursor.setDate(cursor.getDate() + offset);
+  for (let i = offset; i < offset + weeks * 7; i++) {
     for (const s of schedules) {
       if (s.weekday === cursor.getDay()) {
         candidates.push({
@@ -918,6 +925,24 @@ export async function rescheduleClassSessions(
   const { data, error } = await getSupabase().rpc("reschedule_class_sessions", {
     p_class_id: classId,
     p_from: from,
+    p_apply: apply,
+  });
+  if (error) throw error;
+  return (data ?? []) as RescheduleRow[];
+}
+
+/**
+ * Đổi ngày bắt đầu của lớp và xếp lại các buổi đã sinh từ ngày đó (migration 0057).
+ * `apply = false` chỉ xem trước; lớp đã có buổi đã học thì DB báo lỗi.
+ */
+export async function changeClassStartDate(
+  classId: string,
+  start: string,
+  apply: boolean,
+): Promise<RescheduleRow[]> {
+  const { data, error } = await getSupabase().rpc("change_class_start_date", {
+    p_class_id: classId,
+    p_start: start,
     p_apply: apply,
   });
   if (error) throw error;

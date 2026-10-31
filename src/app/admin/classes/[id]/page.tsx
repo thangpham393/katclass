@@ -34,6 +34,7 @@ import {
   replaceClassSchedules,
   generateSessions,
   rescheduleClassSessions,
+  changeClassStartDate,
   deleteUnheldSessions,
   deleteClass,
   dbErrorMessage,
@@ -72,6 +73,7 @@ export default function AdminClassDetailPage() {
   const [nameDraft, setNameDraft] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [rescheduling, setRescheduling] = useState(false);
+  const [editingStart, setEditingStart] = useState(false);
 
   async function handleRename() {
     const name = nameDraft.trim();
@@ -273,7 +275,12 @@ export default function AdminClassDetailPage() {
       <ClassPhotoManager classId={classId} students={students.data ?? []} onPhotosChange={setClassPhotos} />
       {actionError && <ErrorNote message={actionError} />}
 
-      <ClassProgressCard cls={c} sessions={sessions.data ?? []} loading={sessions.loading} />
+      <ClassProgressCard
+        cls={c}
+        sessions={sessions.data ?? []}
+        loading={sessions.loading}
+        onEditStart={() => setEditingStart(true)}
+      />
 
       <TeacherScheduleCard
         cls={c}
@@ -298,6 +305,15 @@ export default function AdminClassDetailPage() {
           cls={c}
           onClose={() => setRescheduling(false)}
           onApplied={() => { sessions.reload(); }}
+        />
+      )}
+
+      {editingStart && (
+        <StartDateModal
+          cls={c}
+          sessions={sessions.data ?? []}
+          onClose={() => setEditingStart(false)}
+          onApplied={() => { setEditingStart(false); cls.reload(); sessions.reload(); }}
         />
       )}
 
@@ -741,10 +757,12 @@ function ClassProgressCard({
   cls,
   sessions,
   loading,
+  onEditStart,
 }: {
   cls: ClassRow;
   sessions: SessionRow[];
   loading: boolean;
+  onEditStart: () => void;
 }) {
   const p = useMemo(
     () =>
@@ -760,7 +778,18 @@ function ClassProgressCard({
   const items: { label: string; value: React.ReactNode; hint?: React.ReactNode }[] = [
     {
       label: "Ngày bắt đầu",
-      value: fmtDate(p.startDate),
+      value: (
+        <span className="inline-flex items-center gap-1.5">
+          {fmtDate(p.startDate)}
+          <button
+            onClick={onEditStart}
+            className="grid h-7 w-7 place-items-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
+            title="Sửa ngày bắt đầu"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+          </button>
+        </span>
+      ),
       hint: sessions.some((s) => s.status !== "cancelled") ? "Buổi đầu tiên" : "Theo ngày khai giảng",
     },
     {
@@ -1139,6 +1168,130 @@ function RescheduleModal({
               {applying ? "Đang dời..." : `Dời ${rows?.length ?? 0} buổi`}
             </Button>
           )}
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+/* ================= Sửa ngày bắt đầu ================= */
+
+function StartDateModal({
+  cls,
+  sessions,
+  onClose,
+  onApplied,
+}: {
+  cls: ClassRow;
+  sessions: SessionRow[];
+  onClose: () => void;
+  onApplied: () => void;
+}) {
+  const [start, setStart] = useState(
+    () =>
+      progressFromSessions(sessions, {
+        total: cls.course?.total_sessions,
+        classStartDate: cls.start_date,
+        schedules: cls.class_schedules,
+      }).startDate ?? todayISO(),
+  );
+  const [rows, setRows] = useState<RescheduleRow[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [applying, setApplying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    setError(null);
+    setRows(null);
+    changeClassStartDate(cls.id, start, false)
+      .then((r) => alive && setRows(r))
+      .catch((e) => alive && setError(dbErrorMessage(e)))
+      .finally(() => alive && setLoading(false));
+    return () => { alive = false; };
+  }, [cls.id, start]);
+
+  const conflicts = (rows ?? []).filter((r) => r.conflict);
+  // Ngày buổi đầu / ngày kết thúc nếu lưu: áp ngày mới vào các buổi rồi tính như thẻ tiến độ
+  const preview = useMemo(() => {
+    const moved = new Map((rows ?? []).map((r) => [r.session_id, r.new_date]));
+    return progressFromSessions(
+      sessions.map((s) => ({ ...s, date: moved.get(s.id) ?? s.date })),
+      { total: cls.course?.total_sessions, schedules: cls.class_schedules, classStartDate: start },
+    );
+  }, [rows, sessions, cls, start]);
+
+  async function handleApply() {
+    setApplying(true);
+    setError(null);
+    try {
+      await changeClassStartDate(cls.id, start, true);
+      onApplied();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+      setApplying(false);
+    }
+  }
+
+  const fmt = (d: string, a: string, b: string) =>
+    `${WEEKDAY_LABELS[new Date(d + "T00:00:00").getDay()]} ${fmtDate(d)} ${a.slice(0, 5)}–${b.slice(0, 5)}`;
+  const count = rows?.length ?? 0;
+
+  return (
+    <Modal open onClose={onClose} title="Sửa ngày bắt đầu của lớp" className="max-w-2xl">
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">
+          Các buổi đã sinh được xếp lại từ ngày mới theo lịch tuần{" "}
+          <b className="text-foreground">{formatSchedules(cls.class_schedules)}</b>, giữ nguyên thứ tự buổi. Học viên
+          & phụ huynh nhận một thông báo tổng hợp.
+        </p>
+        <Field label="Ngày bắt đầu">
+          <Input type="date" className="w-full sm:w-48" value={start} onChange={(e) => e.target.value && setStart(e.target.value)} />
+        </Field>
+        {error && <ErrorNote message={error} />}
+
+        {loading ? (
+          <LoadingRows rows={3} className="p-0" />
+        ) : rows && (
+          <>
+            <div className="rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-800">
+              {count > 0 && <>Buổi đầu: <b>{fmtDate(preview.startDate)}</b> · </>}
+              {preview.endProjected ? "Kết thúc dự kiến" : "Ngày kết thúc"}: <b>{fmtDate(preview.endDate)}</b>
+            </div>
+            {conflicts.length > 0 && (
+              <div className="flex gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                {conflicts.length} buổi trùng giờ giáo viên/phòng với lớp khác — đổi GV/phòng ở lịch tuần hoặc chọn
+                ngày khác rồi thử lại.
+              </div>
+            )}
+            {count > 0 && (
+              <div className="max-h-80 divide-y overflow-y-auto rounded-lg border scrollbar-thin">
+                {rows.map((r) => (
+                  <div key={r.session_id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm">
+                    <span className="w-14 shrink-0 text-xs font-semibold text-muted-foreground">
+                      {r.session_no ? `Buổi ${r.session_no}` : "—"}
+                    </span>
+                    <span className="text-muted-foreground line-through">{fmt(r.old_date, r.old_start, r.old_end)}</span>
+                    <span className="text-muted-foreground">→</span>
+                    <span className="font-medium">{fmt(r.new_date, r.new_start, r.new_end)}</span>
+                    {r.conflict && <span className="w-full text-xs text-gold-700">⚠ {r.conflict}</span>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={onClose}>Hủy</Button>
+          <Button
+            disabled={loading || applying || !rows || conflicts.length > 0 || (count === 0 && start === cls.start_date)}
+            onClick={handleApply}
+          >
+            {applying ? "Đang lưu..." : count > 0 ? `Lưu và dời ${count} buổi` : "Lưu ngày bắt đầu"}
+          </Button>
         </div>
       </div>
     </Modal>

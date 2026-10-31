@@ -7,7 +7,8 @@ import { todayISO, type ScheduleRow, type SessionRow } from "@/lib/db";
  *   (buổi đó gần như chắc đã dạy, chỉ thiếu thao tác) — tách riêng `pastPending`
  *   để nhắc chấm công.
  * - Ngày kết thúc: đã sinh đủ số buổi của khóa → ngày của buổi thứ N; chưa đủ →
- *   lấy buổi cuối đã sinh rồi đếm tiếp theo lịch tuần (`endProjected = true`).
+ *   lấy buổi cuối đã sinh (chưa sinh buổi nào thì từ ngày khai giảng) rồi đếm tiếp
+ *   theo lịch tuần (`endProjected = true`).
  */
 export interface ClassProgress {
   total: number | null; // số buổi của khóa (null = khóa không ghi)
@@ -62,7 +63,13 @@ export function computeClassProgress(p: ProgressInput): ClassProgress {
   let endProjected = false;
   if (total && notGenerated > 0) {
     const today = todayISO(-1);
-    const base = p.lastDate && p.lastDate > today ? p.lastDate : today;
+    let base = p.lastDate && p.lastDate > today ? p.lastDate : today;
+    // Chưa sinh buổi nào → đếm từ chính ngày khai giảng
+    if (!p.lastDate && p.classStartDate) {
+      const dayBefore = new Date(p.classStartDate + "T00:00:00");
+      dayBefore.setDate(dayBefore.getDate() - 1);
+      base = isoOf(dayBefore);
+    }
     endDate = projectEnd(base, notGenerated, p.schedules);
     endProjected = true;
   } else if (total && p.nthDate) {
