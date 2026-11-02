@@ -10,6 +10,8 @@ export interface User {
   avatar?: string;
   /** Chi nhánh của hồ sơ (0026) — null với hồ sơ cũ chưa gán. */
   branchId?: string | null;
+  /** Chi nhánh phụ (0060) — GV dạy nhiều cơ sở bằng một tài khoản. */
+  extraBranchIds?: string[];
   classIds?: string[];
 }
 

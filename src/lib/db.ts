@@ -1,7 +1,7 @@
 "use client";
 
 import { getSupabase } from "./supabase";
-import { branchFilter, branchStamp } from "./branch";
+import { branchFilter, branchProfileFilter, branchStamp } from "./branch";
 import type { Role } from "./types";
 
 /* ============ Kiểu dữ liệu khớp bảng Supabase ============ */
@@ -160,9 +160,10 @@ export async function fetchPendingMakeupCount(): Promise<number> {
 
 export async function fetchDashboardStats() {
   const supabase = getSupabase();
+  const byBranch = await branchProfileFilter();
   const [students, teachers, activeClasses, pendingMakeups] = await Promise.all([
     branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "student")),
-    branchFilter(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "teacher")),
+    byBranch(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("role", "teacher")),
     branchFilter(supabase.from("classes").select("id", { count: "exact", head: true }).eq("status", "active")),
     fetchPendingMakeupCount(),
   ]);
@@ -225,9 +226,17 @@ export async function fetchBranches(): Promise<BranchRow[]> {
 /* ============ Người dùng ============ */
 
 export async function fetchProfilesByRole(role: Role): Promise<ProfileRow[]> {
-  const { data, error } = await branchFilter(
-    getSupabase().from("profiles").select("*").eq("role", role),
-  ).order("created_at", { ascending: false });
+  const byBranch = await branchProfileFilter();
+  const { data, error } = await byBranch(getSupabase().from("profiles").select("*").eq("role", role))
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+/** Hồ sơ một vai trò ở MỌI chi nhánh (chọn tài khoản trùng để gộp). */
+export async function fetchProfilesByRoleAllBranches(role: Role): Promise<ProfileRow[]> {
+  const { data, error } = await getSupabase()
+    .from("profiles").select("*").eq("role", role).order("name");
   if (error) throw error;
   return data;
 }

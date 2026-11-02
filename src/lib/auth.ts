@@ -27,6 +27,10 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
     );
   }
 
+  // Chi nhánh phụ (0060) — lỗi (chưa chạy migration) thì coi như không có
+  const { data: extra } = await supabase
+    .from("profile_branches").select("branch_id").eq("profile_id", data.id);
+
   return {
     id: data.id,
     name: data.name || sbUser.email || "Người dùng",
@@ -34,6 +38,7 @@ export async function ensureUserProfile(sbUser: SupabaseUser): Promise<User> {
     role: data.role ?? "student",
     avatar: data.avatar ?? undefined,
     branchId: data.branch_id ?? null,
+    extraBranchIds: ((extra ?? []) as { branch_id: string }[]).map((r) => r.branch_id),
     classIds: [],
   };
 }

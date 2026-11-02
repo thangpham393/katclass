@@ -35,7 +35,8 @@ const BranchContext = createContext<BranchState>({
  *
  * - Admin / hành chính / kế toán: dùng lựa chọn đã lưu, mặc định là chi
  *   nhánh trong hồ sơ, rồi tới chi nhánh mặc định (Landmark).
- * - Giáo viên / học viên / phụ huynh: khóa cứng theo chi nhánh trong hồ sơ.
+ * - Giáo viên / học viên / phụ huynh: khóa cứng theo chi nhánh trong hồ sơ;
+ *   GV có chi nhánh phụ (0060) thì không lọc — thấy lịch mọi cơ sở mình dạy.
  */
 export function BranchProvider({ user, children }: { user: User; children: React.ReactNode }) {
   const canSwitch = SWITCHER_ROLES.includes(user.role);
@@ -54,7 +55,14 @@ export function BranchProvider({ user, children }: { user: User; children: React
           list.find((b) => b.is_default)?.id ??
           list[0]?.id ??
           null;
-        const id = canSwitch ? (list.find((b) => b.id === stored)?.id ?? fallback) : fallback;
+        // GV dạy nhiều cơ sở (0060): không lọc theo chi nhánh — dữ liệu phía
+        // GV vốn đã lọc theo chính GV, cần thấy lịch dạy của mọi cơ sở
+        const multiBranch = !canSwitch && (user.extraBranchIds?.length ?? 0) > 0;
+        const id = canSwitch
+          ? (list.find((b) => b.id === stored)?.id ?? fallback)
+          : multiBranch
+            ? null
+            : fallback;
         setCurrentBranchId(id);
         setBranches(list);
         setBranchId(id);
@@ -69,7 +77,7 @@ export function BranchProvider({ user, children }: { user: User; children: React
     return () => {
       cancelled = true;
     };
-  }, [user.branchId, canSwitch]);
+  }, [user.branchId, user.extraBranchIds?.length, canSwitch]);
 
   if (!ready) {
     return (

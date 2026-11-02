@@ -39,6 +39,7 @@ import {
 } from "@/lib/db-student";
 import { ParentShareModal } from "@/components/parent-share-modal";
 import { AttendanceHistory } from "@/components/attendance-history";
+import { ExtraBranchesCard, MergeProfileCard } from "@/components/members/member-branches";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Select, Field } from "@/components/ui/select";
@@ -65,6 +66,9 @@ const ROLE_OPTIONS: { value: Role; label: string; hint: string }[] = [
   },
   { value: "admin", label: "Quản lý (admin)", hint: "Admin: toàn quyền, kể cả phân quyền và lương." },
 ];
+
+/** Vai trò làm việc được ở nhiều chi nhánh bằng một tài khoản (0060). */
+const STAFF_ROLES: Role[] = ["teacher", "staff", "accountant"];
 
 const ROLE_LABELS: Record<Role, string> = {
   student: "Học viên",
@@ -337,6 +341,18 @@ export default function AdminMemberDetailPage() {
                 </p>
               </CardContent>
             </Card>
+          )}
+
+          {branches.length > 1 && STAFF_ROLES.includes(p.role) && (
+            <ExtraBranchesCard profile={p} branches={branches} canEdit={canSwitch} />
+          )}
+
+          {isAdmin && STAFF_ROLES.includes(p.role) && p.id !== me?.id && (
+            <MergeProfileCard
+              profile={p}
+              branches={branches}
+              onMerged={(msg) => { setNotice(msg); setError(null); profile.reload(); }}
+            />
           )}
 
           <Card>

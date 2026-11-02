@@ -90,11 +90,59 @@ export async function fetchBranchList(): Promise<Branch[]> {
  */
 export async function branchProfileIds(role?: string): Promise<string[] | null> {
   if (!currentId) return null;
-  let q = getSupabase().from("profiles").select("id").eq("branch_id", currentId);
+  const byBranch = await branchProfileFilter();
+  let q = byBranch(getSupabase().from("profiles").select("id"));
   if (role) q = q.eq("role", role);
   const { data, error } = await q.limit(10000);
   if (error) throw error;
   return (data as { id: string }[]).map((r) => r.id);
+}
+
+/**
+ * Id hồ sơ được THÊM vào chi nhánh đang xem (0060: GV dạy nhiều cơ sở),
+ * ngoài các hồ sơ có chi nhánh chính là cơ sở này.
+ * Chưa chạy migration 0060 thì coi như không có ai.
+ */
+async function extraBranchMemberIds(): Promise<string[]> {
+  if (!currentId) return [];
+  const { data, error } = await getSupabase()
+    .from("profile_branches").select("profile_id").eq("branch_id", currentId);
+  if (error) return [];
+  return (data as { profile_id: string }[]).map((r) => r.profile_id);
+}
+
+/**
+ * Như `branchFilter` nhưng cho bảng profiles: lấy cả hồ sơ có chi nhánh
+ * chính là cơ sở đang xem lẫn hồ sơ được thêm vào cơ sở này.
+ *
+ * Trả về HÀM lọc (không trả query): query builder của supabase-js là
+ * thenable, trả nó từ hàm async sẽ bị chạy luôn.
+ */
+export async function branchProfileFilter(): Promise<<T>(query: T) => T> {
+  const id = currentId;
+  if (!id) return (query) => query;
+  const extra = await extraBranchMemberIds();
+  return <T,>(query: T): T => {
+    const q = query as unknown as { eq(c: string, v: string): T; or(f: string): T };
+    return extra.length ? q.or(`branch_id.eq.${id},id.in.(${extra.join(",")})`) : q.eq("branch_id", id);
+  };
+}
+
+/** Các chi nhánh THÊM của một hồ sơ (không gồm chi nhánh chính). */
+export async function fetchProfileExtraBranches(profileId: string): Promise<string[]> {
+  const { data, error } = await getSupabase()
+    .from("profile_branches").select("branch_id").eq("profile_id", profileId);
+  if (error) throw error;
+  return (data as { branch_id: string }[]).map((r) => r.branch_id);
+}
+
+/** Thêm / bỏ một chi nhánh phụ của hồ sơ. */
+export async function setProfileExtraBranch(profileId: string, branchId: string, on: boolean) {
+  const t = getSupabase().from("profile_branches");
+  const { error } = on
+    ? await t.upsert({ profile_id: profileId, branch_id: branchId }, { ignoreDuplicates: true })
+    : await t.delete().eq("profile_id", profileId).eq("branch_id", branchId);
+  if (error) throw error;
 }
 
 /** Sửa thông tin một chi nhánh (tên, địa chỉ, điện thoại). */
@@ -113,4 +161,18 @@ export async function moveProfileToBranch(profileId: string, branchId: string) {
     .update({ branch_id: branchId })
     .eq("id", profileId);
   if (error) throw error;
+  // Chi nhánh mới thành chi nhánh chính → không còn là chi nhánh phụ nữa
+  await getSupabase()
+    .from("profile_branches").delete().eq("profile_id", profileId).eq("branch_id", branchId);
+}
+
+/**
+ * Gộp hồ sơ trùng (0060, chỉ admin): mọi dữ liệu của `dropId` chuyển sang
+ * `keepId`, chi nhánh của hồ sơ bỏ thành chi nhánh phụ, rồi xoá hồ sơ +
+ * tài khoản đăng nhập của hồ sơ bỏ. Trả về số dòng dữ liệu đã chuyển.
+ */
+export async function mergeProfiles(keepId: string, dropId: string): Promise<number> {
+  const { data, error } = await getSupabase().rpc("merge_profiles", { p_keep: keepId, p_drop: dropId });
+  if (error) throw error;
+  return (data as number) ?? 0;
 }

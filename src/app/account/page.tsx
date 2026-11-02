@@ -33,7 +33,14 @@ export default function AccountPage() {
 
 function AccountBody() {
   const { user } = useAuth();
-  const { branch } = useBranch();
+  const { branch, branches } = useBranch();
+  // GV nhiều cơ sở không có "chi nhánh đang xem" → liệt kê mọi cơ sở của hồ sơ
+  const myBranches = branch
+    ? branch.name
+    : branches
+        .filter((b) => b.id === user?.branchId || user?.extraBranchIds?.includes(b.id))
+        .map((b) => b.name)
+        .join(", ");
   const router = useRouter();
   const [code, setCode] = useState<string | null>(null);
   const [phone, setPhone] = useState<string | null>(null);
@@ -74,7 +81,7 @@ function AccountBody() {
           <InfoRow icon={Mail} label="Email" value={user.email || "—"} />
           {code && <InfoRow icon={ShieldCheck} label="Mã đăng nhập" value={code} mono />}
           {phone && <InfoRow icon={Mail} label="Điện thoại" value={phone} />}
-          <InfoRow icon={MapPin} label="Chi nhánh" value={branch?.name ?? "—"} />
+          <InfoRow icon={MapPin} label="Chi nhánh" value={myBranches || "—"} />
         </CardContent>
       </Card>
 
