@@ -4,50 +4,75 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
-  ArrowRight,
-  BookMarked,
-  BookOpen,
-  CalendarCheck,
-  CalendarClock,
-  CalendarDays,
+  Banknote,
   CheckCircle2,
+  ChevronDown,
   Circle,
-  ClipboardX,
-  DollarSign,
-  GraduationCap,
-  Presentation,
-  Receipt,
-  School,
+  CircleCheck,
+  Clock,
+  LogOut,
+  Phone,
   Sparkles,
-  Users,
+  UserPlus,
+  UserRound,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { StatTile } from "@/components/ui/stat-tile";
+import { Card, CardContent } from "@/components/ui/card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
-import {
-  fetchDashboardStats,
-  fetchClasses,
-  formatSchedules,
-  CLASS_STATUS_LABELS,
-  LEVEL_LABELS,
-  todayISO,
-} from "@/lib/db";
+import { fetchDashboardStats, fetchPendingMakeupCount, todayISO } from "@/lib/db";
+import { fetchPendingRequestCount } from "@/lib/db-requests";
+import { fetchPendingAbsenceCount } from "@/lib/db-absence";
+import { fetchLowStockCount } from "@/lib/db-supplies";
 import { useLoad } from "@/lib/use-load";
 import { useAuth } from "@/components/auth/auth-provider";
-import { TeachingCard } from "@/components/teaching-card";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
-import { Select } from "@/components/ui/select";
 import { BranchSwitcher } from "@/components/shell/branch-switcher";
 import {
   fetchPackageBalances,
-  fetchPaymentsTotalSince,
   fetchTeachingSessions,
-  firstOfMonthISO,
   fmtVND,
   pickLog,
   type TeachingSessionRow,
 } from "@/lib/db-tuition";
+import { fetchCareRequests } from "@/lib/db-care-requests";
+import {
+  ABSENT_WARN,
+  LOG_GRACE_HOURS,
+  MISSING_WARN,
+  SCORE_WARN,
+  WINDOW_DAYS,
+  fetchDashboardData,
+  fetchLeadAlerts,
+  fetchPaymentsBetween,
+  fetchRetention,
+  fetchUpcomingGaps,
+  isUnmarked,
+} from "@/lib/db-dashboard";
+import { ACTION_ICONS, ActionItems, type ActionItem } from "@/components/dashboard/action-items";
+import { DebtCard, overdueDebts } from "@/components/dashboard/debt-card";
+import { PlanCard } from "@/components/dashboard/plan-card";
+import { RetentionCard } from "@/components/dashboard/retention-card";
+import { TeacherCard } from "@/components/dashboard/teacher-card";
+import {
+  ADMIN_LINKS,
+  AttentionCard,
+  CareCard,
+  ClassStatsCard,
+  OVERDUE_ANCHOR,
+  OverdueCard,
+  sessionHref,
+  CommentDueCard,
+} from "@/components/dashboard/sections";
+import { careRowsOf, computeDashboard, commentDueRows } from "@/lib/dashboard-calc";
+import { cn } from "@/lib/utils";
+import { EmptyRow, Pill, TD, Th, useSort } from "@/components/ui/table-kit";
+import {
+  KpiTile,
+  SCROLL_10,
+  SectionHead,
+  dmy,
+  hm,
+  weekdayOf,
+} from "@/components/dashboard/kit";
 
 /** Ngưỡng "sắp hết buổi" — dưới mức này là phải gọi phụ huynh gia hạn. */
 const LOW_SESSIONS = 6;
@@ -66,6 +91,27 @@ const QUOTES = [
   "不怕慢，就怕站 — Không sợ chậm, chỉ sợ đứng yên.",
 ];
 
+function isoOf(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Doanh thu tháng này so với CÙNG KỲ tháng trước (mùng 1 → cùng ngày), không
+ * so với cả tháng trước — giữa tháng mà so cả tháng thì tháng nào cũng "giảm".
+ */
+async function fetchRevenueCompare(): Promise<{ cur: number; prev: number }> {
+  const now = new Date();
+  const thisFrom = new Date(now.getFullYear(), now.getMonth(), 1);
+  const prevFrom = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  let prevTo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate() + 1);
+  if (prevTo > thisFrom) prevTo = thisFrom; // 31/3 → hết tháng 2 thôi
+  const [cur, prev] = await Promise.all([
+    fetchPaymentsBetween(isoOf(thisFrom), todayISO(1)),
+    fetchPaymentsBetween(isoOf(prevFrom), isoOf(prevTo)),
+  ]);
+  return { cur, prev };
+}
+
 function quoteOfToday(): string {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 0);
@@ -73,343 +119,552 @@ function quoteOfToday(): string {
   return QUOTES[day % QUOTES.length];
 }
 
+interface LowRow {
+  id: string;
+  name: string;
+  code: string | null;
+  phone: string | null;
+  className: string;
+  remaining: number;
+  debt: number;
+  /** over = hết buổi mà vẫn đang học; none = đang học mà chưa có gói nào. */
+  kind: "low" | "over" | "none";
+}
+
 export default function AdminHome() {
   const { user, can } = useAuth();
   const stats = useLoad(fetchDashboardStats);
-  const classes = useLoad(fetchClasses);
+  const dash = useLoad(fetchDashboardData);
+  const care = useLoad(() => fetchCareRequests({ openOnly: true }));
 
-  // Toàn bộ ca dạy hôm nay của mọi giáo viên — hành chính vào hỗ trợ được
+  // Ca hôm nay nạp kiểu đầy đủ để mở được hộp chấm công hộ giáo viên
   const today = todayISO();
-  const todaySessions = useLoad(() => fetchTeachingSessions(today, today), [today]);
-  const [teacherFilter, setTeacherFilter] = useState("");
+  const todaySessions = useLoad(
+    () => fetchTeachingSessions(today, today, { includeCancelled: true }),
+    [today],
+  );
+  const [teacher, setTeacher] = useState("");
+
+  // Học phí chỉ tải khi vai trò có quyền — không có quyền thì RLS trả rỗng
+  const seesMoney = can("tuition.manage");
+  const balances = useLoad(async () => (seesMoney ? fetchPackageBalances() : []), [seesMoney]);
   const [logFor, setLogFor] = useState<TeachingSessionRow | null>(null);
 
-  // Tiền chỉ tải khi vai trò có quyền học phí — kế toán/hành chính không được
-  // bật quyền thì RLS trả rỗng, hỏi làm gì cho tốn một vòng mạng.
-  const seesMoney = can("tuition.manage");
-  const balances = useLoad(
-    async () => (seesMoney ? fetchPackageBalances() : []),
-    [seesMoney],
-  );
-  const revenue = useLoad(async () => {
-    if (!seesMoney) return null;
-    const [month, year] = await Promise.all([
-      fetchPaymentsTotalSince(firstOfMonthISO()),
-      fetchPaymentsTotalSince(`${new Date().getFullYear()}-01-01`),
+  // Mỗi khối tự tải theo quyền của vai trò; không có quyền thì khỏi hỏi server
+  const canRequests = can("requests.manage");
+  const canMakeup = can("makeup.manage");
+  const canStudents = can("students.manage");
+  const canSupplies = can("supplies.manage");
+  const gaps = useLoad(fetchUpcomingGaps);
+  const pending = useLoad(async () => {
+    const [requests, absences, makeups] = await Promise.all([
+      canRequests ? fetchPendingRequestCount() : undefined,
+      canMakeup ? fetchPendingAbsenceCount() : undefined,
+      canMakeup ? fetchPendingMakeupCount() : undefined,
     ]);
-    return { month, year };
-  }, [seesMoney]);
+    return { requests, absences, makeups };
+  }, [canRequests, canMakeup]);
+  const leads = useLoad(async () => (canStudents ? fetchLeadAlerts() : null), [canStudents]);
+  const retention = useLoad(async () => (canStudents ? fetchRetention() : null), [canStudents]);
+  const lowStock = useLoad(async () => (canSupplies ? fetchLowStockCount() : null), [canSupplies]);
+  const revenue = useLoad(async () => (seesMoney ? fetchRevenueCompare() : null), [seesMoney]);
 
   const teacherOptions = useMemo(() => {
     const map = new Map<string, string>();
+    for (const c of dash.data?.classes ?? []) if (c.teacher) map.set(c.teacher.id, c.teacher.name);
+    for (const s of dash.data?.sessions ?? []) if (s.teacher) map.set(s.teacher.id, s.teacher.name);
     for (const s of todaySessions.data ?? []) if (s.teacher) map.set(s.teacher.id, s.teacher.name);
     return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1], "vi"));
-  }, [todaySessions.data]);
+  }, [dash.data, todaySessions.data]);
 
-  const sessionsToday = useMemo(
-    () =>
-      (todaySessions.data ?? []).filter((s) => !teacherFilter || s.teacher?.id === teacherFilter),
-    [todaySessions.data, teacherFilter],
+  const d = useMemo(
+    () => (dash.data ? computeDashboard(dash.data, { today, teacher }) : null),
+    [dash.data, teacher, today],
   );
-  const unloggedToday = sessionsToday.filter((s) => !pickLog(s)).length;
+
+  const commentRows = useMemo(
+    () => (d ? commentDueRows(d.sessions, today) : []),
+    [d, today],
+  );
+
+  /* Chăm sóc đang mở: phiếu Mới / Đang xử lý (lọc GV theo lớp gắn với phiếu) */
+  const careRows = useMemo(
+    () => careRowsOf(care.data ?? [], teacher && d ? d.classIds : null, today),
+    [care.data, teacher, d, today],
+  );
 
   /**
    * Số buổi còn lại tính theo HỌC VIÊN chứ không theo từng gói: một em có thể
    * đang giữ hai gói, gói cũ còn 1 buổi nhưng đã mua gói mới 20 buổi thì không
    * việc gì phải gọi điện nhắc.
    */
-  const lowStudents = useMemo(() => {
-    const byStudent = new Map<string, { name: string; remaining: number; debt: number }>();
+  const lowRows = useMemo<LowRow[]>(() => {
+    const byStudent = new Map<string, LowRow>();
     for (const b of balances.data ?? []) {
-      const cur = byStudent.get(b.student_id) ?? { name: b.student_name, remaining: 0, debt: 0 };
+      const cur = byStudent.get(b.student_id) ?? {
+        id: b.student_id,
+        name: b.student_name,
+        code: b.student_code,
+        phone: b.student_phone,
+        className: d?.classOfStudent.get(b.student_id) ?? "—",
+        remaining: 0,
+        debt: 0,
+        kind: "low",
+      };
       cur.remaining += Number(b.remaining_sessions) || 0;
       cur.debt += Number(b.debt) || 0;
       byStudent.set(b.student_id, cur);
     }
-    return [...byStudent.entries()]
-      .map(([id, v]) => ({ id, ...v }))
-      .filter((s) => s.remaining < LOW_SESSIONS)
-      .sort((a, b) => a.remaining - b.remaining);
-  }, [balances.data]);
+    for (const r of byStudent.values()) {
+      if (r.remaining <= 0 && d?.studentInfo.has(r.id)) r.kind = "over";
+    }
+    // Trung tâm có dùng gói học phí thì em đang học mà chưa có gói nào là học chùa
+    if ((balances.data?.length ?? 0) > 0) {
+      for (const [id, info] of d?.studentInfo ?? []) {
+        if (byStudent.has(id)) continue;
+        byStudent.set(id, {
+          id,
+          name: info.name,
+          code: info.code,
+          phone: null,
+          className: info.className,
+          remaining: 0,
+          debt: 0,
+          kind: "none",
+        });
+      }
+    }
+    return [...byStudent.values()].filter(
+      (s) => s.remaining < LOW_SESSIONS && (!teacher || d?.classOfStudent.has(s.id)),
+    );
+  }, [balances.data, d, teacher]);
 
-  const totalDebt = useMemo(
-    () => (balances.data ?? []).reduce((sum, b) => sum + (Number(b.debt) || 0), 0),
-    [balances.data],
+  const overLimit = lowRows.filter((r) => r.kind !== "low").length;
+  const debts = useMemo(() => {
+    const all = overdueDebts(balances.data ?? []);
+    return teacher ? all.filter((r) => d?.classOfStudent.has(r.studentId)) : all;
+  }, [balances.data, teacher, d]);
+  const debtTotal = debts.reduce((sum, r) => sum + r.debt, 0);
+
+  const unmarkedSessions = (d?.overdue ?? []).filter(isUnmarked);
+
+  const actionItems: ActionItem[] = [
+    {
+      key: "gaps",
+      label: "Buổi 7 ngày tới chưa có GV",
+      hint: "Xếp giáo viên trước khi học viên đến",
+      count: gaps.loading ? null : gaps.data?.length ?? 0,
+      href: "/admin/timetable",
+      icon: ACTION_ICONS.gaps,
+      tone: "red",
+    },
+    {
+      key: "requests",
+      label: "GV xin nghỉ / đổi buổi",
+      hint: "Đơn chờ duyệt",
+      count: !canRequests ? undefined : pending.loading ? null : pending.data?.requests ?? 0,
+      href: "/admin/requests",
+      icon: ACTION_ICONS.requests,
+      tone: "red",
+    },
+    {
+      key: "absences",
+      label: "Học viên xin nghỉ",
+      hint: "Đơn chờ duyệt",
+      count: !canMakeup ? undefined : pending.loading ? null : pending.data?.absences ?? 0,
+      href: "/admin/makeup",
+      icon: ACTION_ICONS.absences,
+      tone: "amber",
+    },
+    {
+      key: "makeup",
+      label: "Chờ xếp học bù",
+      hint: "Lượt bù chưa có buổi",
+      count: !canMakeup ? undefined : pending.loading ? null : pending.data?.makeups ?? 0,
+      href: "/admin/makeup",
+      icon: ACTION_ICONS.makeup,
+      tone: "amber",
+    },
+    {
+      key: "unmarked",
+      label: "Đã dạy chưa điểm danh",
+      hint: `Đã chấm công, ${WINDOW_DAYS} ngày qua`,
+      count: dash.loading ? null : d?.unmarked ?? 0,
+      // Một buổi → mở thẳng buổi đó để điểm danh; nhiều buổi → cuộn xuống bảng
+      // "Buổi học chưa cập nhật" (trang Điểm danh chỉ mở theo ngày hôm nay)
+      href:
+        unmarkedSessions.length === 1 ? sessionHref(unmarkedSessions[0].id) : `#${OVERDUE_ANCHOR}`,
+      icon: ACTION_ICONS.unmarked,
+      tone: "red",
+    },
+    {
+      key: "overLimit",
+      label: "Hết buổi vẫn đang học",
+      hint: "Hết gói hoặc chưa có gói",
+      count: !seesMoney ? undefined : balances.loading || dash.loading ? null : overLimit,
+      href: "/admin/tuition",
+      icon: ACTION_ICONS.overLimit,
+      tone: "red",
+    },
+    {
+      key: "leads",
+      label: "Khách mới chưa liên hệ",
+      hint: `Quá ${LOG_GRACE_HOURS} giờ chưa ai ghi chú`,
+      count: !canStudents ? undefined : leads.loading ? null : leads.data?.untouched.length ?? 0,
+      href: "/admin/leads",
+      icon: ACTION_ICONS.leads,
+      tone: "amber",
+    },
+    {
+      key: "supplies",
+      label: "Học cụ sắp hết",
+      hint: "Dưới mức tồn tối thiểu",
+      count: !canSupplies ? undefined : lowStock.loading ? null : lowStock.data ?? 0,
+      href: "/admin/supplies",
+      icon: ACTION_ICONS.supplies,
+      tone: "amber",
+    },
+  ];
+
+  const todayRows = useMemo(
+    () =>
+      (todaySessions.data ?? [])
+        .filter((s) => !teacher || s.teacher?.id === teacher)
+        .slice()
+        .sort((a, b) => a.start_time.localeCompare(b.start_time)),
+    [todaySessions.data, teacher],
   );
 
+  const lowSort = useSort(
+    lowRows,
+    {
+      name: (r) => r.name,
+      className: (r) => r.className,
+      remaining: (r) => r.remaining,
+      debt: (r) => r.debt,
+    },
+    ["remaining", 1],
+  );
   const isEmpty =
-    !stats.loading &&
-    stats.data &&
-    stats.data.students === 0 &&
-    stats.data.activeClasses === 0;
+    !stats.loading && stats.data && stats.data.students === 0 && stats.data.activeClasses === 0;
 
-  const num = (loading: boolean, v: number | undefined) => (loading ? "…" : v ?? 0);
+  const careNew = careRows.filter((r) => r.status === "new").length;
+  const careLate = careRows.filter((r) => r.overdue).length;
+  const dots = (loading: boolean) => (loading ? "…" : null);
 
   return (
-    <div className="space-y-5">
-      {/* Chi nhánh đang xem — để ngay đầu trang vì mọi con số bên dưới đều đọc
-          theo nó; giấu trong thanh trên cùng thì dễ xem nhầm số của cơ sở kia. */}
-      <Card>
-        <CardContent className="flex flex-wrap items-center gap-4 p-4 sm:p-5">
-          <div className="text-sm font-bold">Trung tâm</div>
-          <BranchSwitcher className="w-full sm:w-72" />
-        </CardContent>
+    <div className="max-w-6xl space-y-4">
+      <div>
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Bảng điều khiển</h1>
+        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+          Số liệu cập nhật ngay khi giáo viên lưu. Ngưỡng cảnh báo: nghỉ từ {ABSENT_WARN} buổi, thiếu
+          bài từ {MISSING_WARN} lần trong {WINDOW_DAYS} ngày, điểm trung bình dưới {SCORE_WARN}, chấm
+          công trong {LOG_GRACE_HOURS} giờ.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <BranchSwitcher className="w-full sm:w-56" />
+        <div className="relative w-full sm:w-56">
+          <UserRound className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-600" />
+          <select
+            aria-label="Lọc theo giáo viên"
+            value={teacher}
+            onChange={(e) => setTeacher(e.target.value)}
+            className="h-9 w-full appearance-none truncate rounded-lg border bg-card pl-8 pr-8 text-sm font-semibold shadow-sm transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="">Mọi giáo viên</option>
+            {teacherOptions.map(([id, name]) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        </div>
+      </div>
+
+      <Card className="p-4 sm:p-5">
+        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+          <Sparkles className="h-4 w-4 text-gold-600" /> Thông điệp hôm nay
+        </div>
+        <p className="mt-2 text-lg font-bold leading-snug text-gold-600 sm:text-xl">
+          &ldquo;{quoteOfToday()}&rdquo;
+        </p>
       </Card>
 
-      <Card>
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-            <Sparkles className="h-4 w-4 text-gold-600" /> Thông điệp hôm nay
-          </div>
-          <p className="mt-3 text-lg font-bold leading-snug text-gold-600 sm:text-xl">
-            &ldquo;{quoteOfToday()}&rdquo;
-          </p>
-        </CardContent>
-      </Card>
+      {isEmpty && <OnboardingChecklist hasClasses={(stats.data?.activeClasses ?? 0) > 0} />}
 
-      {isEmpty && <OnboardingChecklist hasClasses={(classes.data?.length ?? 0) > 0} />}
+      {dash.error && <ErrorNote message={dash.error} />}
 
-      <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
-        <StatTile
-          label="Học viên đang học"
-          value={num(stats.loading, stats.data?.students)}
-          icon={Users}
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiTile
+          label="Chăm sóc đang mở"
+          value={dots(care.loading) ?? careRows.length}
+          hint={care.error ? "Không tải được" : `${careNew} chưa ai nhận, ${careLate} quá hạn`}
+          icon={Phone}
+          tone="rose"
         />
-        <StatTile
-          label="Lớp đang học"
-          value={num(stats.loading, stats.data?.activeClasses)}
-          icon={School}
+        <KpiTile
+          label="Buổi học chưa cập nhật"
+          value={dots(dash.loading) ?? d?.overdue.length ?? 0}
+          hint={`Chưa chấm công quá ${LOG_GRACE_HOURS} giờ, hoặc chưa điểm danh`}
+          icon={Clock}
+          tone="red"
         />
-        <StatTile
-          label="Giáo viên"
-          value={num(stats.loading, stats.data?.teachers)}
-          icon={GraduationCap}
-        />
-        <StatTile
-          label={`< ${LOW_SESSIONS} buổi còn lại`}
-          value={seesMoney ? (balances.loading ? "…" : lowStudents.length) : "—"}
+        <KpiTile
+          label="Học viên cần chú ý"
+          value={dots(dash.loading) ?? d?.attention.length ?? 0}
+          hint="Nghỉ nhiều, kết quả yếu, thiếu bài"
           icon={AlertTriangle}
+          tone="amber"
         />
-        <StatTile
-          label="Chờ xếp học bù"
-          value={num(stats.loading, stats.data?.pendingMakeups)}
-          icon={CalendarClock}
-        />
-
-        <StatTile
-          label="Doanh thu tháng này"
-          value={seesMoney ? (revenue.loading ? "…" : fmtVND(revenue.data?.month ?? 0)) : "—"}
-          icon={DollarSign}
-          valueClassName="text-xl sm:text-2xl"
-        />
-        <StatTile
-          label="Doanh thu năm nay"
-          value={seesMoney ? (revenue.loading ? "…" : fmtVND(revenue.data?.year ?? 0)) : "—"}
-          icon={DollarSign}
-          valueClassName="text-xl sm:text-2xl"
-        />
-        <StatTile
-          label="Công nợ học phí"
-          value={seesMoney ? (balances.loading ? "…" : fmtVND(totalDebt)) : "—"}
-          icon={Receipt}
-          valueClassName="text-xl sm:text-2xl"
-        />
-        <StatTile
-          label="Ca dạy hôm nay"
-          value={todaySessions.loading ? "…" : (todaySessions.data ?? []).length}
-          icon={CalendarDays}
+        <KpiTile
+          label={`Chuyên cần ${WINDOW_DAYS} ngày`}
+          value={dots(dash.loading) ?? (d?.attendanceRate === null || !d ? "—" : `${d.attendanceRate}%`)}
+          hint={`${d?.classCount ?? 0} lớp đang học, ${d?.studentCount ?? 0} học viên`}
+          icon={CircleCheck}
           tone="brand"
         />
-        <StatTile
-          label="Chưa chấm công hôm nay"
-          value={todaySessions.loading ? "…" : unloggedToday}
-          hint={!todaySessions.loading && unloggedToday === 0 ? "Đã chấm công đủ 🎉" : undefined}
-          icon={unloggedToday > 0 ? ClipboardX : CalendarCheck}
-          tone={unloggedToday > 0 ? "gold" : "jade"}
-        />
       </section>
 
-      {seesMoney && (
-        <Card className="border-gold-200">
-          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
-            <div>
-              <CardTitle className="flex items-center gap-2 text-gold-700">
-                <AlertTriangle className="h-4 w-4" /> Cảnh báo sắp hết buổi
-              </CardTitle>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Học viên có tổng buổi còn lại ít hơn {LOW_SESSIONS}
-              </p>
-            </div>
-            <Link href="/admin/tuition" className="text-xs font-semibold text-gold-700 hover:underline">
-              Trang học phí <ArrowRight className="inline h-3 w-3" />
-            </Link>
-          </CardHeader>
-          <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-            {balances.error ? (
-              <ErrorNote message={balances.error} />
-            ) : balances.loading ? (
-              <LoadingRows rows={2} className="p-0" />
-            ) : lowStudents.length === 0 ? (
-              <div className="text-sm text-muted-foreground">Tất cả ổn 🎉</div>
-            ) : (
-              <div className="grid gap-2 sm:grid-cols-2">
-                {lowStudents.slice(0, 8).map((s) => (
-                  <Link
-                    key={s.id}
-                    href={`/admin/students/${s.id}`}
-                    className="flex items-center gap-3 rounded-lg border p-3 transition-colors hover:border-gold-300"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-semibold">{s.name}</div>
-                      {s.debt > 0 && (
-                        <div className="text-xs text-gold-700">Còn nợ {fmtVND(s.debt)}</div>
-                      )}
-                    </div>
-                    <Badge variant={s.remaining <= 0 ? "gold" : "muted"}>
-                      {s.remaining} buổi
-                    </Badge>
-                  </Link>
-                ))}
-                {lowStudents.length > 8 && (
-                  <div className="self-center text-xs text-muted-foreground">
-                    … và {lowStudents.length - 8} học viên nữa
-                  </div>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      {(seesMoney || canStudents) && (
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {seesMoney && (
+            <KpiTile
+              label="Doanh thu tháng này"
+              value={revenue.loading ? "…" : fmtVND(revenue.data?.cur ?? 0)}
+              hint={
+                revenue.data
+                  ? revenue.data.prev > 0
+                    ? `${revenue.data.cur >= revenue.data.prev ? "▲" : "▼"} ${Math.abs(
+                        Math.round(((revenue.data.cur - revenue.data.prev) / revenue.data.prev) * 100),
+                      )}% so với cùng kỳ tháng trước (${fmtVND(revenue.data.prev)})`
+                    : `Cùng kỳ tháng trước: ${fmtVND(revenue.data.prev)}`
+                  : revenue.error ?? ""
+              }
+              icon={Banknote}
+              tone="green"
+            />
+          )}
+          {seesMoney && (
+            <KpiTile
+              label="Công nợ quá hạn"
+              value={balances.loading ? "…" : fmtVND(debtTotal)}
+              hint={`${debts.length} gói chưa đóng đủ`}
+              icon={AlertTriangle}
+              tone="red"
+            />
+          )}
+          {canStudents && (
+            <KpiTile
+              label="Đăng ký mới tháng này"
+              value={leads.loading ? "…" : leads.data?.registeredThisMonth ?? 0}
+              hint="Khách tiềm năng chuyển Đã đăng ký"
+              icon={UserPlus}
+              tone="brand"
+            />
+          )}
+          {canStudents && (
+            <KpiTile
+              label="Nghỉ học tháng này"
+              value={retention.loading ? "…" : retention.data?.leftThisMonth.length ?? 0}
+              hint="Xem lý do ở khối Giữ chân học viên"
+              icon={LogOut}
+              tone="amber"
+            />
+          )}
+        </section>
       )}
 
-      <Card>
-        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
-          <CardTitle className="flex items-center gap-2">
-            <Presentation className="h-4 w-4 text-gold-600" /> Lớp học hôm nay
-            {!todaySessions.loading && (
-              <span className="text-xs font-normal text-muted-foreground">
-                {sessionsToday.length} ca
-                {unloggedToday > 0 ? ` · ${unloggedToday} chưa chấm công` : " · đã chấm công đủ ✓"}
-              </span>
-            )}
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            {teacherOptions.length > 1 && (
-              <Select
-                wrapClassName="w-full sm:w-auto"
-                value={teacherFilter}
-                onChange={(e) => setTeacherFilter(e.target.value)}
-                className="h-9 w-full text-xs sm:w-48"
-              >
-                <option value="">Tất cả giáo viên</option>
-                {teacherOptions.map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-              </Select>
-            )}
+      <ActionItems
+        items={actionItems}
+        gaps={gaps.data ?? []}
+        gapsLoading={gaps.loading}
+        gapsError={gaps.error}
+      />
+
+      {/* Lớp học hôm nay */}
+      <Card className="overflow-hidden">
+        <SectionHead
+          title="Lớp học hôm nay"
+          desc={`${weekdayOf(today)} ${dmy(today)}, theo lịch học của lớp. Bấm tình trạng để chấm công hộ giáo viên.`}
+          action={
             <Link href="/admin/timetable" className="text-xs font-semibold text-brand-600 hover:underline">
-              Thời khóa biểu <ArrowRight className="inline h-3 w-3" />
+              Thời khóa biểu →
             </Link>
+          }
+        />
+        {todaySessions.error && <ErrorNote message={todaySessions.error} />}
+        {todaySessions.loading ? (
+          <LoadingRows rows={3} />
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-sm">
+              <thead className="border-b bg-muted/30">
+                <tr>
+                  <Th>Giờ</Th>
+                  <Th>Lớp</Th>
+                  <Th>Giáo viên</Th>
+                  <Th>Tình trạng</Th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {todayRows.length === 0 ? (
+                  <EmptyRow cols={4}>
+                    {teacher ? "Giáo viên này hôm nay không có ca dạy nào." : "Hôm nay không có ca dạy nào."}
+                  </EmptyRow>
+                ) : (
+                  todayRows.map((s) => (
+                    <tr key={s.id} className="hover:bg-brand-50/40">
+                      <td className={cn(TD, "whitespace-nowrap font-semibold")}>
+                        {hm(s.start_time)} - {hm(s.end_time)}
+                      </td>
+                      <td className={TD}>
+                        {s.class ? (
+                          <Link href={`/admin/classes/${s.class.id}`} className="font-semibold text-brand-600 hover:underline">
+                            {s.class.name}
+                          </Link>
+                        ) : (
+                          <span className="font-semibold">Buổi học bù</span>
+                        )}
+                        <div className="text-xs text-muted-foreground">
+                          {s.room?.name ?? "Chưa xếp phòng"}
+                          {s.type === "makeup" && s.class ? " · Học bù" : ""}
+                        </div>
+                      </td>
+                      <td className={TD}>{s.teacher?.name ?? "—"}</td>
+                      <td className={TD}>
+                        {s.status === "cancelled" ? (
+                          <Pill tone="muted">Lớp nghỉ</Pill>
+                        ) : pickLog(s) ? (
+                          <Pill tone="green" onClick={() => setLogFor(s)}>Đã ghi</Pill>
+                        ) : (
+                          <Pill tone="amber" onClick={() => setLogFor(s)}>Chưa ghi</Pill>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
-          <p className="text-xs text-muted-foreground">
-            Bấm vào một ca để dùng đầy đủ chức năng của giáo viên: chuẩn bị bài, vào lớp dạy
-            (chiếu máy chiếu), điểm danh học viên và chấm công hộ.
-          </p>
-          {todaySessions.error && <ErrorNote message={todaySessions.error} />}
-          {todaySessions.loading ? (
-            <LoadingRows rows={3} className="p-0" />
-          ) : sessionsToday.length === 0 ? (
-            <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-              {teacherFilter
-                ? "Giáo viên này hôm nay không có ca dạy nào."
-                : "Hôm nay trung tâm không có ca dạy nào."}
-            </div>
-          ) : (
-            sessionsToday.map((s) => (
-              <TeachingCard key={s.id} session={s} showTeacher onLog={() => setLogFor(s)} />
-            ))
-          )}
-        </CardContent>
+        )}
       </Card>
 
-      <section className="grid gap-5 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
-            <CardTitle>Lớp học gần đây</CardTitle>
-            <Link href="/admin/classes" className="text-xs font-semibold text-brand-600 hover:underline">
-              Tất cả lớp <ArrowRight className="inline h-3 w-3" />
-            </Link>
-          </CardHeader>
-          {classes.error && <ErrorNote message={classes.error} />}
-          {classes.loading ? (
-            <LoadingRows rows={4} />
+      <CommentDueCard
+        rows={commentRows}
+        loading={dash.loading}
+        links={ADMIN_LINKS}
+        showTeacher={true}
+      />
+
+      <section className="grid gap-4 lg:grid-cols-2">
+        <OverdueCard rows={d?.overdue ?? []} loading={dash.loading} today={today} links={ADMIN_LINKS} />
+        <AttentionCard rows={d?.attention ?? []} loading={dash.loading} links={ADMIN_LINKS} />
+      </section>
+
+      <CareCard
+        rows={careRows}
+        loading={care.loading}
+        error={care.error}
+        links={ADMIN_LINKS}
+        careHref="/admin/care"
+      />
+
+      {/* Học phí: sắp hết buổi + công nợ quá hạn */}
+      {seesMoney && (
+        <section className="grid gap-4 lg:grid-cols-2">
+        <Card className="overflow-hidden">
+          <SectionHead
+            title="Học viên sắp hết buổi"
+            desc={`Tổng buổi còn lại dưới ${LOW_SESSIONS}, hết buổi mà vẫn đang học, hoặc đang học chưa có gói — gọi phụ huynh gia hạn.`}
+            action={
+              <Link
+                href="/admin/tuition"
+                className="rounded-full border bg-card px-3 py-1.5 text-xs font-semibold shadow-sm hover:bg-secondary"
+              >
+                Mở trang Học phí
+              </Link>
+            }
+          />
+          {balances.error && <ErrorNote message={balances.error} />}
+          {balances.loading ? (
+            <LoadingRows rows={2} />
           ) : (
-            <CardContent className="space-y-2 p-4 pt-0 sm:p-5 sm:pt-0">
-              {(classes.data ?? []).slice(0, 6).map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/admin/classes/${c.id}`}
-                  className="flex items-center gap-4 rounded-lg border bg-card p-3.5 transition-colors hover:border-brand-300"
-                >
-                  <div className="zh grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-50 text-sm font-bold text-brand-700">
-                    {c.course?.level ? LEVEL_LABELS[c.course.level] ?? c.course.level : "—"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold">{c.name}</div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {formatSchedules(c.class_schedules)}
-                      {c.teacher ? ` · GV: ${c.teacher.name}` : ""}
-                    </div>
-                  </div>
-                  <div className="text-right text-sm font-bold">
-                    {c.class_students?.[0]?.count ?? 0}
-                    <span className="block text-[10px] font-normal text-muted-foreground">học viên</span>
-                  </div>
-                  <Badge variant={c.status === "active" ? "jade" : c.status === "planned" ? "gold" : "muted"}>
-                    {CLASS_STATUS_LABELS[c.status]}
-                  </Badge>
-                </Link>
-              ))}
-              {(classes.data?.length ?? 0) === 0 && (
-                <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-                  Chưa có lớp nào. <Link href="/admin/classes" className="font-semibold text-brand-600">Tạo lớp đầu tiên →</Link>
-                </div>
-              )}
-            </CardContent>
+            <div className={SCROLL_10}>
+              <table className="w-full min-w-[520px] text-sm">
+                <thead className="sticky top-0 z-10 border-b bg-card">
+                  <tr>
+                    <Th k="name" {...lowSort}>Học viên</Th>
+                    <Th k="className" {...lowSort}>Lớp</Th>
+                    <Th k="remaining" {...lowSort} align="right">Buổi còn lại</Th>
+                    <Th k="debt" {...lowSort} align="right">Còn nợ</Th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {lowSort.sorted.length === 0 ? (
+                    <EmptyRow cols={4}>Không có học viên nào sắp hết buổi 🎉</EmptyRow>
+                  ) : (
+                    lowSort.sorted.map((r) => (
+                      <tr key={r.id} className="hover:bg-brand-50/40">
+                        <td className={TD}>
+                          <Link href={`/admin/students/${r.id}`} className="font-semibold text-brand-600 hover:underline">
+                            {r.name}
+                          </Link>
+                          <div className="text-xs text-muted-foreground">
+                            {[r.code, r.phone].filter(Boolean).join(" · ") || "—"}
+                          </div>
+                        </td>
+                        <td className={TD}>{r.className}</td>
+                        <td className={cn(TD, "whitespace-nowrap text-right")}>
+                          {r.kind === "none" ? (
+                            <Pill tone="red">Chưa có gói</Pill>
+                          ) : r.kind === "over" ? (
+                            <Pill tone="red">Hết buổi, vẫn học</Pill>
+                          ) : (
+                            <Pill tone="amber">{r.remaining} buổi</Pill>
+                          )}
+                        </td>
+                        <td className={cn(TD, "whitespace-nowrap text-right", r.debt > 0 && "font-semibold text-rose-600")}>
+                          {r.debt > 0 ? fmtVND(r.debt) : "—"}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           )}
         </Card>
+        <DebtCard rows={debts} loading={balances.loading} error={balances.error} />
+        </section>
+      )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Thao tác nhanh</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 p-4 pt-0 sm:p-5 sm:pt-0">
-            {[
-              { href: "/admin/courses", icon: BookMarked, label: "Tạo khóa học", desc: "Định nghĩa chương trình HSK, giao tiếp..." },
-              { href: "/admin/classes", icon: School, label: "Mở lớp mới", desc: "Chọn khóa, giáo viên, lịch tuần" },
-              { href: "/admin/students", icon: Users, label: "Xếp lớp học viên", desc: "Học viên đăng ký sẽ hiện ở đây" },
-              { href: "/library/textbooks", icon: BookOpen, label: "Kho học liệu", desc: "Giáo trình, bộ bài tập, ngân hàng câu hỏi" },
-            ].map((a) => (
-              <Link
-                key={a.href}
-                href={a.href}
-                className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:border-brand-300 hover:bg-brand-50/40"
-              >
-                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-secondary text-brand-700">
-                  <a.icon className="h-4 w-4" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-sm font-semibold">{a.label}</div>
-                  <div className="text-xs text-muted-foreground">{a.desc}</div>
-                </div>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
+      {/* Kế hoạch lớp + giữ chân học viên */}
+      <section className={cn("grid gap-4", canStudents && "lg:grid-cols-2")}>
+        <PlanCard
+          classes={d?.classes ?? []}
+          progress={dash.data?.progressByClass ?? {}}
+          loading={dash.loading}
+        />
+        {canStudents && (
+          <RetentionCard data={retention.data} loading={retention.loading} error={retention.error} />
+        )}
       </section>
+
+      <TeacherCard
+        sessions={d?.sessions ?? []}
+        loading={dash.loading}
+      />
+
+      <ClassStatsCard
+        rows={d?.classRows ?? []}
+        loading={dash.loading}
+        links={ADMIN_LINKS}
+        today={today}
+        emptyText={teacher ? "Giáo viên này không phụ trách lớp nào đang học." : "Chưa có lớp nào đang học."}
+      />
 
       <TeachingLogModal
         session={logFor}
@@ -418,6 +673,8 @@ export default function AdminHome() {
         onSaved={() => {
           setLogFor(null);
           todaySessions.reload();
+          dash.reload();
+          gaps.reload();
         }}
       />
     </div>

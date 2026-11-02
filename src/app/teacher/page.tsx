@@ -3,9 +3,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  AlertTriangle,
   CalendarDays,
+  CircleCheck,
   ClipboardCheck,
   Clock,
+  MessageSquareText,
   GraduationCap,
   School,
   Timer,
@@ -33,6 +36,23 @@ import {
   type TeachingSessionRow,
 } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
+import { fetchCareRequests } from "@/lib/db-care-requests";
+import {
+  LOG_GRACE_HOURS,
+  COMMENT_DAYS,
+  WINDOW_DAYS,
+  fetchDashboardData,
+} from "@/lib/db-dashboard";
+import { careRowsOf, computeDashboard, commentDueRows } from "@/lib/dashboard-calc";
+import { KpiTile } from "@/components/dashboard/kit";
+import {
+  AttentionCard,
+  CareCard,
+  ClassStatsCard,
+  OverdueCard,
+  CommentDueCard,
+  TEACHER_LINKS,
+} from "@/components/dashboard/sections";
 
 type DayTab = "yesterday" | "today" | "tomorrow";
 
@@ -72,6 +92,29 @@ export default function TeacherHome() {
     [teacherId],
   );
 
+  /*
+   * Bảng điều khiển thu gọn của GV — cùng phép tính với trang admin nhưng chỉ
+   * nạp lớp mình phụ trách + buổi mình đứng; RLS chặn thêm một lớp nữa (phiếu
+   * chăm sóc chỉ thấy của học viên mình dạy, nhận xét chỉ thấy bài mình viết).
+   * Không có tiền, khách tiềm năng hay số liệu của giáo viên khác.
+   */
+  const today = todayISO();
+  const dash = useLoad(
+    () => (teacherId ? fetchDashboardData(teacherId) : Promise.resolve(null)),
+    [teacherId],
+  );
+  const care = useLoad(() => fetchCareRequests({ openOnly: true }));
+  const d = useMemo(
+    () =>
+      dash.data ? computeDashboard(dash.data, { today, teacher: teacherId, scopeClasses: false }) : null,
+    [dash.data, today, teacherId],
+  );
+  const careRows = useMemo(() => careRowsOf(care.data ?? [], null, today), [care.data, today]);
+  const commentRows = useMemo(
+    () => (d ? commentDueRows(d.sessions, today) : []),
+    [d, today],
+  );
+
   const byDay = useMemo(() => {
     const map: Record<DayTab, TeachingSessionRow[]> = { yesterday: [], today: [], tomorrow: [] };
     for (const t of DAY_TABS) {
@@ -81,9 +124,8 @@ export default function TeacherHome() {
     return map;
   }, [sessions.data]);
 
-  const today = byDay.today;
   // Buổi báo nghỉ vẫn hiện trên thẻ (để bỏ đánh dấu) nhưng không tính ca, không đòi chấm công
-  const activeToday = today.filter((s) => s.status !== "cancelled");
+  const activeToday = byDay.today.filter((s) => s.status !== "cancelled");
   const pendingToday = activeToday.filter((s) => !pickLog(s)).length;
   const monthHours = (monthSessions.data ?? []).reduce((sum, s) => sum + payHours(s), 0);
   const totalStudents = (classes.data ?? []).reduce(
@@ -241,6 +283,77 @@ export default function TeacherHome() {
         </div>
       </section>
 
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-lg font-bold">Theo dõi lớp của tôi</h2>
+          <p className="text-sm text-muted-foreground">
+            Số liệu {WINDOW_DAYS} ngày gần nhất của các lớp bạn phụ trách và các buổi bạn đứng lớp.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <KpiTile
+            label="Buổi học chưa cập nhật"
+            value={dash.loading ? "…" : d?.overdue.length ?? 0}
+            hint={`Chưa chấm công quá ${LOG_GRACE_HOURS} giờ, hoặc chưa điểm danh`}
+            icon={Clock}
+            tone="red"
+          />
+          <KpiTile
+            label="Học viên cần chú ý"
+            value={dash.loading ? "…" : d?.attention.length ?? 0}
+            hint="Nghỉ nhiều, kết quả yếu, thiếu bài"
+            icon={AlertTriangle}
+            tone="amber"
+          />
+          <KpiTile
+            label="Học viên chưa nhận xét"
+            value={dash.loading ? "…" : commentRows.reduce((n, r) => n + r.missing.length, 0)}
+            hint={`Lượt có mặt chưa nhận xét, ${COMMENT_DAYS} ngày qua`}
+            icon={MessageSquareText}
+            tone="rose"
+          />
+          <KpiTile
+            label={`Chuyên cần ${WINDOW_DAYS} ngày`}
+            value={dash.loading ? "…" : d?.attendanceRate == null ? "—" : `${d.attendanceRate}%`}
+            hint={`${d?.classCount ?? 0} lớp, ${d?.studentCount ?? 0} học viên`}
+            icon={CircleCheck}
+            tone="brand"
+          />
+        </div>
+
+        {dash.error && <ErrorNote message={dash.error} />}
+
+        <CommentDueCard
+          rows={commentRows}
+          loading={dash.loading}
+          links={TEACHER_LINKS}
+          showTeacher={false}
+        />
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          <OverdueCard rows={d?.overdue ?? []} loading={dash.loading} today={today} links={TEACHER_LINKS} />
+          <AttentionCard rows={d?.attention ?? []} loading={dash.loading} links={TEACHER_LINKS} />
+        </div>
+
+        <CareCard
+          rows={careRows}
+          loading={care.loading}
+          error={care.error}
+          links={TEACHER_LINKS}
+          careHref={null}
+          desc="Phiếu chăm sóc đang mở của học viên bạn dạy — CSKH đang xử lý, bạn theo dõi để nắm tình hình."
+        />
+
+        <ClassStatsCard
+          rows={d?.classRows ?? []}
+          loading={dash.loading}
+          links={TEACHER_LINKS}
+          today={today}
+          emptyText="Bạn chưa phụ trách lớp nào đang học."
+        />
+      </section>
+
       <TeachingLogModal
         session={logFor}
         currentUserId={teacherId}
@@ -248,6 +361,7 @@ export default function TeacherHome() {
         onSaved={() => {
           sessions.reload();
           monthSessions.reload();
+          dash.reload();
         }}
       />
 
@@ -257,6 +371,7 @@ export default function TeacherHome() {
         onSaved={() => {
           sessions.reload();
           monthSessions.reload();
+          dash.reload();
         }}
       />
     </div>

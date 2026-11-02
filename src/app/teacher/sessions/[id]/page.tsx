@@ -99,6 +99,25 @@ export default function TeacherSessionPage() {
   const memberIds = new Set((students.data ?? []).map((s) => s.student_id));
   const makeupStudents = (makeups.data ?? []).filter((m) => !memberIds.has(m.student.id));
 
+  /*
+   * Mở từ bảng "Chưa nhận xét buổi học" ở trang chủ: `?comment=<student_id>`
+   * → bật luôn ô nhận xét cho em đó khi danh sách đã nạp xong, rồi gỡ tham số
+   * khỏi URL để tải lại trang không bật lại lần nữa.
+   */
+  const [commentTarget, setCommentTarget] = useState<string | null>(null);
+  useEffect(() => {
+    setCommentTarget(new URLSearchParams(window.location.search).get("comment"));
+  }, []);
+  useEffect(() => {
+    if (!commentTarget || students.loading || makeups.loading || comments.loading) return;
+    const member = (students.data ?? []).find((st) => st.student_id === commentTarget);
+    const makeup = (makeups.data ?? []).find((m) => m.student.id === commentTarget);
+    const name = member?.student.name ?? makeup?.student.name;
+    if (name) setCommentFor({ id: commentTarget, name });
+    setCommentTarget(null);
+    window.history.replaceState(null, "", window.location.pathname);
+  }, [commentTarget, students.loading, students.data, makeups.loading, makeups.data, comments.loading]);
+
   function setStatus(studentId: string, status: AttendanceStatus) {
     setRows((prev) => ({
       ...prev,
