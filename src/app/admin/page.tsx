@@ -2,11 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
   Banknote,
   CheckCircle2,
   ChevronDown,
+  ChevronRight,
   Circle,
   CircleCheck,
   Clock,
@@ -133,6 +135,7 @@ interface LowRow {
 
 export default function AdminHome() {
   const { user, can } = useAuth();
+  const router = useRouter();
   const stats = useLoad(fetchDashboardStats);
   const dash = useLoad(fetchDashboardData);
   const care = useLoad(() => fetchCareRequests({ openOnly: true }));
@@ -488,7 +491,7 @@ export default function AdminHome() {
       <Card className="overflow-hidden">
         <SectionHead
           title="Lớp học hôm nay"
-          desc={`${weekdayOf(today)} ${dmy(today)}, theo lịch học của lớp. Bấm tình trạng để chấm công hộ giáo viên.`}
+          desc={`${weekdayOf(today)} ${dmy(today)}, theo lịch học của lớp. Bấm vào buổi để xem chi tiết (điểm danh, nhận xét); bấm tình trạng để chấm công hộ giáo viên.`}
           action={
             <Link href="/admin/timetable" className="text-xs font-semibold text-brand-600 hover:underline">
               Thời khóa biểu →
@@ -507,20 +510,33 @@ export default function AdminHome() {
                   <Th>Lớp</Th>
                   <Th>Giáo viên</Th>
                   <Th>Tình trạng</Th>
+                  <Th align="right">Chi tiết</Th>
                 </tr>
               </thead>
               <tbody className="divide-y">
                 {todayRows.length === 0 ? (
-                  <EmptyRow cols={4}>
+                  <EmptyRow cols={5}>
                     {teacher ? "Giáo viên này hôm nay không có ca dạy nào." : "Hôm nay không có ca dạy nào."}
                   </EmptyRow>
                 ) : (
                   todayRows.map((s) => (
-                    <tr key={s.id} className="hover:bg-brand-50/40">
+                    // Bấm cả dòng là mở chi tiết buổi; link lớp / nút chấm công
+                    // trong dòng tự chặn để không mở nhầm
+                    <tr
+                      key={s.id}
+                      onClick={() => router.push(sessionHref(s.id))}
+                      className="cursor-pointer hover:bg-brand-50/40"
+                    >
                       <td className={cn(TD, "whitespace-nowrap font-semibold")}>
-                        {hm(s.start_time)} - {hm(s.end_time)}
+                        <Link
+                          href={sessionHref(s.id)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-brand-600 hover:underline"
+                        >
+                          {hm(s.start_time)} - {hm(s.end_time)}
+                        </Link>
                       </td>
-                      <td className={TD}>
+                      <td className={TD} onClick={(e) => e.stopPropagation()}>
                         {s.class ? (
                           <Link href={`/admin/classes/${s.class.id}`} className="font-semibold text-brand-600 hover:underline">
                             {s.class.name}
@@ -534,7 +550,7 @@ export default function AdminHome() {
                         </div>
                       </td>
                       <td className={TD}>{s.teacher?.name ?? "—"}</td>
-                      <td className={TD}>
+                      <td className={TD} onClick={(e) => e.stopPropagation()}>
                         {s.status === "cancelled" ? (
                           <Pill tone="muted">Lớp nghỉ</Pill>
                         ) : pickLog(s) ? (
@@ -542,6 +558,11 @@ export default function AdminHome() {
                         ) : (
                           <Pill tone="amber" onClick={() => setLogFor(s)}>Chưa ghi</Pill>
                         )}
+                      </td>
+                      <td className={cn(TD, "text-right")}>
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600">
+                          Xem buổi <ChevronRight className="h-3.5 w-3.5" />
+                        </span>
                       </td>
                     </tr>
                   ))
