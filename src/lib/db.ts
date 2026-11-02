@@ -85,6 +85,8 @@ export interface ClassRow {
   name: string;
   status: "planned" | "active" | "completed" | "cancelled";
   start_date: string | null;
+  /** Ngày khóa hiện tại bắt đầu (lớp đã lên khóa mới, 0062); null = từ đầu lớp. */
+  course_started_on: string | null;
   notes: string | null;
   course: Pick<CourseRow, "id" | "name" | "level" | "total_sessions"> | null;
   textbook: { id: string; name: string; level: string | null } | null;
@@ -250,7 +252,7 @@ export async function updateProfileRole(userId: string, role: Role) {
 /* ============ Lớp học ============ */
 
 const CLASS_SELECT = `
-  id, name, status, start_date, notes,
+  id, name, status, start_date, course_started_on, notes,
   course:courses ( id, name, level, total_sessions ),
   textbook:textbooks ( id, name, level ),
   teacher:profiles!classes_teacher_id_fkey ( id, name ),
@@ -289,6 +291,41 @@ export async function updateClassTextbook(id: string, textbookId: string | null)
   const { error } = await getSupabase()
     .from("classes").update({ textbook_id: textbookId }).eq("id", id);
   if (error) throw error;
+}
+
+/** Một khóa lớp đã học xong (ghi khi lên khóa mới, 0062). */
+export interface ClassCourseHistoryRow {
+  id: string;
+  course_id: string | null;
+  course_name: string | null;
+  started_on: string | null;
+  ended_on: string;
+  sessions: number;
+}
+
+export async function fetchClassCourseHistory(classId: string): Promise<ClassCourseHistoryRow[]> {
+  const { data, error } = await getSupabase()
+    .from("class_course_history")
+    .select("id, course_id, course_name, started_on, ended_on, sessions")
+    .eq("class_id", classId)
+    .order("ended_on");
+  if (error) throw error;
+  return data as ClassCourseHistoryRow[];
+}
+
+/**
+ * Lớp lên khóa mới từ ngày `from`: khóa cũ vào lịch sử, buổi từ ngày đó đánh
+ * lại số 1, 2, 3..., học viên đang học được ghi danh khóa mới. Trả về số buổi
+ * đã đánh lại số.
+ */
+export async function advanceClassCourse(classId: string, courseId: string, from: string): Promise<number> {
+  const { data, error } = await getSupabase().rpc("advance_class_course", {
+    p_class_id: classId,
+    p_course_id: courseId,
+    p_from: from,
+  });
+  if (error) throw error;
+  return (data ?? 0) as number;
 }
 
 /** Đổi khóa học của lớp (null = bỏ gán). */
@@ -834,9 +871,13 @@ export async function generateSessions(
 ): Promise<GenerateSessionsResult> {
   const supabase = getSupabase();
   const [clsRes, schedRes, existingRes] = await Promise.all([
-    supabase.from("classes").select("id, teacher_id, start_date").eq("id", classId).single(),
+    supabase
+      .from("classes")
+      .select("id, teacher_id, start_date, course_started_on, course:courses ( name, total_sessions )")
+      .eq("id", classId)
+      .single(),
     supabase.from("class_schedules").select("weekday, start_time, end_time, room_id, teacher_id").eq("class_id", classId),
-    supabase.from("sessions").select("date, start_time, session_no").eq("class_id", classId),
+    supabase.from("sessions").select("date, start_time, session_no, status").eq("class_id", classId),
   ]);
   if (clsRes.error) throw clsRes.error;
   if (schedRes.error) throw schedRes.error;
@@ -847,9 +888,24 @@ export async function generateSessions(
     throw new Error("Lớp chưa có lịch tuần — nhập lịch trước khi sinh buổi học.");
   }
 
-  const existing = existingRes.data ?? [];
-  const existingKeys = new Set(existing.map((s) => `${s.date}|${s.start_time.slice(0, 5)}`));
+  const existingAll = existingRes.data ?? [];
+  const existingKeys = new Set(existingAll.map((s) => `${s.date}|${s.start_time.slice(0, 5)}`));
+  // Số buổi đánh tiếp theo KHÓA HIỆN TẠI (lớp đã lên khóa mới thì đếm lại từ 1)
+  const courseFrom = (clsRes.data as { course_started_on: string | null }).course_started_on;
+  const existing = existingAll.filter((s) => !courseFrom || s.date >= courseFrom);
   let nextNo = Math.max(existing.length, ...existing.map((s) => s.session_no ?? 0), 0) + 1;
+
+  // Khóa đã đủ buổi thì không sinh thêm — phải lên khóa mới (DB cũng chặn, 0062)
+  const course = (clsRes.data as unknown as { course: { name: string; total_sessions: number | null } | null }).course;
+  if (course?.total_sessions) {
+    const left = course.total_sessions - existing.filter((s) => s.status !== "cancelled").length;
+    if (left <= 0) {
+      throw new Error(
+        `Khóa "${course.name}" đã đủ ${course.total_sessions} buổi. Bấm "Lên khóa mới" để sinh buổi cho khóa tiếp theo.`,
+      );
+    }
+    limit = limit === undefined ? left : Math.min(limit, left);
+  }
 
   // Duyệt từng ngày trong N tuần tới (từ hôm nay, lớp chưa khai giảng thì từ ngày khai giảng)
   const candidates: {

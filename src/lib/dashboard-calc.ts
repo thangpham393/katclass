@@ -26,6 +26,7 @@ import {
   type CareRequestRow,
 } from "./db-care-requests";
 import { hm, pct } from "@/components/dashboard/kit";
+import { computeClassProgress } from "./class-progress";
 
 /** Lịch tuần rút gọn: "T3, T5 · 18h00". */
 export function shortSchedule(c: Pick<DashClass, "class_schedules">): string {
@@ -196,12 +197,47 @@ export function computeDashboard(
     };
   });
 
-  const studentInfo = new Map<string, { name: string; code: string | null; className: string }>();
+  /*
+   * Học viên đang học + số buổi còn lại THEO TIẾN ĐỘ LỚP (tổng buổi khóa − đã
+   * học). Dùng cho em chưa có gói học phí trên app (học phí nhập nơi khác).
+   * Học nhiều lớp thì lấy lớp còn nhiều buổi nhất — em vẫn đang theo học.
+   */
+  const classLeft = new Map<string, number | null>();
   for (const c of classes) {
+    const p = data.progressByClass[c.id];
+    classLeft.set(
+      c.id,
+      computeClassProgress({
+        total: c.course?.total_sessions,
+        classStartDate: c.course_started_on ?? c.start_date,
+        firstDate: p?.first_date ?? null,
+        lastDate: p?.last_date ?? null,
+        done: p?.done ?? 0,
+        pastPending: p?.past_pending ?? 0,
+        upcoming: p?.upcoming ?? 0,
+        schedules: c.class_schedules,
+      }).remaining,
+    );
+  }
+  const studentInfo = new Map<
+    string,
+    { name: string; code: string | null; className: string; classLeft: number | null }
+  >();
+  for (const c of classes) {
+    const left = classLeft.get(c.id) ?? null;
     for (const cs of c.class_students) {
       if (cs.status !== "active" || !cs.student || cs.student.study_status === "left") continue;
-      if (!studentInfo.has(cs.student_id)) {
-        studentInfo.set(cs.student_id, { name: cs.student.name, code: cs.student.student_code, className: c.name });
+      const cur = studentInfo.get(cs.student_id);
+      if (!cur) {
+        studentInfo.set(cs.student_id, {
+          name: cs.student.name,
+          code: cs.student.student_code,
+          className: c.name,
+          classLeft: left,
+        });
+      } else if (left !== null && (cur.classLeft === null || left > cur.classLeft)) {
+        cur.classLeft = left;
+        cur.className = c.name;
       }
     }
   }

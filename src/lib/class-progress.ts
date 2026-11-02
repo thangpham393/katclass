@@ -90,15 +90,28 @@ export function computeClassProgress(p: ProgressInput): ClassProgress {
   };
 }
 
-/** Tiến độ từ danh sách buổi đầy đủ của lớp (trang chi tiết). */
+/**
+ * Tiến độ từ danh sách buổi đầy đủ của lớp (trang chi tiết). `courseStartedOn`
+ * (lớp đã lên khóa mới, 0062) → chỉ đếm buổi của khóa hiện tại.
+ */
 export function progressFromSessions(
   sessions: Pick<SessionRow, "date" | "status">[],
-  opts: { total: number | null | undefined; classStartDate: string | null; schedules: Pick<ScheduleRow, "weekday">[] },
+  opts: {
+    total: number | null | undefined;
+    classStartDate: string | null;
+    schedules: Pick<ScheduleRow, "weekday">[];
+    courseStartedOn?: string | null;
+  },
 ): ClassProgress {
   const today = todayISO();
-  const live = sessions.filter((s) => s.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
+  const from = opts.courseStartedOn ?? null;
+  const live = sessions
+    .filter((s) => s.status !== "cancelled" && (!from || s.date >= from))
+    .sort((a, b) => a.date.localeCompare(b.date));
   return computeClassProgress({
-    ...opts,
+    total: opts.total,
+    schedules: opts.schedules,
+    classStartDate: from ?? opts.classStartDate,
     firstDate: live[0]?.date ?? null,
     lastDate: live[live.length - 1]?.date ?? null,
     done: live.filter((s) => s.status === "completed").length,

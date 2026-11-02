@@ -50,7 +50,7 @@ export function PlanCard({
       const p = progress[c.id];
       const prog = computeClassProgress({
         total: c.course?.total_sessions,
-        classStartDate: c.start_date,
+        classStartDate: c.course_started_on ?? c.start_date,
         firstDate: p?.first_date ?? null,
         lastDate: p?.last_date ?? null,
         done: p?.done ?? 0,

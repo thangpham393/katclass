@@ -237,7 +237,7 @@ export default function AdminClassesPage() {
               const row = progress.data?.get(c.id);
               const p = computeClassProgress({
                 total: c.course?.total_sessions,
-                classStartDate: c.start_date,
+                classStartDate: c.course_started_on ?? c.start_date,
                 firstDate: row?.first_date ?? null,
                 lastDate: row?.last_date ?? null,
                 done: row?.done ?? 0,

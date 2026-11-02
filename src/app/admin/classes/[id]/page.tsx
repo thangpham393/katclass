@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CalendarClock, CalendarPlus, Check, Pencil, Plus, Sparkles, Trash2, UserMinus, X } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CalendarClock, CalendarPlus, Check, GraduationCap, Pencil, Plus, Sparkles, Trash2, UserMinus, X } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,9 @@ import {
   fetchClass,
   fetchClassStudents,
   fetchClassSessions,
+  fetchClassCourseHistory,
   fetchCourses,
+  advanceClassCourse,
   fetchProfilesByRole,
   fetchRooms,
   addStudentToClass,
@@ -48,6 +50,8 @@ import {
   type SessionRow,
   type GenerateSessionsResult,
   type RescheduleRow,
+  type ClassCourseHistoryRow,
+  type CourseRow,
 } from "@/lib/db";
 import { fmtDate, progressFromSessions } from "@/lib/class-progress";
 import { fetchTextbooks } from "@/lib/db-library";
@@ -69,6 +73,8 @@ export default function AdminClassDetailPage() {
   const sessions = useLoad(() => fetchClassSessions(classId), [classId]);
   const textbooks = useLoad(fetchTextbooks);
   const courses = useLoad(fetchCourses);
+  const courseHistory = useLoad(() => fetchClassCourseHistory(classId), [classId]);
+  const [advancing, setAdvancing] = useState(false);
   const [adding, setAdding] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -281,7 +287,9 @@ export default function AdminClassDetailPage() {
         cls={c}
         sessions={sessions.data ?? []}
         loading={sessions.loading}
+        history={courseHistory.data ?? []}
         onEditStart={() => setEditingStart(true)}
+        onAdvance={() => setAdvancing(true)}
       />
 
       <TeacherScheduleCard
@@ -304,7 +312,23 @@ export default function AdminClassDetailPage() {
         loading={sessions.loading}
         onChanged={sessions.reload}
         onReschedule={() => setRescheduling(true)}
+        onAdvance={() => setAdvancing(true)}
       />
+
+      {advancing && (
+        <AdvanceCourseModal
+          cls={c}
+          sessions={sessions.data ?? []}
+          courses={courses.data ?? []}
+          onClose={() => setAdvancing(false)}
+          onApplied={() => {
+            setAdvancing(false);
+            cls.reload();
+            sessions.reload();
+            courseHistory.reload();
+          }}
+        />
+      )}
 
       {rescheduling && (
         <RescheduleModal
@@ -763,12 +787,16 @@ function ClassProgressCard({
   cls,
   sessions,
   loading,
+  history,
   onEditStart,
+  onAdvance,
 }: {
   cls: ClassRow;
   sessions: SessionRow[];
   loading: boolean;
+  history: ClassCourseHistoryRow[];
   onEditStart: () => void;
+  onAdvance: () => void;
 }) {
   const p = useMemo(
     () =>
@@ -776,6 +804,7 @@ function ClassProgressCard({
         total: cls.course?.total_sessions,
         classStartDate: cls.start_date,
         schedules: cls.class_schedules,
+        courseStartedOn: cls.course_started_on,
       }),
     [sessions, cls],
   );
@@ -783,20 +812,23 @@ function ClassProgressCard({
 
   const items: { label: string; value: React.ReactNode; hint?: React.ReactNode }[] = [
     {
-      label: "Ngày bắt đầu",
+      label: cls.course_started_on ? "Bắt đầu khóa" : "Ngày bắt đầu",
       value: (
         <span className="inline-flex items-center gap-1.5">
           {fmtDate(p.startDate)}
-          <button
+          {/* Sửa ngày khai giảng chỉ có nghĩa ở khóa đầu tiên của lớp */}
+          {!cls.course_started_on && <button
             onClick={onEditStart}
             className="grid h-7 w-7 place-items-center rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
             title="Sửa ngày bắt đầu"
           >
             <Pencil className="h-3.5 w-3.5" />
-          </button>
+          </button>}
         </span>
       ),
-      hint: sessions.some((s) => s.status !== "cancelled") ? "Buổi đầu tiên" : "Theo ngày khai giảng",
+      hint: cls.course_started_on
+        ? `Buổi 1 của ${cls.course?.name ?? "khóa hiện tại"}`
+        : sessions.some((s) => s.status !== "cancelled") ? "Buổi đầu tiên" : "Theo ngày khai giảng",
     },
     {
       label: p.endProjected ? "Kết thúc dự kiến" : "Ngày kết thúc",
@@ -828,9 +860,32 @@ function ClassProgressCard({
     },
   ];
 
+  const full = !!p.total && p.learned + p.upcoming >= p.total;
+
   return (
     <Card>
       <CardContent className="space-y-4 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <GraduationCap className="h-4 w-4 text-brand-600" />
+            <span className="text-muted-foreground">Khóa hiện tại:</span>
+            <b>{cls.course?.name ?? "Chưa gán khóa"}</b>
+            {cls.course?.total_sessions ? (
+              <span className="text-muted-foreground">({cls.course.total_sessions} buổi)</span>
+            ) : null}
+            {history.length > 0 && (
+              <span className="text-xs text-muted-foreground">
+                · Đã học:{" "}
+                {history
+                  .map((h) => `${h.course_name ?? "Khóa cũ"} (${fmtDate(h.started_on)}–${fmtDate(h.ended_on)}, ${h.sessions} buổi)`)
+                  .join(" → ")}
+              </span>
+            )}
+          </div>
+          <Button size="sm" variant={full ? "default" : "outline"} onClick={onAdvance}>
+            <GraduationCap className="h-3.5 w-3.5" /> Lên khóa mới
+          </Button>
+        </div>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {items.map((it) => (
             <div key={it.label}>
@@ -854,12 +909,14 @@ function SessionsCard({
   loading,
   onChanged,
   onReschedule,
+  onAdvance,
 }: {
   cls: ClassRow;
   sessions: SessionRow[];
   loading: boolean;
   onChanged: () => void;
   onReschedule: () => void;
+  onAdvance: () => void;
 }) {
   const [weeks, setWeeks] = useState(4);
   const [generating, setGenerating] = useState(false);
@@ -880,9 +937,12 @@ function SessionsCard({
         total: cls.course?.total_sessions,
         classStartDate: cls.start_date,
         schedules: cls.class_schedules,
+        courseStartedOn: cls.course_started_on,
       }),
     [sessions, cls],
   );
+  // Khóa hiện tại đã sinh đủ số buổi → không cho sinh thêm, phải lên khóa mới
+  const courseFull = !!progress.total && progress.learned + progress.upcoming >= progress.total;
 
   // Danh sách thay đổi (reload / đổi bộ lọc) thì bỏ chọn buổi không còn hiện
   useEffect(() => {
@@ -959,7 +1019,7 @@ function SessionsCard({
             onChange={(e) => setWeeks(Math.max(1, Math.min(26, Number(e.target.value) || 1)))}
           />
           <span className="text-sm text-muted-foreground">tuần tới</span>
-          <Button size="sm" disabled={generating} onClick={() => handleGenerate()}>
+          <Button size="sm" disabled={generating || courseFull} onClick={() => handleGenerate()}>
             <CalendarPlus className="h-3.5 w-3.5" />
             {generating ? "Đang sinh..." : "Sinh buổi học"}
           </Button>
@@ -974,6 +1034,17 @@ function SessionsCard({
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+        {courseFull && (
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
+            <span>
+              Khóa <b>{cls.course?.name}</b> đã sinh đủ {progress.total} buổi — không sinh thêm buổi được nữa.
+              Học viên học tiếp thì bấm <b>Lên khóa mới</b> để chọn khóa tiếp theo rồi sinh buổi.
+            </span>
+            <Button size="sm" onClick={onAdvance}>
+              <GraduationCap className="h-3.5 w-3.5" /> Lên khóa mới
+            </Button>
+          </div>
+        )}
         {error && <ErrorNote message={error} />}
         {notice && (
           <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
@@ -1063,6 +1134,117 @@ function SessionsCard({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/* ================= Lên khóa mới ================= */
+
+/**
+ * Chọn khóa tiếp theo + buổi bắt đầu khóa đó. Mặc định là buổi ngay sau buổi
+ * thứ N (N = số buổi khóa hiện tại); chưa học quá khóa thì là buổi sắp tới.
+ */
+function AdvanceCourseModal({
+  cls,
+  sessions,
+  courses,
+  onClose,
+  onApplied,
+}: {
+  cls: ClassRow;
+  sessions: SessionRow[];
+  courses: CourseRow[];
+  onClose: () => void;
+  onApplied: () => void;
+}) {
+  const from = cls.course_started_on;
+  const live = useMemo(
+    () =>
+      sessions
+        .filter((s) => s.status !== "cancelled" && (!from || s.date >= from))
+        .sort((a, b) => (a.date + a.start_time).localeCompare(b.date + b.start_time)),
+    [sessions, from],
+  );
+  const total = cls.course?.total_sessions ?? 0;
+  const defaultFrom = useMemo(() => {
+    if (total && live.length > total) return live[total].date;
+    const next = sessions
+      .filter((s) => s.status === "scheduled" && s.date >= todayISO())
+      .sort((a, b) => a.date.localeCompare(b.date))[0];
+    return next?.date ?? todayISO();
+  }, [live, total, sessions]);
+
+  const [courseId, setCourseId] = useState("");
+  const [start, setStart] = useState(defaultFrom);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const moved = sessions.filter((s) => s.date >= start);
+  const firstMoved = moved.sort((a, b) => (a.date + a.start_time).localeCompare(b.date + b.start_time))[0];
+  const oldCount = live.filter((s) => s.date < start).length;
+
+  async function handleApply() {
+    if (!courseId) return setError("Chọn khóa tiếp theo.");
+    setSaving(true);
+    setError(null);
+    try {
+      await advanceClassCourse(cls.id, courseId, start);
+      onApplied();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+      setSaving(false);
+    }
+  }
+
+  return (
+    <Modal open onClose={onClose} title={`Lên khóa mới — ${cls.name}`}>
+      <div className="space-y-4">
+        {error && <ErrorNote message={error} />}
+        <p className="text-sm text-muted-foreground">
+          Khóa <b className="text-foreground">{cls.course?.name ?? "hiện tại"}</b> sẽ được lưu vào lịch sử lớp.
+          Từ ngày chọn dưới đây, tiến độ chỉ đếm buổi của khóa mới, số buổi đánh lại từ 1, học viên đang học được
+          ghi danh khóa mới. Học viên, giáo viên, ảnh và lịch tuần giữ nguyên.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Khóa tiếp theo" required>
+            <Select value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+              <option value="">— Chọn khóa —</option>
+              {courses
+                .filter((c) => c.id !== cls.course?.id)
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} ({c.total_sessions} buổi)
+                  </option>
+                ))}
+            </Select>
+          </Field>
+          <Field label="Khóa mới bắt đầu từ ngày" required>
+            <Input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+          </Field>
+        </div>
+        <div className="rounded-lg bg-muted px-3 py-2 text-sm">
+          <div>
+            Khóa cũ kết thúc với <b>{oldCount}</b> buổi
+            {total ? <span className="text-muted-foreground"> (khóa ghi {total} buổi)</span> : null}.
+          </div>
+          <div>
+            {firstMoved ? (
+              <>
+                <b>{moved.length}</b> buổi từ {fmtDate(firstMoved.date)} trở đi chuyển sang khóa mới (thành Buổi 1
+                {moved.length > 1 ? `–${moved.length}` : ""}).
+              </>
+            ) : (
+              "Chưa có buổi nào từ ngày này — sau khi lên khóa, bấm Sinh buổi học để xếp lịch khóa mới."
+            )}
+          </div>
+        </div>
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" onClick={onClose}>Hủy</Button>
+          <Button onClick={handleApply} disabled={saving || !courseId}>
+            <GraduationCap className="h-4 w-4" /> {saving ? "Đang lưu..." : "Lên khóa mới"}
+          </Button>
+        </div>
+      </div>
+    </Modal>
   );
 }
 

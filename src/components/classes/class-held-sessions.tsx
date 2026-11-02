@@ -9,7 +9,7 @@ import { EmptyRow, Pill, TD, Th, useSort } from "@/components/ui/table-kit";
 import { SCROLL_10, SectionHead, dmy, hm, pct, weekdayOf } from "@/components/dashboard/kit";
 import { sessionHref } from "@/components/dashboard/sections";
 import { cn } from "@/lib/utils";
-import { todayISO } from "@/lib/db";
+import { fetchClass, fetchClassCourseHistory, todayISO } from "@/lib/db";
 import { downloadCSV } from "@/lib/db-finance";
 import { fetchClassHeldSessions, type HeldSessionRow } from "@/lib/db-dashboard";
 import { useLoad } from "@/lib/use-load";
@@ -63,6 +63,17 @@ function toRow(s: HeldSessionRow): Row {
 export function ClassHeldSessions({ classId }: { classId: string }) {
   const today = todayISO();
   const list = useLoad(() => fetchClassHeldSessions(classId), [classId]);
+  // Lớp đã lên khóa mới (0062): số buổi đánh lại theo từng khóa → ghi kèm tên khóa
+  const timeline = useLoad(async () => {
+    const [cls, history] = await Promise.all([fetchClass(classId), fetchClassCourseHistory(classId)]);
+    return { from: cls?.course_started_on ?? null, current: cls?.course?.name ?? null, history };
+  }, [classId]);
+  const courseOf = (date: string): string | null => {
+    const t = timeline.data;
+    if (!t || !t.history.length) return null;
+    if (!t.from || date >= t.from) return t.current;
+    return t.history.find((h) => (!h.started_on || date >= h.started_on) && date <= h.ended_on)?.course_name ?? null;
+  };
   const rows = useMemo(() => (list.data ?? []).map(toRow), [list.data]);
 
   const sort = useSort(
@@ -84,8 +95,9 @@ export function ClassHeldSessions({ classId }: { classId: string }) {
   const exportCSV = () =>
     downloadCSV(
       `buoi-da-hoc-${today}.csv`,
-      ["Buổi", "Ngày", "Giờ", "Giáo viên", "Phòng", "Tình trạng", "Có mặt", "Vắng", "Nhận xét", "Nội dung bài"],
+      ["Khóa", "Buổi", "Ngày", "Giờ", "Giáo viên", "Phòng", "Tình trạng", "Có mặt", "Vắng", "Nhận xét", "Nội dung bài"],
       sort.sorted.map((r) => [
+        courseOf(r.date) ?? "",
         r.no ?? "",
         dmy(r.date),
         `${hm(r.start)} - ${hm(r.end)}`,
@@ -154,6 +166,9 @@ export function ClassHeldSessions({ classId }: { classId: string }) {
                           {weekdayOf(r.date)} · {hm(r.start)} - {hm(r.end)}
                           {r.room ? ` · P.${r.room}` : ""}
                         </div>
+                        {courseOf(r.date) && (
+                          <div className="text-[11px] font-semibold text-brand-700">{courseOf(r.date)}</div>
+                        )}
                       </td>
                       <td className={TD}>{r.teacher}</td>
                       <td className={TD}>

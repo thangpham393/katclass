@@ -42,6 +42,7 @@ export interface DashClass {
   id: string;
   name: string;
   start_date: string | null;
+  course_started_on: string | null;
   course: { total_sessions: number | null } | null;
   teacher: { id: string; name: string } | null;
   class_schedules: Pick<ScheduleRow, "weekday" | "start_time" | "end_time">[];
@@ -172,7 +173,7 @@ export async function fetchDashboardData(teacherId?: string): Promise<DashboardD
       supabase
         .from("classes")
         .select(`
-          id, name, start_date,
+          id, name, start_date, course_started_on,
           course:courses ( total_sessions ),
           teacher:profiles!classes_teacher_id_fkey ( id, name ),
           class_schedules ( weekday, start_time, end_time ),
