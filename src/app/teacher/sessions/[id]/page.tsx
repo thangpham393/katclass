@@ -34,6 +34,7 @@ import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { fetchTeachingLog, sessionHours } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
+import { ClassLessonLog } from "@/components/classes/class-lesson-log";
 
 const STATUS_ORDER: AttendanceStatus[] = ["present", "absent_excused", "absent_unexcused", "makeup"];
 
@@ -239,6 +240,10 @@ export default function TeacherSessionPage() {
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
           {notice}
         </div>
+      )}
+
+      {s.class && (
+        <ClassLessonLog classId={s.class.id} before={s.date} title="Các buổi trước đã dạy" pageSize={3} />
       )}
 
       <Card>

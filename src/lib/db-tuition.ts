@@ -320,6 +320,42 @@ export async function fetchTeachingSessions(
   return data as unknown as TeachingSessionRow[];
 }
 
+/** Một buổi đã chấm công của lớp kèm nội dung GV đã ghi. */
+export interface LessonLogRow {
+  id: string;
+  date: string;
+  start_time: string;
+  session_no: number | null;
+  teacher: { id: string; name: string } | null;
+  teaching_log: { lesson_content: string | null; note: string | null }
+    | { lesson_content: string | null; note: string | null }[];
+}
+
+/**
+ * Nội dung đã dạy của lớp, mới nhất trước — để GV dạy thay / hành chính nắm
+ * lớp đã học tới đâu. `before` → chỉ lấy buổi trước ngày đó (trang điểm danh).
+ */
+export async function fetchClassLessonLog(
+  classId: string,
+  opts: { before?: string; limit?: number } = {},
+): Promise<LessonLogRow[]> {
+  let q = getSupabase()
+    .from("sessions")
+    .select(`
+      id, date, start_time, session_no,
+      teacher:profiles!sessions_teacher_id_fkey ( id, name ),
+      teaching_log:teaching_logs!inner ( lesson_content, note )
+    `)
+    .eq("class_id", classId);
+  if (opts.before) q = q.lt("date", opts.before);
+  const { data, error } = await q
+    .order("date", { ascending: false })
+    .order("start_time", { ascending: false })
+    .limit(opts.limit ?? 200);
+  if (error) throw error;
+  return data as unknown as LessonLogRow[];
+}
+
 /** Bản ghi công của một buổi (trang chi tiết buổi dạy). */
 export async function fetchTeachingLog(sessionId: string): Promise<TeachingLogRow | null> {
   const { data, error } = await getSupabase()

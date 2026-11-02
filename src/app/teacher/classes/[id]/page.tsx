@@ -23,6 +23,7 @@ import { fetchParticipation } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
+import { ClassLessonLog } from "@/components/classes/class-lesson-log";
 import type { ClassPhoto } from "@/lib/db-class-photos";
 
 export default function TeacherClassDetailPage() {
@@ -131,6 +132,8 @@ export default function TeacherClassDetailPage() {
               )}
             </CardContent>
           </Card>
+
+          <ClassLessonLog classId={classId} />
 
           <Card>
             <CardHeader>

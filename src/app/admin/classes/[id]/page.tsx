@@ -54,6 +54,7 @@ import { fetchTextbooks } from "@/lib/db-library";
 import { parseScheduleFromName } from "@/lib/parse-schedule";
 import { useLoad } from "@/lib/use-load";
 import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
+import { ClassLessonLog } from "@/components/classes/class-lesson-log";
 import type { ClassPhoto } from "@/lib/db-class-photos";
 
 export default function AdminClassDetailPage() {
@@ -291,6 +292,8 @@ export default function AdminClassDetailPage() {
           if ((sessions.data ?? []).some((s) => s.status === "scheduled" && s.date >= today)) setRescheduling(true);
         }}
       />
+
+      <ClassLessonLog classId={classId} />
 
       <SessionsCard
         cls={c}
