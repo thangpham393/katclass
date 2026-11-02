@@ -34,7 +34,7 @@ export interface DashSession {
   room: { name: string } | null;
   teaching_log: { id: string; checked_in_at: string } | { id: string; checked_in_at: string }[] | null;
   attendance: { student_id: string; status: AttendanceStatus; student: { name: string } | null }[];
-  /** Nhận xét từng buổi đã viết (RLS: GV chỉ thấy nhận xét mình viết). */
+  /** Nhận xét từng buổi đã viết (mọi người viết — 0063 cho GV đọc cả của admin / GV khác). */
   session_comments: { student_id: string }[];
 }
 

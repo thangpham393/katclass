@@ -1097,15 +1097,17 @@ export interface SessionCommentRow {
   teacher_id: string;
   content: string;
   rating: number | null;
+  /** Người viết (admin, GV lớp hoặc GV dạy thay) — hiện trong ô nhận xét. */
+  author: { id: string; name: string } | null;
 }
 
 export async function fetchSessionComments(sessionId: string): Promise<SessionCommentRow[]> {
   const { data, error } = await getSupabase()
     .from("session_comments")
-    .select("id, session_id, student_id, teacher_id, content, rating")
+    .select("id, session_id, student_id, teacher_id, content, rating, author:profiles!session_comments_teacher_id_fkey ( id, name )")
     .eq("session_id", sessionId);
   if (error) throw error;
-  return data as SessionCommentRow[];
+  return data as unknown as SessionCommentRow[];
 }
 
 export async function upsertSessionComment(input: {

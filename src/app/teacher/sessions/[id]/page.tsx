@@ -490,6 +490,12 @@ function CommentModal({
     <Modal open onClose={onClose} title={`Nhận xét — ${student.name}`}>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && <ErrorNote message={error} />}
+        {existing?.author && existing.author.id !== teacherId && (
+          <p className="rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
+            Nhận xét của <b className="text-foreground">{existing.author.name}</b>. Sửa và lưu thì nhận xét
+            chuyển sang tên bạn.
+          </p>
+        )}
         <div>
           <span className="text-sm font-medium">Đánh giá buổi học</span>
           <div className="mt-1.5 flex gap-1">

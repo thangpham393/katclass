@@ -57,8 +57,7 @@ function toRow(s: HeldSessionRow): Row {
 /**
  * CÁC BUỔI ĐÃ HỌC của lớp (tới hôm nay, mới nhất trước): ai dạy, đã chấm
  * công / điểm danh / nhận xét chưa, nội dung bài — bấm ngày để mở buổi.
- * Dùng chung trang chi tiết lớp của hành chính và giáo viên; RLS tự giới
- * hạn phần nhận xét giáo viên được đọc.
+ * Dùng chung trang chi tiết lớp của hành chính và giáo viên.
  */
 export function ClassHeldSessions({ classId }: { classId: string }) {
   const today = todayISO();
