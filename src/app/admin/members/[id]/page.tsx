@@ -46,6 +46,7 @@ import { Select, Field } from "@/components/ui/select";
 import { dbErrorMessage, updateProfileRole } from "@/lib/db";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
+import { fetchStudentPhotoUrls } from "@/lib/db-class-photos";
 import { pct } from "@/lib/utils";
 import type { Role } from "@/lib/types";
 
@@ -86,6 +87,11 @@ export default function AdminMemberDetailPage() {
   const profileId = params.id;
 
   const profile = useLoad(() => fetchProfile(profileId), [profileId]);
+  // Ảnh cắt trong lớp (mới nhất) ưu tiên hơn ảnh hồ sơ; lỗi thì dùng ảnh hồ sơ
+  const photo = useLoad(
+    () => fetchStudentPhotoUrls([profileId]).catch(() => new Map<string, string>()),
+    [profileId],
+  );
   const p = profile.data;
 
   const studentClasses = useLoad(
@@ -233,7 +239,7 @@ export default function AdminMemberDetailPage() {
       </Link>
 
       <div className="flex flex-wrap items-center gap-4">
-        <Avatar name={p.name} src={p.avatar ?? undefined} size={64} />
+        <Avatar name={p.name} src={photo.data?.get(p.id) ?? p.avatar ?? undefined} size={64} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-extrabold tracking-tight">{p.name}</h1>

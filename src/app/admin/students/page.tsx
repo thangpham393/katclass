@@ -57,6 +57,7 @@ import { LEAVE_REASONS, LEAVE_REASON_LABELS } from "@/lib/db-alumni";
 import { fmtVND } from "@/lib/db-tuition";
 import { DEFAULT_LOGIN_PASSWORD } from "@/lib/student-login";
 import { useLoad } from "@/lib/use-load";
+import { fetchStudentPhotoUrls } from "@/lib/db-class-photos";
 
 /* ================= Bộ lọc ================= */
 
@@ -179,6 +180,10 @@ function ownersOf(s: StudentListRow): string[] {
 
 export default function AdminStudentsPage() {
   const { data: students, loading, error, reload } = useLoad(fetchStudentList);
+  // Ảnh cắt trong lớp được ưu tiên hơn ảnh hồ sơ (là ảnh mới nhất GV/hành
+  // chính chủ động cập nhật); lỗi tải ảnh thì im lặng dùng ảnh hồ sơ.
+  const photos = useLoad(() => fetchStudentPhotoUrls().catch(() => new Map<string, string>()));
+  const photoOf = (s: { id: string; avatar: string | null }) => photos.data?.get(s.id) ?? s.avatar ?? undefined;
   const [q, setQ] = useState("");
   const [phoneQ, setPhoneQ] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
@@ -433,7 +438,7 @@ export default function AdminStudentsPage() {
                   <tr key={s.id} className="transition-colors hover:bg-brand-50/40">
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-3">
-                        <Avatar name={s.name} src={s.avatar ?? undefined} size={34} />
+                        <Avatar name={s.name} src={photoOf(s)} size={34} />
                         <div className="min-w-0">
                           <Link
                             href={`/admin/members/${s.id}`}
@@ -481,7 +486,7 @@ export default function AdminStudentsPage() {
             {filtered.map((s) => (
               <div key={s.id} className="p-4">
                 <div className="flex items-start gap-3">
-                  <Avatar name={s.name} src={s.avatar ?? undefined} size={38} />
+                  <Avatar name={s.name} src={photoOf(s)} size={38} />
                   <div className="min-w-0 flex-1">
                     <Link href={`/admin/members/${s.id}`} className="block truncate font-semibold">
                       {s.name}

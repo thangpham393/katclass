@@ -46,3 +46,34 @@ export async function saveClassPhotos(classId: string, drafts: Record<string, Bl
     throw error;
   }
 }
+
+/**
+ * Ảnh chân dung mới nhất của từng học viên, lấy từ ảnh đã cắt trong các lớp
+ * (class_photos) — để danh sách Học viên / hồ sơ hiện đúng ảnh vừa cập nhật
+ * trong lớp, kể cả khi hồ sơ chưa có ảnh đại diện. RLS chỉ trả ảnh của lớp
+ * người xem được quản lý ảnh; không có ảnh nào thì trả map rỗng.
+ */
+export async function fetchStudentPhotoUrls(studentIds?: string[]): Promise<Map<string, string>> {
+  const sb = getSupabase();
+  let q = sb.from("class_photos").select("photo_key, path, updated_at").neq("photo_key", "group");
+  if (studentIds) {
+    if (!studentIds.length) return new Map();
+    q = q.in("photo_key", studentIds);
+  }
+  const { data, error } = await q.order("updated_at", { ascending: false }).limit(5000);
+  if (error) throw error;
+  const latest = new Map<string, string>();
+  for (const p of data as { photo_key: string; path: string }[]) {
+    if (!latest.has(p.photo_key)) latest.set(p.photo_key, p.path);
+  }
+  if (!latest.size) return new Map();
+  const keys = [...latest.keys()];
+  const signed = await sb.storage.from(BUCKET).createSignedUrls(keys.map((k) => latest.get(k)!), 21600);
+  if (signed.error) throw signed.error;
+  const urls = new Map<string, string>();
+  keys.forEach((k, i) => {
+    const url = signed.data[i]?.signedUrl;
+    if (url) urls.set(k, url);
+  });
+  return urls;
+}

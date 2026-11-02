@@ -11,6 +11,7 @@ import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLoad } from "@/lib/use-load";
 import { fetchTeacherStudents, type TeacherStudentRow } from "@/lib/db";
+import { fetchStudentPhotoUrls } from "@/lib/db-class-photos";
 
 export default function TeacherStudentsPage() {
   const { user } = useAuth();
@@ -20,6 +21,8 @@ export default function TeacherStudentsPage() {
     [teacherId],
   );
   const [q, setQ] = useState("");
+  // Ảnh cắt trong lớp ưu tiên hơn ảnh hồ sơ; lỗi thì dùng ảnh hồ sơ
+  const photos = useLoad(() => fetchStudentPhotoUrls().catch(() => new Map<string, string>()));
 
   // Gom theo học viên (một em có thể học nhiều lớp của cùng giáo viên)
   const students = useMemo(() => {
@@ -81,7 +84,7 @@ export default function TeacherStudentsPage() {
           <div className="divide-y">
             {students.map(({ student, classes }) => (
               <div key={student.id} className="flex items-center gap-3 px-5 py-3 hover:bg-muted/20">
-                <Avatar name={student.name} src={student.avatar ?? undefined} size={38} />
+                <Avatar name={student.name} src={photos.data?.get(student.id) ?? student.avatar ?? undefined} size={38} />
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold">{student.name}</div>
                   <div className="truncate text-xs text-muted-foreground">
