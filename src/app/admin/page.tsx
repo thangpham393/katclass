@@ -78,6 +78,11 @@ import {
 
 /** Ngưỡng "sắp hết buổi" — dưới mức này là phải gọi phụ huynh gia hạn. */
 const LOW_SESSIONS = 6;
+/**
+ * Em chưa có gói trên app (học phí đang nhập nơi khác): báo khi lớp còn dưới
+ * chừng này buổi theo tiến độ khóa — để kịp chốt tái phí cho khóa sau.
+ */
+const LOW_PROGRESS_SESSIONS = 3;
 
 /**
  * Câu nói trong ngày. Chọn theo số thứ tự ngày trong năm nên cả trung tâm cùng
@@ -129,8 +134,11 @@ interface LowRow {
   className: string;
   remaining: number;
   debt: number;
-  /** over = hết buổi mà vẫn đang học; none = đang học mà chưa có gói nào. */
-  kind: "low" | "over" | "none";
+  /**
+   * low/over = tính theo gói học phí (sắp hết / hết mà vẫn học);
+   * progress = chưa có gói trên app → số buổi còn lại theo tiến độ lớp.
+   */
+  kind: "low" | "over" | "progress";
 }
 
 export default function AdminHome() {
@@ -221,28 +229,28 @@ export default function AdminHome() {
     for (const r of byStudent.values()) {
       if (r.remaining <= 0 && d?.studentInfo.has(r.id)) r.kind = "over";
     }
-    // Trung tâm có dùng gói học phí thì em đang học mà chưa có gói nào là học chùa
-    if ((balances.data?.length ?? 0) > 0) {
-      for (const [id, info] of d?.studentInfo ?? []) {
-        if (byStudent.has(id)) continue;
-        byStudent.set(id, {
-          id,
-          name: info.name,
-          code: info.code,
-          phone: null,
-          className: info.className,
-          remaining: 0,
-          debt: 0,
-          kind: "none",
-        });
-      }
+    // Chưa có gói trên app → nhìn số buổi còn lại theo tiến độ lớp
+    for (const [id, info] of d?.studentInfo ?? []) {
+      if (byStudent.has(id) || info.classLeft === null) continue;
+      byStudent.set(id, {
+        id,
+        name: info.name,
+        code: info.code,
+        phone: null,
+        className: info.className,
+        remaining: info.classLeft,
+        debt: 0,
+        kind: "progress",
+      });
     }
     return [...byStudent.values()].filter(
-      (s) => s.remaining < LOW_SESSIONS && (!teacher || d?.classOfStudent.has(s.id)),
+      (s) =>
+        s.remaining < (s.kind === "progress" ? LOW_PROGRESS_SESSIONS : LOW_SESSIONS) &&
+        (!teacher || d?.classOfStudent.has(s.id)),
     );
   }, [balances.data, d, teacher]);
 
-  const overLimit = lowRows.filter((r) => r.kind !== "low").length;
+  const overLimit = lowRows.filter((r) => r.kind === "over").length;
   const debts = useMemo(() => {
     const all = overdueDebts(balances.data ?? []);
     return teacher ? all.filter((r) => d?.classOfStudent.has(r.studentId)) : all;
@@ -303,7 +311,7 @@ export default function AdminHome() {
     {
       key: "overLimit",
       label: "Hết buổi vẫn đang học",
-      hint: "Hết gói hoặc chưa có gói",
+      hint: "Gói học phí đã hết buổi",
       count: !seesMoney ? undefined : balances.loading || dash.loading ? null : overLimit,
       href: "/admin/tuition",
       icon: ACTION_ICONS.overLimit,
@@ -599,7 +607,7 @@ export default function AdminHome() {
         <Card className="overflow-hidden">
           <SectionHead
             title="Học viên sắp hết buổi"
-            desc={`Tổng buổi còn lại dưới ${LOW_SESSIONS}, hết buổi mà vẫn đang học, hoặc đang học chưa có gói — gọi phụ huynh gia hạn.`}
+            desc={`Có gói học phí: còn dưới ${LOW_SESSIONS} buổi hoặc đã hết mà vẫn học. Chưa có gói trên app: lớp còn dưới ${LOW_PROGRESS_SESSIONS} buổi theo tiến độ khóa. Gọi phụ huynh gia hạn.`}
             action={
               <Link
                 href="/admin/tuition"
@@ -639,8 +647,13 @@ export default function AdminHome() {
                         </td>
                         <td className={TD}>{r.className}</td>
                         <td className={cn(TD, "whitespace-nowrap text-right")}>
-                          {r.kind === "none" ? (
-                            <Pill tone="red">Chưa có gói</Pill>
+                          {r.kind === "progress" ? (
+                            <div className="inline-flex flex-col items-end gap-0.5">
+                              <Pill tone={r.remaining <= 0 ? "red" : "amber"}>
+                                {r.remaining <= 0 ? "Hết khóa" : `Còn ${r.remaining} buổi`}
+                              </Pill>
+                              <span className="text-[11px] text-muted-foreground">theo tiến độ lớp</span>
+                            </div>
                           ) : r.kind === "over" ? (
                             <Pill tone="red">Hết buổi, vẫn học</Pill>
                           ) : (
