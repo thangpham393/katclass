@@ -38,6 +38,7 @@ import {
   RELATIONSHIP_LABELS,
 } from "@/lib/db-student";
 import { ParentShareModal } from "@/components/parent-share-modal";
+import { AttendanceHistory } from "@/components/attendance-history";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Select, Field } from "@/components/ui/select";
@@ -438,6 +439,8 @@ export default function AdminMemberDetailPage() {
                   )}
                 </CardContent>
               </Card>
+
+              <AttendanceHistory studentId={profileId} />
 
               <ParentsCard studentId={profileId} studentName={p.name} studentPhone={p.phone} />
             </>

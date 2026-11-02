@@ -9,7 +9,7 @@
 
 import { getSupabase } from "./supabase";
 import { branchStamp } from "./branch";
-import { todayISO, type ScheduleRow, type AttendanceStatus } from "./db";
+import { todayISO, type ScheduleRow, type AttendanceStatus, type MakeupCreditRow } from "./db";
 
 /* ============ Lớp của tôi ============ */
 
@@ -137,6 +137,92 @@ export async function fetchMyAttendance(studentId: string): Promise<MyAttendance
       (a.session?.date ?? "") + (a.session?.start_time ?? ""),
     ),
   );
+}
+
+/* ============ Lịch sử điểm danh đầy đủ (hồ sơ học viên) ============ */
+
+type HistorySession = {
+  id: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  class: { id: string; name: string } | null;
+};
+
+export interface AttendanceHistoryRow {
+  id: string;
+  status: AttendanceStatus;
+  note: string | null;
+  session: HistorySession | null;
+  /** Buổi vắng có phép: quyền học bù sinh ra từ buổi này (nếu có). */
+  makeup: {
+    status: MakeupCreditRow["status"];
+    session: { date: string; start_time: string } | null;
+  } | null;
+  /** Buổi học bù: bù cho buổi vắng ngày nào. */
+  makeupFor: { date: string; className: string | null } | null;
+}
+
+/**
+ * Toàn bộ lượt điểm danh của một học viên, mới nhất trước, ghép thêm
+ * quyền học bù (makeup_credits) để biết buổi vắng đã được bù chưa và
+ * buổi học bù là bù cho buổi nào.
+ */
+export async function fetchAttendanceHistory(studentId: string): Promise<AttendanceHistoryRow[]> {
+  const supabase = getSupabase();
+  const [att, credits] = await Promise.all([
+    supabase
+      .from("attendance")
+      .select(`
+        id, status, note,
+        session:sessions ( id, date, start_time, end_time, class:classes ( id, name ) )
+      `)
+      .eq("student_id", studentId),
+    supabase
+      .from("makeup_credits")
+      .select(`
+        status, missed_session_id, makeup_session_id,
+        missed_session:sessions!makeup_credits_missed_session_id_fkey ( date, class:classes ( name ) ),
+        makeup_session:sessions!makeup_credits_makeup_session_id_fkey ( date, start_time )
+      `)
+      .eq("student_id", studentId),
+  ]);
+  if (att.error) throw att.error;
+  if (credits.error) throw credits.error;
+
+  type CreditRow = {
+    status: MakeupCreditRow["status"];
+    missed_session_id: string;
+    makeup_session_id: string | null;
+    missed_session: { date: string; class: { name: string } | null } | null;
+    makeup_session: { date: string; start_time: string } | null;
+  };
+  const byMissed = new Map<string, CreditRow>();
+  const byMakeup = new Map<string, CreditRow>();
+  for (const c of (credits.data ?? []) as unknown as CreditRow[]) {
+    byMissed.set(c.missed_session_id, c);
+    if (c.makeup_session_id) byMakeup.set(c.makeup_session_id, c);
+  }
+
+  const rows = (att.data ?? []) as unknown as Omit<AttendanceHistoryRow, "makeup" | "makeupFor">[];
+  return rows
+    .map((a) => {
+      const sid = a.session?.id ?? "";
+      const missed = a.status === "absent_excused" ? byMissed.get(sid) : undefined;
+      const forCredit = a.status === "makeup" ? byMakeup.get(sid) : undefined;
+      return {
+        ...a,
+        makeup: missed ? { status: missed.status, session: missed.makeup_session } : null,
+        makeupFor: forCredit?.missed_session
+          ? { date: forCredit.missed_session.date, className: forCredit.missed_session.class?.name ?? null }
+          : null,
+      };
+    })
+    .sort((a, b) =>
+      ((b.session?.date ?? "") + (b.session?.start_time ?? "")).localeCompare(
+        (a.session?.date ?? "") + (a.session?.start_time ?? ""),
+      ),
+    );
 }
 
 export interface MyCommentRow {

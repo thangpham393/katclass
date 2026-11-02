@@ -125,13 +125,19 @@ function RecentDots({ row }: { row: StudentListRow }) {
       {row.recent.length === 0 ? (
         <span className="text-[11px] text-muted-foreground">Chưa có buổi nào</span>
       ) : (
-        row.recent.map((s, i) => (
-          <span
-            key={i}
-            title={DOT_LABEL[s]}
-            className={cn("h-2.5 w-2.5 rounded-full", DOT_CLASS[s])}
-          />
-        ))
+        <Link
+          href={`/admin/members/${row.id}#diem-danh`}
+          title="Xem lịch sử điểm danh"
+          className="flex items-center gap-1 rounded hover:opacity-80"
+        >
+          {row.recent.map((s, i) => (
+            <span
+              key={i}
+              title={DOT_LABEL[s]}
+              className={cn("h-2.5 w-2.5 rounded-full", DOT_CLASS[s])}
+            />
+          ))}
+        </Link>
       )}
       {row.diligence !== "none" && (
         <span className="ml-1 text-xs" title={care.label}>
