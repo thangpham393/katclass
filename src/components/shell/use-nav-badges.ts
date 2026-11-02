@@ -7,6 +7,7 @@ import { fetchPendingRequestCount, fetchMyPendingRequestCount } from "@/lib/db-r
 import { fetchPendingMakeupCount } from "@/lib/db";
 import { fetchPendingAbsenceCount, fetchMyPendingMakeupCount } from "@/lib/db-absence";
 import { fetchLowStockCount } from "@/lib/db-supplies";
+import { fetchNewCareCount } from "@/lib/db-care-requests";
 
 /**
  * Số việc đang chờ xử lý, gắn thành chấm đỏ ngay trên mục menu — quản lý
@@ -27,6 +28,7 @@ export function useNavBadges(): Record<string, number> {
   const canRequests = !!user && can("requests.manage");
   const canMakeup = !!user && can("makeup.manage");
   const canSupplies = !!user && can("supplies.manage");
+  const canCare = !!user && can("students.manage");
 
   useEffect(() => {
     if (!role || !userId) return;
@@ -43,6 +45,9 @@ export function useNavBadges(): Record<string, number> {
       }
       if (canSupplies) {
         jobs.push(fetchLowStockCount().then((n) => ["/admin/supplies", n]));
+      }
+      if (canCare) {
+        jobs.push(fetchNewCareCount().then((n) => ["/admin/care", n]));
       }
       if (canMakeup) {
         // Một mục menu, hai việc: lượt chờ xếp bù + đơn xin nghỉ HV tự gửi
@@ -68,7 +73,7 @@ export function useNavBadges(): Record<string, number> {
     return () => {
       cancelled = true;
     };
-  }, [role, userId, canRequests, canMakeup, canSupplies, pathname]);
+  }, [role, userId, canRequests, canMakeup, canSupplies, canCare, pathname]);
 
   return counts;
 }
