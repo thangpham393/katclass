@@ -24,6 +24,7 @@ import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import { ClassPhotoManager } from "@/components/classes/class-photo-manager";
 import { ClassLessonLog } from "@/components/classes/class-lesson-log";
+import { ClassHeldSessions } from "@/components/classes/class-held-sessions";
 import type { ClassPhoto } from "@/lib/db-class-photos";
 
 export default function TeacherClassDetailPage() {
@@ -59,7 +60,6 @@ export default function TeacherClassDetailPage() {
   const today = todayISO();
   const list = (sessions.data ?? []).filter((s) => s.status !== "cancelled");
   const upcoming = list.filter((s) => s.date >= today);
-  const past = list.filter((s) => s.date < today).reverse();
   const todaySession = list.find((s) => s.date === today && s.status !== "completed");
   // Chỉ gắn nhãn "ít được gọi" khi lớp thực sự có dùng điểm ★ trong giờ
   const hasPoints = Object.keys(participation.data ?? {}).length > 0;
@@ -135,22 +135,7 @@ export default function TeacherClassDetailPage() {
 
           <ClassLessonLog classId={classId} />
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Buổi đã qua <Badge variant="muted" className="ml-1">{past.length}</Badge></CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-              {past.length === 0 ? (
-                <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  Chưa có buổi nào đã diễn ra.
-                </div>
-              ) : (
-                <div className="max-h-96 divide-y overflow-y-auto scrollbar-thin">
-                  {past.map((s) => <SessionLine key={s.id} s={s} />)}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <ClassHeldSessions classId={classId} />
         </div>
 
         <Card className="self-start">

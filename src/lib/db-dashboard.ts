@@ -383,3 +383,39 @@ export async function fetchRetention(): Promise<RetentionData> {
 
 /** Nhắc nhận xét từng buổi cho các buổi đã dạy trong chừng này ngày. */
 export const COMMENT_DAYS = 14;
+
+export interface HeldSessionRow {
+  id: string;
+  session_no: number | null;
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: "scheduled" | "completed" | "cancelled";
+  cancel_reason: string | null;
+  teacher: { id: string; name: string } | null;
+  room: { name: string } | null;
+  teaching_log: { lesson_content: string | null } | { lesson_content: string | null }[] | null;
+  attendance: { status: AttendanceStatus }[];
+  session_comments: { student_id: string }[];
+}
+
+/** Mọi buổi của lớp tính tới hôm nay (kể cả lớp nghỉ), mới nhất trước. */
+export async function fetchClassHeldSessions(classId: string): Promise<HeldSessionRow[]> {
+  const { data, error } = await getSupabase()
+    .from("sessions")
+    .select(`
+      id, session_no, date, start_time, end_time, status, cancel_reason,
+      teacher:profiles!sessions_teacher_id_fkey ( id, name ),
+      room:rooms ( name ),
+      teaching_log:teaching_logs ( lesson_content ),
+      attendance ( status ),
+      session_comments ( student_id )
+    `)
+    .eq("class_id", classId)
+    .lte("date", todayISO())
+    .order("date", { ascending: false })
+    .order("start_time", { ascending: false })
+    .limit(500);
+  if (error) throw error;
+  return data as unknown as HeldSessionRow[];
+}
