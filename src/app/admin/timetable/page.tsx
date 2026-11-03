@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { SessionLink } from "@/components/session-drawer";
 import {
   CalendarDays,
   ChevronLeft,
@@ -396,8 +396,8 @@ function WeekGrid({
 function SessionCard({ s }: { s: SessionRow }) {
   const level = s.class?.course?.level;
   return (
-    <Link
-      href={`/teacher/sessions/${s.id}`}
+    <SessionLink
+      sessionId={s.id}
       className={cn(
         "block rounded-lg border border-l-4 p-2 transition-all hover:-translate-y-px hover:shadow-soft",
         sessionTone(s),
@@ -438,7 +438,7 @@ function SessionCard({ s }: { s: SessionRow }) {
           <span className="truncate">{s.teacher.name}</span>
         </div>
       )}
-    </Link>
+    </SessionLink>
   );
 }
 
@@ -582,9 +582,9 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                     const width = 100 / laneCount;
                     const compact = height < 56;
                     return (
-                      <Link
+                      <SessionLink
                         key={s.id}
-                        href={`/teacher/sessions/${s.id}`}
+                        sessionId={s.id}
                         className={cn(
                           "absolute overflow-hidden rounded-lg border border-l-4 p-1.5 shadow-sm transition-all hover:z-10 hover:shadow-soft",
                           sessionTone(s),
@@ -619,7 +619,7 @@ function DayGrid({ iso, list, isToday }: { iso: string; list: SessionRow[]; isTo
                             <span className="truncate">{s.teacher.name}</span>
                           </div>
                         )}
-                      </Link>
+                      </SessionLink>
                     );
                   })}
                 </div>

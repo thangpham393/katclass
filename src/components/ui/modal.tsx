@@ -24,10 +24,13 @@ export function Modal({
       if (e.key === "Escape") onClose();
     }
     document.addEventListener("keydown", onKey);
+    // Giữ giá trị cũ: modal mở bên trong ngăn kéo chi tiết buổi đóng lại thì
+    // nền vẫn phải khóa cuộn
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
     };
   }, [open, onClose]);
 

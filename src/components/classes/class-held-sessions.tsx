@@ -1,13 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
 import { Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { EmptyRow, Pill, TD, Th, useSort } from "@/components/ui/table-kit";
 import { SCROLL_10, SectionHead, dmy, hm, pct, weekdayOf } from "@/components/dashboard/kit";
-import { sessionHref } from "@/components/dashboard/sections";
+import { SessionLink } from "@/components/session-drawer";
 import { cn } from "@/lib/utils";
 import { fetchClass, fetchClassCourseHistory, todayISO } from "@/lib/db";
 import { downloadCSV } from "@/lib/db-finance";
@@ -157,10 +156,10 @@ export function ClassHeldSessions({ classId }: { classId: string }) {
                   return (
                     <tr key={r.id} className={cn("hover:bg-brand-50/40", r.off && "bg-muted/30")}>
                       <td className={cn(TD, "whitespace-nowrap")}>
-                        <Link href={sessionHref(r.id)} className="font-semibold text-brand-600 hover:underline">
+                        <SessionLink sessionId={r.id} onClose={list.reload} className="font-semibold text-brand-600 hover:underline">
                           {r.no ? `Buổi ${r.no} · ` : ""}
                           {dmy(r.date)}
-                        </Link>
+                        </SessionLink>
                         <div className="text-xs text-muted-foreground">
                           {weekdayOf(r.date)} · {hm(r.start)} - {hm(r.end)}
                           {r.room ? ` · P.${r.room}` : ""}
@@ -197,11 +196,11 @@ export function ClassHeldSessions({ classId }: { classId: string }) {
                         ) : missingComments === 0 ? (
                           <Pill tone="green">Đủ {r.present}</Pill>
                         ) : (
-                          <Link href={sessionHref(r.id)}>
+                          <SessionLink sessionId={r.id} onClose={list.reload}>
                             <Pill tone="amber">
                               Thiếu {missingComments}/{r.present}
                             </Pill>
-                          </Link>
+                          </SessionLink>
                         )}
                       </td>
                       <td className={cn(TD, "max-w-xs")}>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { SessionLink, useSessionDrawer } from "@/components/session-drawer";
 import {
   AlertTriangle,
   Banknote,
@@ -143,7 +143,7 @@ interface LowRow {
 
 export default function AdminHome() {
   const { user, can } = useAuth();
-  const router = useRouter();
+  const drawer = useSessionDrawer();
   const stats = useLoad(fetchDashboardStats);
   const dash = useLoad(fetchDashboardData);
   const care = useLoad(() => fetchCareRequests({ openOnly: true }));
@@ -167,6 +167,17 @@ export default function AdminHome() {
   const canStudents = can("students.manage");
   const canSupplies = can("supplies.manage");
   const gaps = useLoad(fetchUpcomingGaps);
+
+  // Chấm công / điểm danh xong (hộp chấm công hoặc ngăn kéo chi tiết buổi)
+  function reloadToday() {
+    todaySessions.reload();
+    dash.reload();
+    gaps.reload();
+  }
+  function openSession(id: string) {
+    if (drawer) drawer.open(id, { onClose: reloadToday });
+    else window.location.assign(sessionHref(id));
+  }
   const pending = useLoad(async () => {
     const [requests, absences, makeups] = await Promise.all([
       canRequests ? fetchPendingRequestCount() : undefined,
@@ -528,21 +539,22 @@ export default function AdminHome() {
                   </EmptyRow>
                 ) : (
                   todayRows.map((s) => (
-                    // Bấm cả dòng là mở chi tiết buổi; link lớp / nút chấm công
-                    // trong dòng tự chặn để không mở nhầm
+                    // Bấm cả dòng là mở chi tiết buổi (ngăn kéo bên phải); link lớp /
+                    // nút chấm công trong dòng tự chặn để không mở nhầm
                     <tr
                       key={s.id}
-                      onClick={() => router.push(sessionHref(s.id))}
+                      onClick={() => openSession(s.id)}
                       className="cursor-pointer hover:bg-brand-50/40"
                     >
                       <td className={cn(TD, "whitespace-nowrap font-semibold")}>
-                        <Link
-                          href={sessionHref(s.id)}
+                        <SessionLink
+                          sessionId={s.id}
+                          onClose={reloadToday}
                           onClick={(e) => e.stopPropagation()}
                           className="text-brand-600 hover:underline"
                         >
                           {hm(s.start_time)} - {hm(s.end_time)}
-                        </Link>
+                        </SessionLink>
                       </td>
                       <td className={TD} onClick={(e) => e.stopPropagation()}>
                         {s.class ? (
@@ -586,10 +598,17 @@ export default function AdminHome() {
         loading={dash.loading}
         links={ADMIN_LINKS}
         showTeacher={true}
+        onChanged={dash.reload}
       />
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <OverdueCard rows={d?.overdue ?? []} loading={dash.loading} today={today} links={ADMIN_LINKS} />
+        <OverdueCard
+          rows={d?.overdue ?? []}
+          loading={dash.loading}
+          today={today}
+          links={ADMIN_LINKS}
+          onChanged={dash.reload}
+        />
         <AttentionCard rows={d?.attention ?? []} loading={dash.loading} links={ADMIN_LINKS} />
       </section>
 
@@ -706,9 +725,7 @@ export default function AdminHome() {
         onClose={() => setLogFor(null)}
         onSaved={() => {
           setLogFor(null);
-          todaySessions.reload();
-          dash.reload();
-          gaps.reload();
+          reloadToday();
         }}
       />
     </div>

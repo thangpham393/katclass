@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SessionLink } from "@/components/session-drawer";
 import { Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
@@ -58,11 +59,14 @@ export function OverdueCard({
   loading,
   today,
   links,
+  onChanged,
 }: {
   rows: DashSession[];
   loading: boolean;
   today: string;
   links: DashLinks;
+  /** Đóng ngăn kéo chi tiết buổi → nạp lại bảng */
+  onChanged?: () => void;
 }) {
   const overdueSort = useSort(
     rows,
@@ -102,9 +106,9 @@ export function OverdueCard({
                 overdueSort.sorted.map((s) => (
                   <tr key={s.id} className="hover:bg-brand-50/40">
                     <td className={TD}>
-                      <Link href={sessionHref(s.id)} className="font-semibold text-brand-600 hover:underline">
+                      <SessionLink sessionId={s.id} onClose={onChanged} className="font-semibold text-brand-600 hover:underline">
                         {dmy(s.date)}
-                      </Link>
+                      </SessionLink>
                       <div className="text-xs text-muted-foreground">
                         {weekdayOf(s.date)} · {hm(s.start_time)}
                       </div>
@@ -458,11 +462,14 @@ export function CommentDueCard({
   loading,
   links,
   showTeacher,
+  onChanged,
 }: {
   rows: CommentDueRow[];
   loading: boolean;
   links: DashLinks;
   showTeacher: boolean;
+  /** Đóng ngăn kéo chi tiết buổi → nạp lại bảng */
+  onChanged?: () => void;
 }) {
   const sort = useSort(
     rows,
@@ -502,9 +509,13 @@ export function CommentDueCard({
                 sort.sorted.map((r) => (
                   <tr key={r.sessionId} className="hover:bg-brand-50/40">
                     <td className={cn(TD, "whitespace-nowrap")}>
-                      <Link href={sessionHref(r.sessionId)} className="font-semibold text-brand-600 hover:underline">
+                      <SessionLink
+                        sessionId={r.sessionId}
+                        onClose={onChanged}
+                        className="font-semibold text-brand-600 hover:underline"
+                      >
                         {dmy(r.date)}
-                      </Link>
+                      </SessionLink>
                       <div className="text-xs text-muted-foreground">
                         {weekdayOf(r.date)} · {hm(r.start_time)}
                       </div>
@@ -518,13 +529,15 @@ export function CommentDueCard({
                     <td className={TD}>
                       <div className="flex flex-wrap items-center gap-1.5">
                         {r.missing.map((m) => (
-                          <Link
+                          <SessionLink
                             key={m.id}
-                            href={sessionHref(r.sessionId, m.id)}
+                            sessionId={r.sessionId}
+                            studentId={m.id}
+                            onClose={onChanged}
                             className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 hover:border-amber-400 hover:bg-amber-100"
                           >
                             {m.name}
-                          </Link>
+                          </SessionLink>
                         ))}
                         <span className="text-xs text-muted-foreground">
                           {r.missing.length}/{r.attended}

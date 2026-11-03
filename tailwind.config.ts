@@ -141,11 +141,31 @@ const config: Config = {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "slide-in-right": {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        "slide-out-right": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        "overlay-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "overlay-out": {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "fade-in": "fade-in 0.3s ease-out",
         "pulse-soft": "pulse-soft 1.8s ease-in-out infinite",
         shimmer: "shimmer 2s linear infinite",
+        "slide-in-right": "slide-in-right 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
+        "slide-out-right": "slide-out-right 0.2s ease-in forwards",
+        "overlay-in": "overlay-in 0.2s ease-out",
+        "overlay-out": "overlay-out 0.2s ease-in forwards",
       },
     },
   },

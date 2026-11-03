@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { SessionLink } from "@/components/session-drawer";
+import { PrepareLink } from "@/components/session-prepare";
 import {
   CalendarClock,
   CalendarX2,
@@ -155,11 +156,11 @@ export function TeachingCard({
           )
         ) : (
           <>
-            <Link href={`/teacher/sessions/${s.id}/prepare`} className="w-full sm:w-auto">
+            <PrepareLink sessionId={s.id} className="w-full sm:w-auto">
               <Button size="sm" variant={future ? "default" : "outline"} className="w-full sm:w-auto">
                 <ListChecks className="h-3.5 w-3.5" /> Chuẩn bị bài
               </Button>
-            </Link>
+            </PrepareLink>
             {!future && (
               <EnterClassroomButton
                 sessionId={s.id}
@@ -168,11 +169,11 @@ export function TeachingCard({
                 iconClassName="h-3.5 w-3.5"
               />
             )}
-            <Link href={`/teacher/sessions/${s.id}`} className="w-full sm:w-auto">
+            <SessionLink sessionId={s.id} className="w-full sm:w-auto">
               <Button size="sm" variant="outline" className="w-full sm:w-auto">
                 <ClipboardCheck className="h-3.5 w-3.5" /> Điểm danh HV
               </Button>
-            </Link>
+            </SessionLink>
             {!future && (
               <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={onLog}>
                 <Timer className="h-3.5 w-3.5" /> {log ? "Sửa công" : "Chấm công"}

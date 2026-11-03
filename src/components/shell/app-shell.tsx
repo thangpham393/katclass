@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./topbar";
+import { SessionDrawerProvider } from "@/components/session-drawer";
 import type { User } from "@/lib/types";
 
 const COLLAPSE_KEY = "kat.sidebar.collapsed";
@@ -44,14 +45,16 @@ export function AppShell({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {!collapsed && <Sidebar />}
-      <div className="min-w-0 flex-1">
-        <TopBar user={user} onToggleSidebar={toggle} sidebarCollapsed={collapsed} />
-        <main className="container max-w-7xl animate-fade-in px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5 sm:pt-6 md:px-8 md:pb-10 md:pt-8">
-          {children}
-        </main>
+    <SessionDrawerProvider>
+      <div className="flex min-h-screen bg-background">
+        {!collapsed && <Sidebar />}
+        <div className="min-w-0 flex-1">
+          <TopBar user={user} onToggleSidebar={toggle} sidebarCollapsed={collapsed} />
+          <main className="container max-w-7xl animate-fade-in px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-5 sm:pt-6 md:px-8 md:pb-10 md:pt-8">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </SessionDrawerProvider>
   );
 }

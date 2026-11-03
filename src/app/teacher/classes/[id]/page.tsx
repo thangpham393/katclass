@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { PrepareLink } from "@/components/session-prepare";
 import { useParams } from "next/navigation";
 import { ArrowLeft, ClipboardCheck, ListChecks } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
@@ -97,11 +98,11 @@ export default function TeacherClassDetailPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Link href={`/teacher/sessions/${todaySession.id}/prepare`}>
+            <PrepareLink sessionId={todaySession.id}>
               <Button size="lg" variant="outline">
                 <ListChecks className="h-5 w-5" /> Chuẩn bị bài
               </Button>
-            </Link>
+            </PrepareLink>
             <EnterClassroomButton
               sessionId={todaySession.id}
               size="lg"

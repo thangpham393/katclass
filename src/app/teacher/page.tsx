@@ -329,10 +329,17 @@ export default function TeacherHome() {
           loading={dash.loading}
           links={TEACHER_LINKS}
           showTeacher={false}
+          onChanged={dash.reload}
         />
 
         <div className="grid gap-4 lg:grid-cols-2">
-          <OverdueCard rows={d?.overdue ?? []} loading={dash.loading} today={today} links={TEACHER_LINKS} />
+          <OverdueCard
+            rows={d?.overdue ?? []}
+            loading={dash.loading}
+            today={today}
+            links={TEACHER_LINKS}
+            onChanged={dash.reload}
+          />
           <AttentionCard rows={d?.attention ?? []} loading={dash.loading} links={TEACHER_LINKS} />
         </div>
 
