@@ -106,7 +106,7 @@ export async function POST(req: Request) {
     const { data: student, error: sErr } = await admin
       .from("profiles")
       .select(
-        "id, name, student_code, avatar, phone, enrolled_at, study_status, left_at, branch:branches (name, phone, address)",
+        "id, name, student_code, avatar, phone, enrolled_at, study_status, left_at, branch:branches!profiles_branch_id_fkey (name, phone, address)",
       )
       .eq("id", studentId)
       .maybeSingle();
