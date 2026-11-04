@@ -148,7 +148,9 @@ export function OverdueCard({
 /* ---------------- Học viên cần chú ý ---------------- */
 
 const flagPill = (f: AttentionRow["flags"][number]) =>
-  f === "absent" ? (
+  f === "parent" ? (
+    <Pill key={f} tone="red">Cần liên hệ PH</Pill>
+  ) : f === "absent" ? (
     <Pill key={f} tone="red">Nghỉ nhiều</Pill>
   ) : f === "missing" ? (
     <Pill key={f} tone="amber">Thiếu bài tập</Pill>
@@ -213,6 +215,11 @@ export function AttentionCard({
                     </td>
                     <td className={TD}>
                       <div className="flex flex-wrap gap-1">{r.flags.map(flagPill)}</div>
+                      {r.parentNote && (
+                        <div className="mt-1 line-clamp-2 max-w-xs text-xs text-muted-foreground" title={r.parentNote}>
+                          {r.parentNote}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))

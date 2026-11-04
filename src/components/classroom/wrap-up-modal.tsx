@@ -19,6 +19,8 @@ import {
 import { createHomework, fetchQuestions, MANUAL_HOMEWORK_OPTIONS, type LessonDetail } from "@/lib/db-content";
 import { saveTeachingLog } from "@/lib/db-tuition";
 import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
+import { ParentContactField, type ParentContact } from "@/components/parent-contact-field";
+import { fetchSessionParentFlags, flagParentContact, type ParentContactFlag } from "@/lib/db-care-requests";
 import {
   countByReason,
   type ClassroomStudent,
@@ -134,6 +136,22 @@ export function WrapUpModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [students.length, comments.length]);
 
+  /* Nhờ CSKH liên hệ phụ huynh (0065) — phiếu đã mở trước đó nạp lại để sửa */
+  const [contacts, setContacts] = useState<Record<string, ParentContact>>({});
+  const [flags, setFlags] = useState<Map<string, ParentContactFlag>>(new Map());
+  useEffect(() => {
+    fetchSessionParentFlags(session.id)
+      .then((m) => {
+        setFlags(m);
+        setContacts((prev) => {
+          const next = { ...prev };
+          for (const [id, f] of m) next[id] ??= { on: true, note: f.issue };
+          return next;
+        });
+      })
+      .catch(() => {});
+  }, [session.id]);
+
   /* --- bước 3: bài về nhà --- */
   const [hwLesson, setHwLesson] = useState<string>(lessons[0]?.id ?? "");
   const [hwTitle, setHwTitle] = useState("");
@@ -208,6 +226,8 @@ export function WrapUpModal({
         await saveAttendance(session.id, records, currentUserId);
         setStep("review");
       } else if (step === "review") {
+        const missingNote = students.find((s) => contacts[s.id]?.on && !contacts[s.id].note.trim());
+        if (missingNote) throw new Error(`Ghi nội dung cần CSKH trao đổi với phụ huynh của ${missingNote.name}.`);
         for (const s of students) {
           const n = notes[s.id];
           if (!n?.content.trim()) continue;
@@ -221,6 +241,19 @@ export function WrapUpModal({
             rating: n.rating,
           });
         }
+        for (const s of students) {
+          const c = contacts[s.id];
+          if (c?.on || flags.has(s.id)) await flagParentContact(session.id, s.id, c?.on ? c.note : "");
+        }
+        // Quay lại bước này bỏ tích thì vẫn biết phải huỷ phiếu vừa mở
+        setFlags((prev) => {
+          const next = new Map(prev);
+          for (const s of students) {
+            const c = contacts[s.id];
+            if (c?.on) next.set(s.id, { issue: c.note, status: prev.get(s.id)?.status ?? "new" });
+          }
+          return next;
+        });
         setStep("homework");
       } else if (step === "homework") {
         if (!hwSkip && !hwCreated && session.class_id) {
@@ -390,6 +423,13 @@ export function WrapUpModal({
                       placeholder="Bỏ trống nếu không nhận xét học viên này"
                       className="mt-2 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     />
+                    <div className="mt-2">
+                      <ParentContactField
+                        value={contacts[s.id] ?? { on: false, note: "" }}
+                        onChange={(v) => setContacts((p) => ({ ...p, [s.id]: v }))}
+                        status={flags.get(s.id)?.status}
+                      />
+                    </div>
                   </div>
                 );
               })}

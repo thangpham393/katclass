@@ -34,6 +34,8 @@ import { TeachingLogModal } from "@/components/teaching-log-modal";
 import { Pill } from "@/components/ui/table-kit";
 import { fetchTeachingLog, sessionHours, PROGRESS_LABELS, PROGRESS_TONE } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
+import { fetchSessionParentFlags, flagParentContact } from "@/lib/db-care-requests";
+import { ParentContactField, type ParentContact } from "@/components/parent-contact-field";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import { ClassLessonLog } from "@/components/classes/class-lesson-log";
 
@@ -515,11 +517,21 @@ function CommentModal({
   const [rating, setRating] = useState<number>(existing?.rating ?? 0);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const flags = useLoad(() => fetchSessionParentFlags(sessionId), [sessionId]);
+  const flag = flags.data?.get(student.id);
+  const [contact, setContact] = useState<ParentContact>({ on: false, note: "" });
+  useEffect(() => {
+    if (flag) setContact({ on: true, note: flag.issue });
+  }, [flag]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!content.trim()) {
       setError("Nhập nội dung nhận xét.");
+      return;
+    }
+    if (contact.on && !contact.note.trim()) {
+      setError("Ghi nội dung cần CSKH trao đổi với phụ huynh.");
       return;
     }
     setSaving(true);
@@ -532,6 +544,7 @@ function CommentModal({
         content: content.trim(),
         rating: rating || null,
       });
+      if (contact.on || flag) await flagParentContact(sessionId, student.id, contact.on ? contact.note : "");
       onSaved();
     } catch (err) {
       setError(dbErrorMessage(err));
@@ -581,9 +594,10 @@ function CommentModal({
             className="mt-1.5 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
+        <ParentContactField value={contact} onChange={setContact} status={flag?.status} />
         <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={onClose}>Hủy</Button>
-          <Button type="submit" disabled={saving}>{saving ? "Đang lưu..." : "Lưu nhận xét"}</Button>
+          <Button type="submit" disabled={saving || flags.loading}>{saving ? "Đang lưu..." : "Lưu nhận xét"}</Button>
         </div>
       </form>
     </Modal>

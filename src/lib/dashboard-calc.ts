@@ -44,7 +44,9 @@ export interface AttentionRow {
   absent: number;
   missing: number;
   avg: number | null;
-  flags: ("absent" | "missing" | "score")[];
+  flags: ("absent" | "missing" | "score" | "parent")[];
+  /** Nội dung GV nhờ CSKH trao đổi với phụ huynh (cờ "parent"). */
+  parentNote?: string;
 }
 
 export interface ClassStatRow {
@@ -163,6 +165,10 @@ export function computeDashboard(
     if (r.absent >= ABSENT_WARN) r.flags.push("absent");
     if (r.missing >= MISSING_WARN) r.flags.push("missing");
     if (r.avg !== null && r.avg < SCORE_WARN) r.flags.push("score");
+    if (data.parentFlags[r.id]) {
+      r.flags.unshift("parent");
+      r.parentNote = data.parentFlags[r.id];
+    }
     if (r.flags.length) {
       const { scores: _s, ...rest } = r;
       attention.push(rest);

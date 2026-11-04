@@ -187,3 +187,36 @@ export async function fetchCareStudentOptions(): Promise<CareStudentOption[]> {
         .map((c) => ({ id: c.class!.id, name: c.class!.name })),
     }));
 }
+
+/* ============ Nhận xét buổi → nhờ CSKH liên hệ phụ huynh (0065) ============ */
+
+export interface ParentContactFlag {
+  issue: string;
+  status: CareStatus;
+}
+
+/** Phiếu "cần liên hệ PH" GV đã mở từ nhận xét của buổi, theo học viên (bỏ phiếu đã huỷ). */
+export async function fetchSessionParentFlags(sessionId: string): Promise<Map<string, ParentContactFlag>> {
+  const { data, error } = await getSupabase()
+    .from("care_requests")
+    .select("student_id, issue, status")
+    .eq("session_id", sessionId)
+    .neq("status", "cancelled");
+  if (error) throw error;
+  return new Map(
+    (data as { student_id: string; issue: string; status: CareStatus }[]).map((r) => [
+      r.student_id,
+      { issue: r.issue, status: r.status },
+    ]),
+  );
+}
+
+/** Mở / sửa phiếu nhờ CSKH liên hệ PH cho học viên của buổi; `note` rỗng = bỏ tích (huỷ phiếu còn Mới). */
+export async function flagParentContact(sessionId: string, studentId: string, note: string): Promise<void> {
+  const { error } = await getSupabase().rpc("flag_parent_contact", {
+    p_session: sessionId,
+    p_student: studentId,
+    p_note: note.trim(),
+  });
+  if (error) throw error;
+}

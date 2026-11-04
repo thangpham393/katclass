@@ -72,6 +72,8 @@ export interface DashboardData {
   /** class_id → tiến độ (view class_progress). */
   progressByClass: Record<string, DashProgress>;
   homeworks: DashHomework[];
+  /** Phiếu "cần liên hệ PH" GV mở từ nhận xét buổi (0065), còn mở: student_id → nội dung. */
+  parentFlags: Record<string, string>;
 }
 
 export interface DashProgress {
@@ -195,12 +197,13 @@ export async function fetchDashboardData(teacherId?: string): Promise<DashboardD
       classes,
       progressByClass: {},
       homeworks: [],
+      parentFlags: {},
     };
   }
 
   // Bài tạo trong 60 ngày: đủ phủ bài có hạn trong 30 ngày lẫn bài nộp gần đây
   const hwFrom = new Date(Date.now() - 2 * WINDOW_DAYS * 86_400_000).toISOString();
-  const [progressRes, hwRes] = await Promise.all([
+  const [progressRes, hwRes, flagRes] = await Promise.all([
     supabase
       .from("class_progress")
       .select("class_id, first_date, last_date, done, past_pending, upcoming")
@@ -211,9 +214,22 @@ export async function fetchDashboardData(teacherId?: string): Promise<DashboardD
       .in("class_id", classIds)
       .gte("created_at", hwFrom)
       .limit(3000),
+    supabase
+      .from("care_requests")
+      .select("student_id, issue")
+      .in("class_id", classIds)
+      .not("session_id", "is", null)
+      .in("status", ["new", "in_progress"])
+      .order("created_at", { ascending: false })
+      .limit(1000),
   ]);
   if (progressRes.error) throw progressRes.error;
   if (hwRes.error) throw hwRes.error;
+  // Chưa chạy 0065 (thiếu cột session_id) thì bỏ qua, bảng điều khiển vẫn chạy
+  const parentFlags: Record<string, string> = {};
+  for (const r of (flagRes.error ? [] : flagRes.data) as { student_id: string; issue: string }[]) {
+    parentFlags[r.student_id] ??= r.issue;
+  }
 
   const progressByClass: Record<string, DashProgress> = {};
   for (const r of progressRes.data as DashProgress[]) progressByClass[r.class_id] = r;
@@ -223,6 +239,7 @@ export async function fetchDashboardData(teacherId?: string): Promise<DashboardD
     classes,
     progressByClass,
     homeworks: hwRes.data as unknown as DashHomework[],
+    parentFlags,
   };
 }
 
