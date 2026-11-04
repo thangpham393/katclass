@@ -23,6 +23,7 @@ import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import {
   attendanceCount,
   pickLog,
+  PROGRESS_LABELS,
   sessionHours,
   type TeachingSessionRow,
 } from "@/lib/db-tuition";
@@ -141,6 +142,7 @@ export function TeachingCard({
               Thực dạy {log.actual_start.slice(0, 5)}–{log.actual_end.slice(0, 5)} ·{" "}
               {sessionHours({ start_time: log.actual_start, end_time: log.actual_end })}h
               {log.lesson_content ? ` · ${log.lesson_content}` : ""}
+              {log.progress ? ` · ${PROGRESS_LABELS[log.progress]}` : ""}
             </div>
           )}
         </div>

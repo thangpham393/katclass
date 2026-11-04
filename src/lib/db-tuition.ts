@@ -253,7 +253,26 @@ export interface TeachingLogRow {
   actual_end: string;
   lesson_content: string | null;
   note: string | null;
+  /** Tiến độ GV tự đánh giá lúc chốt buổi (0064). */
+  progress: LessonProgress | null;
+  homework_note: string | null;
+  next_plan: string | null;
 }
+
+/** Tiến độ buổi học so với kế hoạch (0064). */
+export type LessonProgress = "on_track" | "behind" | "ahead";
+
+export const PROGRESS_LABELS: Record<LessonProgress, string> = {
+  on_track: "Đúng kế hoạch",
+  behind: "Chậm hơn kế hoạch",
+  ahead: "Nhanh hơn kế hoạch",
+};
+
+export const PROGRESS_TONE: Record<LessonProgress, "green" | "amber" | "blue"> = {
+  on_track: "green",
+  behind: "amber",
+  ahead: "blue",
+};
 
 export interface TeachingSessionRow {
   id: string;
@@ -279,7 +298,7 @@ const TEACHING_SELECT = `
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
   class:classes ( id, name ),
   room:rooms ( id, name ),
-  teaching_log:teaching_logs ( id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note ),
+  teaching_log:teaching_logs ( id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan ),
   attendance ( count )
 `;
 
@@ -327,9 +346,10 @@ export interface LessonLogRow {
   start_time: string;
   session_no: number | null;
   teacher: { id: string; name: string } | null;
-  teaching_log: { lesson_content: string | null; note: string | null }
-    | { lesson_content: string | null; note: string | null }[];
+  teaching_log: LessonLogEntry | LessonLogEntry[];
 }
+
+type LessonLogEntry = Pick<TeachingLogRow, "lesson_content" | "note" | "progress" | "homework_note" | "next_plan">;
 
 /**
  * Nội dung đã dạy của lớp, mới nhất trước — để GV dạy thay / hành chính nắm
@@ -344,7 +364,7 @@ export async function fetchClassLessonLog(
     .select(`
       id, date, start_time, session_no,
       teacher:profiles!sessions_teacher_id_fkey ( id, name ),
-      teaching_log:teaching_logs!inner ( lesson_content, note )
+      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan )
     `)
     .eq("class_id", classId);
   if (opts.before) q = q.lt("date", opts.before);
@@ -356,11 +376,52 @@ export async function fetchClassLessonLog(
   return data as unknown as LessonLogRow[];
 }
 
+/** Một dòng nhật ký buổi học: buổi đã chấm công + những gì GV ghi lúc chốt buổi. */
+export interface LessonJournalRow {
+  id: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  session_no: number | null;
+  type: "regular" | "makeup";
+  class: { id: string; name: string } | null;
+  teacher: { id: string; name: string } | null;
+  room: { name: string } | null;
+  teaching_log: LessonLogEntry | LessonLogEntry[];
+  attendance: { status: string }[];
+}
+
+/**
+ * NHẬT KÝ BUỔI HỌC (0064) — mọi buổi đã chấm công từ ngày `from`, mới nhất
+ * trước, kèm tiến độ / BTVN / dự kiến buổi sau. Giáo viên chỉ nhận về buổi
+ * của lớp mình nhờ RLS teaching_logs (teaches_session / teaches_class).
+ */
+export async function fetchLessonJournal(from: string): Promise<LessonJournalRow[]> {
+  let q = getSupabase()
+    .from("sessions")
+    .select(`
+      id, date, start_time, end_time, session_no, type,
+      class:classes ( id, name ),
+      teacher:profiles!sessions_teacher_id_fkey ( id, name ),
+      room:rooms ( name ),
+      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan ),
+      attendance ( status )
+    `)
+    .gte("date", from);
+  q = branchFilter(q);
+  const { data, error } = await q
+    .order("date", { ascending: false })
+    .order("start_time", { ascending: false })
+    .limit(3000);
+  if (error) throw error;
+  return data as unknown as LessonJournalRow[];
+}
+
 /** Bản ghi công của một buổi (trang chi tiết buổi dạy). */
 export async function fetchTeachingLog(sessionId: string): Promise<TeachingLogRow | null> {
   const { data, error } = await getSupabase()
     .from("teaching_logs")
-    .select("id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note")
+    .select("id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan")
     .eq("session_id", sessionId)
     .maybeSingle();
   if (error) throw error;
@@ -374,6 +435,9 @@ export interface SaveTeachingLogInput {
   actualEnd: string; // HH:MM
   lessonContent: string;
   note?: string;
+  progress?: LessonProgress | null;
+  homeworkNote?: string;
+  nextPlan?: string;
   createdBy: string; // người bấm nút
 }
 
@@ -389,6 +453,9 @@ export async function saveTeachingLog(input: SaveTeachingLogInput): Promise<void
         actual_end: input.actualEnd,
         lesson_content: input.lessonContent.trim() || null,
         note: input.note?.trim() || null,
+        progress: input.progress ?? null,
+        homework_note: input.homeworkNote?.trim() || null,
+        next_plan: input.nextPlan?.trim() || null,
         created_by: input.createdBy,
       },
       { onConflict: "session_id" },

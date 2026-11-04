@@ -18,6 +18,7 @@ import {
   type TeachingLogRow,
 } from "@/lib/db-tuition";
 import { useAuth } from "@/components/auth/auth-provider";
+import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
 
 /** Buổi dạy tối thiểu cần cho việc chấm công (dùng được cả SessionRow). */
 export interface LogTargetSession {
@@ -61,6 +62,7 @@ export function TeachingLogModal({
   const [end, setEnd] = useState("");
   const [content, setContent] = useState("");
   const [note, setNote] = useState("");
+  const [report, setReport] = useState<LessonReport>({ progress: null, homeworkNote: "", nextPlan: "" });
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +80,11 @@ export function TeachingLogModal({
     setEnd((l?.actual_end ?? session.end_time).slice(0, 5));
     setContent(l?.lesson_content ?? "");
     setNote(l?.note ?? "");
+    setReport({
+      progress: l?.progress ?? null,
+      homeworkNote: l?.homework_note ?? "",
+      nextPlan: l?.next_plan ?? "",
+    });
     setError(null);
     setConfirmDelete(false);
     // Chưa chấm bao giờ → gợi ý nội dung từ bài học đã gán cho buổi
@@ -113,6 +120,11 @@ export function TeachingLogModal({
       setError("Nhập nội dung bài học đã dạy.");
       return;
     }
+    // Hành chính chấm hộ có thể không nắm tiến độ lớp → không bắt buộc
+    if (!report.progress && !isStaff) {
+      setError("Chọn tiến độ buổi học so với kế hoạch.");
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -123,6 +135,9 @@ export function TeachingLogModal({
         actualEnd: end,
         lessonContent: content,
         note,
+        progress: report.progress,
+        homeworkNote: report.homeworkNote,
+        nextPlan: report.nextPlan,
         createdBy: currentUserId,
       });
       onSaved();
@@ -183,6 +198,8 @@ export function TeachingLogModal({
             className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
         </Field>
+
+        <LessonReportFields value={report} onChange={setReport} />
 
         <Field label="Ghi chú (tùy chọn)">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Lớp vào muộn 10 phút, dạy bù cuối buổi..." />

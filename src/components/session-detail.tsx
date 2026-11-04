@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, CheckCheck, ListChecks, MessageSquarePlus, MessageSquareText, Star, Timer } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCheck, ListChecks, MessageSquarePlus, MessageSquareText, NotebookPen, Pencil, Star, Timer } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,8 @@ import {
 import { SessionContentCard } from "@/components/session-content-card";
 import { PrepareLink } from "@/components/session-prepare";
 import { TeachingLogModal } from "@/components/teaching-log-modal";
-import { fetchTeachingLog, sessionHours } from "@/lib/db-tuition";
+import { Pill } from "@/components/ui/table-kit";
+import { fetchTeachingLog, sessionHours, PROGRESS_LABELS, PROGRESS_TONE } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 import { ClassLessonLog } from "@/components/classes/class-lesson-log";
@@ -263,6 +264,39 @@ export function SessionDetail({
           </Button>
         </div>
       </div>
+
+      {log.data && (
+        <Card>
+          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
+            <CardTitle className="flex items-center gap-2">
+              <NotebookPen className="h-4 w-4 text-brand-600" /> Báo cáo buổi học
+              {log.data.progress ? (
+                <Pill tone={PROGRESS_TONE[log.data.progress]}>{PROGRESS_LABELS[log.data.progress]}</Pill>
+              ) : (
+                <Pill tone="muted">Chưa đánh giá tiến độ</Pill>
+              )}
+            </CardTitle>
+            <Button size="sm" variant="outline" onClick={() => setLogOpen(true)}>
+              <Pencil className="h-3.5 w-3.5" /> Sửa
+            </Button>
+          </CardHeader>
+          <CardContent className="grid gap-3 p-4 pt-0 text-sm sm:grid-cols-2 sm:p-5 sm:pt-0">
+            {[
+              ["Nội dung đã dạy", log.data.lesson_content],
+              ["Bài tập về nhà đã giao", log.data.homework_note],
+              ["Dự kiến buổi sau", log.data.next_plan],
+              ["Ghi chú", log.data.note],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-lg border bg-secondary/30 p-3">
+                <div className="text-xs font-semibold text-muted-foreground">{label}</div>
+                <div className="mt-1 whitespace-pre-line">
+                  {value?.trim() || <span className="italic text-muted-foreground">Chưa ghi</span>}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       {s.class && (
         <ClassLessonLog classId={s.class.id} before={s.date} title="Các buổi trước đã dạy" pageSize={3} />

@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { WEEKDAY_LABELS } from "@/lib/db";
 import { fetchSessionLessonsBySessions } from "@/lib/db-content";
-import { fetchClassLessonLog } from "@/lib/db-tuition";
+import { Pill } from "@/components/ui/table-kit";
+import { fetchClassLessonLog, PROGRESS_LABELS, PROGRESS_TONE } from "@/lib/db-tuition";
 import { useLoad } from "@/lib/use-load";
 
 /** Số buổi hiện trước khi bấm "Xem thêm". */
@@ -75,12 +76,23 @@ export function ClassLessonLog({
                       </span>
                       <span>{s.start_time.slice(0, 5)}</span>
                       {s.teacher && <span>· GV {s.teacher.name}</span>}
+                      {log?.progress && <Pill tone={PROGRESS_TONE[log.progress]}>{PROGRESS_LABELS[log.progress]}</Pill>}
                     </div>
                     <div className="whitespace-pre-line">
                       {log?.lesson_content?.trim() || (
                         <span className="italic text-muted-foreground">Không ghi nội dung bài.</span>
                       )}
                     </div>
+                    {log?.homework_note?.trim() && (
+                      <div className="whitespace-pre-line text-xs">
+                        <span className="font-semibold">BTVN:</span> {log.homework_note}
+                      </div>
+                    )}
+                    {log?.next_plan?.trim() && (
+                      <div className="whitespace-pre-line text-xs text-brand-700">
+                        <span className="font-semibold">Dự kiến buổi sau:</span> {log.next_plan}
+                      </div>
+                    )}
                     {log?.note?.trim() && (
                       <div className="whitespace-pre-line rounded-md bg-gold-50 px-2.5 py-1.5 text-xs text-gold-800">
                         Ghi chú: {log.note}

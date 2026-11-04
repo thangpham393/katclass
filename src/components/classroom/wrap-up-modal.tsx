@@ -18,6 +18,7 @@ import {
 } from "@/lib/db";
 import { createHomework, fetchQuestions, MANUAL_HOMEWORK_OPTIONS, type LessonDetail } from "@/lib/db-content";
 import { saveTeachingLog } from "@/lib/db-tuition";
+import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
 import {
   countByReason,
   type ClassroomStudent,
@@ -183,6 +184,17 @@ export function WrapUpModal({
     lessons.map((l) => [l.unit ? `Bài ${l.unit}` : null, l.title].filter(Boolean).join(": ")).join("; "),
   );
   const [logNote, setLogNote] = useState("");
+  const [report, setReport] = useState<LessonReport>({ progress: null, homeworkNote: "", nextPlan: "" });
+
+  /** Tóm tắt bài vừa giao ở bước 3 để điền sẵn ô "BTVN đã giao" của bước 4. */
+  function homeworkSummary(): string {
+    if (hwSkip) return "";
+    const parts: string[] = [];
+    if (hwOnline && hwIds.length) parts.push(`${hwTitle.trim() || "Bài tập về nhà"} (${hwIds.length} câu trên hệ thống)`);
+    if (hwManual) parts.push(...hwManualTasks);
+    if (hwManual && hwTeacherNote.trim()) parts.push(hwTeacherNote.trim());
+    return parts.join("; ");
+  }
 
   async function next() {
     setBusy(true);
@@ -240,10 +252,12 @@ export function WrapUpModal({
           });
           setHwCreated(true);
         }
+        setReport((r) => (r.homeworkNote ? r : { ...r, homeworkNote: homeworkSummary() }));
         setStep("finish");
       } else {
         if (!content.trim()) throw new Error("Nhập nội dung bài học đã dạy.");
         if (end <= start) throw new Error("Giờ kết thúc phải sau giờ bắt đầu.");
+        if (!report.progress) throw new Error("Chọn tiến độ buổi học so với kế hoạch.");
         await saveTeachingLog({
           sessionId: session.id,
           teacherId: session.teacher?.id ?? currentUserId,
@@ -251,6 +265,9 @@ export function WrapUpModal({
           actualEnd: end,
           lessonContent: content.trim(),
           note: logNote,
+          progress: report.progress,
+          homeworkNote: report.homeworkNote,
+          nextPlan: report.nextPlan,
           createdBy: currentUserId,
         });
         onDone();
@@ -505,6 +522,7 @@ export function WrapUpModal({
                   className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
               </div>
+              <LessonReportFields value={report} onChange={setReport} />
               <div>
                 <div className="mb-1 text-sm font-semibold">Ghi chú (tùy chọn)</div>
                 <Input value={logNote} onChange={(e) => setLogNote(e.target.value)} placeholder="Lớp vào muộn 10 phút…" />
