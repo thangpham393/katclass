@@ -47,6 +47,8 @@ interface OpenHtml {
   name: string;
   html: string;
   save: HtmlSaveState;
+  /** % đã tải lên kho khi save = "saving". */
+  progress?: number;
   id: string | null;
 }
 
@@ -140,11 +142,17 @@ export function SlideStage({
     const lessonId = lessons[0]?.id ?? null;
     onOpen(file.name, lessonId);
     try {
-      const { slide, existed } = await saveHtmlSlide({ file, html, lessonId });
+      const { slide, existed } = await saveHtmlSlide({
+        file,
+        html,
+        lessonId,
+        onProgress: (pct) => setOpen((cur) => (cur?.html === html ? { ...cur, progress: pct } : cur)),
+      });
       setOpen((cur) => (cur?.html === html ? { ...cur, id: slide.id, save: existed ? "reused" : "saved" } : cur));
       if (!existed && slide.lesson_id) setMine((rows) => [...rows, slide]);
-    } catch {
+    } catch (e) {
       setOpen((cur) => (cur?.html === html ? { ...cur, save: "error" } : cur));
+      setError(`Chưa lưu được vào kho: ${e instanceof Error ? e.message : "lỗi không rõ"} (slide vẫn chiếu bình thường)`);
     }
   }
 
@@ -295,6 +303,7 @@ export function SlideStage({
           name={open.name}
           html={open.html}
           save={open.save}
+          saveProgress={open.progress}
           showChrome={Boolean(controlsHost)}
           onClose={() => setOpen(null)}
         />

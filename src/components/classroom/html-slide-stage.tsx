@@ -41,6 +41,7 @@ export function HtmlSlideStage({
   name,
   html,
   save,
+  saveProgress,
   showChrome,
   autoFocus = true,
   onClose,
@@ -48,6 +49,7 @@ export function HtmlSlideStage({
   name: string;
   html: string;
   save: HtmlSaveState;
+  saveProgress?: number;
   /** false ở chế độ trình chiếu: ẩn chip tên/đóng. */
   showChrome: boolean;
   /** false ở khung xem trước: không giành con trỏ khỏi trang. */
@@ -63,7 +65,11 @@ export function HtmlSlideStage({
   }, [html, autoFocus]);
 
   const saveNote = {
-    saving: { icon: Loader2, text: "Đang lưu vào kho…", cls: "animate-spin" },
+    saving: {
+      icon: Loader2,
+      text: `Đang lưu vào kho${saveProgress != null ? ` ${saveProgress}%` : "…"}`,
+      cls: "animate-spin",
+    },
     saved: { icon: CheckCircle2, text: "Đã lưu vào kho — GV khác dùng được", cls: "text-classroom-success" },
     reused: { icon: CheckCircle2, text: "Đã có trong kho", cls: "text-classroom-success" },
     stored: { icon: CheckCircle2, text: "Từ kho slide", cls: "text-classroom-success" },
@@ -89,7 +95,7 @@ export function HtmlSlideStage({
           <span className="max-w-[14rem] truncate font-semibold text-classroom-foreground">{name}</span>
           <span className="flex items-center gap-1" title={saveNote.text}>
             <SaveIcon className={cn("h-3.5 w-3.5", saveNote.cls)} />
-            <span className="hidden group-hover:inline">{saveNote.text}</span>
+            <span className={cn(save === "saving" ? "inline" : "hidden group-hover:inline")}>{saveNote.text}</span>
           </span>
           <button
             onClick={() => presentHtmlSlide(name, html)}

@@ -77,8 +77,14 @@ export function LessonSlideModal({
     const out: string[] = [];
     try {
       for (const [i, file] of list.entries()) {
-        setStep(`Đang tải lên ${file.name} (${i + 1}/${list.length})…`);
-        const { slide, existed } = await saveHtmlSlide({ file, html: await file.text(), lessonId: lesson.id });
+        const label = `Đang tải lên ${file.name} (${i + 1}/${list.length})`;
+        setStep(`${label}…`);
+        const { slide, existed } = await saveHtmlSlide({
+          file,
+          html: await file.text(),
+          lessonId: lesson.id,
+          onProgress: (pct) => setStep(`${label} — ${pct}%`),
+        });
         if (!existed || slide.lesson_id === lesson.id) continue;
         if (slide.lesson_id == null) {
           await attachHtmlSlide(slide.id, lesson.id);

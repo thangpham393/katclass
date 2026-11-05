@@ -14,6 +14,10 @@
 import { getSupabase } from "./supabase";
 
 const BUCKET = "html-slides";
+/** Trùng file_size_limit của bucket (0068) và giới hạn tải lên của dự án Supabase. */
+export const HTML_SLIDE_MAX_BYTES = 50 * 1024 * 1024;
+/** Supabase bắt buộc mỗi phần của upload TUS đúng 6MB. */
+const CHUNK = 6 * 1024 * 1024;
 const COLUMNS = "id, lesson_id, folder_id, name, path, size_bytes, created_by, created_at";
 
 export interface HtmlSlide {
@@ -70,6 +74,50 @@ export async function downloadHtmlSlide(slide: Pick<HtmlSlide, "path">): Promise
   return data.text();
 }
 
+function mb(bytes: number) {
+  return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
+}
+
+/**
+ * Tải file lên theo từng phần 6MB (giao thức TUS của Supabase). Slide HTML
+ * nhúng ảnh/tiếng thường 5–20MB: gửi một request duy nhất thì mạng chập chờn
+ * là treo rồi "Failed to fetch"; đi từng phần thì đứt mạng chỉ gửi lại phần
+ * hỏng, và có % tiến độ để hiện cho giáo viên.
+ */
+async function uploadResumable(path: string, blob: Blob, onProgress?: (pct: number) => void): Promise<void> {
+  const { Upload } = await import("tus-js-client");
+  const { data } = await getSupabase().auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("Phiên đăng nhập đã hết — tải lại trang rồi thử lại.");
+
+  await new Promise<void>((resolve, reject) => {
+    const upload = new Upload(blob, {
+      endpoint: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/upload/resumable`,
+      retryDelays: [0, 2000, 5000, 10000, 20000],
+      headers: { authorization: `Bearer ${token}`, "x-upsert": "false" },
+      uploadDataDuringCreation: true,
+      removeFingerprintOnSuccess: true,
+      chunkSize: CHUNK,
+      metadata: { bucketName: BUCKET, objectName: path, contentType: "text/html", cacheControl: "3600" },
+      onProgress: (sent, total) => onProgress?.(total ? Math.floor((sent / total) * 100) : 0),
+      onSuccess: () => resolve(),
+      onError: (err) => {
+        const status = (err as { originalResponse?: { getStatus(): number } }).originalResponse?.getStatus();
+        reject(
+          new Error(
+            status === 413
+              ? `File quá lớn (${mb(blob.size)}) — tối đa ${mb(HTML_SLIDE_MAX_BYTES)}.`
+              : status === 403 || status === 401
+                ? "Không có quyền tải slide lên (hoặc phiên đăng nhập đã hết — tải lại trang)."
+                : `Tải lên bị gián đoạn (${status ?? "mất kết nối"}). Kiểm tra mạng rồi thử lại.`,
+          ),
+        );
+      },
+    });
+    upload.start();
+  });
+}
+
 async function sha256(text: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
@@ -85,10 +133,15 @@ export async function saveHtmlSlide(opts: {
   lessonId: string | null;
   /** Bỏ trống thì lấy tên file. */
   name?: string;
+  /** % đã tải lên (0–100). */
+  onProgress?: (pct: number) => void;
   /** Bỏ trống thì DB tự xếp theo giáo trình của bài (trigger 0070). */
   folderId?: string | null;
 }): Promise<{ slide: HtmlSlide; existed: boolean }> {
   const sb = getSupabase();
+  if (opts.file.size > HTML_SLIDE_MAX_BYTES) {
+    throw new Error(`“${opts.file.name}” nặng ${mb(opts.file.size)} — tối đa ${mb(HTML_SLIDE_MAX_BYTES)}. Nén bớt ảnh/tiếng trong slide rồi thử lại.`);
+  }
   const hash = await sha256(opts.html);
 
   const found = await sb.from("html_slides").select(COLUMNS).eq("sha256", hash).maybeSingle();
@@ -97,8 +150,7 @@ export async function saveHtmlSlide(opts: {
 
   const path = `${opts.lessonId ?? "chung"}/${crypto.randomUUID()}.html`;
   const blob = new Blob([opts.html], { type: "text/html" });
-  const up = await sb.storage.from(BUCKET).upload(path, blob, { contentType: "text/html" });
-  if (up.error) throw up.error;
+  await uploadResumable(path, blob, opts.onProgress);
 
   const { data, error } = await sb
     .from("html_slides")

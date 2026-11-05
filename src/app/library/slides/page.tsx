@@ -108,9 +108,11 @@ export default function SlideLibraryPage() {
     const skipped: string[] = [];
     try {
       for (const [i, file] of list.entries()) {
-        setStep(`Đang tải lên ${file.name} (${i + 1}/${list.length})…`);
+        const label = `Đang tải lên ${file.name} (${i + 1}/${list.length})`;
+        setStep(`${label}…`);
         const { slide, existed } = await saveHtmlSlide({
           file,
+          onProgress: (pct) => setStep(`${label} — ${pct}%`),
           html: await file.text(),
           lessonId: null,
           folderId: folder?.id ?? null,

@@ -158,7 +158,12 @@ export function SessionSlidePicker({
     setError(null);
     setBusy(`Đang tải lên ${file.name}…`);
     try {
-      const { slide, existed } = await saveHtmlSlide({ file, html: await file.text(), lessonId: lessonIds[0] ?? null });
+      const { slide, existed } = await saveHtmlSlide({
+        file,
+        html: await file.text(),
+        lessonId: lessonIds[0] ?? null,
+        onProgress: (pct) => setBusy(`Đang tải lên ${file.name} — ${pct}%`),
+      });
       if (!existed && slide.lesson_id && lessonIds.includes(slide.lesson_id)) {
         setLessonSlides((rows) => [...rows, slide]);
       }
