@@ -14,8 +14,6 @@ import {
   Gamepad2,
   Maximize2,
   Minimize2,
-  Monitor,
-  MonitorOff,
   MoreHorizontal,
   PenLine,
   Presentation,
@@ -135,8 +133,6 @@ export default function ClassroomPage() {
   const [saving, setSaving] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const [fullscreen, setFullscreen] = useState(false);
-  /** Ẩn khung chiếu khi giáo viên trình chiếu bằng PowerPoint/cửa sổ riêng ra máy chiếu. */
-  const [slideOff, setSlideOff] = useState(false);
   /** Danh sách học viên: popover thả xuống từ nút trên topbar. */
   const [rosterOpen, setRosterOpen] = useState(false);
   /** Ghim popover học viên để nó không tự đóng khi bấm ra ngoài. */
@@ -706,31 +702,21 @@ export default function ClassroomPage() {
         không tải lại và đồng hồ đang chạy không bị reset.
       */}
       <div className="relative min-h-0 flex-1">
-        {slideOff ? (
-          <div className="h-full w-full p-3 sm:p-4">
-            <ExternalPresentPanel
-              students={students}
-              totals={totals}
-              onShowSlide={() => setSlideOff(false)}
-            />
-          </div>
-        ) : (
-          <SlideStage
-            sessionSlide={s.slide_url}
-            lessons={lessons.data ?? []}
-            controlsHost={presenting ? null : controlsHost}
-            onOpen={(l) =>
-              user &&
-              logActivity({
-                session_id: sessionId,
-                kind: "slide",
-                title: l.unit != null ? `Bài ${l.unit}: ${l.title}` : l.title,
-                ref_id: l.id,
-                created_by: user.id,
-              })
-            }
-          />
-        )}
+        <SlideStage
+          sessionSlideId={s.html_slide_id}
+          lessons={lessons.data ?? []}
+          controlsHost={presenting ? null : controlsHost}
+          onOpen={(title, lessonId) =>
+            user &&
+            logActivity({
+              session_id: sessionId,
+              kind: "slide",
+              title,
+              ref_id: lessonId,
+              created_by: user.id,
+            })
+          }
+        />
 
         <ToolOverlay
           title="Từ vựng bài học"
@@ -865,14 +851,6 @@ export default function ClassroomPage() {
                       label={fullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
                       onClick={() => {
                         toggleFullscreen();
-                        setMoreOpen(false);
-                      }}
-                    />
-                    <MoreItem
-                      icon={slideOff ? Monitor : MonitorOff}
-                      label={slideOff ? "Hiện khung chiếu trong app" : "Chiếu ngoài (PowerPoint máy chiếu)"}
-                      onClick={() => {
-                        setSlideOff((v) => !v);
                         setMoreOpen(false);
                       }}
                     />
@@ -1039,71 +1017,6 @@ function AnsweringBar({
           Gọi bạn khác
         </button>
       </div>
-    </div>
-  );
-}
-
-/**
- * Màn thay thế khung chiếu khi giáo viên trình chiếu bằng phần mềm ngoài
- * (PowerPoint trên máy hoặc cửa sổ PowerPoint Online kéo sang máy chiếu) — giữ
- * nguyên hiệu ứng của slide, còn cửa sổ này thu nhỏ trên laptop để điều khiển
- * lớp: gọi tên, cộng điểm, bấm giờ.
- */
-function ExternalPresentPanel({
-  students,
-  totals,
-  onShowSlide,
-}: {
-  students: ClassroomStudent[];
-  totals: Record<string, number>;
-  onShowSlide: () => void;
-}) {
-  const top = students
-    .map((s) => ({ ...s, points: totals[s.id] ?? 0 }))
-    .filter((s) => s.points !== 0)
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 5);
-
-  return (
-    <div className="flex h-full flex-col gap-4 overflow-y-auto rounded-2xl border border-classroom-border-muted bg-classroom-surface p-4 sm:p-6">
-      <div>
-        <div className="flex items-center gap-2 text-lg font-bold text-classroom-foreground">
-          <MonitorOff className="h-5 w-5 text-classroom-accent" /> Đang chiếu bằng phần mềm ngoài
-        </div>
-        <p className="mt-1 max-w-2xl text-sm text-classroom-muted-foreground">
-          Mở slide bằng PowerPoint trên máy (hoặc nút “Cửa sổ trình chiếu”) rồi kéo sang màn
-          hình máy chiếu — hiệu ứng, hoạt ảnh giữ nguyên. Cửa sổ này để trên laptop, thu nhỏ
-          lại vẫn dùng được: gọi tên, cộng điểm, bấm giờ, chốt buổi.
-        </p>
-      </div>
-
-      <div className="min-h-0 flex-1 rounded-xl border border-classroom-border-muted bg-classroom-background p-4">
-        <div className="text-xs font-semibold uppercase tracking-wide text-classroom-muted-foreground">
-          Bảng ★ buổi này
-        </div>
-        {top.length === 0 ? (
-          <p className="mt-3 text-sm text-classroom-muted-foreground">
-            Chưa cộng điểm cho ai — mở nút “Học viên” trên thanh trên rồi chạm tên là cộng.
-          </p>
-        ) : (
-          <div className="mt-3 space-y-2">
-            {top.map((s, i) => (
-              <div key={s.id} className="flex items-center gap-3">
-                <span className="w-5 text-center text-sm font-bold text-classroom-muted-foreground">{i + 1}</span>
-                <Avatar name={s.name} src={s.avatar ?? undefined} size={30} className="ring-classroom-border" />
-                <span className="min-w-0 flex-1 truncate text-sm font-semibold text-classroom-foreground">{s.name}</span>
-                <span className="rounded-lg bg-gold-600/20 px-2 py-1 text-sm font-extrabold tabular-nums text-classroom-warning">
-                  {s.points} ★
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <Button variant="outline" onClick={onShowSlide} className="self-start">
-        <Monitor className="h-4 w-4" /> Quay lại khung chiếu trong app
-      </Button>
     </div>
   );
 }

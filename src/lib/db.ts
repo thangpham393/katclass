@@ -746,6 +746,8 @@ export interface SessionRow {
   /** Chuẩn bị trước buổi dạy (migration 0022) */
   slide_url: string | null;
   prep_note: string | null;
+  /** Slide HTML chọn sẵn cho buổi (0069) — vào lớp mở đầu tiên */
+  html_slide_id: string | null;
   room: Pick<RoomRow, "id" | "name"> | null;
   teacher: Pick<ProfileRow, "id" | "name"> | null;
   class: {
@@ -763,7 +765,7 @@ export const SESSION_STATUS_LABELS: Record<SessionRow["status"], string> = {
 };
 
 const SESSION_SELECT = `
-  id, class_id, session_no, date, start_time, end_time, status, type, note, slide_url, prep_note,
+  id, class_id, session_no, date, start_time, end_time, status, type, note, slide_url, prep_note, html_slide_id,
   room:rooms ( id, name ),
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
   class:classes ( id, name, course:courses ( id, name, level, total_sessions ), textbook:textbooks ( id, name ) )

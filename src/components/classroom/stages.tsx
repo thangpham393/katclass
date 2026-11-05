@@ -4,369 +4,260 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Dices,
-  ExternalLink,
   Eye,
   EyeOff,
   FolderOpen,
-  Link as LinkIcon,
+  Loader2,
   MonitorOff,
-  MonitorUp,
   Pause,
   Play,
   Presentation,
   RotateCcw,
   Search,
+  Trash2,
+  Upload,
   Volume2,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
-  EMBED_MODE_LABELS,
-  embedBlockReason,
-  presentUrl,
   speakZh,
-  toEmbedUrl,
   type ClassroomStudent,
-  type EmbedMode,
 } from "@/lib/db-classroom";
 import { fetchVocabItems, type LessonDetail, type VocabRow } from "@/lib/db-content";
-import { fetchLessonDecks, type LessonDeck } from "@/lib/db-decks";
-import { DeckStage } from "./deck-stage";
+import { useAuth } from "@/components/auth/auth-provider";
+import {
+  deleteHtmlSlide,
+  downloadHtmlSlide,
+  fetchHtmlSlide,
+  fetchLessonHtmlSlides,
+  isHtmlFile,
+  saveHtmlSlide,
+  searchHtmlSlides,
+  type HtmlSlide,
+} from "@/lib/db-html-slides";
+import { HtmlSlideStage, presentHtmlSlide, type HtmlSaveState } from "./html-slide-stage";
 
 /* ===================== Trình chiếu slide ===================== */
 
-/** File đang chiếu lấy thẳng từ máy giáo viên (không tải lên đâu cả). */
-interface LocalDeck {
+/** Slide HTML đang chiếu: nội dung đã tải về + trạng thái lưu kho. */
+interface OpenHtml {
   name: string;
-  kind: "pdf" | "images";
-  urls: string[];
+  html: string;
+  save: HtmlSaveState;
+  id: string | null;
 }
 
 /**
- * Chiếu slide của bài học đã gán cho buổi (Canva/Google Slides nhúng iframe),
- * link dán tạm, HOẶC file PDF/ảnh mở thẳng từ máy giáo viên — đường lui khi
- * slide quá nặng, Google từ chối xem trước hoặc phòng học mất mạng.
+ * Trình chiếu bằng slide HTML một file. Giáo viên chọn file .html trên máy →
+ * chiếu ngay, đồng thời file tự lưu vào kho chung (gắn với bài của buổi) để
+ * giáo viên khác mở lại mà không phải tải lên nữa.
  *
- * Slide là nhân vật chính: khung chiếu chiếm trọn vùng nội dung, còn mọi nút
- * điều khiển (chọn nguồn, dán link, nhận màn hình, file từ máy) được bắn lên
- * topbar qua `controlsHost`. Ở chế độ trình chiếu, cha truyền `controlsHost`
- * null → không có nút nào được dựng, màn hình sạch hoàn toàn.
+ * Slide là nhân vật chính: khung chiếu chiếm trọn vùng nội dung, còn nút chọn
+ * slide được bắn lên topbar qua `controlsHost`. Ở chế độ trình chiếu, cha
+ * truyền `controlsHost` null → không có nút nào được dựng, màn hình sạch.
  */
 export function SlideStage({
-  sessionSlide,
+  sessionSlideId,
   lessons,
   onOpen,
   controlsHost,
 }: {
-  /** Link slide giáo viên chuẩn bị sẵn cho buổi (ưu tiên hơn slide của bài học). */
-  sessionSlide?: string | null;
+  /** Slide chọn sẵn ở trang Chuẩn bị buổi — mở trước slide của bài. */
+  sessionSlideId?: string | null;
   lessons: LessonDetail[];
-  onOpen: (lesson: LessonDetail) => void;
+  /** Ghi nhật ký buổi khi mở một slide. */
+  onOpen: (title: string, lessonId: string | null) => void;
   /** Ô trên topbar để cắm thanh điều khiển vào; null = ẩn (chế độ trình chiếu). */
   controlsHost?: HTMLElement | null;
 }) {
-  const withSlide = lessons.filter((l) => l.slide_embed_url);
-  const [current, setCurrent] = useState<string>(sessionSlide ? "__session" : withSlide[0]?.id ?? "");
-  const [adhoc, setAdhoc] = useState("");
-  const [adhocUrl, setAdhocUrl] = useState("");
-  const [mode, setMode] = useState<EmbedMode>("auto");
-  const [reloadKey, setReloadKey] = useState(0);
-  const [local, setLocal] = useState<LocalDeck | null>(null);
-  /** Bộ slide có tiếng đã nạp sẵn trong thư viện cho các bài của buổi này. */
-  const [decks, setDecks] = useState<LessonDeck[]>([]);
-  const [deck, setDeck] = useState<LessonDeck | null>(null);
-  const [page, setPage] = useState(0);
+  const { user, can } = useAuth();
+  const [open, setOpen] = useState<OpenHtml | null>(null);
+  const openRef = useRef(open);
+  openRef.current = open;
+  /** Slide gắn với các bài của buổi — hiện lên đầu. */
+  const [mine, setMine] = useState<HtmlSlide[]>([]);
+  /** Kết quả tìm trong kho chung. */
+  const [store, setStore] = useState<HtmlSlide[]>([]);
+  const [query, setQuery] = useState("");
+  const [menu, setMenu] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-  const [sharing, setSharing] = useState(false);
-  const [shareError, setShareError] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  /** Menu đang mở trên topbar: chọn nguồn slide hoặc ô dán link. */
-  const [menu, setMenu] = useState<"deck" | "link" | null>(null);
-  const [helpOpen, setHelpOpen] = useState(false);
+  const lessonKey = lessons.map((l) => l.id).join(",");
 
-  // Bộ slide của các bài đã gán cho buổi — ưu tiên chiếu vì có sẵn nút tiếng
+  // Slide của buổi + của các bài đã gán; chưa chiếu gì thì mở luôn: slide
+  // chọn sẵn cho buổi trước, không có thì slide đầu tiên của bài
   useEffect(() => {
     const ids = lessons.map((l) => l.id);
-    if (!ids.length) return;
+    if (!ids.length && !sessionSlideId) return;
     let dead = false;
-    fetchLessonDecks(ids)
-      .then((rows) => {
-        if (!dead) setDecks(rows);
+    Promise.all([
+      fetchLessonHtmlSlides(ids),
+      sessionSlideId ? fetchHtmlSlide(sessionSlideId).catch(() => null) : Promise.resolve(null),
+    ])
+      .then(([rows, picked]) => {
+        if (dead) return;
+        const list = picked && !rows.some((r) => r.id === picked.id) ? [picked, ...rows] : rows;
+        setMine(list);
+        const first = (picked && list.find((r) => r.id === picked.id)) ?? list[0];
+        if (first && !openRef.current) openStored(first);
       })
       .catch(() => {});
     return () => {
       dead = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lessons.map((l) => l.id).join(",")]);
+  }, [lessonKey, sessionSlideId]);
 
-  // Thu hồi blob URL khi đổi/đóng file để không rò bộ nhớ trong buổi dài
+  // Tìm trong kho khi menu đang mở (chờ gõ xong mới hỏi)
   useEffect(() => {
+    if (!menu) return;
+    let dead = false;
+    const t = window.setTimeout(() => {
+      searchHtmlSlides(query)
+        .then((rows) => !dead && setStore(rows))
+        .catch(() => {});
+    }, 250);
     return () => {
-      local?.urls.forEach((u) => URL.revokeObjectURL(u));
+      dead = true;
+      window.clearTimeout(t);
     };
-  }, [local]);
+  }, [menu, query]);
 
-  // Ảnh: lật trang bằng phím mũi tên / Space
-  useEffect(() => {
-    if (local?.kind !== "images") return;
-    function onKey(e: KeyboardEvent) {
-      const el = e.target as HTMLElement | null;
-      if (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)) return;
-      if (["ArrowRight", "ArrowDown", " "].includes(e.key)) {
-        e.preventDefault();
-        setPage((p) => Math.min(p + 1, (local?.urls.length ?? 1) - 1));
-      } else if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
-        e.preventDefault();
-        setPage((p) => Math.max(p - 1, 0));
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [local]);
-
-  function openLocal(files: FileList | null) {
-    if (!files?.length) return;
-    setShareError(null);
-    setDeck(null);
-    local?.urls.forEach((u) => URL.revokeObjectURL(u));
-    const list = Array.from(files);
-    const deck = list.find((f) => /\.pptx?$/i.test(f.name));
-    if (deck) {
-      // Vẽ lại .pptx ngay trong trình duyệt cho ra bố cục vỡ (chữ bị bẻ dọc),
-      // nên slide PowerPoint đi đường thư viện: nạp sẵn PDF + tiếng một lần.
-      setShareError("File PowerPoint chiếu qua Thư viện: vào Thư viện › Bài học › Bộ slide có tiếng để nạp .pptx + bản PDF một lần, sau đó chọn ngay trên thanh này.");
+  async function openFile(files: FileList | null) {
+    const file = files ? Array.from(files).find(isHtmlFile) : undefined;
+    if (!file) {
+      if (files?.length) setError("Chỉ nhận file slide .html");
       return;
     }
-    const pdf = list.find((f) => f.type === "application/pdf" || /\.pdf$/i.test(f.name));
-    if (pdf) {
-      setLocal({ name: pdf.name, kind: "pdf", urls: [URL.createObjectURL(pdf)] });
-    } else {
-      const imgs = list
-        .filter((f) => f.type.startsWith("image/"))
-        .sort((a, b) => a.name.localeCompare(b.name, "vi", { numeric: true }));
-      if (!imgs.length) return;
-      setLocal({
-        name: imgs.length > 1 ? `${imgs.length} ảnh slide` : imgs[0].name,
-        kind: "images",
-        urls: imgs.map((f) => URL.createObjectURL(f)),
-      });
-    }
-    setPage(0);
-  }
-
-  /**
-   * Nhận hình từ chính máy giáo viên: PowerPoint chạy thật (đủ hiệu ứng, hoạt
-   * ảnh), màn hình lớp học chỉ soi lại cửa sổ đó rồi phủ công cụ lên trên.
-   * Nên chọn tab "Cửa sổ" → PowerPoint, tránh chọn "Toàn màn hình" vì sẽ soi
-   * gương chính cửa sổ này.
-   */
-  async function startShare() {
-    setShareError(null);
+    setError(null);
+    setMenu(false);
+    const html = await file.text();
+    setOpen({ name: file.name.replace(/\.html?$/i, ""), html, save: "saving", id: null });
+    const lessonId = lessons[0]?.id ?? null;
+    onOpen(file.name, lessonId);
     try {
-      const media = navigator.mediaDevices as MediaDevices & {
-        getDisplayMedia?: (c: MediaStreamConstraints) => Promise<MediaStream>;
-      };
-      if (!media?.getDisplayMedia) {
-        setShareError("Trình duyệt này không hỗ trợ nhận chia sẻ màn hình. Dùng Chrome/Edge/Cốc Cốc bản mới.");
-        return;
-      }
-      const stream = await media.getDisplayMedia({
-        video: { frameRate: { ideal: 30 } } as MediaTrackConstraints,
-        audio: false,
-      });
-      streamRef.current = stream;
-      setSharing(true);
-      closeLocal();
-      setDeck(null);
-      stream.getVideoTracks()[0]?.addEventListener("ended", () => {
-        streamRef.current = null;
-        setSharing(false);
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play().catch(() => {});
-      }
+      const { slide, existed } = await saveHtmlSlide({ file, html, lessonId });
+      setOpen((cur) => (cur?.html === html ? { ...cur, id: slide.id, save: existed ? "reused" : "saved" } : cur));
+      if (!existed && slide.lesson_id) setMine((rows) => [...rows, slide]);
+    } catch {
+      setOpen((cur) => (cur?.html === html ? { ...cur, save: "error" } : cur));
+    }
+  }
+
+  async function openStored(s: HtmlSlide) {
+    setMenu(false);
+    setError(null);
+    setBusy(true);
+    try {
+      const html = await downloadHtmlSlide(s);
+      setOpen({ name: s.name, html, save: "stored", id: s.id });
+      onOpen(s.name, s.lesson_id);
+    } catch {
+      setError("Không tải được slide từ kho. Kiểm tra mạng rồi thử lại.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function remove(s: HtmlSlide) {
+    if (!window.confirm(`Xoá slide “${s.name}” khỏi kho? Giáo viên khác cũng sẽ không thấy nữa.`)) return;
+    try {
+      await deleteHtmlSlide(s);
+      setMine((rows) => rows.filter((r) => r.id !== s.id));
+      setStore((rows) => rows.filter((r) => r.id !== s.id));
+      setOpen((cur) => (cur?.id === s.id ? { ...cur, id: null, save: "error" } : cur));
     } catch (e) {
-      // Người dùng bấm Huỷ trong hộp chọn màn hình → không coi là lỗi
-      if ((e as DOMException)?.name !== "NotAllowedError") {
-        setShareError("Không nhận được màn hình. Thử lại và chọn cửa sổ PowerPoint.");
-      }
+      setError(e instanceof Error ? e.message : "Không xoá được slide");
     }
   }
 
-  function stopShare() {
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-    setSharing(false);
-  }
-
-  // Gắn lại luồng khi <video> vừa được render (lúc bật chia sẻ)
-  useEffect(() => {
-    if (sharing && videoRef.current && streamRef.current) {
-      videoRef.current.srcObject = streamRef.current;
-      videoRef.current.play().catch(() => {});
-    }
-  }, [sharing]);
-
-  useEffect(() => () => streamRef.current?.getTracks().forEach((t) => t.stop()), []);
-
-  function closeLocal() {
-    local?.urls.forEach((u) => URL.revokeObjectURL(u));
-    setLocal(null);
-  }
-
-  /** Chiếu một bộ slide của thư viện: tắt file máy / màn hình đang soi. */
-  function openDeck(d: LessonDeck) {
-    closeLocal();
-    stopShare();
-    setAdhocUrl("");
-    setDeck(d);
-    setMenu(null);
-    const owner = lessons.find((l) => l.id === d.lesson_id);
-    if (owner) onOpen(owner);
-  }
-
-  useEffect(() => {
-    if (!current && sessionSlide) {
-      setCurrent("__session");
-    } else if (!current && withSlide[0]) {
-      setCurrent(withSlide[0].id);
-      onOpen(withSlide[0]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withSlide.length, sessionSlide]);
-
-  const lesson = withSlide.find((l) => l.id === current);
-  const url =
-    adhocUrl || (current === "__session" ? sessionSlide ?? "" : lesson?.slide_embed_url ?? "");
-  // Link chia sẻ thông thường (…/edit?slide=…) tự đổi sang dạng nhúng iframe
-  const embed = toEmbedUrl(url, mode);
-  const isGoogle = /docs\.google\.com|drive\.google\.com/.test(embed);
-  // Nguồn biết chắc bị chặn nhúng (OneDrive/SharePoint) → chỉ dẫn thay vì iframe lỗi
-  const blocked = embedBlockReason(url);
-
-  const deckLabel = deck
-    ? deck.name
-    : adhocUrl
-    ? "Link vừa dán"
-    : current === "__session"
-      ? "Slide của buổi"
-      : lesson
-        ? `${lesson.unit ? `Bài ${lesson.unit}: ` : ""}${lesson.title}`
-        : "Chọn slide";
-  const hasDecks = Boolean(sessionSlide) || withSlide.length > 0 || decks.length > 0;
+  const canDelete = (s: HtmlSlide) => s.created_by === user?.id || can("library.manage");
+  const lessonName = (id: string | null) => {
+    const l = lessons.find((x) => x.id === id);
+    return l ? `${l.unit ? `Bài ${l.unit}: ` : ""}${l.title}` : null;
+  };
 
   const btn =
     "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-classroom-border bg-classroom-surface px-2.5 text-[13px] font-semibold text-classroom-secondary transition-colors hover:bg-classroom-muted";
 
   const controls = (
     <div className="flex items-center gap-2">
-      {hasDecks && (
-        <div className="relative">
-          <button
-            onClick={() => setMenu((m) => (m === "deck" ? null : "deck"))}
-            className={cn(btn, "max-w-[16rem]")}
-            title="Chọn slide đang chiếu"
-          >
-            <Presentation className="h-4 w-4 shrink-0 text-classroom-accent" />
-            <span className="truncate">{deckLabel}</span>
-            <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
-          </button>
-          {menu === "deck" && (
-            <div className="absolute left-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-classroom-border bg-classroom-surface p-1 shadow-soft">
-              {decks.map((d) => (
-                <DeckItem
-                  key={d.id}
-                  label={`♪ ${d.name}`}
-                  active={deck?.id === d.id}
-                  onClick={() => openDeck(d)}
-                />
-              ))}
-              {sessionSlide && (
-                <DeckItem
-                  label="★ Slide của buổi"
-                  active={current === "__session" && !adhocUrl}
-                  onClick={() => {
-                    setCurrent("__session");
-                    setAdhocUrl("");
-                    setDeck(null);
-                    setMenu(null);
-                  }}
-                />
-              )}
-              {withSlide.map((l) => (
-                <DeckItem
-                  key={l.id}
-                  label={`${l.unit ? `Bài ${l.unit}: ` : ""}${l.title}`}
-                  active={l.id === current && !adhocUrl}
-                  onClick={() => {
-                    setCurrent(l.id);
-                    setAdhocUrl("");
-                    setDeck(null);
-                    setMenu(null);
-                    onOpen(l);
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
       <div className="relative">
         <button
-          onClick={() => setMenu((m) => (m === "link" ? null : "link"))}
-          className={cn(btn, menu === "link" && "bg-classroom-muted")}
-          title="Dán link Google Slides / Drive / Canva / YouTube để chiếu ngay"
+          onClick={() => setMenu((m) => !m)}
+          className={cn(btn, "max-w-[18rem]", menu && "bg-classroom-muted")}
+          title="Chọn slide HTML trong kho hoặc tải file mới lên"
         >
-          <LinkIcon className="h-4 w-4" />
-          <span className="hidden lg:inline">Dán link Google Slides / Drive</span>
-          <span className="lg:hidden">Dán link</span>
+          {busy ? (
+            <Loader2 className="h-4 w-4 shrink-0 animate-spin text-classroom-accent" />
+          ) : (
+            <Presentation className="h-4 w-4 shrink-0 text-classroom-accent" />
+          )}
+          <span className="truncate">{open?.name ?? "Chọn slide"}</span>
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
         </button>
-        {menu === "link" && (
-          <div className="absolute left-0 top-full z-50 mt-2 w-80 rounded-xl border border-classroom-border bg-classroom-surface p-3 shadow-soft">
-            <input
-              autoFocus
-              value={adhoc}
-              onChange={(e) => setAdhoc(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && adhoc.trim()) {
-                  setAdhocUrl(adhoc.trim());
-                  setDeck(null);
-                  setMenu(null);
-                }
-              }}
-              placeholder="Dán link Google Slides / Drive / Canva / YouTube…"
-              className="h-9 w-full rounded-lg border border-classroom-border bg-classroom-background px-3 text-sm text-classroom-foreground placeholder:text-classroom-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-            />
-            <div className="mt-2 flex items-center gap-2">
-              <Button
-                size="sm"
-                onClick={() => {
-                  setAdhocUrl(adhoc.trim());
-                  setDeck(null);
-                  setMenu(null);
-                }}
-                disabled={!adhoc.trim()}
-              >
-                Chiếu link này
-              </Button>
-              {adhocUrl && (
-                <button
-                  onClick={() => {
-                    setAdhocUrl("");
-                    setAdhoc("");
-                  }}
-                  className="rounded-lg bg-classroom-muted px-2.5 py-1.5 text-xs font-semibold text-classroom-secondary hover:bg-classroom-hover"
-                >
-                  Bỏ link
-                </button>
+        {menu && (
+          <div className="absolute left-0 top-full z-50 mt-2 w-80 rounded-xl border border-classroom-border bg-classroom-surface p-2 shadow-soft">
+            <Button size="sm" className="w-full" onClick={() => fileInput.current?.click()}>
+              <Upload className="h-4 w-4" /> Tải file slide
+            </Button>
+            <p className="px-1 pt-1.5 text-[11px] leading-snug text-classroom-muted-foreground">
+              File tự lưu vào kho
+              {lessons[0] ? ` (gắn với ${lessonName(lessons[0].id)})` : ""} — giáo viên khác chọn lại ở
+              đây, không phải tải lên nữa.
+            </p>
+
+            {mine.length > 0 && (
+              <>
+                <div className="mt-3 px-1 text-[11px] font-bold uppercase tracking-wide text-classroom-muted-foreground">
+                  Slide của buổi này
+                </div>
+                {mine.map((s) => (
+                  <SlideItem
+                    key={s.id}
+                    label={s.name}
+                    hint={s.id === sessionSlideId ? "Chọn sẵn cho buổi" : lessonName(s.lesson_id)}
+                    active={open?.id === s.id}
+                    onClick={() => openStored(s)}
+                    onDelete={canDelete(s) ? () => remove(s) : undefined}
+                  />
+                ))}
+              </>
+            )}
+
+            <div className="mt-3 px-1 text-[11px] font-bold uppercase tracking-wide text-classroom-muted-foreground">
+              Kho slide HTML
+            </div>
+            <div className="relative mt-1">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-classroom-muted-foreground" />
+              <input
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm theo tên slide…"
+                className="h-8 w-full rounded-lg border border-classroom-border bg-classroom-background pl-8 pr-3 text-sm text-classroom-foreground placeholder:text-classroom-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              />
+            </div>
+            <div className="mt-1 max-h-64 overflow-y-auto">
+              {store.length === 0 ? (
+                <p className="px-2 py-3 text-center text-xs text-classroom-muted-foreground">
+                  {query.trim() ? "Không tìm thấy slide nào" : "Kho chưa có slide nào"}
+                </p>
+              ) : (
+                store.map((s) => (
+                  <SlideItem
+                    key={s.id}
+                    label={s.name}
+                    hint={new Date(s.created_at).toLocaleDateString("vi-VN")}
+                    active={open?.id === s.id}
+                    onClick={() => openStored(s)}
+                    onDelete={canDelete(s) ? () => remove(s) : undefined}
+                  />
+                ))
               )}
             </div>
           </div>
@@ -374,247 +265,107 @@ export function SlideStage({
       </div>
 
       <button
-        onClick={() =>
-          url && window.open(presentUrl(url), "kat-present", "noopener,noreferrer,width=1280,height=760")
-        }
-        disabled={!url}
+        onClick={() => open && presentHtmlSlide(open.name, open.html)}
+        disabled={!open}
         className={cn(btn, "disabled:opacity-40")}
         title="Mở cửa sổ trình chiếu riêng để kéo sang màn hình máy chiếu"
       >
         <MonitorOff className="h-4 w-4" />
         <span className="hidden lg:inline">Chiếu ra màn hình</span>
       </button>
-
-      <button
-        onClick={() => fileInput.current?.click()}
-        className={btn}
-        title="Chiếu file PDF hoặc ảnh slide ngay từ máy — không cần mạng, không giới hạn dung lượng"
-      >
-        <FolderOpen className="h-4 w-4" />
-        <span className="hidden lg:inline">File từ máy</span>
-      </button>
-
-      <button
-        onClick={sharing ? stopShare : startShare}
-        className={cn(btn, sharing && "border-gold-500/60 bg-gold-600/20 text-classroom-warning")}
-        title="Chiếu bằng PowerPoint trên máy rồi soi cửa sổ đó vào đây — giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên"
-      >
-        <MonitorUp className="h-4 w-4" />
-        <span className="hidden xl:inline">{sharing ? "Dừng nhận màn hình" : "Nhận màn hình"}</span>
-      </button>
     </div>
   );
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-classroom-canvas">
-      {/* Ô chọn file dùng chung cho nút trên topbar và nút gợi ý giữa khung */}
       <input
         ref={fileInput}
         type="file"
-        accept=".pptx,.ppt,application/pdf,image/*"
-        multiple
+        accept=".html,.htm,text/html"
         className="hidden"
         onChange={(e) => {
-          openLocal(e.target.files);
+          openFile(e.target.files);
           e.target.value = "";
         }}
       />
       {controlsHost ? createPortal(controls, controlsHost) : null}
 
-      {deck ? (
-        <DeckStage deck={deck} onClose={() => setDeck(null)} />
-      ) : sharing ? (
-        <>
-          <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-contain" />
-          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-classroom-background/70 px-3 py-1.5 text-xs text-classroom-secondary backdrop-blur">
-            <span className="font-semibold text-classroom-warning">● Đang soi màn hình máy tính</span>
-            <span className="hidden text-classroom-muted-foreground sm:inline">
-              Bấm chuyển slide ngay trên PowerPoint (hoặc bút trình chiếu) — hình ở đây tự cập nhật.
-            </span>
-            <button
-              onClick={stopShare}
-              className="ml-auto inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold hover:bg-classroom-hover"
-            >
-              <X className="h-3.5 w-3.5" /> Dừng
-            </button>
-          </div>
-        </>
-      ) : local ? (
-        <>
-          {local.kind === "pdf" ? (
-            <iframe src={`${local.urls[0]}#toolbar=1&view=FitH`} className="h-full w-full" title={local.name} />
-          ) : (
-            // Bấm lên ảnh để lật trang như trình chiếu: mép trái lùi, còn lại tiến
-            <div
-              onClick={(e) => {
-                const r = e.currentTarget.getBoundingClientRect();
-                const back = e.clientX - r.left < r.width * 0.2;
-                setPage((p) => Math.max(0, Math.min(back ? p - 1 : p + 1, local.urls.length - 1)));
-              }}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                setPage((p) => Math.max(0, p - 1));
-              }}
-              className="h-full w-full cursor-pointer"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={local.urls[page]} alt={`Slide ${page + 1}`} className="h-full w-full object-contain" />
-            </div>
-          )}
-          <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-classroom-background/70 px-3 py-1.5 text-xs text-classroom-secondary backdrop-blur">
-            <span className="truncate font-semibold text-classroom-foreground">{local.name}</span>
-            {local.kind === "images" && (
-              <span className="flex items-center gap-1">
-                <button
-                  onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  disabled={page === 0}
-                  className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-                <span className="tabular-nums">
-                  {page + 1}/{local.urls.length}
-                </span>
-                <button
-                  onClick={() => setPage((p) => Math.min(local.urls.length - 1, p + 1))}
-                  disabled={page >= local.urls.length - 1}
-                  className="grid h-7 w-7 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover disabled:opacity-40"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-                <span className="hidden text-classroom-muted-foreground sm:inline">· phím ← →</span>
-              </span>
-            )}
-            <button
-              onClick={closeLocal}
-              className="ml-auto inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold hover:bg-classroom-hover"
-            >
-              <X className="h-3.5 w-3.5" /> Đóng file
-            </button>
-          </div>
-        </>
-      ) : url && blocked ? (
-        <div className="grid h-full place-items-center p-8 text-center text-classroom-muted-foreground">
-          <div className="max-w-lg">
-            <div className="mb-2 text-lg font-bold text-classroom-foreground">Nguồn này chặn nhúng</div>
-            <p className="text-sm leading-relaxed">{blocked}</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <Button
-                onClick={() =>
-                  window.open(url, "kat-present", "noopener,noreferrer,width=1280,height=760")
-                }
-              >
-                <ExternalLink className="h-4 w-4" /> Mở cửa sổ trình chiếu
-              </Button>
-              <Button variant="secondary" onClick={() => fileInput.current?.click()}>
-                <FolderOpen className="h-4 w-4" /> Chiếu file từ máy
-              </Button>
-            </div>
-          </div>
-        </div>
-      ) : url ? (
-        <iframe
-          key={`${embed}-${reloadKey}`}
-          src={embed}
-          className="h-full w-full"
-          allow="fullscreen; autoplay"
-          allowFullScreen
-          title="Slide bài học"
+      {open ? (
+        <HtmlSlideStage
+          name={open.name}
+          html={open.html}
+          save={open.save}
+          showChrome={Boolean(controlsHost)}
+          onClose={() => setOpen(null)}
         />
       ) : (
         <div className="grid h-full place-items-center p-8 text-center text-classroom-muted-foreground">
           <div>
             <Presentation className="mx-auto mb-3 h-10 w-10 opacity-60" />
-            <div className="font-semibold text-classroom-foreground">Buổi này chưa có slide</div>
+            <div className="font-semibold text-classroom-foreground">Chưa chọn slide</div>
             <p className="mx-auto mt-1 max-w-md text-sm">
-              Gán bài học có link slide cho buổi ở trang chi tiết buổi, dán tạm link Google
-              Slides / Drive / Canva / YouTube bằng nút <b className="text-classroom-foreground">Dán link</b> trên
-              thanh trên, bấm <b className="text-classroom-foreground">Nhận màn hình</b> để soi cửa sổ PowerPoint
-              đang chạy trên máy (giữ nguyên hiệu ứng, công cụ lớp vẫn phủ lên trên), hoặc{" "}
-              <b className="text-classroom-foreground">File từ máy</b> để chiếu thẳng PDF / ảnh slide.
+              Tải file slide <b className="text-classroom-foreground">.html</b> lên để chiếu — file tự lưu
+              vào kho, lần sau bạn hoặc giáo viên khác chỉ cần chọn lại trên thanh trên.
             </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <Button onClick={() => fileInput.current?.click()}>
+                <Upload className="h-4 w-4" /> Tải file slide
+              </Button>
+              <Button variant="secondary" onClick={() => setMenu(true)} disabled={!controlsHost}>
+                <FolderOpen className="h-4 w-4" /> Chọn trong kho
+              </Button>
+            </div>
           </div>
         </div>
       )}
 
-      {shareError && (
-        <div className="absolute inset-x-0 top-0 bg-gold-600/90 px-3 py-1.5 text-center text-xs font-semibold text-white">
-          {shareError}
-        </div>
-      )}
-
-      {/*
-        Mẹo gỡ lỗi nhúng Google: thu về một chip nhỏ nổi trên slide thay vì một
-        hàng chữ chiếm chiều cao — slide vẫn full khung.
-      */}
-      {isGoogle && !local && !deck && !sharing && controlsHost && (
-        <div className="absolute bottom-3 left-3 z-10 max-w-[min(30rem,90vw)]">
-          {helpOpen ? (
-            <div className="rounded-xl border border-classroom-border bg-classroom-background/95 p-3 text-[11px] text-classroom-muted-foreground shadow-soft backdrop-blur">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-classroom-secondary">Không hiện được slide?</span>
-                <button
-                  onClick={() => setHelpOpen(false)}
-                  className="ml-auto grid h-6 w-6 place-items-center rounded-md bg-classroom-muted hover:bg-classroom-hover"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-              <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                {(["auto", "slides", "drive", "office"] as EmbedMode[]).map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => {
-                      setMode(m);
-                      setReloadKey((k) => k + 1);
-                    }}
-                    className={cn(
-                      "rounded-md px-2 py-1 font-semibold",
-                      mode === m ? "bg-brand-600 text-white" : "bg-classroom-muted text-classroom-secondary hover:bg-classroom-hover",
-                    )}
-                  >
-                    {EMBED_MODE_LABELS[m]}
-                  </button>
-                ))}
-                <button
-                  onClick={() => setReloadKey((k) => k + 1)}
-                  className="inline-flex items-center gap-1 rounded-md bg-classroom-muted px-2 py-1 font-semibold text-classroom-secondary hover:bg-classroom-hover"
-                >
-                  <RotateCcw className="h-3 w-3" /> Tải lại
-                </button>
-              </div>
-              <p className="mt-2 leading-relaxed">
-                Slide phải chia sẻ “Bất kỳ ai có đường liên kết”. Google báo “tệp quá lớn không xem
-                trước được” thì thử kiểu “Office (.pptx)”, hoặc chiếu thẳng bằng nút “File từ máy”
-                (PDF/ảnh — không giới hạn dung lượng, không cần mạng).
-              </p>
-            </div>
-          ) : (
-            <button
-              onClick={() => setHelpOpen(true)}
-              className="rounded-lg border border-classroom-border bg-classroom-background/80 px-2.5 py-1.5 text-[11px] font-semibold text-classroom-muted-foreground backdrop-blur hover:text-classroom-foreground"
-            >
-              Không hiện được slide?
-            </button>
-          )}
+      {error && (
+        <div className="absolute inset-x-0 top-0 flex items-center justify-center gap-2 bg-gold-600/90 px-3 py-1.5 text-xs font-semibold text-white">
+          {error}
+          <button onClick={() => setError(null)} className="rounded p-0.5 hover:bg-white/20">
+            <X className="h-3.5 w-3.5" />
+          </button>
         </div>
       )}
     </div>
   );
 }
 
-/** Một dòng trong menu chọn nguồn slide trên topbar. */
-function DeckItem({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+/** Một dòng trong menu chọn slide trên topbar. */
+function SlideItem({
+  label,
+  hint,
+  active,
+  onClick,
+  onDelete,
+}: {
+  label: string;
+  hint?: string | null;
+  active: boolean;
+  onClick: () => void;
+  onDelete?: () => void;
+}) {
   return (
-    <button
-      onClick={onClick}
+    <div
       className={cn(
-        "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold",
+        "group flex items-center rounded-lg",
         active ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted",
       )}
     >
-      <span className="truncate">{label}</span>
-    </button>
+      <button onClick={onClick} className="min-w-0 flex-1 px-3 py-2 text-left">
+        <div className="truncate text-sm font-semibold">{label}</div>
+        {hint && <div className={cn("truncate text-[11px]", active ? "text-white/80" : "text-classroom-muted-foreground")}>{hint}</div>}
+      </button>
+      {onDelete && (
+        <button
+          onClick={onDelete}
+          className="mr-1 grid h-7 w-7 shrink-0 place-items-center rounded-md opacity-0 hover:bg-classroom-hover group-hover:opacity-100"
+          title="Xoá khỏi kho"
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
   );
 }
 

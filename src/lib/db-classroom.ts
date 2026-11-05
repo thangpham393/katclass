@@ -662,13 +662,14 @@ export async function fetchParticipation(
  */
 export async function saveSessionPrep(
   sessionId: string,
-  input: { slide_url?: string | null; prep_note?: string | null },
+  input: { slide_url?: string | null; prep_note?: string | null; html_slide_id?: string | null },
 ) {
   const { error } = await getSupabase()
     .from("sessions")
     .update({
       ...(input.slide_url !== undefined ? { slide_url: input.slide_url || null } : {}),
       ...(input.prep_note !== undefined ? { prep_note: input.prep_note || null } : {}),
+      ...(input.html_slide_id !== undefined ? { html_slide_id: input.html_slide_id } : {}),
     })
     .eq("id", sessionId);
   if (error) throw error;

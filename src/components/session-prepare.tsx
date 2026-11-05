@@ -7,7 +7,6 @@ import {
   BookOpen,
   Check,
   ClipboardList,
-  ExternalLink,
   ListChecks,
   Presentation,
   Volume2,
@@ -16,7 +15,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { SessionContentCard } from "@/components/session-content-card";
@@ -28,14 +26,15 @@ import {
   sessionClassLabel,
 } from "@/lib/db";
 import { fetchLesson, fetchQuestions, type LessonDetail } from "@/lib/db-content";
-import { saveSessionPrep, speakZh, toEmbedUrl } from "@/lib/db-classroom";
+import { saveSessionPrep, speakZh } from "@/lib/db-classroom";
+import { SessionSlidePicker, type SlideStatus } from "@/components/session-slide-picker";
 import { useLoad } from "@/lib/use-load";
 import { EnterClassroomButton } from "@/components/classroom/warp-transition";
 
 /**
  * Chuẩn bị trước buổi dạy: chọn bài theo giáo trình của lớp, xem lại bộ từ vựng
- * sẽ dạy, đặt sẵn link slide cho buổi và ghi chú. Vào lớp là chiếu được ngay —
- * nhưng trong giờ giáo viên vẫn dán được link khác nếu đổi slide phút chót.
+ * sẽ dạy, chọn sẵn slide HTML cho buổi và ghi chú. Vào lớp là chiếu được ngay —
+ * nhưng trong giờ giáo viên vẫn đổi được slide khác nếu cần phút chót.
  *
  * Dùng cho trang /teacher/sessions/[id]/prepare và modal mở từ PrepareLink.
  */
@@ -50,7 +49,7 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
   const [lessonIds, setLessonIds] = useState<string[]>([]);
   const idKey = lessonIds.join(",");
 
-  // Nạp bản đầy đủ của bài đang chọn: từ vựng + link slide sẵn có của bài
+  // Nạp bản đầy đủ của bài đang chọn: từ vựng của bài
   const lessons = useLoad<LessonDetail[]>(async () => {
     if (!lessonIds.length) return [];
     const rows = await Promise.all(lessonIds.map((id) => fetchLesson(id)));
@@ -66,7 +65,7 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idKey]);
 
-  const [slide, setSlide] = useState("");
+  const [slideStatus, setSlideStatus] = useState<SlideStatus>({ done: false, label: "Chưa có slide" });
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -74,7 +73,6 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
 
   useEffect(() => {
     if (!session.data) return;
-    setSlide(session.data.slide_url ?? "");
     setNote(session.data.prep_note ?? "");
   }, [session.data]);
 
@@ -94,18 +92,13 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
   const lessonList = lessons.data ?? [];
   const loadingContent = lessons.loading && lessonIds.length > 0;
   const vocab = lessonList.flatMap((l) => l.vocab);
-  const lessonSlide = lessonList.find((l) => l.slide_embed_url)?.slide_embed_url ?? "";
-  const effectiveSlide = slide || lessonSlide;
 
   const checklist = [
     {
       done: lessonIds.length > 0,
       label: lessonIds.length > 0 ? `Đã chọn ${lessonIds.length} bài học` : "Chưa chọn bài học",
     },
-    {
-      done: !!effectiveSlide,
-      label: slide ? "Slide riêng cho buổi" : lessonSlide ? "Dùng slide của bài học" : "Chưa có slide",
-    },
+    slideStatus,
     {
       done: vocab.length > 0,
       label: vocab.length > 0
@@ -131,7 +124,7 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
     setSaving(true);
     setError(null);
     try {
-      await saveSessionPrep(sessionId, { slide_url: slide.trim(), prep_note: note.trim() });
+      await saveSessionPrep(sessionId, { prep_note: note.trim() });
       setSaved(true);
       session.reload();
       window.setTimeout(() => setSaved(false), 2500);
@@ -211,55 +204,18 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
             <Presentation className="h-4 w-4 text-brand-600" /> Slide cho buổi này
           </CardTitle>
           <Button size="sm" onClick={handleSave} disabled={saving}>
-            {saving ? "Đang lưu…" : saved ? "Đã lưu ✓" : "Lưu chuẩn bị"}
+            {saving ? "Đang lưu…" : saved ? "Đã lưu ✓" : "Lưu ghi chú"}
           </Button>
         </CardHeader>
         <CardContent className="space-y-3 p-4 pt-0 sm:p-5 sm:pt-0">
           {error && <ErrorNote message={error} />}
-          <div className="flex flex-wrap items-center gap-2">
-            <Input
-              value={slide}
-              onChange={(e) => setSlide(e.target.value)}
-              placeholder="Dán link Google Slides / Drive / Canva / YouTube (hoặc cả mã <iframe…>)"
-              className="min-w-0 flex-1"
-            />
-            {lessonSlide && (
-              <Button variant="outline" size="sm" onClick={() => setSlide(lessonSlide)}>
-                Dùng slide của bài học
-              </Button>
-            )}
-            {slide && (
-              <>
-                <a
-                  href={slide}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 text-xs font-semibold hover:bg-secondary"
-                >
-                  <ExternalLink className="h-3.5 w-3.5" /> Mở thử
-                </a>
-                <Button variant="ghost" size="sm" onClick={() => setSlide("")}>
-                  Xoá
-                </Button>
-              </>
-            )}
-          </div>
-
-          {effectiveSlide ? (
-            <div className="overflow-hidden rounded-xl border bg-muted">
-              <iframe
-                src={toEmbedUrl(effectiveSlide)}
-                className="aspect-video w-full"
-                title="Xem trước slide"
-                allow="fullscreen"
-              />
-            </div>
-          ) : (
-            <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-              Chưa có slide. Dán link vào ô trên để xem trước ngay tại đây — vào lớp là chiếu
-              được luôn, khỏi mất thời gian tìm link giữa giờ.
-            </div>
-          )}
+          <SessionSlidePicker
+            sessionId={sessionId}
+            lessonIds={lessonIds}
+            selectedId={s.html_slide_id}
+            onSelected={session.reload}
+            onStatus={setSlideStatus}
+          />
 
           <div>
             <div className="mb-1 text-sm font-semibold">Ghi chú chuẩn bị</div>
@@ -273,8 +229,8 @@ export function SessionPrepare({ sessionId, inModal }: { sessionId: string; inMo
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Trong giờ dạy vẫn dán được link khác ở khung trình chiếu (ưu tiên: link dán tạm →
-            slide của buổi → slide của bài học), nên đổi slide phút chót vẫn thoải mái.
+            Chọn slide là lưu ngay. Trong giờ dạy vẫn đổi được slide khác ngay trên thanh trình
+            chiếu, nên đổi phút chót vẫn thoải mái.
           </p>
         </CardContent>
       </Card>
