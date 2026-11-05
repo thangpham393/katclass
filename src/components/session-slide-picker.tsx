@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, FileCode, Loader2, Maximize2, Search, Upload } from "lucide-react";
+import { Check, FileCode, Link2Off, Loader2, Maximize2, Search, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorNote } from "@/components/ui/loading";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { dbErrorMessage } from "@/lib/db";
 import { saveSessionPrep } from "@/lib/db-classroom";
 import {
+  attachHtmlSlide,
   downloadHtmlSlide,
   fetchHtmlSlide,
   fetchLessonHtmlSlides,
@@ -130,6 +131,24 @@ export function SessionSlidePicker({
     }
   }
 
+  /** Gỡ slide khỏi bài học: vẫn còn trong kho, chỉ không tự mở khi dạy bài này. */
+  async function detach(s: HtmlSlide) {
+    if (
+      !window.confirm(
+        `Gỡ slide “${s.name}” khỏi bài học?\nSlide vẫn nằm trong Kho PPT bài giảng, chỉ không tự mở khi dạy bài này nữa (với mọi lớp).`,
+      )
+    )
+      return;
+    setError(null);
+    try {
+      await attachHtmlSlide(s.id, null);
+      setLessonSlides((rows) => rows.filter((r) => r.id !== s.id));
+      if (chosen?.id === s.id) await choose(null);
+    } catch (e) {
+      setError(dbErrorMessage(e));
+    }
+  }
+
   async function upload(files: FileList | null) {
     const file = Array.from(files ?? []).find(isHtmlFile);
     if (!file) {
@@ -161,6 +180,7 @@ export function SessionSlidePicker({
         <div className="space-y-1.5">
           {rows.map((s) => {
             const active = effective?.id === s.id;
+            const ofLesson = lessonIds.includes(s.lesson_id ?? "");
             return (
               <div
                 key={s.id}
@@ -173,7 +193,7 @@ export function SessionSlidePicker({
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold">{s.name}</div>
                   <div className="text-xs text-muted-foreground">
-                    {lessonIds.includes(s.lesson_id ?? "") ? "Slide của bài" : "Từ kho chung"}
+                    {ofLesson ? "Slide của bài" : "Từ kho chung"}
                     {active && " · vào lớp mở slide này"}
                   </div>
                 </div>
@@ -187,6 +207,17 @@ export function SessionSlidePicker({
                       Dùng cho buổi
                     </Button>
                   )
+                )}
+                {ofLesson && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-rose-600 hover:bg-rose-50"
+                    onClick={() => detach(s)}
+                    title="Gỡ slide khỏi bài học (vẫn giữ trong kho)"
+                  >
+                    <Link2Off className="h-3.5 w-3.5" /> Gỡ khỏi bài
+                  </Button>
                 )}
               </div>
             );

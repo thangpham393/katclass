@@ -14,11 +14,13 @@
 import { getSupabase } from "./supabase";
 
 const BUCKET = "html-slides";
-const COLUMNS = "id, lesson_id, name, path, size_bytes, created_by, created_at";
+const COLUMNS = "id, lesson_id, folder_id, name, path, size_bytes, created_by, created_at";
 
 export interface HtmlSlide {
   id: string;
   lesson_id: string | null;
+  /** Thư mục trong Kho PPT bài giảng (0070); null = chưa xếp. */
+  folder_id: string | null;
   name: string;
   path: string;
   size_bytes: number;
@@ -83,6 +85,8 @@ export async function saveHtmlSlide(opts: {
   lessonId: string | null;
   /** Bỏ trống thì lấy tên file. */
   name?: string;
+  /** Bỏ trống thì DB tự xếp theo giáo trình của bài (trigger 0070). */
+  folderId?: string | null;
 }): Promise<{ slide: HtmlSlide; existed: boolean }> {
   const sb = getSupabase();
   const hash = await sha256(opts.html);
@@ -100,6 +104,7 @@ export async function saveHtmlSlide(opts: {
     .from("html_slides")
     .insert({
       lesson_id: opts.lessonId,
+      ...(opts.folderId ? { folder_id: opts.folderId } : {}),
       name: opts.name?.trim() || opts.file.name.replace(/\.html?$/i, ""),
       path,
       size_bytes: blob.size,
@@ -116,10 +121,17 @@ export async function saveHtmlSlide(opts: {
 }
 
 /** Gắn (hoặc gỡ, khi lessonId = null) slide vào một bài học. */
-export async function attachHtmlSlide(id: string, lessonId: string | null): Promise<HtmlSlide> {
+export function attachHtmlSlide(id: string, lessonId: string | null): Promise<HtmlSlide> {
+  return updateHtmlSlide(id, { lesson_id: lessonId });
+}
+
+export async function updateHtmlSlide(
+  id: string,
+  patch: Partial<Pick<HtmlSlide, "name" | "lesson_id" | "folder_id">>,
+): Promise<HtmlSlide> {
   const { data, error } = await getSupabase()
     .from("html_slides")
-    .update({ lesson_id: lessonId })
+    .update(patch)
     .eq("id", id)
     .select(COLUMNS)
     .maybeSingle();
@@ -135,4 +147,64 @@ export async function deleteHtmlSlide(slide: HtmlSlide): Promise<void> {
   // RLS chặn thì Supabase không báo lỗi, chỉ không xoá dòng nào
   if (!data?.length) throw new Error("Chỉ người tải lên hoặc người quản lý thư viện mới xoá được slide này");
   await sb.storage.from(BUCKET).remove([slide.path]);
+}
+
+/* ===================== Kho PPT bài giảng: thư mục ===================== */
+
+export interface SlideFolder {
+  id: string;
+  name: string;
+  textbook_id: string | null;
+  sort: number;
+  created_at: string;
+  textbook: { id: string; name: string } | null;
+  html_slides: { count: number }[];
+}
+
+export async function fetchSlideFolders(): Promise<SlideFolder[]> {
+  const { data, error } = await getSupabase()
+    .from("slide_folders")
+    .select("id, name, textbook_id, sort, created_at, textbook:textbooks ( id, name ), html_slides ( count )")
+    .order("sort")
+    .order("name");
+  if (error) throw error;
+  return (data ?? []) as unknown as SlideFolder[];
+}
+
+export async function saveSlideFolder(
+  input: { name: string; textbook_id: string | null },
+  id?: string,
+): Promise<void> {
+  const sb = getSupabase();
+  const row = { name: input.name.trim(), textbook_id: input.textbook_id };
+  const { error } = id
+    ? await sb.from("slide_folders").update(row).eq("id", id)
+    : await sb.from("slide_folders").insert(row);
+  if (error) throw error;
+}
+
+/** Xoá thư mục — slide bên trong về mục "Chưa xếp thư mục", không mất. */
+export async function deleteSlideFolder(id: string): Promise<void> {
+  const { error } = await getSupabase().from("slide_folders").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export interface LibrarySlide extends HtmlSlide {
+  lesson: { id: string; unit: number | null; title: string } | null;
+  creator: { name: string } | null;
+}
+
+/** Slide trong một thư mục ("none" = chưa xếp, null = tất cả), lọc theo tên. */
+export async function fetchFolderSlides(folder: string | "none" | null, q = ""): Promise<LibrarySlide[]> {
+  let query = getSupabase()
+    .from("html_slides")
+    .select(`${COLUMNS}, lesson:lessons ( id, unit, title ), creator:profiles!html_slides_created_by_fkey ( name )`)
+    .order("name");
+  if (folder === "none") query = query.is("folder_id", null);
+  else if (folder) query = query.eq("folder_id", folder);
+  const term = q.trim().replace(/[%_,()]/g, " ");
+  if (term) query = query.ilike("name", `%${term}%`);
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as unknown as LibrarySlide[];
 }
