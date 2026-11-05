@@ -1129,7 +1129,7 @@ export async function upsertSessionComment(input: {
 
 export interface MakeupCreditRow {
   id: string;
-  status: "pending" | "scheduled" | "attended" | "expired" | "cancelled";
+  status: "pending" | "scheduled" | "attended" | "expired" | "cancelled" | "waived";
   note: string | null;
   created_at: string;
   student: Pick<ProfileRow, "id" | "name" | "phone" | "avatar" | "student_code">;
@@ -1154,6 +1154,7 @@ export const MAKEUP_STATUS_LABELS: Record<MakeupCreditRow["status"], string> = {
   attended: "Đã học bù",
   expired: "Hết hạn",
   cancelled: "Đã hủy",
+  waived: "Không cần bù",
 };
 
 const MAKEUP_SELECT = `
@@ -1244,6 +1245,19 @@ export async function markMakeupAttended(creditId: string) {
     .from("makeup_credits")
     .update({ status: "attended" })
     .eq("id", creditId);
+  if (error) throw error;
+}
+
+/**
+ * "Không cần bù" (0071): rời hàng chờ, buổi vắng có phép vẫn trừ vào gói
+ * học phí như buổi đã học. Lý do (tùy chọn) ghi vào note.
+ */
+export async function waiveMakeup(creditId: string, reason: string) {
+  const { error } = await getSupabase()
+    .from("makeup_credits")
+    .update({ status: "waived", note: reason.trim() || null, waived_at: new Date().toISOString() })
+    .eq("id", creditId)
+    .eq("status", "pending");
   if (error) throw error;
 }
 

@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarClock, CalendarOff, CalendarPlus, Check, Search, ThumbsDown, Undo2 } from "lucide-react";
+import { CalendarCheck, CalendarClock, CalendarOff, CalendarPlus, Check, Search, ThumbsDown, Undo2 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input, Textarea } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Select, Field } from "@/components/ui/select";
 import { Empty } from "@/components/ui/empty";
@@ -22,6 +22,7 @@ import {
   sessionClassLabel,
   resetMakeup,
   markMakeupAttended,
+  waiveMakeup,
   dbErrorMessage,
   todayISO,
   WEEKDAY_LABELS,
@@ -47,6 +48,7 @@ export default function AdminMakeupPage() {
   const credits = useLoad(() => fetchMakeupCredits(["pending", "scheduled"]));
   const absences = useLoad(() => fetchAbsenceRequests(["pending"]));
   const [assigning, setAssigning] = useState<MakeupCreditRow | null>(null);
+  const [waiving, setWaiving] = useState<MakeupCreditRow | null>(null);
   const [busyRequest, setBusyRequest] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -220,6 +222,9 @@ export default function AdminMakeupPage() {
                   <Button size="sm" onClick={() => setAssigning(c)}>
                     <CalendarClock className="h-3.5 w-3.5" /> Xếp bù
                   </Button>
+                  <Button size="sm" variant="outline" onClick={() => setWaiving(c)}>
+                    <CalendarCheck className="h-3.5 w-3.5" /> Không cần bù
+                  </Button>
                 </div>
               ))}
             </div>
@@ -284,7 +289,74 @@ export default function AdminMakeupPage() {
           }}
         />
       )}
+
+      {waiving && (
+        <WaiveMakeupModal
+          credit={waiving}
+          onClose={() => setWaiving(null)}
+          onSaved={() => {
+            setWaiving(null);
+            credits.reload();
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+/** "Không cần bù": rời hàng chờ, buổi vắng vẫn trừ học phí như buổi đã học. */
+function WaiveMakeupModal({
+  credit,
+  onClose,
+  onSaved,
+}: {
+  credit: MakeupCreditRow;
+  onClose: () => void;
+  onSaved: () => void;
+}) {
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleConfirm() {
+    setBusy(true);
+    setError(null);
+    try {
+      await waiveMakeup(credit.id, reason);
+      onSaved();
+    } catch (e) {
+      setError(dbErrorMessage(e));
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Modal open onClose={onClose} title={`Không cần bù — ${credit.student.name}`}>
+      <div className="space-y-3">
+        <p className="text-sm text-muted-foreground">
+          Vắng buổi {fmtSession(credit.missed_session)} · lớp{" "}
+          <span className="font-medium text-foreground">{credit.missed_session?.class?.name ?? "?"}</span>.
+        </p>
+        <div className="rounded-lg border border-gold-200 bg-gold-50 p-3 text-sm text-gold-800">
+          Học viên sẽ được <span className="font-semibold">xoá khỏi danh sách chờ học bù</span>. Buổi vắng
+          này vẫn <span className="font-semibold">tính vào số buổi học và học phí</span> như đi học bình thường.
+        </div>
+        <Field label="Lý do (tùy chọn)" hint="VD: học viên tự học bài, phụ huynh không yêu cầu bù.">
+          <Textarea value={reason} onChange={(e) => setReason(e.target.value)} rows={2} autoFocus />
+        </Field>
+
+        {error && <ErrorNote message={error} />}
+
+        <div className="flex flex-wrap justify-end gap-2">
+          <Button variant="outline" onClick={onClose} disabled={busy}>
+            Huỷ
+          </Button>
+          <Button onClick={handleConfirm} disabled={busy}>
+            <Check className="h-4 w-4" /> {busy ? "Đang lưu…" : "Xác nhận không cần bù"}
+          </Button>
+        </div>
+      </div>
+    </Modal>
   );
 }
 

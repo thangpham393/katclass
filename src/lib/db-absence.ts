@@ -171,7 +171,7 @@ export async function fetchAvailableMakeupSessions(
 
 export interface MyMakeupCreditRow {
   id: string;
-  status: "pending" | "scheduled" | "attended" | "expired" | "cancelled";
+  status: "pending" | "scheduled" | "attended" | "expired" | "cancelled" | "waived";
   note: string | null;
   created_at: string;
   missed_session: {
