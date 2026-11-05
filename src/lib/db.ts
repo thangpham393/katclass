@@ -1000,17 +1000,20 @@ export async function rescheduleClassSessions(
 
 /**
  * Đổi ngày bắt đầu của lớp và xếp lại các buổi đã sinh từ ngày đó (migration 0057).
- * `apply = false` chỉ xem trước; lớp đã có buổi đã học thì DB báo lỗi.
+ * `apply = false` chỉ xem trước. Lớp đã có buổi đã học: `includeHeld = false` thì
+ * DB báo lỗi; `true` thì dời cả buổi đã học, điểm danh/chấm công đi theo buổi (0072).
  */
 export async function changeClassStartDate(
   classId: string,
   start: string,
   apply: boolean,
+  includeHeld = false,
 ): Promise<RescheduleRow[]> {
   const { data, error } = await getSupabase().rpc("change_class_start_date", {
     p_class_id: classId,
     p_start: start,
     p_apply: apply,
+    p_include_held: includeHeld,
   });
   if (error) throw error;
   return (data ?? []) as RescheduleRow[];

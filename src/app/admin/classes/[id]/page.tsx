@@ -1383,6 +1383,9 @@ function StartDateModal({
         schedules: cls.class_schedules,
       }).startDate ?? todayISO(),
   );
+  // Ngày khai giảng lệch thực tế mà GV đã chấm công / điểm danh vào các buổi sinh sẵn
+  // → dời cả buổi đã học (0072); điểm danh, chấm công đi theo buổi.
+  const [includeHeld, setIncludeHeld] = useState(() => sessions.some((s) => s.status === "completed"));
   const [rows, setRows] = useState<RescheduleRow[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
@@ -1393,12 +1396,12 @@ function StartDateModal({
     setLoading(true);
     setError(null);
     setRows(null);
-    changeClassStartDate(cls.id, start, false)
+    changeClassStartDate(cls.id, start, false, includeHeld)
       .then((r) => alive && setRows(r))
       .catch((e) => alive && setError(dbErrorMessage(e)))
       .finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [cls.id, start]);
+  }, [cls.id, start, includeHeld]);
 
   const conflicts = (rows ?? []).filter((r) => r.conflict);
   // Ngày buổi đầu / ngày kết thúc nếu lưu: áp ngày mới vào các buổi rồi tính như thẻ tiến độ
@@ -1414,7 +1417,7 @@ function StartDateModal({
     setApplying(true);
     setError(null);
     try {
-      await changeClassStartDate(cls.id, start, true);
+      await changeClassStartDate(cls.id, start, true, includeHeld);
       onApplied();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -1437,6 +1440,21 @@ function StartDateModal({
         <Field label="Ngày bắt đầu">
           <Input type="date" className="w-full sm:w-48" value={start} onChange={(e) => e.target.value && setStart(e.target.value)} />
         </Field>
+        <label className="flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 rounded border-input accent-brand-600"
+            checked={includeHeld}
+            onChange={(e) => setIncludeHeld(e.target.checked)}
+          />
+          <span>
+            Dời cả buổi đã học
+            <span className="block text-xs text-muted-foreground">
+              Dùng khi lớp khai giảng lệch ngày dự kiến nhưng GV đã chấm công / điểm danh vào các buổi sinh sẵn. Điểm
+              danh, chấm công, nhận xét đi theo buổi; buổi đã học giữ GV & phòng. Bảng công GV tính theo ngày mới.
+            </span>
+          </span>
+        </label>
         {error && <ErrorNote message={error} />}
 
         {loading ? (
