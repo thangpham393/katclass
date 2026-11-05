@@ -38,6 +38,10 @@ export default function NewHomeworkPage() {
 
   const [title, setTitle] = useState("");
   const [classId, setClassId] = useState("");
+  // Mở từ modal chấm công (0066): ?class=&session= → giao đúng buổi đó
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionClass, setSessionClass] = useState("");
+  const [presetClass, setPresetClass] = useState("");
   const [kind, setKind] = useState<HomeworkKind>("homework");
   const [timeLimit, setTimeLimit] = useState("15");
   const [openAt, setOpenAt] = useState("");
@@ -57,7 +61,17 @@ export default function NewHomeworkPage() {
     const params = new URLSearchParams(window.location.search);
     setTextbookId(params.get("textbook") ?? "");
     setLessonFilter(params.get("lesson") ?? "");
+    setPresetClass(params.get("class") ?? "");
+    setSessionClass(params.get("class") ?? "");
+    setSessionId(params.get("session"));
   }, []);
+  useEffect(() => {
+    if (presetClass && classes.data?.some((c) => c.id === presetClass)) {
+      changeClass(presetClass);
+      setPresetClass("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presetClass, classes.data]);
   useEffect(() => {
     if (kind !== "test") return;
     const template = templates.data?.find(t => t.id === templateId);
@@ -102,6 +116,8 @@ export default function NewHomeworkPage() {
       const id = await createHomework({
         template_id: kind === "test" ? templateId : null,
         class_id: classId,
+        // Đổi sang lớp khác thì bài không còn thuộc buổi đã mở từ modal
+        session_id: sessionId && classId === sessionClass ? sessionId : null,
         title: title.trim(),
         kind,
         time_limit_minutes: kind === "test" ? limit : null,

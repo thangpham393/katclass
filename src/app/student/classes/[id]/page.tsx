@@ -32,6 +32,7 @@ import {
   type SessionLessonRow,
 } from "@/lib/db-content";
 import { fetchMyAttendance } from "@/lib/db-student";
+import { NextLessonPreview } from "@/components/next-lesson-preview";
 import { pct } from "@/lib/utils";
 
 const ATTENDANCE_BADGE: Record<AttendanceStatus, "jade" | "gold" | "destructive" | "default"> = {
@@ -156,6 +157,8 @@ export default function StudentClassDetailPage() {
           </div>
         </CardContent>
       </Card>
+
+      <NextLessonPreview sessions={upcoming} showClassName={false} />
 
       {/* Bài tập của lớp */}
       <Card>

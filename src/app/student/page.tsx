@@ -19,6 +19,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { LoadingRows, ErrorNote } from "@/components/ui/loading";
 import { PackageSummaryCard } from "@/components/package-summary";
 import { LatestSessionReport } from "@/components/session-report";
+import { NextLessonPreview } from "@/components/next-lesson-preview";
 import { StudentReviewList } from "@/components/student-reviews";
 import { PointsSummaryCard } from "@/components/points-summary";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -128,6 +129,8 @@ export default function StudentHome() {
       {studentId && <PackageSummaryCard studentId={studentId} />}
 
       {studentId && <PointsSummaryCard studentId={studentId} />}
+
+      {upcoming.data && <NextLessonPreview sessions={upcoming.data} />}
 
       {studentId && <LatestSessionReport studentId={studentId} />}
 

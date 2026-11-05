@@ -37,6 +37,8 @@ interface Row {
   room: string | null;
   content: string | null;
   homework: string | null;
+  /** GV xác nhận không giao BTVN (0066) — `homework` khi đó là lý do. */
+  noHomework: boolean;
   nextPlan: string | null;
   progress: LessonProgress | null;
   present: number;
@@ -58,6 +60,7 @@ function toRow(s: LessonJournalRow): Row {
     room: s.room?.name ?? null,
     content: log?.lesson_content?.trim() || null,
     homework: log?.homework_note?.trim() || null,
+    noHomework: log?.homework_status === "none",
     nextPlan: log?.next_plan?.trim() || null,
     progress: log?.progress ?? null,
     present: s.attendance.filter((a) => a.status === "present" || a.status === "makeup").length,
@@ -152,7 +155,7 @@ export function LessonJournal({ admin = false }: { admin?: boolean }) {
         r.no ?? "",
         r.content ?? "",
         r.progress ? PROGRESS_LABELS[r.progress] : "",
-        r.homework ?? "",
+        r.noHomework ? ["Không giao", r.homework].filter(Boolean).join(": ") : r.homework ?? "",
         r.nextPlan ?? "",
         r.marked ? `${r.present}/${r.marked}` : "",
       ]),
@@ -266,7 +269,12 @@ export function LessonJournal({ admin = false }: { admin?: boolean }) {
                         <div className="whitespace-pre-line">
                           {r.content ?? <span className="italic text-muted-foreground">Chưa ghi</span>}
                         </div>
-                        {r.homework && (
+                        {r.noHomework ? (
+                          <div className="mt-1 text-xs text-amber-700">
+                            <span className="font-semibold">Không giao BTVN</span>
+                            {r.homework && `: ${r.homework}`}
+                          </div>
+                        ) : r.homework && (
                           <div className="mt-1 text-xs text-muted-foreground">
                             <span className="font-semibold text-foreground">BTVN:</span> {r.homework}
                           </div>

@@ -164,6 +164,7 @@ export function WrapUpModal({
   const [hwCount, setHwCount] = useState<number | null>(null);
   const [hwIds, setHwIds] = useState<string[]>([]);
   const [hwSkip, setHwSkip] = useState(false);
+  const [hwSkipReason, setHwSkipReason] = useState("");
   const [hwCreated, setHwCreated] = useState(false);
   const [hwOnline, setHwOnline] = useState(true);
   const [hwManual, setHwManual] = useState(false);
@@ -206,7 +207,7 @@ export function WrapUpModal({
 
   /** Tóm tắt bài vừa giao ở bước 3 để điền sẵn ô "BTVN đã giao" của bước 4. */
   function homeworkSummary(): string {
-    if (hwSkip) return "";
+    if (hwSkip) return hwSkipReason.trim();
     const parts: string[] = [];
     if (hwOnline && hwIds.length) parts.push(`${hwTitle.trim() || "Bài tập về nhà"} (${hwIds.length} câu trên hệ thống)`);
     if (hwManual) parts.push(...hwManualTasks);
@@ -301,6 +302,7 @@ export function WrapUpModal({
           progress: report.progress,
           homeworkNote: report.homeworkNote,
           nextPlan: report.nextPlan,
+          homeworkStatus: !session.class_id ? null : hwCreated ? "assigned" : hwSkip ? "none" : null,
           createdBy: currentUserId,
         });
         onDone();
@@ -452,6 +454,13 @@ export function WrapUpModal({
                     <input type="checkbox" checked={hwSkip} onChange={(e) => setHwSkip(e.target.checked)} />
                     Buổi này không giao bài tập
                   </label>
+                  {hwSkip && (
+                    <Input
+                      value={hwSkipReason}
+                      onChange={(e) => setHwSkipReason(e.target.value)}
+                      placeholder="Lý do không giao (tùy chọn) — VD: buổi kiểm tra, đã giao bài dài hạn từ buổi trước…"
+                    />
+                  )}
                   {!hwSkip && (
                     <>
                       <label className="flex cursor-pointer items-center gap-2 text-sm font-medium">

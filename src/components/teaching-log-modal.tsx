@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Clock, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,13 @@ import { Modal } from "@/components/ui/modal";
 import { Field } from "@/components/ui/select";
 import { ErrorNote } from "@/components/ui/loading";
 import { dbErrorMessage, WEEKDAY_LABELS, sessionClassLabel } from "@/lib/db";
-import { fetchSessionLessons } from "@/lib/db-content";
+import {
+  createHomework,
+  fetchSessionHomeworks,
+  fetchSessionLessons,
+  summarizeHomeworks,
+  type SessionHomeworkRow,
+} from "@/lib/db-content";
 import {
   canTeacherUndoLog,
   deleteTeachingLog,
@@ -19,6 +25,7 @@ import {
 } from "@/lib/db-tuition";
 import { useAuth } from "@/components/auth/auth-provider";
 import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
+import { EMPTY_HOMEWORK_CHECK, HomeworkCheck, type HomeworkCheckValue } from "@/components/homework-check";
 
 /** Buổi dạy tối thiểu cần cho việc chấm công (dùng được cả SessionRow). */
 export interface LogTargetSession {
@@ -63,6 +70,10 @@ export function TeachingLogModal({
   const [content, setContent] = useState("");
   const [note, setNote] = useState("");
   const [report, setReport] = useState<LessonReport>({ progress: null, homeworkNote: "", nextPlan: "" });
+  const [hwClassId, setHwClassId] = useState<string | null>(null);
+  const [homeworks, setHomeworks] = useState<SessionHomeworkRow[]>([]);
+  const [hwLoading, setHwLoading] = useState(false);
+  const [hwCheck, setHwCheck] = useState<HomeworkCheckValue>(EMPTY_HOMEWORK_CHECK);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +82,19 @@ export function TeachingLogModal({
   // Chấm nhầm buổi/nhầm ngày thì phải huỷ bản ghi ở buổi sai rồi chấm lại
   // ở buổi đúng. GV tự huỷ trong 24h, quá hạn thì hành chính huỷ hộ (0042).
   const canDelete = !!log && (isStaff || canTeacherUndoLog(log));
+  // GV chấm công mới bắt buộc xác nhận BTVN (0066); hành chính chấm hộ thì không
+  const hwRequired = !isStaff && !log && !!hwClassId;
+
+  const loadHomeworks = useCallback((sessionId: string) => {
+    setHwLoading(true);
+    fetchSessionHomeworks(sessionId)
+      .then((r) => {
+        setHwClassId(r.classId);
+        setHomeworks(r.homeworks);
+      })
+      .catch(() => {})
+      .finally(() => setHwLoading(false));
+  }, []);
 
   // Mở modal: nạp giá trị đã chấm, hoặc mặc định theo giờ lịch
   useEffect(() => {
@@ -85,6 +109,14 @@ export function TeachingLogModal({
       homeworkNote: l?.homework_note ?? "",
       nextPlan: l?.next_plan ?? "",
     });
+    setHwCheck(
+      l?.homework_status === "none"
+        ? { ...EMPTY_HOMEWORK_CHECK, mode: "none", reason: l.homework_note ?? "" }
+        : EMPTY_HOMEWORK_CHECK,
+    );
+    setHwClassId(null);
+    setHomeworks([]);
+    loadHomeworks(session.id);
     setError(null);
     setConfirmDelete(false);
     // Chưa chấm bao giờ → gợi ý nội dung từ bài học đã gán cho buổi
@@ -125,9 +157,53 @@ export function TeachingLogModal({
       setError("Chọn tiến độ buổi học so với kế hoạch.");
       return;
     }
+    const dt = d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
+    const quickTasks = hwCheck.tasks;
+    const quickNote = hwCheck.note.trim();
+    if (hwClassId && !homeworks.length) {
+      if (hwCheck.mode === "quick" && !quickTasks.length && !quickNote) {
+        setError("Chọn bài tập giao thủ công hoặc ghi nội dung BTVN.");
+        return;
+      }
+      if (hwRequired && !hwCheck.mode) {
+        setError("Buổi này chưa có bài tập về nhà — giao BTVN ngay hoặc chọn “Buổi này không giao BTVN”.");
+        return;
+      }
+    }
     setSaving(true);
     setError(null);
     try {
+      // Xác định BTVN: bài đã có trên hệ thống / giao nhanh tại đây / không giao
+      let homeworkStatus = log?.homework_status ?? null;
+      let homeworkNote = report.homeworkNote;
+      if (hwClassId) {
+        if (homeworks.length) {
+          homeworkStatus = "assigned";
+          homeworkNote = summarizeHomeworks(homeworks);
+        } else if (hwCheck.mode === "quick") {
+          const title = `BTVN buổi ${dt}`;
+          await createHomework({
+            class_id: hwClassId,
+            session_id: session.id,
+            title,
+            kind: "homework",
+            due_at: hwCheck.due ? new Date(hwCheck.due).toISOString() : null,
+            question_ids: [],
+            manual_tasks: quickTasks,
+            teacher_note: quickNote,
+            created_by: currentUserId,
+          });
+          // Nạp lại ngay: lưu công lỗi rồi bấm lại thì không giao trùng bài
+          const fresh = await fetchSessionHomeworks(session.id);
+          setHomeworks(fresh.homeworks);
+          setHwCheck(EMPTY_HOMEWORK_CHECK);
+          homeworkStatus = "assigned";
+          homeworkNote = summarizeHomeworks(fresh.homeworks);
+        } else if (hwCheck.mode === "none") {
+          homeworkStatus = "none";
+          homeworkNote = hwCheck.reason.trim();
+        }
+      }
       await saveTeachingLog({
         sessionId: session.id,
         teacherId: session.teacher?.id ?? currentUserId,
@@ -136,8 +212,9 @@ export function TeachingLogModal({
         lessonContent: content,
         note,
         progress: report.progress,
-        homeworkNote: report.homeworkNote,
+        homeworkNote,
         nextPlan: report.nextPlan,
+        homeworkStatus,
         createdBy: currentUserId,
       });
       onSaved();
@@ -199,7 +276,20 @@ export function TeachingLogModal({
           />
         </Field>
 
-        <LessonReportFields value={report} onChange={setReport} />
+        {hwClassId && (
+          <HomeworkCheck
+            sessionId={session.id}
+            classId={hwClassId}
+            homeworks={homeworks}
+            loading={hwLoading}
+            required={hwRequired}
+            value={hwCheck}
+            onChange={setHwCheck}
+            onReload={() => loadHomeworks(session.id)}
+          />
+        )}
+
+        <LessonReportFields value={report} onChange={setReport} hideHomework={!!hwClassId} />
 
         <Field label="Ghi chú (tùy chọn)">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Lớp vào muộn 10 phút, dạy bù cuối buổi..." />

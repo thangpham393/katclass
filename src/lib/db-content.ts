@@ -542,6 +542,70 @@ export async function fetchHomeworksForStudent(
   return data as unknown as HomeworkListRow[];
 }
 
+export interface SessionHomeworkRow {
+  id: string;
+  title: string;
+  kind: HomeworkKind;
+  manual_tasks: string[];
+  teacher_note: string;
+  due_at: string | null;
+  homework_questions: { count: number }[];
+}
+
+/**
+ * Bài tập đã giao cho một buổi (0066) — để màn chấm công biết GV đã giao
+ * BTVN chưa. Khớp session_has_homework(): bài gắn đúng buổi, hoặc bài của
+ * lớp không gắn buổi nhưng tạo trong ngày học / ngày hôm sau.
+ */
+export async function fetchSessionHomeworks(
+  sessionId: string,
+): Promise<{ classId: string | null; homeworks: SessionHomeworkRow[] }> {
+  const supabase = getSupabase();
+  const { data: s, error: sErr } = await supabase
+    .from("sessions").select("class_id, date").eq("id", sessionId).single();
+  if (sErr) throw sErr;
+  if (!s.class_id) return { classId: null, homeworks: [] };
+  const from = new Date(s.date + "T00:00:00");
+  const to = new Date(from);
+  to.setDate(to.getDate() + 2);
+  const { data, error } = await supabase
+    .from("homeworks")
+    .select("id, title, kind, manual_tasks, teacher_note, due_at, homework_questions ( count )")
+    .eq("class_id", s.class_id)
+    .or(
+      `session_id.eq.${sessionId},and(session_id.is.null,created_at.gte.${from.toISOString()},created_at.lt.${to.toISOString()})`,
+    )
+    .order("created_at");
+  if (error) throw error;
+  return { classId: s.class_id as string, homeworks: data as unknown as SessionHomeworkRow[] };
+}
+
+/** Tóm tắt bài đã giao để ghi vào ô "BTVN đã giao" của bản ghi công. */
+export function summarizeHomeworks(rows: SessionHomeworkRow[]): string {
+  return rows
+    .map((h) => {
+      const n = h.homework_questions[0]?.count ?? 0;
+      const extra = [n ? `${n} câu trên hệ thống` : null, ...h.manual_tasks].filter(Boolean).join(", ");
+      return extra ? `${h.title} (${extra})` : h.title;
+    })
+    .join("; ");
+}
+
+export interface NextLessonPreview {
+  class_id: string;
+  logged_date: string;
+  next_plan: string | null;
+  homework_note: string | null;
+}
+
+/** "Dự kiến buổi sau" + BTVN của buổi đã chấm công gần nhất mỗi lớp (0066). */
+export async function fetchNextLessonPreviews(classIds: string[]): Promise<NextLessonPreview[]> {
+  if (!classIds.length) return [];
+  const { data, error } = await getSupabase().rpc("class_next_previews", { p_class_ids: classIds });
+  if (error) throw error;
+  return (data ?? []) as NextLessonPreview[];
+}
+
 export interface HomeworkDetail {
   id: string;
   class_id: string;

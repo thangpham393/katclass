@@ -257,7 +257,11 @@ export interface TeachingLogRow {
   progress: LessonProgress | null;
   homework_note: string | null;
   next_plan: string | null;
+  /** GV xác nhận BTVN lúc chấm công (0066): đã giao trên hệ thống / không giao. */
+  homework_status: HomeworkStatus | null;
 }
+
+export type HomeworkStatus = "assigned" | "none";
 
 /** Tiến độ buổi học so với kế hoạch (0064). */
 export type LessonProgress = "on_track" | "behind" | "ahead";
@@ -298,7 +302,7 @@ const TEACHING_SELECT = `
   teacher:profiles!sessions_teacher_id_fkey ( id, name ),
   class:classes ( id, name ),
   room:rooms ( id, name ),
-  teaching_log:teaching_logs ( id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan ),
+  teaching_log:teaching_logs ( id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan, homework_status ),
   attendance ( count )
 `;
 
@@ -349,7 +353,7 @@ export interface LessonLogRow {
   teaching_log: LessonLogEntry | LessonLogEntry[];
 }
 
-type LessonLogEntry = Pick<TeachingLogRow, "lesson_content" | "note" | "progress" | "homework_note" | "next_plan">;
+type LessonLogEntry = Pick<TeachingLogRow, "lesson_content" | "note" | "progress" | "homework_note" | "next_plan" | "homework_status">;
 
 /**
  * Nội dung đã dạy của lớp, mới nhất trước — để GV dạy thay / hành chính nắm
@@ -364,7 +368,7 @@ export async function fetchClassLessonLog(
     .select(`
       id, date, start_time, session_no,
       teacher:profiles!sessions_teacher_id_fkey ( id, name ),
-      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan )
+      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan, homework_status )
     `)
     .eq("class_id", classId);
   if (opts.before) q = q.lt("date", opts.before);
@@ -404,7 +408,7 @@ export async function fetchLessonJournal(from: string): Promise<LessonJournalRow
       class:classes ( id, name ),
       teacher:profiles!sessions_teacher_id_fkey ( id, name ),
       room:rooms ( name ),
-      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan ),
+      teaching_log:teaching_logs!inner ( lesson_content, note, progress, homework_note, next_plan, homework_status ),
       attendance ( status )
     `)
     .gte("date", from);
@@ -421,7 +425,7 @@ export async function fetchLessonJournal(from: string): Promise<LessonJournalRow
 export async function fetchTeachingLog(sessionId: string): Promise<TeachingLogRow | null> {
   const { data, error } = await getSupabase()
     .from("teaching_logs")
-    .select("id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan")
+    .select("id, session_id, teacher_id, checked_in_at, actual_start, actual_end, lesson_content, note, progress, homework_note, next_plan, homework_status")
     .eq("session_id", sessionId)
     .maybeSingle();
   if (error) throw error;
@@ -438,6 +442,7 @@ export interface SaveTeachingLogInput {
   progress?: LessonProgress | null;
   homeworkNote?: string;
   nextPlan?: string;
+  homeworkStatus?: HomeworkStatus | null;
   createdBy: string; // người bấm nút
 }
 
@@ -456,6 +461,7 @@ export async function saveTeachingLog(input: SaveTeachingLogInput): Promise<void
         progress: input.progress ?? null,
         homework_note: input.homeworkNote?.trim() || null,
         next_plan: input.nextPlan?.trim() || null,
+        homework_status: input.homeworkStatus ?? null,
         created_by: input.createdBy,
       },
       { onConflict: "session_id" },

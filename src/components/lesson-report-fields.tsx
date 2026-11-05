@@ -26,9 +26,12 @@ export interface LessonReport {
 export function LessonReportFields({
   value,
   onChange,
+  hideHomework,
 }: {
   value: LessonReport;
   onChange: (v: LessonReport) => void;
+  /** Modal chấm công đã có khối xác nhận BTVN riêng (0066). */
+  hideHomework?: boolean;
 }) {
   return (
     <div className="space-y-4">
@@ -52,17 +55,22 @@ export function LessonReportFields({
           ))}
         </div>
       </div>
-      <label className="block space-y-1">
-        <span className="text-sm font-semibold">Bài tập về nhà đã giao</span>
-        <Textarea
-          value={value.homeworkNote}
-          onChange={(e) => onChange({ ...value, homeworkNote: e.target.value })}
-          rows={2}
-          placeholder="VD: Sách bài tập trang 12–13, viết mỗi từ mới 3 dòng. Bỏ trống nếu không giao."
-        />
-      </label>
+      {!hideHomework && (
+        <label className="block space-y-1">
+          <span className="text-sm font-semibold">Bài tập về nhà đã giao</span>
+          <Textarea
+            value={value.homeworkNote}
+            onChange={(e) => onChange({ ...value, homeworkNote: e.target.value })}
+            rows={2}
+            placeholder="VD: Sách bài tập trang 12–13, viết mỗi từ mới 3 dòng. Bỏ trống nếu không giao."
+          />
+        </label>
+      )}
       <label className="block space-y-1">
         <span className="text-sm font-semibold">Nội dung dự kiến buổi sau</span>
+        <span className="block text-xs text-muted-foreground">
+          Học viên và phụ huynh thấy mục này để xem trước bài.
+        </span>
         <Textarea
           value={value.nextPlan}
           onChange={(e) => onChange({ ...value, nextPlan: e.target.value })}
