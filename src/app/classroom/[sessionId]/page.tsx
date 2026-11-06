@@ -10,6 +10,7 @@ import {
   CheckCheck,
   ChevronDown,
   Dices,
+  Pencil,
   Flag,
   Gamepad2,
   Maximize2,
@@ -85,6 +86,9 @@ const TOOLS: { key: Tool; label: string; icon: typeof Presentation; hotkey: stri
   { key: "game", label: "Trò chơi", icon: Gamepad2, hotkey: "7" },
   { key: "rank", label: "Bảng ★", icon: Trophy, hotkey: "8" },
 ];
+
+/** Công cụ có trên thanh mép phải ở chế độ trình chiếu. */
+const PRESENT_DOCK_TOOLS: Tool[] = ["random", "timer", "board", "stroke", "game"];
 
 /** Một lần cộng điểm ở client: chưa có id server thì giữ tmp_id để hoàn tác/đồng bộ. */
 interface LocalPoint {
@@ -792,7 +796,13 @@ export default function ClassroomPage() {
         slide đang chiếu. Tất cả đều được mount sẵn — ẩn bằng CSS để iframe
         không tải lại và đồng hồ đang chạy không bị reset.
       */}
-      <div className="relative min-h-0 flex-1">
+      <div
+        className={cn(
+          "relative min-h-0 flex-1",
+          // Trình chiếu: chừa mép phải cho thanh công cụ dọc khỏi che lớp phủ công cụ
+          presenting && "[&>[data-tool-overlay]]:pr-24",
+        )}
+      >
         <SlideStage
           sessionSlideId={s.html_slide_id}
           lessons={lessons.data ?? []}
@@ -918,7 +928,7 @@ export default function ClassroomPage() {
                 )}
                 title="Bút viết lên slide · Ctrl+P · chuột phải để cất bút"
               >
-                <PenLine className="h-4 w-4" />
+                <Pencil className="h-4 w-4" />
                 <span className="hidden sm:inline">Bút</span>
               </button>
 
@@ -1001,19 +1011,26 @@ export default function ClassroomPage() {
             </div>
             <div className="flex flex-col gap-1 border border-classroom-border bg-classroom-surface/90 p-1.5 shadow-soft backdrop-blur">
               <PresentDockButton
-                icon={PenLine}
+                icon={Pencil}
                 label="Bút"
                 active={Boolean(inkTool)}
                 onClick={() => setInkTool((t) => (t ? null : "pen"))}
                 title="Bút viết lên slide · Ctrl+P · chuột phải để cất bút"
               />
-              <PresentDockButton
-                icon={Dices}
-                label="Gọi tên"
-                active={overlay === "random"}
-                onClick={() => setOverlay((cur) => (cur === "random" ? null : "random"))}
-                title="Gọi tên học viên · phím tắt 3"
-              />
+              {TOOLS.filter((t) => PRESENT_DOCK_TOOLS.includes(t.key)).map((t) => (
+                <PresentDockButton
+                  key={t.key}
+                  icon={t.icon}
+                  label={
+                    t.key === "timer" && timer.running
+                      ? `${String(Math.floor(timer.left / 60)).padStart(2, "0")}:${String(timer.left % 60).padStart(2, "0")}`
+                      : t.label
+                  }
+                  active={overlay === t.key}
+                  onClick={() => setOverlay((cur) => (cur === t.key ? null : (t.key as Exclude<Tool, "slide">)))}
+                  title={`${t.label} · phím tắt ${t.hotkey}`}
+                />
+              ))}
               <PresentDockButton
                 icon={Users}
                 label={`${presentCount(students, attendance)}/${students.length}`}
@@ -1094,7 +1111,7 @@ function PresentDockButton({
       disabled={disabled}
       title={title}
       className={cn(
-        "flex w-16 flex-col items-center gap-0.5 rounded-xl px-1 py-2 text-[11px] font-semibold tabular-nums transition-colors disabled:opacity-40",
+        "flex w-16 flex-col items-center gap-0.5 rounded-xl px-1 py-1.5 text-[11px] font-semibold tabular-nums transition-colors disabled:opacity-40",
         active ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted",
       )}
     >
@@ -1150,6 +1167,7 @@ function ToolOverlay({
 
   return (
     <div
+      data-tool-overlay
       className={cn(
         "absolute inset-0 z-20 flex flex-col p-2 pb-20 backdrop-blur-sm sm:p-4 sm:pb-20",
         "bg-classroom-background/80",

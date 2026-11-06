@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Eraser, PenLine, Trash2, Type, Undo2, X } from "lucide-react";
+import { Eraser, Pencil, Trash2, Type, Undo2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type InkTool = "pen" | "text" | "eraser";
@@ -301,7 +301,7 @@ export function InkPalette({
         className={cn(icon, tool === "pen" ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted")}
         title="Bút (Ctrl+P bật/tắt) · chuột phải để cất bút"
       >
-        <PenLine className="h-4 w-4" />
+        <Pencil className="h-4 w-4" />
       </button>
       <button
         onClick={() => onTool("text")}
