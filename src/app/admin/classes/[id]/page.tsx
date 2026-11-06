@@ -1383,9 +1383,9 @@ function StartDateModal({
         schedules: cls.class_schedules,
       }).startDate ?? todayISO(),
   );
-  // Ngày khai giảng lệch thực tế mà GV đã chấm công / điểm danh vào các buổi sinh sẵn
-  // → dời cả buổi đã học (0072); điểm danh, chấm công đi theo buổi.
-  const [includeHeld, setIncludeHeld] = useState(() => sessions.some((s) => s.status === "completed"));
+  // Mặc định buổi đã học giữ ngày, chỉ dồn buổi chưa học (0073). Tích khi chính ngày
+  // của buổi đã học bị sai → dời cả buổi đã học, điểm danh/chấm công đi theo buổi (0072).
+  const [includeHeld, setIncludeHeld] = useState(false);
   const [rows, setRows] = useState<RescheduleRow[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
@@ -1433,9 +1433,9 @@ function StartDateModal({
     <Modal open onClose={onClose} title="Sửa ngày bắt đầu của lớp" className="max-w-2xl">
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          Các buổi đã sinh được xếp lại từ ngày mới theo lịch tuần{" "}
-          <b className="text-foreground">{formatSchedules(cls.class_schedules)}</b>, giữ nguyên thứ tự buổi. Học viên
-          & phụ huynh nhận một thông báo tổng hợp.
+          Các buổi chưa học được xếp lại từ ngày mới theo lịch tuần{" "}
+          <b className="text-foreground">{formatSchedules(cls.class_schedules)}</b>, buổi đã học giữ nguyên ngày. Lưu
+          xong số buổi được đánh lại 1, 2, 3... theo ngày. Học viên & phụ huynh nhận một thông báo tổng hợp.
         </p>
         <Field label="Ngày bắt đầu">
           <Input type="date" className="w-full sm:w-48" value={start} onChange={(e) => e.target.value && setStart(e.target.value)} />
@@ -1450,8 +1450,8 @@ function StartDateModal({
           <span>
             Dời cả buổi đã học
             <span className="block text-xs text-muted-foreground">
-              Dùng khi lớp khai giảng lệch ngày dự kiến nhưng GV đã chấm công / điểm danh vào các buổi sinh sẵn. Điểm
-              danh, chấm công, nhận xét đi theo buổi; buổi đã học giữ GV & phòng. Bảng công GV tính theo ngày mới.
+              Chỉ tích khi ngày của buổi đã chấm công bị sai so với ngày dạy thật. Điểm danh, chấm công, nhận xét đi
+              theo buổi; buổi đã học giữ GV & phòng. Bảng công GV tính theo ngày mới.
             </span>
           </span>
         </label>
@@ -1468,8 +1468,8 @@ function StartDateModal({
             {conflicts.length > 0 && (
               <div className="flex gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-                {conflicts.length} buổi trùng giờ giáo viên/phòng với lớp khác — đổi GV/phòng ở lịch tuần hoặc chọn
-                ngày khác rồi thử lại.
+                {conflicts.length} buổi không dời được — xem lý do ở từng buổi bên dưới, rồi chọn ngày khác hoặc
+                đổi GV/phòng ở lịch tuần.
               </div>
             )}
             {count > 0 && (
