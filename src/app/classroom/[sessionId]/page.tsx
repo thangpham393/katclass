@@ -30,6 +30,8 @@ import { ErrorNote } from "@/components/ui/loading";
 import { useAuth } from "@/components/auth/auth-provider";
 import { homeForRole } from "@/lib/auth";
 import { RosterPanel, presentCount } from "@/components/classroom/roster-panel";
+import { InkPalette, SlideInk, INK_COLORS, INK_SIZES, type InkStroke, type InkTool } from "@/components/classroom/slide-ink";
+import { SLIDE_NAV_KEYS } from "@/components/classroom/html-slide-stage";
 import { SlideStage, TimerStage, VocabStage } from "@/components/classroom/stages";
 import { NamePicker } from "@/components/classroom/name-picker";
 import { fetchClassPhotos } from "@/lib/db-class-photos";
@@ -67,6 +69,9 @@ import {
   type PointReason,
 } from "@/lib/db-classroom";
 import { useLoad } from "@/lib/use-load";
+
+/** Trang chưa có nét — hằng để lớp vẽ không vẽ lại mỗi giây theo đồng hồ buổi. */
+const NO_INK: InkStroke[] = [];
 
 type Tool = "slide" | "vocab" | "random" | "timer" | "board" | "stroke" | "game" | "rank";
 
@@ -145,6 +150,13 @@ export default function ClassroomPage() {
   const [timer, setTimer] = useState<{ left: number; running: boolean }>({ left: 0, running: false });
   /** Học viên vừa được gọi và đang trả lời — chốt lượt bằng cách cho điểm hoặc bỏ qua. */
   const [answering, setAnswering] = useState<ClassroomStudent | null>(null);
+  /** Bút viết lên slide: công cụ đang cầm (null = chuột thường), màu, cỡ. */
+  const [inkTool, setInkTool] = useState<InkTool | null>(null);
+  const [inkColor, setInkColor] = useState(INK_COLORS[0]);
+  const [inkSize, setInkSize] = useState(INK_SIZES[1]);
+  /** Nét theo từng trang slide — chuyển trang thì nét trang cũ ẩn, quay lại thì hiện. */
+  const [ink, setInk] = useState<Record<string, InkStroke[]>>({});
+  const [inkPage, setInkPage] = useState("none");
   const hideOverlayTimer = useRef<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -303,11 +315,72 @@ export default function ClassroomPage() {
   useEffect(() => {
     if (!presenting) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape" && !overlay) setPresenting(false);
+      if (e.key === "Escape" && !overlay && !inkTool) setPresenting(false);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [presenting, overlay]);
+  }, [presenting, overlay, inkTool]);
+
+  /* --- Slide báo đang ở trang nào / Ctrl+P bấm trong slide (script gắn trong HtmlSlideStage) --- */
+  useEffect(() => {
+    function onMsg(e: MessageEvent) {
+      const m = e.data as { __kat?: string; deck?: string; key?: string } | null;
+      if (m?.__kat !== "slide" && m?.__kat !== "pen") return;
+      if (rootRef.current?.querySelector("iframe")?.contentWindow !== e.source) return;
+      if (m.__kat === "pen") setInkTool((t) => (t ? null : "pen"));
+      else setInkPage(`${m.deck}|${m.key}`);
+    }
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
+
+  /*
+   * Bút: Ctrl+P (⌘P) bật/tắt, Esc cất bút. Đang cầm bút thì slide không giữ
+   * phím nên ← → / bút trình chiếu được chuyển vào slide.
+   */
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        setInkTool((t) => (t ? null : "pen"));
+        return;
+      }
+      if (!inkTool || e.isComposing) return;
+      const el = e.target as HTMLElement | null;
+      if (el && (["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName) || el.isContentEditable)) return;
+      if (e.key === "Escape" && !overlay) {
+        setInkTool(null);
+        return;
+      }
+      if (overlay || !SLIDE_NAV_KEYS.includes(e.key)) return;
+      e.preventDefault();
+      rootRef.current
+        ?.querySelector("iframe")
+        ?.contentWindow?.postMessage({ __kat: "key", key: e.key, code: e.code }, "*");
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [inkTool, overlay]);
+
+  /*
+   * Khoá phím Esc khi đang toàn màn hình trình chiếu (Chrome/Edge): Esc bấm nhanh
+   * chỉ đóng công cụ đang mở, giữ Esc mới thoát toàn màn hình. Trình duyệt không
+   * hỗ trợ thì như cũ.
+   */
+  useEffect(() => {
+    if (!presenting || !fullscreen) return;
+    const kb = (navigator as Navigator & {
+      keyboard?: { lock?: (keys: string[]) => Promise<void>; unlock?: () => void };
+    }).keyboard;
+    kb?.lock?.(["Escape"]).catch(() => {});
+    return () => kb?.unlock?.();
+  }, [presenting, fullscreen]);
+
+  /* --- Đóng công cụ khi trình chiếu → trả phím ← → về cho slide --- */
+  useEffect(() => {
+    if (!presenting || overlay || rosterOpen || inkTool) return;
+    rootRef.current?.querySelector<HTMLIFrameElement>("iframe")?.focus();
+  }, [presenting, overlay, rosterOpen, inkTool]);
 
   /* --- Thoát toàn màn hình bằng Esc của trình duyệt cũng thoát trình chiếu --- */
   useEffect(() => {
@@ -508,6 +581,44 @@ export default function ClassroomPage() {
     return !a || !ABSENT.includes(a);
   });
 
+  const pageInk = ink[inkPage] ?? NO_INK;
+  const setPageInk = (next: InkStroke[]) => setInk((prev) => ({ ...prev, [inkPage]: next }));
+  const inkPalette = (vertical: boolean) => (
+    <InkPalette
+      vertical={vertical}
+      tool={inkTool}
+      color={inkColor}
+      size={inkSize}
+      canUndo={pageInk.length > 0}
+      onTool={setInkTool}
+      onColor={setInkColor}
+      onSize={setInkSize}
+      onUndo={() => setPageInk(pageInk.slice(0, -1))}
+      onClear={() => setPageInk([])}
+    />
+  );
+
+  /** Dùng chung cho popover ở topbar và thanh nổi khi trình chiếu. */
+  const rosterPanel = (
+    <RosterPanel
+      students={students}
+      attendance={attendance}
+      points={totals}
+      reason={reason}
+      onReasonChange={setReason}
+      onGive={give}
+      onUndo={undo}
+      onUndoStudent={undoFor}
+      lastFor={lastPointFor}
+      answeringId={answering?.id ?? null}
+      canUndo={points.length > 0}
+      pendingCount={pendingCount}
+      pinned={rosterPinned}
+      onTogglePin={() => setRosterPinned((v) => !v)}
+      onClose={() => setRosterOpen(false)}
+    />
+  );
+
   /* ---------- Màn điểm danh đầu giờ ---------- */
   if (phase === "checkin") {
     return (
@@ -664,27 +775,7 @@ export default function ClassroomPage() {
                 </span>
                 <ChevronDown className={cn("h-3.5 w-3.5 opacity-70 transition-transform", rosterOpen && "rotate-180")} />
               </button>
-              {rosterOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2">
-                  <RosterPanel
-                    students={students}
-                    attendance={attendance}
-                    points={totals}
-                    reason={reason}
-                    onReasonChange={setReason}
-                    onGive={give}
-                    onUndo={undo}
-                    onUndoStudent={undoFor}
-                    lastFor={lastPointFor}
-                    answeringId={answering?.id ?? null}
-                    canUndo={points.length > 0}
-                    pendingCount={pendingCount}
-                    pinned={rosterPinned}
-                    onTogglePin={() => setRosterPinned((v) => !v)}
-                    onClose={() => setRosterOpen(false)}
-                  />
-                </div>
-              )}
+              {rosterOpen && <div className="absolute right-0 top-full z-50 mt-2">{rosterPanel}</div>}
             </div>
 
             <Button variant="gold" size="sm" onClick={() => setWrapOpen(true)}>
@@ -716,6 +807,15 @@ export default function ClassroomPage() {
               created_by: user.id,
             })
           }
+        />
+
+        <SlideInk
+          tool={inkTool}
+          color={inkColor}
+          size={inkSize}
+          strokes={pageInk}
+          onChange={setPageInk}
+          onRelease={() => setInkTool(null)}
         />
 
         <ToolOverlay
@@ -788,7 +888,8 @@ export default function ClassroomPage() {
 
         {/* Thanh công cụ nổi: đặt đè lên slide, không chia cột/chia hàng với khung chiếu */}
         {!presenting && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex flex-col items-center gap-2 px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            {inkTool && <div className="pointer-events-auto max-w-full">{inkPalette(false)}</div>}
             <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-1 rounded-2xl border border-classroom-border bg-classroom-surface/90 p-1.5 shadow-soft backdrop-blur">
               {TOOLS.map((t) => (
                 <button
@@ -808,6 +909,18 @@ export default function ClassroomPage() {
               ))}
 
               <span className="mx-1 hidden h-6 w-px bg-classroom-hover sm:block" />
+
+              <button
+                onClick={() => setInkTool((t) => (t ? null : "pen"))}
+                className={cn(
+                  "flex shrink-0 items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold transition-colors",
+                  inkTool ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted",
+                )}
+                title="Bút viết lên slide · Ctrl+P · chuột phải để cất bút"
+              >
+                <PenLine className="h-4 w-4" />
+                <span className="hidden sm:inline">Bút</span>
+              </button>
 
               <button
                 onClick={undo}
@@ -865,15 +978,71 @@ export default function ClassroomPage() {
           </div>
         )}
 
-        {/* Chế độ trình chiếu: chỉ còn một nút mờ ở góc để quay lại (hoặc Esc) */}
+        {/*
+          Chế độ trình chiếu: thanh công cụ dọc nép mép phải, thu gọn còn một vạch
+          nhỏ — rê chuột (hoặc chạm) vào thì trượt ra. Gọi tên + cộng ★ ngay trên
+          slide, không phải thoát toàn màn hình.
+        */}
         {presenting && (
-          <button
-            onClick={togglePresenting}
-            className="absolute bottom-4 right-4 z-30 inline-flex items-center gap-1.5 rounded-xl border border-classroom-border bg-classroom-surface/70 px-3 py-2 text-xs font-semibold text-classroom-secondary opacity-25 backdrop-blur transition-opacity hover:opacity-100"
-            title="Thoát chế độ trình chiếu (Esc)"
+          <div
+            className={cn(
+              "group absolute right-0 top-1/2 z-30 flex -translate-y-1/2 items-stretch transition-transform duration-200",
+              rosterOpen || overlay || inkTool ? "translate-x-0" : "translate-x-[calc(100%-14px)] hover:translate-x-0",
+            )}
           >
-            <Minimize2 className="h-4 w-4" /> Thoát trình chiếu
-          </button>
+            <div
+              className={cn(
+                "flex w-3.5 shrink-0 items-center justify-center rounded-l-xl border border-r-0 border-classroom-border bg-classroom-surface/80 backdrop-blur transition-opacity",
+                rosterOpen || overlay || inkTool ? "opacity-100" : "opacity-40 group-hover:opacity-100",
+              )}
+              title="Công cụ"
+            >
+              <span className="h-8 w-1 rounded-full bg-classroom-muted-foreground/60" />
+            </div>
+            <div className="flex flex-col gap-1 border border-classroom-border bg-classroom-surface/90 p-1.5 shadow-soft backdrop-blur">
+              <PresentDockButton
+                icon={PenLine}
+                label="Bút"
+                active={Boolean(inkTool)}
+                onClick={() => setInkTool((t) => (t ? null : "pen"))}
+                title="Bút viết lên slide · Ctrl+P · chuột phải để cất bút"
+              />
+              <PresentDockButton
+                icon={Dices}
+                label="Gọi tên"
+                active={overlay === "random"}
+                onClick={() => setOverlay((cur) => (cur === "random" ? null : "random"))}
+                title="Gọi tên học viên · phím tắt 3"
+              />
+              <PresentDockButton
+                icon={Users}
+                label={`${presentCount(students, attendance)}/${students.length}`}
+                active={rosterOpen}
+                onClick={() => setRosterOpen((v) => !v)}
+                title="Danh sách học viên · cộng ★"
+                rosterToggle
+              />
+              <PresentDockButton
+                icon={Undo2}
+                label="Hoàn tác"
+                onClick={undo}
+                disabled={points.length === 0}
+                title="Hoàn tác lần cộng điểm gần nhất"
+              />
+              <span className="mx-2 my-0.5 h-px bg-classroom-hover" />
+              <PresentDockButton
+                icon={Minimize2}
+                label="Thoát"
+                onClick={togglePresenting}
+                title="Thoát chế độ trình chiếu (giữ Esc)"
+              />
+            </div>
+            {rosterOpen ? (
+              <div className="absolute right-full top-1/2 z-50 mr-2 -translate-y-1/2">{rosterPanel}</div>
+            ) : (
+              inkTool && <div className="absolute right-full top-1/2 z-50 mr-2 -translate-y-1/2">{inkPalette(true)}</div>
+            )}
+          </div>
         )}
       </div>
 
@@ -896,6 +1065,42 @@ export default function ClassroomPage() {
         />
       )}
     </div>
+  );
+}
+
+/** Một nút trên thanh công cụ dọc ở chế độ trình chiếu. */
+function PresentDockButton({
+  icon: Icon,
+  label,
+  title,
+  active,
+  disabled,
+  rosterToggle,
+  onClick,
+}: {
+  icon: typeof Presentation;
+  label: string;
+  title: string;
+  active?: boolean;
+  disabled?: boolean;
+  /** Nút mở danh sách học viên: bấm vào không bị panel coi là "bấm ra ngoài". */
+  rosterToggle?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      data-roster-toggle={rosterToggle || undefined}
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
+      className={cn(
+        "flex w-16 flex-col items-center gap-0.5 rounded-xl px-1 py-2 text-[11px] font-semibold tabular-nums transition-colors disabled:opacity-40",
+        active ? "bg-brand-600 text-white" : "text-classroom-secondary hover:bg-classroom-muted",
+      )}
+    >
+      <Icon className="h-4 w-4" />
+      {label}
+    </button>
   );
 }
 
