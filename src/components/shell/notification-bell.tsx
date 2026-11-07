@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Presentation,
   Award,
   Bell,
   CalendarClock,
@@ -37,6 +38,7 @@ const TYPE_ICONS: Record<NotificationType, React.ComponentType<{ className?: str
   homework_reminder: ClipboardList,
   comment_new: MessageSquareText,
   review_new: Award,
+  slide_shared: Presentation,
   generic: Info,
 };
 

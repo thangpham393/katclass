@@ -260,3 +260,93 @@ export async function fetchFolderSlides(folder: string | "none" | null, q = ""):
   if (error) throw error;
   return (data ?? []) as unknown as LibrarySlide[];
 }
+
+/* ===================== Gửi slide cho học viên (0074) ===================== */
+
+export interface SessionSlideContext {
+  /** Slide sẽ tích sẵn: slide chọn riêng cho buổi, không có thì slide đầu của bài. */
+  defaultSlide: HtmlSlide | null;
+  /** Slide gắn với các bài của buổi — hiện sẵn để tích thêm. */
+  lessonSlides: HtmlSlide[];
+  /** Slide đã gửi cho buổi này trước đó. */
+  shared: HtmlSlide[];
+}
+
+export async function fetchSessionSlideContext(sessionId: string): Promise<SessionSlideContext> {
+  const sb = getSupabase();
+  const [sess, lessons, shares] = await Promise.all([
+    sb.from("sessions").select("html_slide_id").eq("id", sessionId).maybeSingle(),
+    sb.from("session_lessons").select("lesson_id").eq("session_id", sessionId),
+    sb.from("session_slide_shares").select(`slide:html_slides ( ${COLUMNS} )`).eq("session_id", sessionId),
+  ]);
+  if (sess.error) throw sess.error;
+  if (lessons.error) throw lessons.error;
+  if (shares.error) throw shares.error;
+  const lessonSlides = await fetchLessonHtmlSlides((lessons.data ?? []).map((r) => r.lesson_id as string));
+  const sessionSlideId = (sess.data?.html_slide_id as string | null) ?? null;
+  const defaultSlide = sessionSlideId
+    ? (lessonSlides.find((s) => s.id === sessionSlideId) ?? (await fetchHtmlSlide(sessionSlideId)))
+    : (lessonSlides[0] ?? null);
+  const shared = ((shares.data ?? []) as unknown as { slide: HtmlSlide | null }[])
+    .map((r) => r.slide)
+    .filter((s): s is HtmlSlide => !!s);
+  return { defaultSlide, lessonSlides, shared };
+}
+
+/** Đồng bộ danh sách slide đã gửi của buổi: thêm slide mới tích, thu hồi slide bỏ tích. */
+export async function saveSessionSlideShares(
+  sessionId: string,
+  slideIds: string[],
+  previousIds: string[],
+): Promise<void> {
+  const sb = getSupabase();
+  const add = slideIds.filter((id) => !previousIds.includes(id));
+  const remove = previousIds.filter((id) => !slideIds.includes(id));
+  if (remove.length) {
+    const { error } = await sb
+      .from("session_slide_shares")
+      .delete()
+      .eq("session_id", sessionId)
+      .in("slide_id", remove);
+    if (error) throw error;
+  }
+  if (add.length) {
+    const { error } = await sb
+      .from("session_slide_shares")
+      .upsert(add.map((slide_id) => ({ session_id: sessionId, slide_id })), {
+        onConflict: "session_id,slide_id",
+        ignoreDuplicates: true,
+      });
+    if (error) throw error;
+  }
+}
+
+export interface SharedSlide {
+  slide_id: string;
+  name: string;
+  path: string;
+  size_bytes: number;
+  slide_lesson: string | null;
+  session_id: string;
+  session_date: string;
+  session_no: number | null;
+  class_id: string | null;
+  class_name: string | null;
+  lesson_ids: string[];
+  shared_at: string;
+}
+
+/** Slide giáo viên đã gửi cho học viên / phụ huynh đang đăng nhập. */
+export async function fetchMySharedSlides(filter: {
+  classId?: string;
+  sessionId?: string;
+  lessonId?: string;
+}): Promise<SharedSlide[]> {
+  const { data, error } = await getSupabase().rpc("my_shared_slides", {
+    p_class_id: filter.classId ?? null,
+    p_session_id: filter.sessionId ?? null,
+    p_lesson_id: filter.lessonId ?? null,
+  });
+  if (error) throw error;
+  return (data ?? []) as SharedSlide[];
+}

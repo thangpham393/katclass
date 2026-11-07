@@ -11,6 +11,7 @@ import { useLoad } from "@/lib/use-load";
 import { fetchLesson, type VocabRow } from "@/lib/db-content";
 import { toEmbedUrl } from "@/lib/db-classroom";
 import { LEVEL_LABELS } from "@/lib/db";
+import { SharedSlidesSection } from "@/components/shared-slides";
 
 function speakVocab(v: VocabRow) {
   if (v.audio_url) {
@@ -87,6 +88,9 @@ export default function StudentLessonPage() {
           </Card>
         </section>
       )}
+
+      {/* PPT bài giảng giáo viên đã gửi sau buổi học */}
+      <SharedSlidesSection lessonId={l.id} />
 
       {/* Ngữ pháp */}
       {l.grammar && (

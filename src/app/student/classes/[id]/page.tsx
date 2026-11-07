@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   ClipboardList,
   GraduationCap,
+  Presentation,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +34,8 @@ import {
 } from "@/lib/db-content";
 import { fetchMyAttendance } from "@/lib/db-student";
 import { NextLessonPreview } from "@/components/next-lesson-preview";
+import { SharedSlideViewer } from "@/components/shared-slides";
+import { fetchMySharedSlides, type SharedSlide } from "@/lib/db-html-slides";
 import { pct } from "@/lib/utils";
 
 const ATTENDANCE_BADGE: Record<AttendanceStatus, "jade" | "gold" | "destructive" | "default"> = {
@@ -65,6 +68,19 @@ export default function StudentClassDetailPage() {
     () => fetchSessionLessonsBySessions(sessionIds),
     [sessionKey],
   );
+
+  const sharedSlides = useLoad(() => fetchMySharedSlides({ classId }), [classId]);
+  const [openSlide, setOpenSlide] = useState<SharedSlide | null>(null);
+
+  const slidesBySession = useMemo(() => {
+    const map = new Map<string, SharedSlide[]>();
+    for (const s of sharedSlides.data ?? []) {
+      const arr = map.get(s.session_id) ?? [];
+      arr.push(s);
+      map.set(s.session_id, arr);
+    }
+    return map;
+  }, [sharedSlides.data]);
 
   const attendanceBySession = useMemo(() => {
     const map = new Map<string, { status: AttendanceStatus; note: string | null }>();
@@ -263,6 +279,7 @@ export default function StudentClassDetailPage() {
                 const d = new Date(s.date + "T00:00:00");
                 const att = attendanceBySession.get(s.id);
                 const lessons = lessonsBySession.get(s.id) ?? [];
+                const slides = slidesBySession.get(s.id) ?? [];
                 return (
                   <div key={s.id} className="py-3">
                     <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -280,8 +297,19 @@ export default function StudentClassDetailPage() {
                         <Badge variant="muted">Chưa điểm danh</Badge>
                       )}
                     </div>
-                    {lessons.length > 0 && (
+                    {(lessons.length > 0 || slides.length > 0) && (
                       <div className="mt-2 flex flex-wrap gap-2">
+                        {slides.map((sl) => (
+                          <button
+                            key={sl.slide_id}
+                            onClick={() => setOpenSlide(sl)}
+                            className="inline-flex items-center gap-1.5 rounded-full border border-gold-200 bg-gold-50 px-3 py-1 text-xs font-semibold text-gold-700 hover:bg-gold-100"
+                            title="Xem slide bài giảng giáo viên đã gửi"
+                          >
+                            <Presentation className="h-3 w-3" />
+                            PPT: {sl.name}
+                          </button>
+                        ))}
                         {lessons.map((sl) => (
                           <Link
                             key={sl.lesson.id}
@@ -302,6 +330,8 @@ export default function StudentClassDetailPage() {
           )}
         </CardContent>
       </Card>
+
+      {openSlide && <SharedSlideViewer slide={openSlide} onClose={() => setOpenSlide(null)} />}
     </div>
   );
 }

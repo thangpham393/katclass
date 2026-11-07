@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { SessionReportView } from "@/components/session-report";
+import { SharedSlidesSection } from "@/components/shared-slides";
 import { useAuth } from "@/components/auth/auth-provider";
 
 export default function StudentSessionReportPage() {
@@ -19,6 +20,7 @@ export default function StudentSessionReportPage() {
         <ArrowLeft className="h-4 w-4" /> Trang chủ
       </Link>
       {user && <SessionReportView sessionId={params.id} studentId={user.id} />}
+      {user && <SharedSlidesSection sessionId={params.id} />}
     </div>
   );
 }

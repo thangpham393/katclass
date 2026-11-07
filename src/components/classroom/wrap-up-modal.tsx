@@ -20,6 +20,13 @@ import { createHomework, fetchQuestions, MANUAL_HOMEWORK_OPTIONS, type LessonDet
 import { saveTeachingLog } from "@/lib/db-tuition";
 import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
 import { ParentContactField, type ParentContact } from "@/components/parent-contact-field";
+import {
+  commitSlideShares,
+  EMPTY_SLIDE_SHARE,
+  SlideShareField,
+  slideShareError,
+  type SlideShareValue,
+} from "@/components/slide-share-field";
 import { fetchSessionParentFlags, flagParentContact, type ParentContactFlag } from "@/lib/db-care-requests";
 import {
   countByReason,
@@ -204,6 +211,7 @@ export function WrapUpModal({
   );
   const [logNote, setLogNote] = useState("");
   const [report, setReport] = useState<LessonReport>({ progress: null, homeworkNote: "", nextPlan: "" });
+  const [slideShare, setSlideShare] = useState<SlideShareValue>(EMPTY_SLIDE_SHARE);
 
   /** Tóm tắt bài vừa giao ở bước 3 để điền sẵn ô "BTVN đã giao" của bước 4. */
   function homeworkSummary(): string {
@@ -292,6 +300,8 @@ export function WrapUpModal({
         if (!content.trim()) throw new Error("Nhập nội dung bài học đã dạy.");
         if (end <= start) throw new Error("Giờ kết thúc phải sau giờ bắt đầu.");
         if (!report.progress) throw new Error("Chọn tiến độ buổi học so với kế hoạch.");
+        const slideErr = slideShareError(slideShare);
+        if (slideErr) throw new Error(slideErr);
         await saveTeachingLog({
           sessionId: session.id,
           teacherId: session.teacher?.id ?? currentUserId,
@@ -305,6 +315,7 @@ export function WrapUpModal({
           homeworkStatus: !session.class_id ? null : hwCreated ? "assigned" : hwSkip ? "none" : null,
           createdBy: currentUserId,
         });
+        await commitSlideShares(session.id, slideShare);
         onDone();
       }
     } catch (e) {
@@ -572,6 +583,7 @@ export function WrapUpModal({
                 />
               </div>
               <LessonReportFields value={report} onChange={setReport} />
+              <SlideShareField sessionId={session.id} value={slideShare} onChange={setSlideShare} />
               <div>
                 <div className="mb-1 text-sm font-semibold">Ghi chú (tùy chọn)</div>
                 <Input value={logNote} onChange={(e) => setLogNote(e.target.value)} placeholder="Lớp vào muộn 10 phút…" />

@@ -26,6 +26,13 @@ import {
 import { useAuth } from "@/components/auth/auth-provider";
 import { LessonReportFields, type LessonReport } from "@/components/lesson-report-fields";
 import { EMPTY_HOMEWORK_CHECK, HomeworkCheck, type HomeworkCheckValue } from "@/components/homework-check";
+import {
+  commitSlideShares,
+  EMPTY_SLIDE_SHARE,
+  SlideShareField,
+  slideShareError,
+  type SlideShareValue,
+} from "@/components/slide-share-field";
 
 /** Buổi dạy tối thiểu cần cho việc chấm công (dùng được cả SessionRow). */
 export interface LogTargetSession {
@@ -74,6 +81,7 @@ export function TeachingLogModal({
   const [homeworks, setHomeworks] = useState<SessionHomeworkRow[]>([]);
   const [hwLoading, setHwLoading] = useState(false);
   const [hwCheck, setHwCheck] = useState<HomeworkCheckValue>(EMPTY_HOMEWORK_CHECK);
+  const [slideShare, setSlideShare] = useState<SlideShareValue>(EMPTY_SLIDE_SHARE);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +103,11 @@ export function TeachingLogModal({
       .catch(() => {})
       .finally(() => setHwLoading(false));
   }, []);
+
+  // Đổi buổi → chờ ô gửi slide nạp lại (nạp lại cùng buổi sau khi lưu thì giữ nguyên)
+  useEffect(() => {
+    setSlideShare(EMPTY_SLIDE_SHARE);
+  }, [session?.id]);
 
   // Mở modal: nạp giá trị đã chấm, hoặc mặc định theo giờ lịch
   useEffect(() => {
@@ -157,6 +170,11 @@ export function TeachingLogModal({
       setError("Chọn tiến độ buổi học so với kế hoạch.");
       return;
     }
+    const slideErr = slideShareError(slideShare);
+    if (slideErr) {
+      setError(slideErr);
+      return;
+    }
     const dt = d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
     const quickTasks = hwCheck.tasks;
     const quickNote = hwCheck.note.trim();
@@ -217,6 +235,14 @@ export function TeachingLogModal({
         homeworkStatus,
         createdBy: currentUserId,
       });
+      try {
+        await commitSlideShares(session.id, slideShare);
+      } catch (e) {
+        // Công đã lưu — chỉ báo lỗi gửi slide, giữ modal mở để bấm lưu lại
+        onSaved();
+        setError(`Đã chấm công nhưng chưa gửi được slide: ${dbErrorMessage(e)}`);
+        return;
+      }
       onSaved();
       onClose();
     } catch (e) {
@@ -290,6 +316,8 @@ export function TeachingLogModal({
         )}
 
         <LessonReportFields value={report} onChange={setReport} hideHomework={!!hwClassId} />
+
+        <SlideShareField key={session.id} sessionId={session.id} value={slideShare} onChange={setSlideShare} />
 
         <Field label="Ghi chú (tùy chọn)">
           <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Lớp vào muộn 10 phút, dạy bù cuối buổi..." />

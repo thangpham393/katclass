@@ -21,6 +21,7 @@ export type NotificationType =
   | "homework_reminder" // nhắc làm bài tập
   | "comment_new" // GV nhận xét sau buổi học (HV + PH)
   | "review_new" // GV phát hành nhận xét tổng kết (HV + PH)
+  | "slide_shared" // GV gửi slide bài giảng sau buổi (HV)
   | "generic";
 
 export interface NotificationRow {
