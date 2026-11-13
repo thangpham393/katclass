@@ -160,9 +160,17 @@ export default function ParentSharePage({ params }: { params: Promise<{ token: s
         if (active) setError(err instanceof Error ? err.message : "Không cập nhật được dữ liệu.");
       } finally { pending = false; }
     }
-    const timer = window.setInterval(() => void refresh(), 15000);
+    // Mỗi lần gọi là 1 lượt chạy hàm trên Vercel (tính phí) → 60s là đủ;
+    // quay lại tab thì cập nhật ngay nhờ focus/visibilitychange.
+    const timer = window.setInterval(() => void refresh(), 60_000);
     window.addEventListener("focus", refresh);
-    return () => { active = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); };
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
   }, [verified, token, last4]);
 
   if (!data) {
