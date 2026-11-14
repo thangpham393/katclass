@@ -208,7 +208,7 @@ export default function SlideLibraryPage() {
         </p>
       )}
 
-      <div className="grid gap-4 md:grid-cols-[16rem_1fr]">
+      <div className="grid gap-4 md:grid-cols-[18rem_1fr] lg:grid-cols-[21rem_1fr]">
         {/* Cột thư mục */}
         <Card className="h-fit">
           <CardContent className="space-y-1 p-2">
@@ -378,14 +378,18 @@ function FolderRow({
       )}
     >
       <button onClick={onClick} className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm font-medium">
-        <Icon className="h-4 w-4 shrink-0" />
-        <span className="truncate">{label}</span>
-        {count != null && <span className="ml-auto text-xs text-muted-foreground">{count}</span>}
+        <Icon className="h-4 w-4 shrink-0 self-start mt-0.5" />
+        <span className="min-w-0 flex-1 break-words leading-snug" title={label}>
+          {label}
+        </span>
+        {count != null && (
+          <span className="shrink-0 whitespace-nowrap text-xs tabular-nums text-muted-foreground">{count}</span>
+        )}
       </button>
       {onEdit && (
         <button
           onClick={onEdit}
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-md opacity-0 hover:bg-background group-hover:opacity-100"
+          className="hidden h-7 w-7 shrink-0 place-items-center rounded-md hover:bg-background group-focus-within:grid group-hover:grid"
           title="Sửa thư mục"
         >
           <Pencil className="h-3.5 w-3.5" />
@@ -394,7 +398,7 @@ function FolderRow({
       {onDelete && (
         <button
           onClick={onDelete}
-          className="mr-1 grid h-7 w-7 shrink-0 place-items-center rounded-md text-rose-600 opacity-0 hover:bg-background group-hover:opacity-100"
+          className="mr-1 hidden h-7 w-7 shrink-0 place-items-center rounded-md text-rose-600 hover:bg-background group-focus-within:grid group-hover:grid"
           title="Xoá thư mục"
         >
           <Trash2 className="h-3.5 w-3.5" />
