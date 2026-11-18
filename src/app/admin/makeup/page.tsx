@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarCheck, CalendarClock, CalendarOff, CalendarPlus, Check, Search, ThumbsDown, Undo2 } from "lucide-react";
+import { CalendarCheck, CalendarClock, CalendarOff, CalendarPlus, Check, Search, ThumbsDown, Undo2, Users } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import {
   fetchProfilesByRole,
   fetchRooms,
   fetchUpcomingSessions,
-  scheduleMakeup,
+  scheduleMakeupMany,
   sessionClassLabel,
   resetMakeup,
   markMakeupAttended,
@@ -47,13 +47,30 @@ export default function AdminMakeupPage() {
   const { user } = useAuth();
   const credits = useLoad(() => fetchMakeupCredits(["pending", "scheduled"]));
   const absences = useLoad(() => fetchAbsenceRequests(["pending"]));
-  const [assigning, setAssigning] = useState<MakeupCreditRow | null>(null);
+  const [assigning, setAssigning] = useState<MakeupCreditRow[] | null>(null);
   const [waiving, setWaiving] = useState<MakeupCreditRow | null>(null);
   const [busyRequest, setBusyRequest] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const pending = (credits.data ?? []).filter((c) => c.status === "pending");
   const scheduled = (credits.data ?? []).filter((c) => c.status === "scheduled");
+
+  /**
+   * Gom học viên chờ bù theo cùng buổi vắng: lớp nghỉ cả buổi (báo lớp nghỉ,
+   * GV nghỉ…) thì xếp bù một lượt cho cả nhóm thay vì từng người.
+   */
+  const pendingGroups = useMemo(() => {
+    const map = new Map<string, MakeupCreditRow[]>();
+    for (const c of pending) {
+      const key = c.missed_session?.id ?? `single:${c.id}`;
+      const arr = map.get(key);
+      if (arr) arr.push(c);
+      else map.set(key, [c]);
+    }
+    return Array.from(map.values()).sort((a, b) =>
+      (b[0].missed_session?.date ?? "").localeCompare(a[0].missed_session?.date ?? ""),
+    );
+  }, [pending]);
 
   /**
    * Duyệt đơn xin nghỉ của học viên: trigger DB tự điểm danh "vắng có phép"
@@ -197,8 +214,28 @@ export default function AdminMakeupPage() {
               className="p-8"
             />
           ) : (
-            <div className="divide-y">
-              {pending.map((c) => (
+            <div className="space-y-3">
+              {pendingGroups.map((group) => (
+                <div
+                  key={group[0].missed_session?.id ?? group[0].id}
+                  className={cn(group.length > 1 && "rounded-lg border bg-secondary/20 px-3")}
+                >
+                  {group.length > 1 && (
+                    <div className="flex flex-wrap items-center gap-2 border-b py-2.5">
+                      <Users className="h-4 w-4 text-brand-700" />
+                      <div className="min-w-0 flex-1 text-sm">
+                        <span className="font-semibold">{group[0].missed_session?.class?.name ?? "?"}</span>
+                        <span className="text-muted-foreground">
+                          {" "}· nghỉ {fmtSession(group[0].missed_session)} · {group.length} học viên
+                        </span>
+                      </div>
+                      <Button size="sm" onClick={() => setAssigning(group)}>
+                        <CalendarClock className="h-3.5 w-3.5" /> Xếp bù cả lớp ({group.length})
+                      </Button>
+                    </div>
+                  )}
+                  <div className="divide-y">
+              {group.map((c) => (
                 <div key={c.id} className="flex flex-wrap items-center gap-3 py-3">
                   <Avatar name={c.student.name} src={c.student.avatar ?? undefined} size={38} />
                   <div className="min-w-0 flex-1">
@@ -219,12 +256,15 @@ export default function AdminMakeupPage() {
                       </div>
                     )}
                   </div>
-                  <Button size="sm" onClick={() => setAssigning(c)}>
+                  <Button size="sm" variant={group.length > 1 ? "secondary" : "default"} onClick={() => setAssigning([c])}>
                     <CalendarClock className="h-3.5 w-3.5" /> Xếp bù
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => setWaiving(c)}>
                     <CalendarCheck className="h-3.5 w-3.5" /> Không cần bù
                   </Button>
+                </div>
+              ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -281,7 +321,7 @@ export default function AdminMakeupPage() {
 
       {assigning && (
         <AssignMakeupModal
-          credit={assigning}
+          credits={assigning}
           onClose={() => setAssigning(null)}
           onSaved={() => {
             setAssigning(null);
@@ -361,28 +401,83 @@ function WaiveMakeupModal({
 }
 
 function AssignMakeupModal({
-  credit,
+  credits,
   onClose,
   onSaved,
 }: {
-  credit: MakeupCreditRow;
+  credits: MakeupCreditRow[];
   onClose: () => void;
   onSaved: () => void;
 }) {
-  const [mode, setMode] = useState<"existing" | "create">("existing");
+  const isGroup = credits.length > 1;
+  const first = credits[0];
+  // Cả lớp nghỉ thường mở buổi bù riêng cho cả lớp → mặc định tab "Tạo buổi bù riêng"
+  const [mode, setMode] = useState<"existing" | "create">(isGroup ? "create" : "existing");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set(credits.map((c) => c.id)));
+  const selected = credits.filter((c) => selectedIds.has(c.id));
+
+  function toggle(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   return (
     <Modal
       open
       onClose={onClose}
-      title={`Xếp học bù — ${credit.student.name}`}
+      title={
+        isGroup
+          ? `Xếp bù cả lớp — ${first.missed_session?.class?.name ?? "?"}`
+          : `Xếp học bù — ${first.student.name}`
+      }
       className="max-w-2xl"
     >
       <div className="space-y-3">
         <p className="text-sm text-muted-foreground">
-          Vắng buổi {fmtSession(credit.missed_session)} · lớp{" "}
-          <span className="font-medium text-foreground">{credit.missed_session?.class?.name ?? "?"}</span>.
+          Vắng buổi {fmtSession(first.missed_session)} · lớp{" "}
+          <span className="font-medium text-foreground">{first.missed_session?.class?.name ?? "?"}</span>.
         </p>
+
+        {isGroup && (
+          <div className="rounded-lg border p-3">
+            <div className="mb-2 flex items-center justify-between text-sm">
+              <span className="font-semibold">
+                Học viên xếp bù ({selected.length}/{credits.length})
+              </span>
+              <button
+                type="button"
+                className="text-xs font-medium text-brand-700 hover:underline"
+                onClick={() =>
+                  setSelectedIds(
+                    selected.length === credits.length ? new Set() : new Set(credits.map((c) => c.id)),
+                  )
+                }
+              >
+                {selected.length === credits.length ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+              </button>
+            </div>
+            <div className="grid gap-1.5 sm:grid-cols-2">
+              {credits.map((c) => (
+                <label key={c.id} className="flex cursor-pointer items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-brand-600"
+                    checked={selectedIds.has(c.id)}
+                    onChange={() => toggle(c.id)}
+                  />
+                  <span className="truncate">{c.student.name}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Bỏ tích học viên nào muốn xếp riêng — người đó ở lại danh sách chờ.
+            </p>
+          </div>
+        )}
 
         {/* Chọn cách xếp bù */}
         <div className="grid grid-cols-2 gap-1 rounded-lg border bg-secondary/40 p-1">
@@ -407,9 +502,9 @@ function AssignMakeupModal({
         </div>
 
         {mode === "existing" ? (
-          <PickExistingSession credit={credit} onSaved={onSaved} />
+          <PickExistingSession credits={selected} onSaved={onSaved} />
         ) : (
-          <CreateStandaloneSession credit={credit} onSaved={onSaved} />
+          <CreateStandaloneSession credits={selected} onSaved={onSaved} />
         )}
       </div>
     </Modal>
@@ -417,28 +512,31 @@ function AssignMakeupModal({
 }
 
 /** Xếp vào buổi sắp tới của lớp khác (hoặc buổi bù riêng đã tạo trước đó). */
-function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onSaved: () => void }) {
+function PickExistingSession({ credits, onSaved }: { credits: MakeupCreditRow[]; onSaved: () => void }) {
+  const credit = credits[0];
   const sessions = useLoad(fetchUpcomingSessions);
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const preferredId = credit.preferred_session?.id ?? null;
+  const preferredId = credits.length === 1 ? credit?.preferred_session?.id ?? null : null;
+  const missedId = credit?.missed_session?.id;
 
   const candidates = useMemo(() => {
     // Không xếp bù vào chính buổi đã vắng
-    let list = (sessions.data ?? []).filter((s) => s.id !== credit.missed_session?.id);
+    let list = (sessions.data ?? []).filter((s) => s.id !== missedId);
     const needle = q.trim().toLowerCase();
     if (needle) list = list.filter((s) => sessionClassLabel(s).toLowerCase().includes(needle));
     // Ca học viên tự chọn đưa lên đầu để khỏi phải dò trong danh sách dài
     return [...list].sort((a, b) => Number(b.id === preferredId) - Number(a.id === preferredId)).slice(0, 50);
-  }, [sessions.data, q, credit.missed_session?.id, preferredId]);
+  }, [sessions.data, q, missedId, preferredId]);
 
   async function handlePick(s: SessionRow) {
+    if (!credits.length) return setError("Chưa chọn học viên nào.");
     setBusy(s.id);
     setError(null);
     try {
-      await scheduleMakeup(credit.id, s.id);
+      await scheduleMakeupMany(credits.map((c) => c.id), s.id);
       onSaved();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -485,7 +583,7 @@ function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onS
                   {s.teacher ? ` · GV ${s.teacher.name}` : ""}
                 </div>
               </div>
-              <Button size="sm" variant="secondary" disabled={busy === s.id} onClick={() => handlePick(s)}>
+              <Button size="sm" variant="secondary" disabled={busy === s.id || !credits.length} onClick={() => handlePick(s)}>
                 {busy === s.id ? "..." : "Chọn"}
               </Button>
             </div>
@@ -497,7 +595,12 @@ function PickExistingSession({ credit, onSaved }: { credit: MakeupCreditRow; onS
 }
 
 /** Tạo buổi học bù độc lập (không gắn lớp) rồi xếp học viên vào luôn. */
-function CreateStandaloneSession({ credit, onSaved }: { credit: MakeupCreditRow; onSaved: () => void }) {
+function CreateStandaloneSession({ credits, onSaved }: { credits: MakeupCreditRow[]; onSaved: () => void }) {
+  const credit = credits[0];
+  const isGroup = credits.length > 1;
+  const who = isGroup
+    ? `lớp ${credit?.missed_session?.class?.name ?? "?"} (${credits.length} HV)`
+    : credit?.student.name ?? "";
   const rooms = useLoad(fetchRooms);
   const teachers = useLoad(() => fetchProfilesByRole("teacher"));
   const [date, setDate] = useState(todayISO(1));
@@ -510,6 +613,7 @@ function CreateStandaloneSession({ credit, onSaved }: { credit: MakeupCreditRow;
   const [error, setError] = useState<string | null>(null);
 
   async function handleCreate() {
+    if (!credits.length) return setError("Chưa chọn học viên nào.");
     if (!date) return setError("Chọn ngày học bù.");
     if (!startTime || !endTime || endTime <= startTime)
       return setError("Giờ kết thúc phải sau giờ bắt đầu.");
@@ -524,9 +628,9 @@ function CreateStandaloneSession({ credit, onSaved }: { credit: MakeupCreditRow;
         end_time: endTime,
         room_id: roomId || null,
         teacher_id: teacherId,
-        note: note || `Buổi học bù riêng — ${credit.student.name}`,
+        note: note || `Buổi học bù riêng — ${who}`,
       });
-      await scheduleMakeup(credit.id, sessionId);
+      await scheduleMakeupMany(credits.map((c) => c.id), sessionId);
       onSaved();
     } catch (e) {
       setError(dbErrorMessage(e));
@@ -577,12 +681,12 @@ function CreateStandaloneSession({ credit, onSaved }: { credit: MakeupCreditRow;
         <Input
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder={`vd: Học bù riêng cho ${credit.student.name}`}
+          placeholder={`vd: Học bù riêng cho ${who}`}
         />
       </Field>
 
       <div className="flex justify-end">
-        <Button onClick={handleCreate} disabled={busy || rooms.loading || teachers.loading}>
+        <Button onClick={handleCreate} disabled={busy || !credits.length || rooms.loading || teachers.loading}>
           <CalendarPlus className="h-4 w-4" />
           {busy ? "Đang tạo..." : "Tạo buổi & xếp học bù"}
         </Button>

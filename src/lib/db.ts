@@ -1242,6 +1242,17 @@ export async function scheduleMakeup(creditId: string, sessionId: string) {
   if (error) throw error;
 }
 
+/** Xếp nhiều lượt bù vào cùng một buổi một lần (cả lớp cùng nghỉ). */
+export async function scheduleMakeupMany(creditIds: string[], sessionId: string) {
+  if (!creditIds.length) return;
+  const { error } = await getSupabase()
+    .from("makeup_credits")
+    .update({ makeup_session_id: sessionId, status: "scheduled" })
+    .in("id", creditIds)
+    .eq("status", "pending");
+  if (error) throw error;
+}
+
 /** Đóng tay quyền học bù (GV quên điểm danh nhưng buổi đã học xong). */
 export async function markMakeupAttended(creditId: string) {
   const { error } = await getSupabase()
