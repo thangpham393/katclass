@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { BookMarked, Pencil, Plus, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { BookMarked, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,9 +22,41 @@ import {
 } from "@/lib/db";
 import { useLoad } from "@/lib/use-load";
 
+/** Bỏ dấu + chữ thường để gõ "thieu nhi" vẫn ra "Thiếu nhi". */
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export default function AdminCoursesPage() {
   const { data: courses, loading, error, reload } = useLoad(fetchCourses);
   const [editing, setEditing] = useState<CourseRow | "new" | null>(null);
+  const [q, setQ] = useState("");
+  const [level, setLevel] = useState("");
+
+  // Cấp độ đang có khóa — chỉ hiện những cấp có dùng
+  const levels = useMemo(
+    () => LEVELS.filter((l) => courses?.some((c) => c.level === l)),
+    [courses],
+  );
+
+  // Khớp khi khóa chứa ĐỦ các từ khoá (tên, mô tả, cấp độ, số buổi), không cần đúng thứ tự
+  const filtered = useMemo(() => {
+    const terms = normalize(q).split(" ").filter(Boolean);
+    return (courses ?? []).filter((c) => {
+      if (level && c.level !== level) return false;
+      if (!terms.length) return true;
+      const hay = normalize(
+        [c.name, c.description ?? "", c.level ? LEVEL_LABELS[c.level] ?? c.level : "", `${c.total_sessions} buoi`].join(" "),
+      );
+      return terms.every((t) => hay.includes(t));
+    });
+  }, [courses, q, level]);
 
   async function handleDelete(c: CourseRow) {
     if (!confirm(`Xóa khóa học "${c.name}"? Lớp thuộc khóa này sẽ mất liên kết.`)) return;
@@ -52,6 +84,31 @@ export default function AdminCoursesPage() {
 
       {error && <ErrorNote message={error} />}
 
+      {!loading && (courses?.length ?? 0) > 0 && (
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative w-full min-w-0 flex-1 sm:min-w-[240px]">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Tìm theo tên khóa, giáo trình, cấp độ..."
+              className="pl-9"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </div>
+          {levels.length > 1 && (
+            <Select value={level} onChange={(e) => setLevel(e.target.value)} wrapClassName="w-full sm:w-44">
+              <option value="">Mọi cấp độ</option>
+              {levels.map((l) => (
+                <option key={l} value={l}>{LEVEL_LABELS[l]}</option>
+              ))}
+            </Select>
+          )}
+          <span className="text-sm text-muted-foreground">
+            {filtered.length}/{courses!.length} khóa
+          </span>
+        </div>
+      )}
+
       {loading ? (
         <Card><LoadingRows rows={4} /></Card>
       ) : (courses?.length ?? 0) === 0 ? (
@@ -60,9 +117,15 @@ export default function AdminCoursesPage() {
           title="Chưa có khóa học nào"
           description='Tạo khóa đầu tiên, ví dụ "HSK 1 cơ bản — 24 buổi", rồi mở lớp từ khóa đó.'
         />
+      ) : filtered.length === 0 ? (
+        <Empty
+          icon={Search}
+          title="Không tìm thấy khóa học"
+          description="Thử từ khoá khác hoặc bỏ lọc cấp độ."
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {courses!.map((c) => (
+          {filtered.map((c) => (
             <Card key={c.id} className="card-hover p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="zh grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-50 text-lg font-bold text-brand-700">
