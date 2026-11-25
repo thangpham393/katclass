@@ -1077,10 +1077,13 @@ export async function saveAttendance(
   markedBy: string,
 ) {
   if (!records.length) return;
+  // Gộp trùng HV (dòng sau thắng) — upsert có 2 dòng cùng (buổi, HV) sẽ lỗi
+  // "ON CONFLICT DO UPDATE command cannot affect row a second time".
+  const unique = [...new Map(records.map((r) => [r.student_id, r])).values()];
   const { error } = await getSupabase()
     .from("attendance")
     .upsert(
-      records.map((r) => ({
+      unique.map((r) => ({
         session_id: sessionId,
         student_id: r.student_id,
         status: r.status,

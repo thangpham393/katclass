@@ -118,7 +118,12 @@ export function SessionDetail({
 
   // Học viên học bù: có quyền học bù trỏ vào buổi này nhưng không thuộc lớp
   const memberIds = new Set((students.data ?? []).map((s) => s.student_id));
-  const makeupStudents = (makeups.data ?? []).filter((m) => !memberIds.has(m.student.id));
+  // (một HV có 2+ phiếu bù cùng xếp vào buổi này chỉ hiện 1 lần)
+  const makeupStudents = (makeups.data ?? []).filter((m) => {
+    if (memberIds.has(m.student.id)) return false;
+    memberIds.add(m.student.id);
+    return true;
+  });
 
   // Mở từ bảng "Chưa nhận xét buổi học" → bật luôn ô nhận xét cho em đó
   // khi danh sách đã nạp xong (mỗi lần mở chỉ bật một lần)

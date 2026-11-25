@@ -182,7 +182,9 @@ export default function ClassroomPage() {
       .map((s) => ({ id: s.student_id, name: s.student.name, avatar: classPhotos.data?.find(p => p.key === s.student_id)?.url ?? s.student.avatar, makeup: false }));
     const ids = new Set(list.map((s) => s.id));
     for (const m of makeups.data ?? []) {
+      // Một HV có thể có 2+ phiếu bù cùng xếp vào buổi này → chỉ hiện 1 lần
       if (!ids.has(m.student.id)) {
+        ids.add(m.student.id);
         list.push({ id: m.student.id, name: m.student.name, avatar: m.student.avatar, makeup: true });
       }
     }
