@@ -870,6 +870,9 @@ export async function generateSessions(
   weeks: number,
   /** Tạo tối đa bấy nhiêu buổi (vd chỉ sinh đủ số buổi còn thiếu của khóa). */
   limit?: number,
+  /** true = sinh nối tiếp SAU buổi cuối đã có của khóa (nút "Sinh đủ N buổi còn thiếu"),
+   *  không lấp chỗ trống trước đó (buổi đã xoá vì nghỉ lễ…). */
+  afterLast = false,
 ): Promise<GenerateSessionsResult> {
   const supabase = getSupabase();
   const [clsRes, schedRes, existingRes] = await Promise.all([
@@ -914,11 +917,15 @@ export async function generateSessions(
     date: string; start_time: string; end_time: string; room_id: string | null; teacher_id: string | null;
   }[] = [];
   const startDate = clsRes.data.start_date as string | null;
-  const offset = startDate
-    ? Math.max(0, Math.round(
-        (new Date(startDate + "T00:00:00").getTime() - new Date(todayISO() + "T00:00:00").getTime()) / 86400000,
-      ))
-    : 0;
+  const daysFromToday = (iso: string) =>
+    Math.round((new Date(iso + "T00:00:00").getTime() - new Date(todayISO() + "T00:00:00").getTime()) / 86400000);
+  let offset = startDate ? Math.max(0, daysFromToday(startDate)) : 0;
+  if (afterLast) {
+    const lastLive = existing
+      .filter((s) => s.status !== "cancelled")
+      .reduce<string | null>((m, s) => (!m || s.date > m ? s.date : m), null);
+    if (lastLive) offset = Math.max(offset, daysFromToday(lastLive) + 1);
+  }
   const cursor = new Date();
   cursor.setDate(cursor.getDate() + offset);
   for (let i = offset; i < offset + weeks * 7; i++) {

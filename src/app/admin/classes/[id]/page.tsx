@@ -966,10 +966,10 @@ function SessionsCard({
     setNotice(null);
     setResult(null);
     try {
-      // Sinh đủ khóa: đủ số tuần để phủ số buổi còn thiếu (+1 tuần dự phòng ngày trùng)
+      // Sinh đủ khóa: nối tiếp sau buổi cuối, đủ số tuần để phủ số buổi còn thiếu (+1 tuần dự phòng ngày trùng)
       const perWeek = Math.max(1, cls.class_schedules.length);
       const w = limit ? Math.min(104, Math.ceil(limit / perWeek) + 1) : weeks;
-      const r = await generateSessions(cls.id, w, limit);
+      const r = await generateSessions(cls.id, w, limit, !!limit);
       setResult(r);
       onChanged();
     } catch (e) {
